@@ -1,0 +1,108 @@
+/* Form */
+
+/* SVG */
+#webtrees-descendants-chart-container {
+    position: relative;
+    font-size: unset;
+    display: flex;
+    flex: auto;
+}
+
+#webtrees-descendants-chart-container svg {
+    display: block;
+    margin: auto;
+    cursor: move;
+    /*cursor: -webkit-grab;*/
+    /*cursor: -moz-grab;*/
+    cursor: grab;
+    /*-webkit-filter: drop-shadow(3px 1px 3px rgba(0, 0, 0, 0.4));*/
+    /*filter: drop-shadow(3px 1px 3px rgba(0, 0, 0, 0.4));*/
+}
+
+#webtrees-descendants-chart-container svg:active {
+    cursor: grabbing;
+    /*cursor: -webkit-grabbing;*/
+}
+
+/*#webtrees-descendants-chart-container .person a.gallery img,*/
+/*#webtrees-descendants-chart-container .person a.gallery {*/
+/*    float: left;*/
+/*    height: 50px;*/
+/*    margin: 0 2px 0 0;*/
+/*    max-width: 80px;*/
+/*    width: auto;*/
+/*}*/
+
+#webtrees-descendants-chart-container .rtl {
+    direction: rtl !important;
+    unicode-bidi: bidi-override !important;
+}
+
+#webtrees-descendants-chart-container svg text {
+    font-weight: bold;
+}
+
+/* Unset any style from our transition helper classes */
+/*#webtrees-descendants-chart-container svg .new,*/
+/*#webtrees-descendants-chart-container svg .remove,*/
+/*#webtrees-descendants-chart-container svg .update,*/
+/*#webtrees-descendants-chart-container svg .old {*/
+/*    all: unset;*/
+/*}*/
+
+#webtrees-descendants-chart-container svg .person {
+    cursor: pointer;
+}
+
+#webtrees-descendants-chart-container svg .label {
+    font-weight: normal;
+}
+
+#webtrees-descendants-chart-container svg .label .alternativeName {
+    fill: #7f7f7f;
+    font-weight: normal;
+    direction: ltr;
+    unicode-bidi: normal;
+}
+
+#webtrees-descendants-chart-container svg .label .date {
+    fill: #7f7f7f;
+    font-weight: normal;
+    direction: ltr;
+    unicode-bidi: plaintext;
+}
+
+#webtrees-descendants-chart-container svg rect.background {
+    fill: none;
+    pointer-events: all;
+}
+
+#webtrees-descendants-chart-container div.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: 10px sans-serif;
+    background: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    transition: opacity ease-in-out;
+    transition-duration: 0s;
+}
+
+#webtrees-descendants-chart-container div.overlay .tooltip {
+    font-size: 22px;
+    color: white;
+    position: relative;
+    margin: 0;
+    top: 50%;
+    /*-webkit-transform: translateY(-50%);*/
+    /*-ms-transform: translateY(-50%);*/
+    transform: translateY(-50%);
+    opacity: 1;
+    text-align: center;
+}

@@ -1,0 +1,164 @@
+<?php
+
+/**
+ * See LICENSE.md file for further details.
+ */
+
+declare(strict_types=1);
+
+use Fisharebest\Webtrees\I18N;
+use Fisharebest\Webtrees\Individual;
+use Fisharebest\Webtrees\Tree;
+use Fisharebest\Webtrees\View;
+use MagicSunday\Webtrees\DescendantsChart\Configuration;
+
+/**
+ * @var Configuration $configuration
+ * @var string        $title
+ * @var string        $moduleName
+ * @var Individual    $individual
+ * @var Tree          $tree
+ * @var array         $chartParams
+ * @var string        $javascript
+ * @var string        $stylesheet
+ * @var string        $svgStylesheet
+ * @var string        $ajaxUrl
+ */
+?>
+
+<div id="page-descendants">
+    <h2 class="wt-page-title"><?= $title ?></h2>
+
+    <form id="webtrees-descendants-chart-form" method="post" class="wt-page-options wt-page-options-descendants-chart d-print-none">
+        <?= csrf_field() ?>
+
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label wt-page-options-label" for="xref">
+                <?= I18N::translate('Individual') ?>
+            </label>
+            <div class="col-sm-9 wt-page-options-value">
+                <?=
+                    view('components/select-individual', [
+                        'id'         => 'xref',
+                        'name'       => 'xref',
+                        'individual' => $individual,
+                        'tree'       => $tree,
+                        'required'   => true,
+                    ])
+                ?>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label wt-page-options-label" for="generations">
+                <?= I18N::translate('Generations') ?>
+            </label>
+            <div class="col-sm-9 wt-page-options-value">
+                <?=
+                    view('components/select', [
+                        'id'       => 'generations',
+                        'name'     => 'generations',
+                        'selected' => $configuration->getGenerations(),
+                        'options'  => $configuration->getGenerationsList(),
+                        'class'    => 'form-control-sm',
+                    ])
+                ?>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-form-label col-sm-3 wt-page-options-label">
+                <?= I18N::translate('Orientation') ?>
+            </label>
+            <div class="col-sm-9 wt-page-options-value" id="layout">
+                <?=
+                    view('components/radios-inline', [
+                        'name' => 'layout',
+                        'options' => [
+                            Configuration::LAYOUT_RIGHTLEFT => view('icons/pedigree-left') . I18N::translate('left'),
+                            Configuration::LAYOUT_LEFTRIGHT => view('icons/pedigree-right') . I18N::translate('right'),
+                            Configuration::LAYOUT_BOTTOMTOP => view('icons/pedigree-up') . I18N::translate('up'),
+                            Configuration::LAYOUT_TOPBOTTOM => view('icons/pedigree-down') . I18N::translate('down'),
+                        ],
+                        'selected' => $configuration->getLayout(),
+                    ])
+                ?>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-12 wt-page-options-value text-center">
+                <div class="btn-toolbar justify-content-between">
+                    <div class="btn-group btn-group-sm">
+                        <input class="btn btn-primary" type="submit" value="<?= I18N::translate('view') ?>">
+                    </div>
+
+                    <div class="justify-content-around">
+                        <div class="btn-group btn-group-sm mr-2">
+                            <button class="btn btn-secondary" type="button" id="centerButton">
+                                <?= I18N::translate('Re center') ?>
+                            </button>
+                        </div>
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-secondary border-right" type="button" id="exportPNG">
+                                <?= I18N::translate('Export as PNG') ?>
+                            </button>
+                            <button class="btn btn-secondary border-left" type="button" id="exportSVG">
+                                <?= I18N::translate('Export as SVG') ?>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div id="descendants-chart-url" class="row wt-ajax-load wt-page-content wt-chart wt-descendants-chart"></div>
+</div>
+
+<?php View::push('styles') ?>
+<link rel="stylesheet" href="<?= e($stylesheet) ?>">
+<link rel="stylesheet" href="<?= e($svgStylesheet) ?>">
+<?php View::endpush(); ?>
+
+<?php View::push('javascript'); ?>
+<script src="<?= e($javascript) ?>"></script>
+<script>
+
+/**
+ * Returns the AJAX update URL.
+ *
+ * @param {String} baseUrl
+ * @param {String} generations
+ *
+ * @returns {String}
+ */
+function getUrl(baseUrl, generations)
+{
+    let url = new URL(baseUrl);
+    url.searchParams.set("xref", document.getElementById('xref').value);
+    url.searchParams.set("generations", generations);
+
+    return url.toString();
+}
+
+// Set up storage object
+let storage = new WebtreesDescendantsChart.Storage("webtrees-descendants-chart");
+
+// Register all form elements valid for storing data
+storage.register("generations");
+storage.register("layout");
+
+// Set initial stored value for radio button group
+let formElements = document.getElementById("webtrees-descendants-chart-form").elements;
+formElements.namedItem("layout").value = storage.read("layout");
+
+const generations = parseInt(storage.read("generations"));
+const treeLayout  = storage.read("layout");
+const ajaxUrl     = getUrl(<?= json_encode($ajaxUrl) ?>, storage.read("generations"))
+
+document.getElementById("descendants-chart-url")
+    .setAttribute('data-ajax-url', ajaxUrl);
+
+</script>
+<?php View::endpush(); ?>
