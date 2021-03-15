@@ -56,7 +56,7 @@ class Module extends PedigreeChartModule implements ModuleCustomInterface
     /**
      * @var string
      */
-    public const CUSTOM_VERSION = '1.0.0';
+    public const CUSTOM_VERSION = '1.0.1';
 
     /**
      * @var string
