@@ -2,8 +2,8 @@
 
 [![PHPStan](https://img.shields.io/badge/PHPStan-level%205-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
 [![PHP_CodeSniffer](https://img.shields.io/badge/PHP_CodeSniffer-PSR12-brightgreen.svg?style=flat)](https://github.com/squizlabs/PHP_CodeSniffer)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/badges/build.png?b=master)](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/?branch=main)
+[![Build Status](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/badges/build.png?b=main)](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/build-status/main)
 [![Code Climate](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart/badges/gpa.svg)](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart)
 [![Issue Count](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart/badges/issue_count.svg)](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart)
 
@@ -36,7 +36,7 @@ composer remove magicsunday/webtrees-descendants-chart --update-no-dev
 ```
 
 ### Using Git
-If you are using ``git``, you could also clone the current master branch directly into your ``modules_v4`` directory 
+If you are using ``git``, you could also clone the current main branch directly into your ``modules_v4`` directory 
 by calling:
 
 ```
