@@ -12,7 +12,7 @@ This module provides an SVG descendants chart for the [webtrees](https://www.web
 is capable to display up to 25 descendants generations of an individual.
 
 ![descendants-chart-5-generations](assets/descendants-chart-6-generations.png)
-*Fig. 2: A six generations descendants chart (drawn left to right)*
+*Fig. 1: A six generations descendants chart (drawn top to bottom)*
 
 **Caution: If you are rendering a lot of generations it may take a while and even slow down your system.**
 
