@@ -32,7 +32,7 @@ msgstr "Een overzicht van de afstammelingen van een persoon"
 #: src/Module.php:213 src/Traits/ModuleChartTrait.php:38
 #, php-format
 msgid "Descendants chart of %s"
-msgstr "Afstammelingen diagram van %s"
+msgstr "Afstammelingen van %s"
 
 #: src/Module.php:232
 msgid "Use Ctrl + scroll to zoom in the view"
