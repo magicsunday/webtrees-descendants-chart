@@ -56,7 +56,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     /**
      * @var string
      */
-    public const CUSTOM_VERSION = '1.0.2-dev';
+    public const CUSTOM_VERSION = '1.0.2';
 
     /**
      * @var string
@@ -175,7 +175,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             return $this->viewResponse($this->name() . '::modules/descendants-chart/chart', [
                 'data'          => $this->buildJsonTree($individual),
                 'configuration' => $this->configuration,
-                'chartParams'   => json_encode($this->getChartParameters($individual), JSON_THROW_ON_ERROR),
+                'chartParams'   => json_encode($this->getChartParameters($individual)),
                 'stylesheet'    => $this->assetUrl('css/descendants-chart.css'),
                 'svgStylesheet' => $this->assetUrl('css/svg.css'),
                 'javascript'    => $this->assetUrl('js/descendants-chart.min.js'),
