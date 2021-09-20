@@ -141,7 +141,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         $ajax = Validator::queryParams($request)->boolean('ajax', false);
 
         // Convert POST requests into GET requests for pretty URLs.
-        // This also updates the name above the form, which wont get updated if only a POST request is used
+        // This also updates the name above the form, which won't get updated if only a POST request is used
         if ($request->getMethod() === RequestMethodInterface::METHOD_POST) {
             $validator = Validator::parsedBody($request);
 
@@ -152,6 +152,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                         'tree'        => $tree->name(),
                         'xref'        => $validator->string('xref', ''),
                         'generations' => $validator->integer('generations', 4),
+                        'hideSpouses' => $validator->boolean('hideSpouses', false),
                         'layout'      => $validator->string('layout', Configuration::LAYOUT_LEFTRIGHT),
                     ]
                 )
@@ -254,22 +255,43 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             return $data;
         }
 
-        $childCount = 0;
+        $familiesData = [];
 
         /** @var Family $family */
         foreach ($families as $family) {
+            $spouse   = $family->spouse($individual);
+            $children = [];
+
             foreach ($family->children() as $child) {
                 $childTree = $this->buildJsonTree($child, $generation + 1);
 
-                if ($childTree) {
-                    $data['children'][] = $childTree;
-
-                    ++$childCount;
+                if (count($childTree) > 0) {
+                    $children[] = $childTree;
                 }
+            }
+
+            // Add spouse to last displayed generation too?
+            if (($generation + 1) <= $this->configuration->getGenerations()) {
+                // Intialize spouse with null otherwise it will be "undefined" in Javascript
+                $familyData = [
+                    'spouse' => null,
+                ];
+
+                if ($spouse !== null) {
+                    $familyData['spouse'] = $this->getIndividualData($spouse, $generation);
+                }
+
+                if (count($children) > 0) {
+                    $familyData['children'] = $children;
+                }
+
+                $familiesData[] = $familyData;
             }
         }
 
-        $data['childCount'] = $childCount;
+        if (count($familiesData) > 0) {
+            $data['families'] = $familiesData;
+        }
 
         return $data;
     }
