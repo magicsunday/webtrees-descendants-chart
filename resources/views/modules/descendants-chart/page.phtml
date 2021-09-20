@@ -158,7 +158,7 @@ const treeLayout  = storage.read("layout");
 const ajaxUrl     = getUrl(<?= json_encode($ajaxUrl) ?>, storage.read("generations"))
 
 document.getElementById("descendants-chart-url")
-    .setAttribute('data-ajax-url', ajaxUrl);
+    .setAttribute('data-wt-ajax-url', ajaxUrl);
 
 </script>
 <?php View::endpush(); ?>
