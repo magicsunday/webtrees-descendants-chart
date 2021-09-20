@@ -53,17 +53,17 @@ To manually install the module, perform the following steps:
 
 ## Enable module
 Go to the control panel (admin section) of your installation and scroll down to the ``Modules`` section. Click 
-on ``Charts`` (in subsection Genealogy). Enable the ``Fan chart`` custom module (optionally disable the original
+on ``Charts`` (in subsection Genealogy). Enable the ``Descendants chart`` custom module (optionally disable the original
 installed descendants chart module) and save your settings.
 
 ![Control panel - Module administration](assets/control-panel-modules.png)
 
 
 ## Usage
-At the charts' menu, you will find a new link called `Fan chart`. Use the provided configuration options
+At the charts' menu, you will find a new link called `Descendants chart`. Use the provided configuration options
 to adjust the layout of the charts according to your needs.
 
-Right clicking on an individual opens an tooltip providing more detailed information of the current individual.
+Right-clicking on an individual opens a tooltip providing more detailed information of the current individual.
 
 
 ## Development
