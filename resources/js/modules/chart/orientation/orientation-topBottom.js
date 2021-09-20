@@ -37,12 +37,12 @@ export default class OrientationTopBottom extends Orientation
 
     get nodeWidth()
     {
-        return (this._boxWidth * 2) + 30;
+        return (this._boxWidth * 2) + this._yOffset;
     }
 
     norm(d)
     {
-        d.y = this.direction() * d.depth * (this._boxHeight + 30);
+        d.y = this.direction() * d.depth * (this._boxHeight + this._yOffset);
     }
 
     elbow(d)

@@ -35,23 +35,55 @@ export default class Hierarchy
      */
     init(data)
     {
-        // Get the greatest depth
-        const getDepth       = ({children}) => 1 + (children ? Math.max(...children.map(getDepth)) : 0);
-        // const maxGenerations = getDepth(data);
-
         // Construct root node from the hierarchical data
-        let root = d3.hierarchy(
-            data,
-            data => {
-                return data.children;
-            });
+        let root = d3.hierarchy(data, (person) => {
+            let children = [];
+
+            if (person.families) {
+                person.families.forEach((family) => {
+                    if (this._configuration.hideSpouses) {
+                        family.spouse = null;
+                    }
+
+                    if (family.children && (family.children.length > 0)) {
+                        return children.push(...family.children);
+                    }
+                });
+            }
+
+            return children;
+        });
 
         // Declares a tree layout and assigns the size
         const treeLayout = d3.tree()
             .nodeSize([this._configuration.orientation.nodeWidth, 0])
-            .separation(() => 0.5);
+            .separation((left, right) => {
+                // Left or right has families
+                if (left.data.families || right.data.families) {
+                    let value = 0.5;
 
-        // Map the node data to the tree layout
+                    if (left.data.families) {
+                        const listOfSpouses = left.data.families.filter(family => !!family.spouse);
+
+                        // Add some offset for each assigned spouse
+                        value += 0.5 + ((listOfSpouses.length - 1) * 0.5);
+                    }
+
+                    if (right.data.families) {
+                        const listOfSpouses = right.data.families.filter(family => !!family.spouse);
+
+                        // Add some offset for each assigned spouse
+                        value += 0.5 + ((listOfSpouses.length - 1) * 0.5);
+                    }
+
+                    return value;
+                }
+
+                // Single siblings and cousins should be close to each other
+                return 0.5;
+            });
+
+        // Map the root node data to the tree layout
         this._root  = root;
         this._nodes = treeLayout(root);
     }
@@ -78,34 +110,5 @@ export default class Hierarchy
     get root()
     {
         return this._root;
-    }
-
-    /**
-     * Create an empty child node object.
-     *
-     * @param {Number} generation Generation of the node
-     * @param {String} sex        The sex of the individual
-     *
-     * @returns {Object}
-     *
-     * @private
-     */
-    createEmptyNode(generation, sex)
-    {
-        return {
-            id               : 0,
-            xref             : "",
-            url              : "",
-            updateUrl        : "",
-            generation       : generation,
-            name             : "",
-            firstNames       : [],
-            lastNames        : [],
-            preferredName    : "",
-            alternativeNames : [],
-            isAltRtl         : false,
-            sex              : sex,
-            timespan         : ""
-        };
     }
 }

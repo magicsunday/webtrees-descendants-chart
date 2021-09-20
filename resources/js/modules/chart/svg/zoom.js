@@ -67,7 +67,7 @@ export default class Zoom
                     return false;
                 }
 
-                var transform = d3.zoomTransform(this);
+                const transform = d3.zoomTransform(this);
 
                 if (transform.k) {
                     // Prevent zooming below lowest level

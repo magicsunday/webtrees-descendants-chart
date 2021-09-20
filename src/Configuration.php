@@ -118,4 +118,15 @@ class Configuration
         return Validator::queryParams($this->request)
             ->string('layout', self::DEFAULT_TREE_LAYOUT);
     }
+
+    /**
+     * Returns whether to hide spouses or not.
+     *
+     * @return bool
+     */
+    public function getHideSpouses(): bool
+    {
+        return Validator::queryParams($this->request)
+            ->boolean('hideSpouses', false);
+    }
 }

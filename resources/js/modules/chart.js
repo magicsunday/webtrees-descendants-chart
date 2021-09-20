@@ -177,7 +177,7 @@ export default class Chart
     }
 
     /**
-     * Method triggers either the "update" or "individual" method on the click on an person.
+     * Method triggers either the "update" or "individual" method on the click on a person.
      *
      * @param {Object} data The D3 data object
      *

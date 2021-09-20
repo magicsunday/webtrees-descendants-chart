@@ -26,6 +26,7 @@ export class DescendantsChart
      *
      * @param {String[]} options.labels
      * @param {Number}   options.generations
+     * @param {Boolean}  options.hideSpouses
      * @param {String}   options.treeLayout
      * @param {Boolean}  options.rtl
      */
@@ -38,6 +39,7 @@ export class DescendantsChart
         this._configuration = new Configuration(
             options.labels,
             options.generations,
+            options.hideSpouses,
             options.treeLayout,
             options.rtl
         );
@@ -103,9 +105,12 @@ export class DescendantsChart
     /**
      * Updates the chart.
      *
-     * @param {Object} url The update url
+     * @param {String} url The update url
      */
-    update(url) { this._chart.update(url); }
+    update(url)
+    {
+        this._chart.update(url);
+    }
 
     /**
      * Draws the chart.
