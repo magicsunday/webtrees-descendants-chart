@@ -57,13 +57,12 @@ on ``Charts`` (in subsection Genealogy). Enable the ``Descendants chart`` custom
 installed descendants chart module) and save your settings.
 
 ![Control panel - Module administration](assets/control-panel-modules.png)
+*Fig. 2: Control panel - Module administration*
 
 
 ## Usage
 At the charts' menu, you will find a new link called `Descendants chart`. Use the provided configuration options
 to adjust the layout of the charts according to your needs.
-
-Right-clicking on an individual opens a tooltip providing more detailed information of the current individual.
 
 
 ## Development

@@ -274,7 +274,9 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             return [];
         }
 
-        $data     = $this->getIndividualData($individual, $generation);
+        $data = $this->getIndividualData($individual, $generation);
+
+        /** @var null|Family $family */
         $families = $individual->spouseFamilies();
 
         if (!$families->count()) {
