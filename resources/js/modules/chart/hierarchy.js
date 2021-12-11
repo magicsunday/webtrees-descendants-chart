@@ -102,9 +102,7 @@ export default class Hierarchy
             alternativeNames : [],
             isAltRtl         : false,
             sex              : sex,
-            timespan         : "",
-            color            : this._configuration.defaultColor,
-            colors           : [[], []]
+            timespan         : ""
         };
     }
 }

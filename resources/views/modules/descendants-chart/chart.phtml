@@ -46,12 +46,10 @@ const optionLayout = typeof treeLayout !== "undefined"
 const descendantsChart = new WebtreesDescendantsChart.DescendantsChart(
     "#webtrees-descendants-chart-container",
     {
-        labels       : chartParams.labels,
-        generations  : optionGenerations,
-        defaultColor : chartParams.defaultColor,
-        fontColor    : chartParams.fontColor,
-        treeLayout   : optionLayout,
-        rtl          : chartParams.rtl
+        labels      : chartParams.labels,
+        generations : optionGenerations,
+        treeLayout  : optionLayout,
+        rtl         : chartParams.rtl
     }
 );
 

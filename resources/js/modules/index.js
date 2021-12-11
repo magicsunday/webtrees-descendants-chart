@@ -23,8 +23,6 @@ export class DescendantsChart
      *
      * @param {String[]} options.labels
      * @param {Number}   options.generations
-     * @param {String}   options.defaultColor
-     * @param {String}   options.fontColor
      * @param {String}   options.treeLayout
      * @param {Boolean}  options.rtl
      */
@@ -37,8 +35,6 @@ export class DescendantsChart
         this._configuration = new Configuration(
             options.labels,
             options.generations,
-            options.defaultColor,
-            options.fontColor,
             options.treeLayout,
             options.rtl
         );
