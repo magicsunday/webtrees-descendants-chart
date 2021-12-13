@@ -17,10 +17,10 @@ use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Individual;
 use Fisharebest\Webtrees\Module\DescendancyChartModule;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
-use Fisharebest\Webtrees\Module\ModuleThemeInterface;
 use Fisharebest\Webtrees\Registry;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
+use JsonException;
 use MagicSunday\Webtrees\DescendantsChart\Traits\IndividualTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleCustomTrait;
@@ -76,13 +76,6 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     private $configuration;
 
     /**
-     * The current theme instance.
-     *
-     * @var ModuleThemeInterface
-     */
-    private $theme;
-
-    /**
      * Initialization.
      */
     public function boot(): void
@@ -93,10 +86,6 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         $routerContainer->getMap()
             ->get(self::ROUTE_DEFAULT, self::ROUTE_DEFAULT_URL, $this)
             ->allows(RequestMethodInterface::METHOD_POST);
-
-        /** @var ModuleThemeInterface $theme */
-        $theme = app(ModuleThemeInterface::class);
-        $this->theme = $theme;
 
         View::registerNamespace($this->name(), $this->resourcesFolder() . 'views/');
         View::registerCustomView('::modules/charts/chart', $this->name() . '::modules/charts/chart');
@@ -139,7 +128,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
      *
      * @return ResponseInterface
      *
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
