@@ -65,7 +65,7 @@ trait IndividualTrait
      * @param Individual $individual The current individual
      * @param int        $generation The generation the person belongs to
      *
-     * @return mixed[]
+     * @return array<string, string|int|bool|string[]>
      */
     private function getIndividualData(Individual $individual, int $generation): array
     {
@@ -112,7 +112,6 @@ trait IndividualTrait
             'death'            => $this->decodeValue($individual->getDeathDate()->display()),
             'timespan'         => $this->getLifetimeDescription($individual),
             'color'            => $this->getColor($individual),
-            'colors'           => [[], []],
         ];
     }
 

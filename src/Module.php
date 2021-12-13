@@ -9,17 +9,17 @@ declare(strict_types=1);
 namespace MagicSunday\Webtrees\DescendantsChart;
 
 use Aura\Router\RouterContainer;
-use Exception;
 use Fig\Http\Message\RequestMethodInterface;
 use Fisharebest\Webtrees\Auth;
-use Fisharebest\Webtrees\Exceptions\IndividualNotFoundException;
+use Fisharebest\Webtrees\Contracts\UserInterface;
 use Fisharebest\Webtrees\Family;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Individual;
+use Fisharebest\Webtrees\Module\DescendancyChartModule;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleThemeInterface;
-use Fisharebest\Webtrees\Module\DescendancyChartModule;
 use Fisharebest\Webtrees\Registry;
+use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
 use MagicSunday\Webtrees\DescendantsChart\Traits\IndividualTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
@@ -94,7 +94,9 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             ->get(self::ROUTE_DEFAULT, self::ROUTE_DEFAULT_URL, $this)
             ->allows(RequestMethodInterface::METHOD_POST);
 
-        $this->theme = app(ModuleThemeInterface::class);
+        /** @var ModuleThemeInterface $theme */
+        $theme = app(ModuleThemeInterface::class);
+        $this->theme = $theme;
 
         View::registerNamespace($this->name(), $this->resourcesFolder() . 'views/');
         View::registerCustomView('::modules/charts/chart', $this->name() . '::modules/charts/chart');
@@ -136,20 +138,23 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
      * @param ServerRequestInterface $request
      *
      * @return ResponseInterface
-     * @throws Exception
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $tree       = $request->getAttribute('tree');
-        $user       = $request->getAttribute('user');
-        $xref       = $request->getAttribute('xref');
+        /** @var Tree $tree */
+        $tree = $request->getAttribute('tree');
+        assert($tree instanceof Tree);
+
+        $xref = $request->getAttribute('xref');
+        assert(is_string($xref));
+
         $individual = Registry::individualFactory()->make($xref, $tree);
+        $individual = Auth::checkIndividualAccess($individual, false, true);
+
+        /** @var UserInterface $user */
+        $user = $request->getAttribute('user');
 
         $this->configuration = new Configuration($request);
-
-        if ($individual === null) {
-            throw new IndividualNotFoundException();
-        }
 
         // Convert POST requests into GET requests for pretty URLs.
         // This also updates the name above the form, which wont get updated if only a POST request is used
@@ -164,7 +169,6 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             ]));
         }
 
-        Auth::checkIndividualAccess($individual, false, true);
         Auth::checkComponentAccess($this, 'chart', $tree, $user);
 
         $ajax = (bool) ($request->getQueryParams()['ajax'] ?? false);
@@ -234,32 +238,6 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     }
 
     /**
-     * Update action.
-     *
-     * @param ServerRequestInterface $request The current HTTP request
-     *
-     * @return ResponseInterface
-     *
-     * @throws Exception
-     */
-    public function getUpdateAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->configuration = new Configuration($request);
-
-        $tree         = $request->getAttribute('tree');
-        $user         = $request->getAttribute('user');
-        $xref         = $request->getQueryParams()['xref'];
-        $individual   = Registry::individualFactory()->make($xref, $tree);
-
-        Auth::checkIndividualAccess($individual, false, true);
-        Auth::checkComponentAccess($this, 'chart', $tree, $user);
-
-        return response(
-            $this->buildJsonTree($individual)
-        );
-    }
-
-    /**
      * Recursively build the data array of the individual ancestors.
      *
      * @param null|Individual $individual The start person
@@ -274,9 +252,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             return [];
         }
 
-        $data = $this->getIndividualData($individual, $generation);
-
-        /** @var null|Family $family */
+        $data     = $this->getIndividualData($individual, $generation);
         $families = $individual->spouseFamilies();
 
         if (!$families->count()) {
@@ -312,12 +288,15 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
      */
     private function getAjaxRoute(Individual $individual, string $xref): string
     {
-        return $this->chartUrl($individual, [
-            'ajax'        => true,
-            'generations' => $this->configuration->getGenerations(),
-            'layout'      => $this->configuration->getLayout(),
-            'xref'        => $xref,
-        ]);
+        return $this->chartUrl(
+            $individual,
+            [
+                'ajax'        => true,
+                'generations' => $this->configuration->getGenerations(),
+                'layout'      => $this->configuration->getLayout(),
+                'xref'        => $xref,
+            ]
+        );
     }
 
     /**
@@ -330,20 +309,13 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
      */
     private function getUpdateRoute(Individual $individual): string
     {
-        return $this->chartUrl($individual, [
-            'generations' => $this->configuration->getGenerations(),
-            'layout'      => $this->configuration->getLayout(),
-//            'xref'        => $individual->xref(),
-        ]);
-
-//        return route('module', [
-//            'module'      => $this->name(),
-//            'action'      => 'update',
-//            'xref'        => $individual->xref(),
-//            'tree'        => $individual->tree()->name(),
-//            'generations' => $this->configuration->getGenerations(),
-//            'layout'      => $this->configuration->getLayout(),
-//        ]);
+        return $this->chartUrl(
+            $individual,
+            [
+                'generations' => $this->configuration->getGenerations(),
+                'layout'      => $this->configuration->getLayout(),
+            ]
+        );
     }
 
     /**
