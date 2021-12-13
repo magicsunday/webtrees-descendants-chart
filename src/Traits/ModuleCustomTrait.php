@@ -40,11 +40,6 @@ trait ModuleCustomTrait
         return self::CUSTOM_LATEST_VERSION;
     }
 
-    /**
-     * Fetch the latest version of this module.
-     *
-     * @return string
-     */
     public function customModuleLatestVersion(): string
     {
         // No update URL provided.

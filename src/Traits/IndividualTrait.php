@@ -28,29 +28,30 @@ trait IndividualTrait
      *
      * @var string
      */
-    private $xpathFirstNames = '//text()[following::span[@class="SURN"]][normalize-space()]';
+    private $xpathFirstNames
+        = '//span[@class="NAME"]//text()[parent::*[not(@class="wt-nickname")]][following::span[@class="SURN"]]';
 
     /**
-     * The XPath identifier to extract the last name parts.
+     * The XPath identifier to extract the last name parts (surname + surname suffix).
      *
      * @var string
      */
     private $xpathLastNames
-        = '//text()[parent::*[not(@class="wt-nickname")]][not(following::span[@class="SURN"])][normalize-space()]';
+        = '//span[@class="NAME"]//span[@class="SURN"]/text()|//span[@class="SURN"]/following::text()';
 
     /**
-     * The XPath identifier to extract the nick name part.
+     * The XPath identifier to extract the nickname part.
      *
      * @var string
      */
-    private $xpathNickname = '//q[@class="wt-nickname"]';
+    private $xpathNickname = '//span[@class="NAME"]//q[@class="wt-nickname"]/text()';
 
     /**
      * The XPath identifier to extract the starred name part.
      *
      * @var string
      */
-    private $xpathPreferredName = '//span[@class="starredname"]';
+    private $xpathPreferredName = '//span[@class="NAME"]//span[@class="starredname"]/text()';
 
     /**
      * The XPath identifier to extract the alternative name parts.
@@ -65,7 +66,7 @@ trait IndividualTrait
      * @param Individual $individual The current individual
      * @param int        $generation The generation the person belongs to
      *
-     * @return array<string, string|int|bool|string[]>
+     * @return array<string, array<string>|bool|int|string>
      */
     private function getIndividualData(Individual $individual, int $generation): array
     {
