@@ -1,6 +1,6 @@
 parameters:
     # You can currently choose from 10 levels (0 is the loosest and 9 is the strictest).
-    level: 8
+    level: 9
 
     paths:
         - src
