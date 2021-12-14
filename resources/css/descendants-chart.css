@@ -24,52 +24,8 @@
     /*cursor: -webkit-grabbing;*/
 }
 
-/*#webtrees-descendants-chart-container .person a.gallery img,*/
-/*#webtrees-descendants-chart-container .person a.gallery {*/
-/*    float: left;*/
-/*    height: 50px;*/
-/*    margin: 0 2px 0 0;*/
-/*    max-width: 80px;*/
-/*    width: auto;*/
-/*}*/
-
-#webtrees-descendants-chart-container .rtl {
-    direction: rtl !important;
-    unicode-bidi: bidi-override !important;
-}
-
-#webtrees-descendants-chart-container svg text {
-    font-weight: bold;
-}
-
-/* Unset any style from our transition helper classes */
-/*#webtrees-descendants-chart-container svg .new,*/
-/*#webtrees-descendants-chart-container svg .remove,*/
-/*#webtrees-descendants-chart-container svg .update,*/
-/*#webtrees-descendants-chart-container svg .old {*/
-/*    all: unset;*/
-/*}*/
-
 #webtrees-descendants-chart-container svg .person {
     cursor: pointer;
-}
-
-#webtrees-descendants-chart-container svg .label {
-    font-weight: normal;
-}
-
-#webtrees-descendants-chart-container svg .label .alternativeName {
-    fill: #7f7f7f;
-    font-weight: normal;
-    direction: ltr;
-    unicode-bidi: normal;
-}
-
-#webtrees-descendants-chart-container svg .label .date {
-    fill: #7f7f7f;
-    font-weight: normal;
-    direction: ltr;
-    unicode-bidi: plaintext;
 }
 
 #webtrees-descendants-chart-container svg rect.background {
