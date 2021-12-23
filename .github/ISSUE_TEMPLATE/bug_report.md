@@ -26,7 +26,7 @@ If applicable, add screenshots to help explain your problem.
 **Desktop (please complete the following information):**
  - Browser [e.g. chrome, safari]
  - Webtrees version [e.g. 2.0.12]
- - Version of pedigree chart [e.g. 1.2.7]
+ - Version of descendants chart [e.g. 1.0.2]
 
 **Additional context**
 Add any other context about the problem here.
