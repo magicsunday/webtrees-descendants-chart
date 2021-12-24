@@ -1,12 +1,12 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+![Latest version](https://img.shields.io/github/v/release/magicsunday/webtrees-descendants-chart?sort=semver)
+![License](https://img.shields.io/github/license/magicsunday/webtrees-descendants-chart)
+![PHPStan](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/phpstan.yml/badge.svg)
+![PHPCodeSniffer](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/phpcs.yml/badge.svg)
 
-[![PHPStan](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/phpstan.yml/badge.svg)](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/phpstan.yml)
-[![PHP_CodeSniffer](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/phpcs.yml/badge.svg)](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/phpcs.yml)
-
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/?branch=main)
-[![Build Status](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/badges/build.png?b=main)](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/build-status/main)
-[![Code Climate](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart/badges/gpa.svg)](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart)
-[![Issue Count](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart/badges/issue_count.svg)](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart)
+![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/badges/quality-score.png?b=main)
+![Build Status](https://scrutinizer-ci.com/g/magicsunday/webtrees-descendants-chart/badges/build.png?b=main)
+![Code Climate](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart/badges/gpa.svg)
+![Issue Count](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart/badges/issue_count.svg)
 
 
 # Descendants chart
