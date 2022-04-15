@@ -3,7 +3,6 @@
  */
 
 import * as d3 from "../d3";
-import {SEX_FEMALE, SEX_MALE} from "../constants";
 
 /**
  * This class handles the hierarchical data.
@@ -24,10 +23,6 @@ export default class Hierarchy
         this._configuration = configuration;
         this._nodes         = null;
         this._root          = null;
-
-        this.nodeWidth  = this._configuration.orientation.nodeWidth();
-        this.nodeHeight = 0;
-        this.separation = 0.5;
     }
 
     /**
@@ -39,7 +34,7 @@ export default class Hierarchy
     {
         // Get the greatest depth
         const getDepth       = ({children}) => 1 + (children ? Math.max(...children.map(getDepth)) : 0);
-        const maxGenerations = getDepth(data);
+        // const maxGenerations = getDepth(data);
 
         // Construct root node from the hierarchical data
         let root = d3.hierarchy(
@@ -50,8 +45,8 @@ export default class Hierarchy
 
         // Declares a tree layout and assigns the size
         const treeLayout = d3.tree()
-            .nodeSize([this.nodeWidth, this.nodeHeight])
-            .separation(d => this.separation);
+            .nodeSize([this._configuration.orientation.nodeWidth, 0])
+            .separation(() => 0.5);
 
         // Map the node data to the tree layout
         this._root  = root;
