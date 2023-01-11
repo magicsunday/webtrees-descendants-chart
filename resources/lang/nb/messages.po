@@ -1,17 +1,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
-"POT-Creation-Date: 2021-03-15 10:50+0100\n"
-"PO-Revision-Date: 2021-03-16 21:51+0100\n"
+"POT-Creation-Date: 2023-01-11 08:14+0100\n"
+"PO-Revision-Date: 2023-01-11 08:14+0100\n"
 "Last-Translator: Rico Sonntag <mail@ricosonntag.de>\n"
 "Language-Team: \n"
 "Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
-"X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Poedit-Basepath: ../../..\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: module.php\n"
 "X-Poedit-SearchPath-1: src\n"
@@ -21,38 +21,38 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-2: resources/lang/css\n"
 "X-Poedit-SearchPathExcluded-3: resources/lang/language\n"
 
-#: src/Module.php:110 src/Module.php:210
+#: src/Module.php:101 src/Module.php:206
 msgid "Descendants chart"
 msgstr "Etterkommerdiagram"
 
-#: src/Module.php:120
+#: src/Module.php:111
 msgid "An overview of an individual’s descendants."
 msgstr "Et diagram over en persons etterkommere."
 
-#: src/Module.php:213 src/Traits/ModuleChartTrait.php:38
+#: src/Module.php:209 src/Traits/ModuleChartTrait.php:38
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Etterkommerdiagram for %s"
 
-#: src/Module.php:232
+#: src/Module.php:225
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Bruk Ctrl + scroll for zoom"
 
-#: src/Module.php:233
+#: src/Module.php:226
 msgid "Move the view with two fingers"
 msgstr "Bruk to fingre for å flytte utsnitt"
 
-#: src/Traits/IndividualTrait.php:116
+#: src/Traits/IndividualTrait.php:147
 #, php-format
 msgid "Born: %s"
 msgstr "Født: %s"
 
-#: src/Traits/IndividualTrait.php:120
+#: src/Traits/IndividualTrait.php:151
 #, php-format
 msgid "Died: %s"
 msgstr "Død: %s"
 
-#: src/Traits/IndividualTrait.php:124
+#: src/Traits/IndividualTrait.php:155
 msgid "Deceased"
 msgstr "Død"
 
