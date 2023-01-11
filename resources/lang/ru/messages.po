@@ -1,0 +1,104 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Descendants chart\n"
+"POT-Creation-Date: 2021-03-15 10:49+0100\n"
+"PO-Revision-Date: 2022-01-22 23:21+0300\n"
+"Last-Translator: Rico Sonntag <mail@ricosonntag.de>\n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-SearchPath-0: module.php\n"
+"X-Poedit-SearchPath-1: src\n"
+"X-Poedit-SearchPath-2: resources/views\n"
+"X-Poedit-SearchPathExcluded-0: resources/lang/node_modules\n"
+"X-Poedit-SearchPathExcluded-1: resources/lang/.git\n"
+"X-Poedit-SearchPathExcluded-2: resources/lang/css\n"
+"X-Poedit-SearchPathExcluded-3: resources/lang/language\n"
+
+#: src/Module.php:110 src/Module.php:210
+msgid "Descendants chart"
+msgstr "Потомки (новое)"
+
+#: src/Module.php:120
+msgid "An overview of an individual’s descendants."
+msgstr "Диаграмма потомков в виде дерева."
+
+#: src/Module.php:213 src/Traits/ModuleChartTrait.php:38
+#, php-format
+msgid "Descendants chart of %s"
+msgstr "Диаграмма потомков у %s"
+
+#: src/Module.php:232
+msgid "Use Ctrl + scroll to zoom in the view"
+msgstr "Используйте Ctrl + scroll, чтобы  увеличить"
+
+#: src/Module.php:233
+msgid "Move the view with two fingers"
+msgstr "Измените вид двумя пальцами"
+
+#: src/Traits/IndividualTrait.php:116
+#, php-format
+msgid "Born: %s"
+msgstr "Рождение: %s"
+
+#: src/Traits/IndividualTrait.php:120
+#, php-format
+msgid "Died: %s"
+msgstr "Смерть: %s"
+
+#: src/Traits/IndividualTrait.php:124
+msgid "Deceased"
+msgstr "Умерший"
+
+#: resources/views/modules/descendants-chart/page.phtml:37
+msgid "Individual"
+msgstr "Человек"
+
+#: resources/views/modules/descendants-chart/page.phtml:54
+msgid "Generations"
+msgstr "Поколения"
+
+#: resources/views/modules/descendants-chart/page.phtml:71
+msgid "Orientation"
+msgstr "Ориентация"
+
+#: resources/views/modules/descendants-chart/page.phtml:78
+msgid "left"
+msgstr "влево"
+
+#: resources/views/modules/descendants-chart/page.phtml:79
+msgid "right"
+msgstr "вправо"
+
+#: resources/views/modules/descendants-chart/page.phtml:80
+msgid "up"
+msgstr "вверх"
+
+#: resources/views/modules/descendants-chart/page.phtml:81
+msgid "down"
+msgstr "вниз"
+
+#: resources/views/modules/descendants-chart/page.phtml:93
+msgid "view"
+msgstr "обновить"
+
+#: resources/views/modules/descendants-chart/page.phtml:99
+msgid "Re center"
+msgstr "Центрировать"
+
+#: resources/views/modules/descendants-chart/page.phtml:104
+msgid "Export as PNG"
+msgstr "Экспорт в PNG"
+
+#: resources/views/modules/descendants-chart/page.phtml:107
+msgid "Export as SVG"
+msgstr "Экспорт в SVG"
+
+#~ msgid "Layout"
+#~ msgstr "Ansicht"
