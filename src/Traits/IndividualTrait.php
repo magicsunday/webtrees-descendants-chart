@@ -127,7 +127,7 @@ trait IndividualTrait
      */
     private function convertToHtmlEntities(string $input): string
     {
-        return mb_encode_numericentity($input, [0x80, 0xfffffff, 0, 0xfffffff], 'UTF-8')
+        return mb_encode_numericentity($input, [0x80, 0xfffffff, 0, 0xfffffff], 'UTF-8');
     }
 
     /**
