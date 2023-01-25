@@ -5,3 +5,4 @@ vendor/
 node_modules/
 resources/js/descendants-chart.js
 resources/js/descendants-chart-storage.js
+.phpunit.result.cache
