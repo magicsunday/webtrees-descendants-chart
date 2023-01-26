@@ -35,7 +35,7 @@ deactivated via the configuration form so that only the direct descendants are d
 
 
 ## Installation
-Requires webtrees 2.2.
+Requires webtrees 2.1.
 
 ### Using Composer
 To install using [composer](https://getcomposer.org/), just run the following command from the command line 
