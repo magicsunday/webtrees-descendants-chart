@@ -19,7 +19,7 @@ is capable to display up to 25 descendants generations of an individual.
 
 
 ## Installation
-Requires webtrees 2.1.
+Requires webtrees 2.2.
 
 ### Using Composer
 To install using [composer](https://getcomposer.org/), just run the following command from the command line 
