@@ -1,11 +1,9 @@
 ![Latest version](https://img.shields.io/github/v/release/magicsunday/webtrees-descendants-chart?sort=semver)
 ![License](https://img.shields.io/github/license/magicsunday/webtrees-descendants-chart)
 ![PHPStan](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/phpstan.yml/badge.svg)
+![PHPUnit](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/phpunit.yml/badge.svg)
 ![PHPCodeSniffer](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/phpcs.yml/badge.svg)
 ![CodeQL](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/codeql-analysis.yml/badge.svg)
-
-![Code Climate](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart/badges/gpa.svg)
-![Issue Count](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart/badges/issue_count.svg)
 
 
 # Descendants chart
@@ -70,6 +68,7 @@ to adjust the layout of the charts according to your needs.
 To build/update the javascript, run the following commands:
 
 ```
+nvm install node
 npm install --unsafe-perm --save-dev
 npm run prepare
 ```

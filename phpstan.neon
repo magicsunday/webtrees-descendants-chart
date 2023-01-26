@@ -6,8 +6,3 @@ parameters:
         - src
         # If you have tests and want to analyze this folder, uncomment the line below
         # - test
-
-    fileExtensions:
-        - php
-
-    checkMissingIterableValueType: false
