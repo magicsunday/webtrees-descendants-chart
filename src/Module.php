@@ -27,9 +27,11 @@ use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\View;
 use Illuminate\Support\Collection;
 use JsonException;
-use MagicSunday\Webtrees\DescendantsChart\Traits\IndividualTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleCustomTrait;
+use MagicSunday\Webtrees\ModuleBase\Processor\DateProcessor;
+use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
+use MagicSunday\Webtrees\ModuleBase\Processor\NameProcessor;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RecursiveArrayIterator;
@@ -46,7 +48,6 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 {
     use ModuleCustomTrait;
     use ModuleChartTrait;
-    use IndividualTrait;
 
     private const ROUTE_DEFAULT     = 'webtrees-descendants-chart';
     private const ROUTE_DEFAULT_URL = '/tree/{tree}/webtrees-descendants-chart/{xref}';
@@ -383,7 +384,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         $parents  = [];
 
         $parents[$individual->xref()] = [
-            'data' => $this->getIndividualData($individual, null, $generation),
+            'data' => $this->getIndividualData($individual, $generation),
         ];
 
         if ($families->count() > 0) {
@@ -413,7 +414,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 
                 if ($spouse !== null) {
                     $parentData = [
-                        'data'     => $this->getIndividualData($spouse, $individual, $generation),
+                        'data'     => $this->getIndividualData($spouse, $generation, $individual),
                         'spouse'   => $parents[$individual->xref()]['data']['id'],
                         'family'   => $familyIndex,
                         'children' => array_values($children),
@@ -456,6 +457,52 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                 $y['data']['individual']->getEstimatedBirthDate()
             );
         };
+    }
+
+    /**
+     * Get the individual data required for display the chart.
+     *
+     * @param Individual      $individual The current individual
+     * @param int             $generation The generation the person belongs to
+     * @param null|Individual $spouse
+     *
+     * @return array<string, array<string>|bool|int|string>
+     */
+    private function getIndividualData(Individual $individual, int $generation, Individual $spouse = null): array
+    {
+        $nameProcessor = new NameProcessor(
+            $individual,
+            $spouse,
+            $this->configuration->getShowMarriedNames()
+        );
+
+        $dateProcessor  = new DateProcessor($individual);
+        $imageProcessor = new ImageProcessor($this, $individual);
+
+        $alternativeNames = $nameProcessor->getAlternateNames();
+
+        // Create a unique ID for each individual
+        static $id = 0;
+
+        return [
+            'id'               => ++$id,
+            'xref'             => $individual->xref(),
+            'url'              => $individual->url(),
+            'updateUrl'        => $this->getUpdateRoute($individual),
+            'generation'       => $generation,
+            'name'             => $nameProcessor->getFullName(),
+            'firstNames'       => $nameProcessor->getFirstNames(),
+            'lastNames'        => $nameProcessor->getLastNames(),
+            'preferredName'    => $nameProcessor->getPreferredName(),
+            'alternativeNames' => $alternativeNames,
+            'isAltRtl'         => $this->isRtl($alternativeNames),
+            'thumbnail'        => $imageProcessor->getHighlightImageUrl(),
+            'sex'              => $individual->sex(),
+            'birth'            => $dateProcessor->getBirthDate(),
+            'death'            => $dateProcessor->getDeathDate(),
+            'timespan'         => $dateProcessor->getLifetimeDescription(),
+            'individual'       => $individual,
+        ];
     }
 
     /**
