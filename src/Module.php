@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace MagicSunday\Webtrees\DescendantsChart;
 
+use Aura\Router\Exception\ImmutableProperty;
+use Aura\Router\Exception\RouteAlreadyExists;
 use Closure;
 use Fig\Http\Message\RequestMethodInterface;
 use Fisharebest\Webtrees\Auth;
@@ -27,9 +29,11 @@ use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\View;
 use Illuminate\Support\Collection;
 use JsonException;
-use MagicSunday\Webtrees\DescendantsChart\Traits\IndividualTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleCustomTrait;
+use MagicSunday\Webtrees\ModuleBase\Processor\DateProcessor;
+use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
+use MagicSunday\Webtrees\ModuleBase\Processor\NameProcessor;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RecursiveArrayIterator;
@@ -46,7 +50,6 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 {
     use ModuleCustomTrait;
     use ModuleChartTrait;
-    use IndividualTrait;
 
     private const ROUTE_DEFAULT     = 'webtrees-descendants-chart';
     private const ROUTE_DEFAULT_URL = '/tree/{tree}/webtrees-descendants-chart/{xref}';
@@ -85,6 +88,11 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 
     /**
      * Initialization.
+     *
+     * @return void
+     *
+     * @throws ImmutableProperty
+     * @throws RouteAlreadyExists
      */
     public function boot(): void
     {
@@ -456,6 +464,54 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                 $y['data']['individual']->getEstimatedBirthDate()
             );
         };
+    }
+
+    /**
+     * Get the individual data required for display the chart.
+     *
+     * @param Individual      $individual The current individual
+     * @param int             $generation The generation the person belongs to
+     * @param null|Individual $spouse
+     *
+     * @return array<string, array<string>|bool|int|string>
+     */
+    private function getIndividualData(Individual $individual, int $generation, Individual $spouse = null): array
+    {
+        $nameProcessor = new NameProcessor(
+            $individual,
+            $spouse,
+            $this->configuration->getShowMarriedNames()
+        );
+
+        $dateProcessor  = new DateProcessor($individual);
+        $imageProcessor = new ImageProcessor($this, $individual);
+
+        $fullNN          = $nameProcessor->getFullName();
+        $alternativeName = $nameProcessor->getAlternateName($individual);
+
+        // Create a unique ID for each individual
+        static $id = 0;
+
+        return [
+            'id'              => ++$id,
+            'xref'            => $individual->xref(),
+            'url'             => $individual->url(),
+            'updateUrl'       => $this->getUpdateRoute($individual),
+            'generation'      => $generation,
+            'name'            => $fullNN,
+            'isNameRtl'       => $this->isRtl($fullNN),
+            'firstNames'      => $nameProcessor->getFirstNames(),
+            'lastNames'       => $nameProcessor->getLastNames(),
+            'preferredName'   => $nameProcessor->getPreferredName(),
+            'alternativeName' => $alternativeName,
+            'isAltRtl'        => $this->isRtl($alternativeName),
+            'thumbnail'       => $imageProcessor->getHighlightImageUrl(),
+            'sex'             => $individual->sex(),
+            'birth'           => $dateProcessor->getBirthDate(),
+            'death'           => $dateProcessor->getDeathDate(),
+            'timespan'        => $dateProcessor->getLifetimeDescription(),
+            'individual'      => $individual,
+        ];
     }
 
     /**
