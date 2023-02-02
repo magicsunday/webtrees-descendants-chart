@@ -24,9 +24,11 @@ use Fisharebest\Webtrees\Registry;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\View;
 use JsonException;
-use MagicSunday\Webtrees\DescendantsChart\Traits\IndividualTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleCustomTrait;
+use MagicSunday\Webtrees\ModuleBase\Processor\DateProcessor;
+use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
+use MagicSunday\Webtrees\ModuleBase\Processor\NameProcessor;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -41,7 +43,6 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 {
     use ModuleCustomTrait;
     use ModuleChartTrait;
-    use IndividualTrait;
 
     private const ROUTE_DEFAULT     = 'webtrees-descendants-chart';
     private const ROUTE_DEFAULT_URL = '/tree/{tree}/webtrees-descendants-chart/{xref}';
@@ -316,6 +317,42 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         }
 
         return array_values($parents);
+    }
+
+    /**
+     * Get the individual data required for display the chart.
+     *
+     * @param Individual $individual The current individual
+     * @param int        $generation The generation the person belongs to
+     *
+     * @return array<string, array<string>|bool|int|string>
+     */
+    private function getIndividualData(Individual $individual, int $generation): array
+    {
+        $nameProcessor  = new NameProcessor($individual);
+        $dateProcessor  = new DateProcessor($individual);
+        $imageProcessor = new ImageProcessor($this, $individual);
+
+        $alternativeNames = $nameProcessor->getAlternateNames();
+
+        return [
+            'id'               => 0,
+            'xref'             => $individual->xref(),
+            'url'              => $individual->url(),
+            'updateUrl'        => $this->getUpdateRoute($individual),
+            'generation'       => $generation,
+            'name'             => $nameProcessor->getFullName(),
+            'firstNames'       => $nameProcessor->getFirstNames(),
+            'lastNames'        => $nameProcessor->getLastNames(),
+            'preferredName'    => $nameProcessor->getPreferredName(),
+            'alternativeNames' => $alternativeNames,
+            'isAltRtl'         => $this->isRtl($alternativeNames),
+            'thumbnail'        => $imageProcessor->getHighlightImageUrl(),
+            'sex'              => $individual->sex(),
+            'birth'            => $dateProcessor->getBirthDate(),
+            'death'            => $dateProcessor->getDeathDate(),
+            'timespan'         => $dateProcessor->getLifetimeDescription(),
+        ];
     }
 
     /**
