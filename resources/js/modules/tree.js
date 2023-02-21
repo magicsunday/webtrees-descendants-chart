@@ -908,19 +908,14 @@ export default class Tree
             .selectAll("path.link")
             .data(links);//, person => person.target.id);
 
-        const lineGenerator = d3.line()
-            // Skip empty points
-            .defined(point => point.y !== null)
-            .x(point => point.x)
-            .y(point => point.y);
-
         // Add new links. Transition new links from the source's old position to
         // the links final position.
         let linkEnter = link
             .enter()
             .append("path")
             .classed("link", true)
-            .attr("d", person => lineGenerator(this._orientation.elbow(person)));
+            .attr("d", person => this._orientation.elbow(person));
+
 
         // // Add new links. Transition new links from the source's old position to
         // // the links final position.

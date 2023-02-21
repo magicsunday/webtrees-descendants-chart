@@ -5,16 +5,16 @@
  * LICENSE file that was distributed with this source code.
  */
 
-import Point from "../point";
+import * as d3 from "../../d3";
 
 /**
- * Returns the points to draw the horizontal connecting lines between the profile
+ * Returns the path to draw the horizontal connecting lines between the profile
  * boxes for Left/Right and Right/Left layout.
  *
  * @param {Object}      datum       D3 data object
  * @param {Orientation} orientation The current orientation
  *
- * @returns {Point[]}
+ * @returns {String}
  *
  * Curved edges => https://observablehq.com/@bumbeishvili/curved-edges-horizontal-d3-v3-v4-v5-v6
  */
@@ -24,8 +24,7 @@ export default function(datum, orientation)
     const halfYOffset = orientation.yOffset / 2;
 
     let sourceX = datum.source.x,
-        sourceY = datum.source.y,
-        points  = [];
+        sourceY = datum.source.y;
 
     if (datum.source.data.family === 0) {
         // For the first family, the link to the child nodes begins between
@@ -46,45 +45,32 @@ export default function(datum, orientation)
         let targetX = datum.target.x - (orientation.direction() * ((orientation.boxWidth / 2) + halfXOffset)),
             targetY = datum.target.y;
 
-        // The line from source/spouse to target
-        points = [
-            new Point(
-                sourceX,
-                sourceY
-            ),
-            new Point(
-                targetX,
-                sourceY
-            ),
-            new Point(
-                targetX,
-                targetY
-            ),
-            new Point(
-                targetX + (orientation.direction() * halfXOffset),
-                targetY
-            )
-        ];
+        const path = d3.path();
 
-        return points;
+        // The line from source/spouse to target
+        path.moveTo(sourceX, sourceY);
+        path.lineTo(targetX, sourceY);
+        path.lineTo(targetX, targetY);
+        path.lineTo(targetX + (orientation.direction() * halfXOffset), targetY);
+
+        return path.toString();
     }
 
-    return [
-        ...points,
-        ...createLinksBetweenSpouses(datum, orientation)
-    ];
+    return createLinksBetweenSpouses(datum, orientation);
 }
 
 /**
- * Adds the points needed to draw the lines between each spouse.
+ * Adds the path needed to draw the lines between each spouse.
  *
  * @param {Object}      datum       D3 data object
  * @param {Orientation} orientation The current orientation
  *
- * @return {Point[]}
+ * @return {String}
  */
 function createLinksBetweenSpouses(datum, orientation)
 {
+    const path = d3.path();
+
     // The distance between the connecting lines when there are multiple spouses
     const spouseLineOffset = 5;
 
@@ -92,8 +78,7 @@ function createLinksBetweenSpouses(datum, orientation)
     // instead of going straight to the node, so that the connection to another spouse is clearer.
     const lineStartOffset = 2;
 
-    let sourceX = datum.source.x,
-        points  = [];
+    let sourceX = datum.source.x;
 
     // Handle multiple spouses
     if (datum.source.data.family > 0) {
@@ -102,13 +87,8 @@ function createLinksBetweenSpouses(datum, orientation)
 
     // Add link between first spouse and source
     if (datum.coords === null) {
-        points = addLineCoordinates(
-            points,
-            sourceX,
-            datum.spouse.y + (orientation.boxHeight / 2),
-            sourceX,
-            datum.source.y - (orientation.boxHeight / 2)
-        );
+        path.moveTo(sourceX, datum.spouse.y + (orientation.boxHeight / 2));
+        path.lineTo(sourceX, datum.source.y - (orientation.boxHeight / 2));
     }
 
     // Append lines between source and all spouses
@@ -124,58 +104,21 @@ function createLinksBetweenSpouses(datum, orientation)
             let startPosOffset = ((i > 0) ? lineStartOffset : 0);
             let endPosOffset   = (((i + 1) <= datum.coords.length) ? lineStartOffset : 0);
 
-            points = addLineCoordinates(
-                points,
-                sourceX,
-                startY + startPosOffset,
-                sourceX,
-                endY - endPosOffset
-            );
+            path.moveTo(sourceX, startY + startPosOffset);
+            path.lineTo(sourceX, endY - endPosOffset);
         }
 
         // Add last part from previous spouse to actual spouse
-        points = addLineCoordinates(
-            points,
+        path.moveTo(
             sourceX,
-            datum.coords[datum.coords.length - 1].y + (orientation.boxHeight / 2) + lineStartOffset,
+            datum.coords[datum.coords.length - 1].y + (orientation.boxHeight / 2) + lineStartOffset
+        );
+
+        path.lineTo(
             sourceX,
             datum.source.y - (orientation.boxHeight / 2)
         );
     }
 
-    return points;
-}
-
-/**
- * Add line coordinates to the given list of points.
- *
- * @param {Point[]} points
- * @param {Number}  x0
- * @param {Number}  y0
- * @param {Number}  x1
- * @param {Number}  y1
- *
- * @return {Point[]}
- */
-function addLineCoordinates(points, x0, y0, x1, y1)
-{
-    return [
-        ...points,
-        ...[
-            // Add empty value to force a line skip, so the line pointer
-            // will move to the new starting location
-            new Point(
-                null,
-                null
-            ),
-            new Point(
-                x0,
-                y0
-            ),
-            new Point(
-                x1,
-                y1
-            ),
-        ]
-    ];
+    return path.toString();
 }
