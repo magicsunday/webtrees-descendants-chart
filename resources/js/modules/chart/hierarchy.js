@@ -58,22 +58,19 @@ export default class Hierarchy
         const treeLayout = d3.tree()
             .nodeSize([this._configuration.orientation.nodeWidth, 0])
             .separation((left, right) => {
-                // return 0.5;
-
                 // The left child has spouses (1 or more) add some space between the nodes
                 if (typeof left.data.spouses !== "undefined") {
-                    return 0.75;
+                    return 0.6;
                 }
 
                 // The right side is a spouse which is linked back to the actual child, so add some space
                 if (typeof right.data.spouse !== "undefined") {
-                    return 0.75;
+                    return 0.6;
                 }
 
                 // Single siblings and cousins should be close to each other
-                return left.parent === right.parent ? 0.5 : 0.75;
-            })
-        ;
+                return left.parent === right.parent ? 0.5 : 0.6;
+            });
 
         // Map the root node data to the tree layout
         this._root  = root;
