@@ -39,16 +39,16 @@ export default class Hierarchy
         let root = d3.hierarchy(data, (person) => {
             let children = [];
 
-            if (person.families) {
-                person.families.forEach((family) => {
-                    if (this._configuration.hideSpouses) {
-                        family.spouse = null;
-                    }
+            // if (this._configuration.hideSpouses) {
+            //     if (typeof person.spouse === "undefined") {
+            //         const spouse = nodes.find(person => person.data.data && person.data.data.xref === node.data.spouse);
+            //     }
+            //     // person.spouse = null;
+            //     // person.spouses = null;
+            // }
 
-                    if (family.children && (family.children.length > 0)) {
-                        return children.push(...family.children);
-                    }
-                });
+            if (person.children && (person.children.length > 0)) {
+                children.push(...person.children);
             }
 
             return children;
@@ -58,30 +58,22 @@ export default class Hierarchy
         const treeLayout = d3.tree()
             .nodeSize([this._configuration.orientation.nodeWidth, 0])
             .separation((left, right) => {
-                // Left or right has families
-                if (left.data.families || right.data.families) {
-                    let value = 0.5;
+                // return 0.5;
 
-                    if (left.data.families) {
-                        const listOfSpouses = left.data.families.filter(family => !!family.spouse);
+                // The left child has spouses (1 or more) add some space between the nodes
+                if (typeof left.data.spouses !== "undefined") {
+                    return 0.75;
+                }
 
-                        // Add some offset for each assigned spouse
-                        value += 0.5 + ((listOfSpouses.length - 1) * 0.5);
-                    }
-
-                    if (right.data.families) {
-                        const listOfSpouses = right.data.families.filter(family => !!family.spouse);
-
-                        // Add some offset for each assigned spouse
-                        value += 0.5 + ((listOfSpouses.length - 1) * 0.5);
-                    }
-
-                    return value;
+                // The right side is a spouse which is linked back to the actual child, so add some space
+                if (typeof right.data.spouse !== "undefined") {
+                    return 0.75;
                 }
 
                 // Single siblings and cousins should be close to each other
-                return 0.5;
-            });
+                return left.parent === right.parent ? 0.5 : 0.75;
+            })
+        ;
 
         // Map the root node data to the tree layout
         this._root  = root;

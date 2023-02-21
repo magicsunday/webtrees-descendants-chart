@@ -9,8 +9,6 @@ import * as d3 from "./d3";
 import dataUrl from "./common/dataUrl";
 import {SEX_FEMALE, SEX_MALE} from "./constants";
 import Box from "./chart/box";
-import OrientationTopBottom from "./chart/orientation/orientation-topBottom";
-import OrientationBottomTop from "./chart/orientation/orientation-bottomTop";
 
 /**
  * The class handles the creation of the tree.
@@ -57,37 +55,69 @@ export default class Tree
         let nodes = this._hierarchy.nodes.descendants();
         let links = [];
 
+        // Remove dummy root nodes
+        nodes.shift();
+
+        // Normalize for fixed-depth.
+        nodes.forEach((person) => {
+            this._orientation.norm(person);
+        });
+
         // Create list of links between source (node and spouses) and target nodes (children).
         nodes.forEach((node) => {
-            if (node.data.families) {
-                node.data.families.forEach((family, familyIndex) => {
-                    let spouse = null;
+            const spouse = nodes.find(person => person.data.data && person.data.data.xref === node.data.spouse);
 
-                    if (family.spouse !== null) {
-                        spouse = family.spouse;
-                        spouse.index = familyIndex;
-                    }
-
-                    // Add link to child node
-                    if (family.children && (family.children.length > 0)) {
-                        family.children.forEach((child) => {
-                            const childNode = nodes.find(d => d.data.xref === child.xref);
-
-                            links.push({
-                                spouse: spouse,
-                                source: node,
-                                target: childNode
-                            });
-                        })
-                    } else {
-                        // Add just a link between source and spouse
+            if (node.children) {
+                node.children.forEach((child) => {
+                    // Only add links between to real children
+                    if (typeof child.data.spouse === "undefined") {
                         links.push({
                             spouse: spouse,
                             source: node,
-                            target: null
+                            target: child,
+                            coords: null
                         });
                     }
-                })
+                });
+            }
+
+            if (typeof spouse !== "undefined") {
+                let spousesCoords = null;
+
+                // In order to draw only the respective intermediate lines, we need the information
+                // about the position of the previous spouses in the row. The coordinates are attached
+                // to the respective link as additional values so that they are available later when
+                // calculating the line points.
+                if ((typeof spouse.data.spouses !== "undefined") && (spouse.data.spouses.length > 0)) {
+                    const indexOfSpouse = spouse.data.spouses.indexOf(node.data.data.xref);
+                    const spousesBefore = spouse.data.spouses.slice(0, indexOfSpouse);
+
+                    if (spousesBefore.length > 0) {
+                        spousesCoords = [];
+
+                        spousesBefore.forEach((xref) => {
+                            // Find matching spouse in list of all nodes
+                            const spouseBefore = nodes.find(person => person.data.data && person.data.data.xref === xref);
+
+                            // Keep track of the coordinates
+                            spousesCoords.push({
+                                x: spouseBefore.x,
+                                y: spouseBefore.y
+                            })
+                        });
+                    }
+                }
+
+
+                if (node.data.data !== null) {
+                    // Add link between individual and spouse
+                    links.push({
+                        spouse: spouse,
+                        source: node,
+                        target: null,
+                        coords: spousesCoords
+                    });
+                }
             }
         });
 
@@ -97,11 +127,6 @@ export default class Tree
         //         person.children.forEach((child) => this.collapse(child));
         //     }
         // });
-
-        // Normalize for fixed-depth.
-        nodes.forEach((person) => {
-            this._orientation.norm(person);
-        });
 
         this.drawLinks(links, source);
         this.drawNodes(nodes, source);
@@ -179,53 +204,22 @@ export default class Tree
             .enter()
             .append("g");
 
-        let personXOffset = 0
-        let personYOffset = 0
-
-        if ((this._orientation instanceof OrientationTopBottom)
-            || (this._orientation instanceof OrientationBottomTop)
-        ) {
-            personXOffset = (this._box.width / 2) + (this._orientation.xOffset / 4);
-        } else {
-            personYOffset = (this._box.height / 2) + (this._orientation.yOffset / 4);
-        }
-
         // Add person block
         const personBlock = nodeEnter
             .append('g')
-            .attr("class", "person")
-            .attr("transform", person => {
-                let familiesWithSpouses = [];
+            .attr("class", person => "person" + (person.data.spouse ? " spouse" : ""))
+            .attr("transform", person => "translate(" + (person.x) + "," + (person.y) + ")");
 
-                // let parentFamiliesWithSpouses = [];
-                // let parentXOffset = 0;
-                //
-                // if (person.parent && person.parent.data.families) {
-                //     parentFamiliesWithSpouses = person.parent.data.families.filter(family => !!family.spouse);
-                // }
-                //
-                // // Add an offset to child record if parent has multiple spouses
-                // if (parentFamiliesWithSpouses.length > 1) {
-                //     parentXOffset = personXOffset * (parentFamiliesWithSpouses.length - 1);
-                // }
-
-                // Check if person has a spouse assigned in any of its families
-                if (person.data.families) {
-                    familiesWithSpouses = person.data.families.filter(family => !!family.spouse);
-                }
-
-                return (familiesWithSpouses.length > 0)
-                    ? "translate(" + (person.x - personXOffset) + "," + (person.y - personYOffset) + ")"
-                    : "translate(" + (person.x) + "," + (person.y) + ")";
-            });
-
-        // Draw the rectangle person boxes. Start new boxes with 0 size so that we can
-        // transition them to their proper size.
-
-        // Draw the actual person rectangle
+        // Draw the actual person rectangle with an opacity of 0.5
         personBlock
+            .filter(person => person.data.data !== null)
             .append("rect")
-            .attr("class", d => (d.data.sex === SEX_FEMALE) ? "female" : (d.data.sex === SEX_MALE) ? "male" : "unknown")
+            .attr(
+                "class",
+                person => (person.data.data.sex === SEX_FEMALE)
+                    ? "female"
+                    : (person.data.data.sex === SEX_MALE) ? "male" : "unknown"
+            )
             .attr("rx", this._box.rx)
             .attr("ry", this._box.ry)
             .attr("x", this._box.x)
@@ -236,58 +230,13 @@ export default class Tree
 
         // Names and Dates
         personBlock
-            .filter(person => (person.data.xref !== ""))
+            .filter(person => person.data.data !== null)
+            .filter(person => person.data.data.xref !== "")
             .each(function (person) {
                 let element = d3.select(this);
 
                 that.drawText(element, person.data);
             });
-
-        // Insert the spouse blocks directly after the respective person. This makes it possible to
-        // influence the distribution of the nodes via the "separation" method of d3.tree(), so that
-        // an even display is possible.
-        nodeEnter
-            .filter(person => !!person.data.families)
-            .each(function (person) {
-                let element = d3.select(this);
-
-                // Add a spouse block for each family
-                person.data.families
-                    .filter(family => !!family.spouse)
-                    .forEach((family, familyIndex) => {
-                        let spouse = family.spouse;
-
-                        let spouseXOffset = 0
-                        let spouseYOffset = 0
-
-                        if ((that._orientation instanceof OrientationTopBottom)
-                            || (that._orientation instanceof OrientationBottomTop)
-                        ) {
-                            spouseXOffset = ((that._box.width + (that._orientation.xOffset / 2)) * (familyIndex + 1)) - personXOffset;
-                        } else {
-                            spouseYOffset = ((that._box.height + (that._orientation.yOffset / 2)) * (familyIndex + 1)) - personYOffset;
-                        }
-
-                        const spouseBlock = element.append('g')
-                            .attr("class", "person spouse")
-                            .attr("transform", "translate(" + (person.x + spouseXOffset) + "," + (person.y + spouseYOffset) + ")");
-
-                        spouseBlock
-                            .append("rect")
-                            .attr("class", (spouse.sex === SEX_FEMALE) ? "female" : (spouse.sex === SEX_MALE) ? "male" : "unknown")
-                            .attr("rx", that._box.rx)
-                            .attr("ry", that._box.ry)
-                            .attr("x", that._box.x)
-                            .attr("y", that._box.y)
-                            .attr("width", that._box.width)
-                            .attr("height", that._box.height)
-                            .attr("fill-opacity", 0.5);
-
-                        // Names and Dates
-                        that.drawText(spouseBlock, spouse);
-                    });
-                });
-
 
     //     // Merge the update and the enter selections
     //     let nodeUpdate = nodeEnter.merge(node);
@@ -475,7 +424,7 @@ export default class Tree
     {
         parent
             .append("title")
-            .text(datum.name);
+            .text(datum.data.name);
 
         const imageUrlToLoad = this.getImageToLoad(datum);
 
@@ -592,13 +541,13 @@ export default class Tree
     {
         let i = 0;
 
-        for (let firstName of datum.firstNames) {
+        for (let firstName of datum.data.firstNames) {
             // Create a <tspan> element for each given name
             let tspan = parent.append("tspan")
                 .text(firstName);
 
             // The preferred name
-            if (firstName === datum.preferredName) {
+            if (firstName === datum.data.preferredName) {
                 tspan.attr("class", "preferred");
             }
 
@@ -622,7 +571,7 @@ export default class Tree
     {
         let i = 0;
 
-        for (let lastName of datum.lastNames) {
+        for (let lastName of datum.data.lastNames) {
             // Create a <tspan> element for each last name
             let tspan = parent.append("tspan")
                 .attr("class", "lastName")
@@ -780,11 +729,11 @@ export default class Tree
             this.addLastNames(text2, datum);
 
             // If both first and last names are empty, add the full name as alternative
-            if (!datum.firstNames.length
-                && !datum.lastNames.length
+            if (!datum.data.firstNames.length
+                && !datum.data.lastNames.length
             ) {
                 text1.append("tspan")
-                    .text(datum.name);
+                    .text(datum.data.name);
             }
 
             this.truncateNames(text1);
@@ -801,11 +750,11 @@ export default class Tree
             this.addLastNames(text1, datum, 0.25);
 
             // If both first and last names are empty, add the full name as alternative
-            if (!datum.firstNames.length
-                && !datum.lastNames.length
+            if (!datum.data.firstNames.length
+                && !datum.data.lastNames.length
             ) {
                 text1.append("tspan")
-                    .text(datum.name);
+                    .text(datum.data.name);
             }
 
             this.truncateNames(text1);
@@ -833,10 +782,10 @@ export default class Tree
                 .attr("dy", this._box.text.y + 50);
 
             text.append("title")
-                .text(datum.timespan);
+                .text(datum.data.timespan);
 
             let tspan = text.append("tspan")
-                .text(datum.timespan);
+                .text(datum.data.timespan);
 
             if (this.getTextLength(text) > this._box.text.width) {
                 text.selectAll("tspan")
@@ -850,7 +799,7 @@ export default class Tree
 
         let offset = 20;
 
-        if (datum.birth) {
+        if (datum.data.birth) {
             let col1 = table
                 .append("text")
                 .attr("class", "date")
@@ -872,11 +821,11 @@ export default class Tree
                 .attr("dy", this._box.text.y + offset);
 
             col2.append("title")
-                .text(datum.birth);
+                .text(datum.data.birth);
 
             let tspan = col2
                 .append("tspan")
-                .text(datum.birth)
+                .text(datum.data.birth)
                 .attr("x", this._box.text.x + 15);
 
             if (this.getTextLength(col2) > (this._box.text.width - 25)) {
@@ -887,8 +836,8 @@ export default class Tree
             }
         }
 
-        if (datum.death) {
-            if (datum.birth) {
+        if (datum.data.death) {
+            if (datum.data.birth) {
                 offset += 20;
             }
 
@@ -913,11 +862,11 @@ export default class Tree
                 .attr("dy", this._box.text.y + offset);
 
             col2.append("title")
-                .text(datum.death);
+                .text(datum.data.death);
 
             let tspan = col2
                 .append("tspan")
-                .text(datum.death)
+                .text(datum.data.death)
                 .attr("x", this._box.text.x + 15);
 
             if (this.getTextLength(col2) > (this._box.text.width - 25)) {
@@ -938,8 +887,8 @@ export default class Tree
      */
     getImageToLoad(datum)
     {
-        if (datum.thumbnail) {
-            return datum.thumbnail;
+        if (datum.data.thumbnail) {
+            return datum.data.thumbnail;
         }
 
         return "";
@@ -1022,9 +971,9 @@ export default class Tree
     //  */
     // transitionElbow(datum)
     // {
-    //     return "M" + datum.source.y + "," + datum.source.x
-    //         + "H" + datum.source.y
-    //         + "V" + datum.source.x
-    //         + "H" + datum.source.y;
+    //     return "M" + datum.data.source.y + "," + datum.data.source.x
+    //         + "H" + datum.data.source.y
+    //         + "V" + datum.data.source.x
+    //         + "H" + datum.data.source.y;
     // }
 }
