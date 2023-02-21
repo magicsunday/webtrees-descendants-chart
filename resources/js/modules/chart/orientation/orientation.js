@@ -112,7 +112,7 @@ export default class Orientation
     /**
      * Returns the elbow function depending on the orientation.
      *
-     * @returns {Point[]}
+     * @returns {String}
      */
     elbow(d)
     {

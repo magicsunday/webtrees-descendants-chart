@@ -10,6 +10,7 @@ https://github.com/d3/d3-selection
 https://github.com/d3/d3-transition
 https://github.com/d3/d3-zoom
 https://github.com/d3/d3-hierarchy
+https://github.com/d3/d3-path
 https://github.com/d3/d3-shape
 https://github.com/d3/d3-fetch
 */
@@ -27,6 +28,10 @@ export * from "d3-zoom";
 export {
     hierarchy, tree
 } from "d3-hierarchy";
+
+export {
+    path
+} from "d3-path";
 
 export {
     line
