@@ -169,10 +169,15 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         if ($ajax) {
             $this->layout = $this->name() . '::layouts/ajax';
 
+            // The root node with all children
+            $root = [
+                'children' => $this->buildJsonTree($individual),
+            ];
+
             return $this->viewResponse(
                 $this->name() . '::modules/descendants-chart/chart',
                 [
-                    'data'          => $this->buildJsonTree($individual),
+                    'data'          => $root,
                     'configuration' => $this->configuration,
                     'chartParams'   => json_encode($this->getChartParameters(), JSON_THROW_ON_ERROR),
                     'stylesheet'    => $this->assetUrl('css/descendants-chart.css'),
@@ -247,53 +252,48 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             return [];
         }
 
-        /** @var array<string, array<string>> $data */
-        $data     = $this->getIndividualData($individual, $generation);
         $families = $individual->spouseFamilies();
+        $parents  = [];
 
-        if (!$families->count()) {
-            return $data;
-        }
+        $parents[$individual->xref()] = [
+            'data' => $this->getIndividualData($individual, $generation),
+        ];
 
-        $familiesData = [];
+        if ($families->count() > 0) {
+            /** @var Family $family */
+            foreach ($families as $familyIndex => $family) {
+                $children = [];
+                $spouse   = $family->spouse($individual);
 
-        /** @var Family $family */
-        foreach ($families as $family) {
-            $spouse   = $family->spouse($individual);
-            $children = [];
+                foreach ($family->children() as $child) {
+                    $childTree = $this->buildJsonTree($child, $generation + 1);
 
-            foreach ($family->children() as $child) {
-                $childTree = $this->buildJsonTree($child, $generation + 1);
-
-                if (count($childTree) > 0) {
-                    $children[] = $childTree;
+                    if (count($childTree) > 0) {
+                        foreach ($childTree as $childData) {
+                            $children[] = $childData;
+                        }
+                    }
                 }
-            }
 
-            // Add spouse to last displayed generation too?
-            if (($generation + 1) <= $this->configuration->getGenerations()) {
-                // Intialize spouse with null otherwise it will be "undefined" in Javascript
-                $familyData = [
-                    'spouse' => null,
+                $parentData = [
+                    'data'     => null,
+                    'spouse'   => $individual->xref(),
+                    'family'   => $familyIndex,
+                    'children' => $children,
                 ];
 
                 if ($spouse !== null) {
-                    $familyData['spouse'] = $this->getIndividualData($spouse, $generation);
+                    $parentData['data'] = $this->getIndividualData($spouse, $generation);
+
+                    // Add spouse to list
+                    $parents[$individual->xref()]['spouses'][] = $spouse->xref();
                 }
 
-                if (count($children) > 0) {
-                    $familyData['children'] = $children;
-                }
-
-                $familiesData[] = $familyData;
+                $parents[] = $parentData;
             }
         }
 
-        if (count($familiesData) > 0) {
-            $data['families'] = $familiesData;
-        }
-
-        return $data;
+        return array_values($parents);
     }
 
     /**

@@ -130,32 +130,8 @@ export default class Chart
         // Init the <svg> events
         this._svg.initEvents(this._overlay);
 
-        let tree = new Tree(this._svg, this._configuration, this._hierarchy);
-
-        // let personGroup = this._svg.get().select("g.personGroup");
-        // let gradient    = new Gradient(this._svg, this._configuration);
-        // let that        = this;
-        //
-        // personGroup
-        //     .selectAll("g.person")
-        //     .data(this._hierarchy.nodes, (d) => d.data.id)
-        //     .enter()
-        //     .append("g")
-        //     .attr("class", "person")
-        //     .attr("id", (d) => "person-" + d.data.id);
-        //
-        // // Create a new selection in order to leave the previous enter() selection
-        // personGroup
-        //     .selectAll("g.person")
-        //     .each(function (d) {
-        //         let person = d3.select(this);
-        //
-        //         if (that._configuration.showColorGradients) {
-        //             gradient.init(d);
-        //         }
-        //
-        //         new Person(that._svg, that._configuration, person, d);
-        //     });
+        // Create tree
+        new Tree(this._svg, this._configuration, this._hierarchy);
 
         this.bindClickEventListener();
         this.updateViewBox();
@@ -170,9 +146,10 @@ export default class Chart
 
         this._svg.visual
             .selectAll("g.person")
-            .filter((d) => d.data.xref !== "")
-            .each(function (d) {
-                d3.select(this).on("click", function() { that.personClick(d.data); });
+            .filter(person => person.data.data !== null)
+            .filter(person => person.data.data.xref !== "")
+            .each(function (person) {
+                d3.select(this).on("click", function() { that.personClick(person.data); });
             });
     }
 
@@ -186,7 +163,7 @@ export default class Chart
     personClick(data)
     {
         // Trigger either "update" or "redirectToIndividual" method on click depending on person in chart
-        (data.generation === 1) ? this.redirectToIndividual(data.url) : this.update(data.updateUrl);
+        (data.data.generation === 1) ? this.redirectToIndividual(data.data.url) : this.update(data.data.updateUrl);
     }
 
     /**
@@ -230,10 +207,10 @@ export default class Chart
     //         $.ajax({
     //             type: 'POST',
     //             url: indSelector.attr("data-ajax--url"),
-    //             data: { q : data.xref }
+    //             data: { q : data.data.xref }
     //         }).then(function (data) {
     //             // create the option and append to Select2
-    //             var option = new Option(data.results[0].text, data.results[0].id, true, true);
+    //             var option = new Option(data.data.results[0].text, data.data.results[0].id, true, true);
     //             indSelector.append(option).trigger('change');
     //         });
     //     });
