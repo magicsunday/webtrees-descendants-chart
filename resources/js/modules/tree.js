@@ -9,6 +9,8 @@ import * as d3 from "./d3";
 import dataUrl from "./common/dataUrl";
 import {SEX_FEMALE, SEX_MALE} from "./constants";
 import Box from "./chart/box";
+import OrientationLeftRight from "./chart/orientation/orientation-leftRight";
+import OrientationRightLeft from "./chart/orientation/orientation-rightLeft";
 
 /**
  * The class handles the creation of the tree.
@@ -58,9 +60,35 @@ export default class Tree
         // Remove dummy root nodes
         nodes.shift();
 
-        // Normalize for fixed-depth.
+        // Normalize for fixed-depth
         nodes.forEach((person) => {
             this._orientation.norm(person);
+        });
+
+        // Rearrange the first spouses to be close to each other
+        nodes.forEach((node) => {
+            if (node.data && node.data.spouse) {
+                const spouse = nodes.find(person => person.data.data && person.data.data.xref === node.data.spouse);
+
+                // Only the first family
+                if ((this._orientation instanceof OrientationLeftRight)
+                    || (this._orientation instanceof OrientationRightLeft)
+                ) {
+                    const diffY = (((node.y - spouse.y) - this._orientation.boxHeight) - (this._orientation.yOffset / 2));
+
+                    if ((diffY !== 0) && (node.data.family === 0)) {
+                        node.y   -= diffY / 2;
+                        spouse.y += diffY / 2;
+                    }
+                } else {
+                    const diffX = (((node.x - spouse.x) - this._orientation.boxWidth) - (this._orientation.xOffset / 2));
+
+                    if ((diffX !== 0) && (node.data.family === 0)) {
+                        node.x   -= diffX / 2;
+                        spouse.x += diffX / 2;
+                    }
+                }
+            }
         });
 
         // Create list of links between source (node and spouses) and target nodes (children).
