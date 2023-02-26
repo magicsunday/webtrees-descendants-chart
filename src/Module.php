@@ -270,7 +270,12 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 
                     if (count($childTree) > 0) {
                         foreach ($childTree as $childData) {
-                            $children[] = $childData;
+                            if ($childData['data'] !== null) {
+                                $children[$childData['data']['xref']] = $childData;
+                            } else {
+                                $children[$childData['spouse']]['children'] = $childData['children'];
+                                $children[$childData['spouse']]['family'] = $childData['family'];
+                            }
                         }
                     }
                 }
@@ -279,17 +284,20 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     'data'     => null,
                     'spouse'   => $individual->xref(),
                     'family'   => $familyIndex,
-                    'children' => $children,
+                    'children' => array_values($children),
                 ];
 
                 if ($spouse !== null) {
                     $parentData['data'] = $this->getIndividualData($spouse, $generation);
 
+                    $parents[] = $parentData;
+
                     // Add spouse to list
                     $parents[$individual->xref()]['spouses'][] = $spouse->xref();
+                } else {
+                    $parents[$individual->xref()]['family'] = $familyIndex;
+                    $parents[$individual->xref()]['children'] = array_values($children);
                 }
-
-                $parents[] = $parentData;
             }
         }
 

@@ -39,13 +39,14 @@ export default class Hierarchy
         let root = d3.hierarchy(data, (person) => {
             let children = [];
 
-            // if (this._configuration.hideSpouses) {
+            if (this._configuration.hideSpouses) {
+console.log('person', person);
             //     if (typeof person.spouse === "undefined") {
             //         const spouse = nodes.find(person => person.data.data && person.data.data.xref === node.data.spouse);
             //     }
             //     // person.spouse = null;
             //     // person.spouses = null;
-            // }
+            }
 
             if (person.children && (person.children.length > 0)) {
                 children.push(...person.children);
@@ -58,7 +59,7 @@ export default class Hierarchy
         const treeLayout = d3.tree()
             .nodeSize([this._configuration.orientation.nodeWidth, 0])
             .separation((left, right) => {
-                // The left child has spouses (1 or more) add some space between the nodes
+                // The left child has spouses (1 or more), add some space between the nodes
                 if (typeof left.data.spouses !== "undefined") {
                     return 0.6;
                 }

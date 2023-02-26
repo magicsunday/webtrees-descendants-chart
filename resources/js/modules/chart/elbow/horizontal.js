@@ -26,7 +26,7 @@ export default function(datum, orientation)
     let sourceX = datum.source.x,
         sourceY = datum.source.y;
 
-    if (datum.source.data.family === 0) {
+    if ((typeof datum.spouse !== "undefined") && (datum.source.data.family === 0)) {
         // For the first family, the link to the child nodes begins between
         // the individual and the first spouse.
         sourceY -= (datum.source.y - datum.spouse.y) / 2;

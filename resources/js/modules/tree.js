@@ -65,10 +65,10 @@ export default class Tree
             this._orientation.norm(person);
         });
 
-        // Rearrange the first spouses to be close to each other
+        // Arrange the position of the first spouses so that they are close to each other
         nodes.forEach((node) => {
             if (node.data && node.data.spouse) {
-                const spouse = nodes.find(person => person.data.data && person.data.data.xref === node.data.spouse);
+                const spouse = nodes.find(person => person.data.data.xref === node.data.spouse);
 
                 // Only the first family
                 if ((this._orientation instanceof OrientationLeftRight)
@@ -91,14 +91,40 @@ export default class Tree
             }
         });
 
+console.log('nodes', nodes);
+
+        const firstNodeWithChildren = nodes.find(node => node.children && (node.children.length > 0));
+
+console.log('firstNodeWithChildren', firstNodeWithChildren);
+
+        firstNodeWithChildren.each((node) => {
+console.log('node', node);
+
+            if (
+                (typeof node.data.spouse !== "undefined")
+                && (node.data.spouse !== null)
+                && node.children
+                && (node.children.length >= 1)
+            ) {
+                node.each((child) => {
+                    if (child.depth !== node.depth) {
+console.log('child', child);
+                        child.y -= (this._orientation.boxHeight / 2) + (this._orientation.yOffset / 4);
+                    }
+                });
+
+                // node.y += (this._orientation.boxHeight / 2) + (this._orientation.yOffset / 4);
+            }
+        });
+
         // Create list of links between source (node and spouses) and target nodes (children).
         nodes.forEach((node) => {
-            const spouse = nodes.find(person => person.data.data && person.data.data.xref === node.data.spouse);
+            const spouse = nodes.find(person => person.data.data.xref === node.data.spouse);
 
             if (node.children) {
                 node.children.forEach((child) => {
-                    // Only add links between to real children
-                    if (typeof child.data.spouse === "undefined") {
+                    // Only add links between real children
+                    if ((typeof child.data.spouse === "undefined") || (child.data.spouse === null)) {
                         links.push({
                             spouse: spouse,
                             source: node,
@@ -125,7 +151,7 @@ export default class Tree
 
                         spousesBefore.forEach((xref) => {
                             // Find matching spouse in list of all nodes
-                            const spouseBefore = nodes.find(person => person.data.data && person.data.data.xref === xref);
+                            const spouseBefore = nodes.find(person => person.data.data.xref === xref);
 
                             // Keep track of the coordinates
                             spousesCoords.push({
@@ -135,7 +161,6 @@ export default class Tree
                         });
                     }
                 }
-
 
                 if (node.data.data !== null) {
                     // Add link between individual and spouse
@@ -240,7 +265,6 @@ export default class Tree
 
         // Draw the actual person rectangle with an opacity of 0.5
         personBlock
-            .filter(person => person.data.data !== null)
             .append("rect")
             .attr(
                 "class",
@@ -258,7 +282,6 @@ export default class Tree
 
         // Names and Dates
         personBlock
-            .filter(person => person.data.data !== null)
             .filter(person => person.data.data.xref !== "")
             .each(function (person) {
                 let element = d3.select(this);

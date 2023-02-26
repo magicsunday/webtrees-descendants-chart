@@ -146,7 +146,6 @@ export default class Chart
 
         this._svg.visual
             .selectAll("g.person")
-            .filter(person => person.data.data !== null)
             .filter(person => person.data.data.xref !== "")
             .each(function (person) {
                 d3.select(this).on("click", function() { that.personClick(person.data); });
