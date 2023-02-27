@@ -263,7 +263,11 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             /** @var Family $family */
             foreach ($families as $familyIndex => $family) {
                 $children = [];
-                $spouse   = $family->spouse($individual);
+                $spouse   = null;
+
+                if (!$this->configuration->getHideSpouses()) {
+                    $spouse = $family->spouse($individual);
+                }
 
                 foreach ($family->children() as $child) {
                     $childTree = $this->buildJsonTree($child, $generation + 1);
@@ -296,7 +300,17 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     $parents[$individual->xref()]['spouses'][] = $spouse->xref();
                 } else {
                     $parents[$individual->xref()]['family'] = $familyIndex;
-                    $parents[$individual->xref()]['children'] = array_values($children);
+
+                    if (!isset($parents[$individual->xref()]['children'])) {
+                        $parents[$individual->xref()]['children'] = [];
+                    }
+
+                    // If there is no spouse merge all children from all families
+                    // of the individual into one list
+                    $parents[$individual->xref()]['children'] = array_merge(
+                        $parents[$individual->xref()]['children'],
+                        array_values($children)
+                    );
                 }
             }
         }
@@ -318,6 +332,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             [
                 'ajax'        => true,
                 'generations' => $this->configuration->getGenerations(),
+                'hideSpouses' => $this->configuration->getHideSpouses(),
                 'layout'      => $this->configuration->getLayout(),
                 'xref'        => $xref,
             ]

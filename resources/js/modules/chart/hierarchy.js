@@ -39,15 +39,6 @@ export default class Hierarchy
         let root = d3.hierarchy(data, (person) => {
             let children = [];
 
-            if (this._configuration.hideSpouses) {
-console.log('person', person);
-            //     if (typeof person.spouse === "undefined") {
-            //         const spouse = nodes.find(person => person.data.data && person.data.data.xref === node.data.spouse);
-            //     }
-            //     // person.spouse = null;
-            //     // person.spouses = null;
-            }
-
             if (person.children && (person.children.length > 0)) {
                 children.push(...person.children);
             }

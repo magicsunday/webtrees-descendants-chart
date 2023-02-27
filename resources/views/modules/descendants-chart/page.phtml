@@ -214,7 +214,6 @@ const storage = new WebtreesDescendantsChart.Storage("webtrees-descendants-chart
 
 // Register all form elements valid for storing data
 storage.register("generations");
-storage.register("hideSpouses");
 storage.register("layout");
 
 // Handle option toggle button
@@ -225,7 +224,6 @@ let formElements = document.getElementById("webtrees-descendants-chart-form").el
 formElements.namedItem("layout").value = storage.read("layout");
 
 const generations = parseInt(storage.read("generations"));
-const hideSpouses = storage.read("hideSpouses");
 const treeLayout  = storage.read("layout");
 const ajaxUrl     = getUrl(<?= json_encode($ajaxUrl) ?>, storage.read("generations"));
 
