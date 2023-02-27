@@ -93,7 +93,7 @@ export default class Chart
     /**
      * Returns the chart data.
      *
-     * @returns {Object}
+     * @returns {Data}
      */
     get data()
     {
@@ -103,7 +103,7 @@ export default class Chart
     /**
      * Sets the chart data.
      *
-     * @param {Object} value The chart data
+     * @param {Data} value The chart data
      */
     set data(value)
     {

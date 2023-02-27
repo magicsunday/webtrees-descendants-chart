@@ -36,33 +36,12 @@ export default class Hierarchy
     init(data)
     {
         // Construct root node from the hierarchical data
-        let root = d3.hierarchy(data, (person) => {
-            let children = [];
-
-            if (person.children && (person.children.length > 0)) {
-                children.push(...person.children);
-            }
-
-            return children;
-        });
+        let root = d3.hierarchy(data);
 
         // Declares a tree layout and assigns the size
         const treeLayout = d3.tree()
             .nodeSize([this._configuration.orientation.nodeWidth, 0])
-            .separation((left, right) => {
-                // The left child has spouses (1 or more), add some space between the nodes
-                if (typeof left.data.spouses !== "undefined") {
-                    return 0.75;
-                }
-
-                // The right side is a spouse which is linked back to the actual child, so add some space
-                if (typeof right.data.spouse !== "undefined") {
-                    return 0.75;
-                }
-
-                // Single siblings and cousins should be close to each other
-                return left.parent === right.parent ? 0.5 : 0.75;
-            });
+            .separation((left, right) => this.separation(left, right));
 
         // Map the root node data to the tree layout
         this._root  = root;
@@ -70,9 +49,34 @@ export default class Hierarchy
     }
 
     /**
+     * Returns the separation value.
+     *
+     * @param {Individual} left
+     * @param {Individual} right
+     *
+     * @return {Number}
+     */
+    separation(left, right)
+    {
+        // The left child has spouses (1 or more), add some space between the nodes
+        if (typeof left.data.spouses !== "undefined") {
+            return 0.75;
+        }
+
+        // The right side is a spouse which is linked back to the actual child, so add some space
+        if (typeof right.data.spouse !== "undefined") {
+            return 0.75;
+        }
+
+        // Single siblings and cousins should be close
+        // to each other if parents are the same
+        return left.parent === right.parent ? 0.5 : 0.75;
+    }
+
+    /**
      * Returns the nodes.
      *
-     * @returns {Array}
+     * @returns {Individual}
      *
      * @public
      */
@@ -84,7 +88,7 @@ export default class Hierarchy
     /**
      * Returns the root note.
      *
-     * @returns {Object}
+     * @returns {Individual}
      *
      * @public
      */
