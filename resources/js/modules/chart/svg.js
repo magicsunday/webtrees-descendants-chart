@@ -70,14 +70,14 @@ export default class Svg
                         this._configuration.labels.zoom,
                         300,
                         () => {
-                            overlay.hide(700, 800);
+                            overlay.hide(200, 600);
                         }
                     );
                 }
             })
             .on("touchend", (event) => {
                 if (event.touches.length < 2) {
-                    overlay.hide(0, 800);
+                    overlay.hide(0, 600);
                 }
             })
             .on("touchmove", (event) => {

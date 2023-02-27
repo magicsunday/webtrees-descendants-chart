@@ -61,16 +61,16 @@ console.log('person', person);
             .separation((left, right) => {
                 // The left child has spouses (1 or more), add some space between the nodes
                 if (typeof left.data.spouses !== "undefined") {
-                    return 0.6;
+                    return 0.75;
                 }
 
                 // The right side is a spouse which is linked back to the actual child, so add some space
                 if (typeof right.data.spouse !== "undefined") {
-                    return 0.6;
+                    return 0.75;
                 }
 
                 // Single siblings and cousins should be close to each other
-                return left.parent === right.parent ? 0.5 : 0.6;
+                return left.parent === right.parent ? 0.5 : 0.75;
             });
 
         // Map the root node data to the tree layout
