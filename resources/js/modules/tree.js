@@ -57,7 +57,7 @@ export default class Tree
         let nodes = this._hierarchy.nodes.descendants();
         let links = [];
 
-        // Remove dummy root nodes
+        // Remove the pseudo root node
         nodes.shift();
 
         // Normalize for fixed-depth
@@ -70,12 +70,12 @@ export default class Tree
             if (node.data && node.data.spouse) {
                 const spouse = nodes.find(person => person.data.data.xref === node.data.spouse);
 
-                // Only the first family
                 if ((this._orientation instanceof OrientationLeftRight)
                     || (this._orientation instanceof OrientationRightLeft)
                 ) {
                     const diffY = (((node.y - spouse.y) - this._orientation.boxHeight) - (this._orientation.yOffset / 2));
 
+                    // Only the first family
                     if ((diffY !== 0) && (node.data.family === 0)) {
                         node.y   -= diffY / 2;
                         spouse.y += diffY / 2;
@@ -83,6 +83,7 @@ export default class Tree
                 } else {
                     const diffX = (((node.x - spouse.x) - this._orientation.boxWidth) - (this._orientation.xOffset / 2));
 
+                    // Only the first family
                     if ((diffX !== 0) && (node.data.family === 0)) {
                         node.x   -= diffX / 2;
                         spouse.x += diffX / 2;
@@ -91,31 +92,31 @@ export default class Tree
             }
         });
 
-console.log('nodes', nodes);
-
+        // Find the first node with children
         const firstNodeWithChildren = nodes.find(node => node.children && (node.children.length > 0));
 
-console.log('firstNodeWithChildren', firstNodeWithChildren);
+        if (typeof firstNodeWithChildren !== "undefined") {
+            firstNodeWithChildren.each((node) => {
+                if (
+                    (typeof node.data.spouse !== "undefined")
+                    && (node.data.spouse !== null)
+                    && node.children
+                    && (node.children.length >= 1)
+                ) {
+                    let moveBy = 0;
 
-        firstNodeWithChildren.each((node) => {
-console.log('node', node);
-
-            if (
-                (typeof node.data.spouse !== "undefined")
-                && (node.data.spouse !== null)
-                && node.children
-                && (node.children.length >= 1)
-            ) {
-                node.each((child) => {
-                    if (child.depth !== node.depth) {
-console.log('child', child);
-                        child.y -= (this._orientation.boxHeight / 2) + (this._orientation.yOffset / 4);
+                    if ((this._orientation instanceof OrientationLeftRight)
+                        || (this._orientation instanceof OrientationRightLeft)
+                    ) {
+                        moveBy = (this._orientation.boxHeight / 2) + (this._orientation.yOffset / 4);
+                    } else {
+                        moveBy = (this._orientation.boxWidth / 2) + (this._orientation.xOffset / 4);
                     }
-                });
 
-                // node.y += (this._orientation.boxHeight / 2) + (this._orientation.yOffset / 4);
-            }
-        });
+                    this.moveChildren(node, moveBy);
+                }
+            });
+        }
 
         // Create list of links between source (node and spouses) and target nodes (children).
         nodes.forEach((node) => {
@@ -188,6 +189,36 @@ console.log('child', child);
         nodes.forEach((person) => {
             person.x0 = person.x;
             person.y0 = person.y;
+        });
+    }
+
+    /**
+     * Moves all child nodes by the specified amount.
+     *
+     * @param {Object} node   The node whose children are to be moved
+     * @param {Number} moveBy The amount by which to move the child nodes
+     */
+    moveChildren(node, moveBy)
+    {
+        node.each((child) => {
+            if (child.depth !== node.depth) {
+                // - first family only
+                // - if more than one child
+                // - if child has children too
+                if (
+                    (node.data.family === 0)
+                    || (node.children.length !== 1)
+                    || (typeof child.children !== "undefined")
+                ) {
+                    if ((this._orientation instanceof OrientationLeftRight)
+                        || (this._orientation instanceof OrientationRightLeft)
+                    ) {
+                        child.y -= moveBy;
+                    } else {
+                        child.x -= moveBy;
+                    }
+                }
+            }
         });
     }
 
