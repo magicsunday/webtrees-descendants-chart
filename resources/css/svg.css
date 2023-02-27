@@ -36,6 +36,11 @@
     fill: var(--sex-u-bg, rgb(255, 255, 255));
 }
 
+#webtrees-descendants-chart-container svg .spouse rect {
+    stroke-dasharray: 5;
+    stroke-width: 1px;
+}
+
 #webtrees-descendants-chart-container svg rect.image {
     stroke: rgb(175, 175, 175);
 }
@@ -44,6 +49,8 @@
     fill: none;
     stroke: rgb(175, 175, 175);
     stroke-width: 1.5px;
+    stroke-linecap: butt;
+    /*shape-rendering: crispEdges;*/
 }
 
 #webtrees-descendants-chart-container svg g.name text {

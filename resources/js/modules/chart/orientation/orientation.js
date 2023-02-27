@@ -22,9 +22,33 @@ export default class Orientation
      */
     constructor(boxWidth, boxHeight)
     {
+        // The distance between single nodes
+        this._xOffset = 60;
+        this._yOffset = 60;
+
         this._boxWidth    = boxWidth;
         this._boxHeight   = boxHeight;
         this._splittNames = false;
+    }
+
+    /**
+     * Returns the x-offset between two boxes.
+     *
+     * @returns {Number}
+     */
+    get xOffset()
+    {
+        return this._xOffset;
+    }
+
+    /**
+     * Returns the y-offset between two boxes.
+     *
+     * @returns {Number}
+     */
+    get yOffset()
+    {
+        return this._yOffset;
     }
 
     /**
@@ -79,6 +103,8 @@ export default class Orientation
 
     /**
      * Normalizes the x and/or y values of an entry.
+     *
+     * @param {Individual} d
      */
     norm(d)
     {
@@ -88,9 +114,11 @@ export default class Orientation
     /**
      * Returns the elbow function depending on the orientation.
      *
+     * @param {Link} link
+     *
      * @returns {String}
      */
-    elbow(d)
+    elbow(link)
     {
         throw "Abstract method elbow() not implemented";
     }

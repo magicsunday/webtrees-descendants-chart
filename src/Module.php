@@ -141,7 +141,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         $ajax = Validator::queryParams($request)->boolean('ajax', false);
 
         // Convert POST requests into GET requests for pretty URLs.
-        // This also updates the name above the form, which wont get updated if only a POST request is used
+        // This also updates the name above the form, which won't get updated if only a POST request is used
         if ($request->getMethod() === RequestMethodInterface::METHOD_POST) {
             $validator = Validator::parsedBody($request);
 
@@ -152,6 +152,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                         'tree'        => $tree->name(),
                         'xref'        => $validator->string('xref', ''),
                         'generations' => $validator->integer('generations', 4),
+                        'hideSpouses' => $validator->boolean('hideSpouses', false),
                         'layout'      => $validator->string('layout', Configuration::LAYOUT_LEFTRIGHT),
                     ]
                 )
@@ -168,10 +169,15 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         if ($ajax) {
             $this->layout = $this->name() . '::layouts/ajax';
 
+            // The root node with all children
+            $root = [
+                'children' => $this->buildJsonTree($individual),
+            ];
+
             return $this->viewResponse(
                 $this->name() . '::modules/descendants-chart/chart',
                 [
-                    'data'          => $this->buildJsonTree($individual),
+                    'data'          => $root,
                     'configuration' => $this->configuration,
                     'chartParams'   => json_encode($this->getChartParameters(), JSON_THROW_ON_ERROR),
                     'stylesheet'    => $this->assetUrl('css/descendants-chart.css'),
@@ -246,32 +252,70 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             return [];
         }
 
-        /** @var array<string, array<string>> $data */
-        $data     = $this->getIndividualData($individual, $generation);
         $families = $individual->spouseFamilies();
+        $parents  = [];
 
-        if (!$families->count()) {
-            return $data;
-        }
+        $parents[$individual->xref()] = [
+            'data' => $this->getIndividualData($individual, $generation),
+        ];
 
-        $childCount = 0;
+        if ($families->count() > 0) {
+            /** @var Family $family */
+            foreach ($families as $familyIndex => $family) {
+                $children = [];
+                $spouse   = null;
 
-        /** @var Family $family */
-        foreach ($families as $family) {
-            foreach ($family->children() as $child) {
-                $childTree = $this->buildJsonTree($child, $generation + 1);
+                if (!$this->configuration->getHideSpouses()) {
+                    $spouse = $family->spouse($individual);
+                }
 
-                if ($childTree) {
-                    $data['children'][] = $childTree;
+                foreach ($family->children() as $child) {
+                    $childTree = $this->buildJsonTree($child, $generation + 1);
 
-                    ++$childCount;
+                    if (count($childTree) > 0) {
+                        foreach ($childTree as $childData) {
+                            if ($childData['data'] !== null) {
+                                $children[$childData['data']['xref']] = $childData;
+                            } else {
+                                $children[$childData['spouse']]['children'] = $childData['children'];
+                                $children[$childData['spouse']]['family'] = $childData['family'];
+                            }
+                        }
+                    }
+                }
+
+                $parentData = [
+                    'data'     => null,
+                    'spouse'   => $individual->xref(),
+                    'family'   => $familyIndex,
+                    'children' => array_values($children),
+                ];
+
+                if ($spouse !== null) {
+                    $parentData['data'] = $this->getIndividualData($spouse, $generation);
+
+                    $parents[] = $parentData;
+
+                    // Add spouse to list
+                    $parents[$individual->xref()]['spouses'][] = $spouse->xref();
+                } else {
+                    $parents[$individual->xref()]['family'] = $familyIndex;
+
+                    if (!isset($parents[$individual->xref()]['children'])) {
+                        $parents[$individual->xref()]['children'] = [];
+                    }
+
+                    // If there is no spouse merge all children from all families
+                    // of the individual into one list
+                    $parents[$individual->xref()]['children'] = array_merge(
+                        $parents[$individual->xref()]['children'],
+                        array_values($children)
+                    );
                 }
             }
         }
 
-        $data['childCount'] = $childCount;
-
-        return $data;
+        return array_values($parents);
     }
 
     /**
@@ -288,6 +332,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             [
                 'ajax'        => true,
                 'generations' => $this->configuration->getGenerations(),
+                'hideSpouses' => $this->configuration->getHideSpouses(),
                 'layout'      => $this->configuration->getLayout(),
                 'xref'        => $xref,
             ]

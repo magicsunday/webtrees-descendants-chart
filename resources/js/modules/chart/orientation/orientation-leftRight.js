@@ -26,6 +26,9 @@ export default class OrientationLeftRight extends Orientation
     constructor(boxWidth, boxHeight)
     {
         super(boxWidth, boxHeight);
+
+        this._xOffset = 40;
+        this._yOffset = 40;
     }
 
     direction()
@@ -35,20 +38,18 @@ export default class OrientationLeftRight extends Orientation
 
     get nodeWidth()
     {
-        return (this._boxHeight * 2) + 30;
+        return (this._boxHeight * 2) + this._xOffset;
     }
 
     norm(d)
     {
-        const oldX = d.x;
-
         // Swap x and y values
-        d.x = this.direction() * d.depth * (this._boxWidth + 30);
-        d.y = oldX;
+        d.y = d.x;
+        d.x = this.direction() * d.depth * (this._boxWidth + this._xOffset);
     }
 
-    elbow(d)
+    elbow(link)
     {
-        return elbowHorizontal(d, this);
+        return elbowHorizontal(link, this);
     }
 }

@@ -103,9 +103,12 @@ export class DescendantsChart
     /**
      * Updates the chart.
      *
-     * @param {Object} url The update url
+     * @param {String} url The update url
      */
-    update(url) { this._chart.update(url); }
+    update(url)
+    {
+        this._chart.update(url);
+    }
 
     /**
      * Draws the chart.
