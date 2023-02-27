@@ -9,6 +9,8 @@ import * as d3 from "./d3";
 import dataUrl from "./common/dataUrl";
 import {SEX_FEMALE, SEX_MALE} from "./constants";
 import Box from "./chart/box";
+import OrientationLeftRight from "./chart/orientation/orientation-leftRight";
+import OrientationRightLeft from "./chart/orientation/orientation-rightLeft";
 
 /**
  * The class handles the creation of the tree.
@@ -46,34 +48,178 @@ export default class Tree
     /**
      * Draw the tree.
      *
-     * @param {Object} source The root object
+     * @param {Individual} source The root object
      *
      * @public
      */
     draw(source)
     {
+        /** @type {Individual[]} */
         let nodes = this._hierarchy.nodes.descendants();
-        let links = this._hierarchy.nodes.links();
+        let links = [];
 
-        // // Start with only the first few generations of ancestors showing
-        // nodes.forEach((person) => {
-        //     if (person.children) {
-        //         person.children.forEach((child) => this.collapse(child));
+        // Remove the pseudo root node
+        nodes.shift();
+
+        // Normalize for fixed-depth
+        nodes.forEach((individual) => {
+            this._orientation.norm(individual);
+        });
+
+        // Arrange the position of the first spouses so that they are close to each other
+        nodes.forEach((node) => {
+            if (node.data && node.data.spouse) {
+                const spouse = nodes.find(individual => individual.data.data.xref === node.data.spouse);
+
+                if ((this._orientation instanceof OrientationLeftRight)
+                    || (this._orientation instanceof OrientationRightLeft)
+                ) {
+                    const diffY = (((node.y - spouse.y) - this._orientation.boxHeight) - (this._orientation.yOffset / 2));
+
+                    // Only the first family
+                    if ((diffY !== 0) && (node.data.family === 0)) {
+                        node.y   -= diffY / 2;
+                        spouse.y += diffY / 2;
+                    }
+                } else {
+                    const diffX = (((node.x - spouse.x) - this._orientation.boxWidth) - (this._orientation.xOffset / 2));
+
+                    // Only the first family
+                    if ((diffX !== 0) && (node.data.family === 0)) {
+                        node.x   -= diffX / 2;
+                        spouse.x += diffX / 2;
+                    }
+                }
+            }
+        });
+
+        // Find the first node with children
+        const firstNodeWithChildren = nodes.find(node => node.children && (node.children.length > 0));
+
+        if (typeof firstNodeWithChildren !== "undefined") {
+            firstNodeWithChildren.each((node) => {
+                if (
+                    (typeof node.data.spouse !== "undefined")
+                    && (node.data.spouse !== null)
+                    && node.children
+                    && (node.children.length >= 1)
+                ) {
+                    let moveBy = 0;
+
+                    if ((this._orientation instanceof OrientationLeftRight)
+                        || (this._orientation instanceof OrientationRightLeft)
+                    ) {
+                        moveBy = (this._orientation.boxHeight / 2) + (this._orientation.yOffset / 4);
+                    } else {
+                        moveBy = (this._orientation.boxWidth / 2) + (this._orientation.xOffset / 4);
+                    }
+
+                    this.moveChildren(node, moveBy);
+                }
+            });
+        }
+
+        // Create list of links between source (node and spouses) and target nodes (children).
+        nodes.forEach((node) => {
+            const spouse = nodes.find(individual => individual.data.data.xref === node.data.spouse);
+
+            if (node.children) {
+                node.children.forEach((child) => {
+                    // Only add links between real children
+                    if ((typeof child.data.spouse === "undefined") || (child.data.spouse === null)) {
+                        links.push({
+                            spouse: spouse,
+                            source: node,
+                            target: child,
+                            coords: null
+                        });
+                    }
+                });
+            }
+
+            if (typeof spouse !== "undefined") {
+                let spousesCoords = null;
+
+                // In order to draw only the respective intermediate lines, we need the information
+                // about the position of the previous spouses in the row. The coordinates are attached
+                // to the respective link as additional values so that they are available later when
+                // calculating the line points.
+                if ((typeof spouse.data.spouses !== "undefined") && (spouse.data.spouses.length > 0)) {
+                    const indexOfSpouse = spouse.data.spouses.indexOf(node.data.data.xref);
+                    const spousesBefore = spouse.data.spouses.slice(0, indexOfSpouse);
+
+                    if (spousesBefore.length > 0) {
+                        spousesCoords = [];
+
+                        spousesBefore.forEach((xref) => {
+                            // Find matching spouse in list of all nodes
+                            const spouseBefore = nodes.find(individual => individual.data.data.xref === xref);
+
+                            // Keep track of the coordinates
+                            spousesCoords.push({
+                                x: spouseBefore.x,
+                                y: spouseBefore.y
+                            })
+                        });
+                    }
+                }
+
+                if (node.data.data !== null) {
+                    // Add link between individual and spouse
+                    links.push({
+                        spouse: spouse,
+                        source: node,
+                        target: null,
+                        coords: spousesCoords
+                    });
+                }
+            }
+        });
+
+        // // Start with only the first few generations of descendants showing
+        // nodes.forEach((individual) => {
+        //     if (individual.children) {
+        //         individual.children.forEach((child) => this.collapse(child));
         //     }
         // });
-
-        // Normalize for fixed-depth.
-        nodes.forEach((person) => {
-            this._orientation.norm(person);
-        });
 
         this.drawLinks(links, source);
         this.drawNodes(nodes, source);
 
         // Stash the old positions for transition.
-        nodes.forEach((person) => {
-            person.x0 = person.x;
-            person.y0 = person.y;
+        nodes.forEach((individual) => {
+            individual.x0 = individual.x;
+            individual.y0 = individual.y;
+        });
+    }
+
+    /**
+     * Moves all child nodes by the specified amount.
+     *
+     * @param {Individual} individual The individual whose children are to be moved
+     * @param {Number}     moveBy     The amount by which to move the child nodes
+     */
+    moveChildren(individual, moveBy)
+    {
+        individual.each((child) => {
+            if (child.depth !== individual.depth) {
+                // - first family only
+                // - if more than one child
+                // - if child has children too
+                if (
+                    (individual.data.family === 0)
+                    || (individual.children.length !== 1)
+                    || (typeof child.children !== "undefined")
+                ) {
+                    if ((this._orientation instanceof OrientationLeftRight)
+                        || (this._orientation instanceof OrientationRightLeft)
+                    ) {
+                        child.y -= moveBy;
+                    } else {
+                        child.x -= moveBy;
+                    }
+                }
+            }
         });
     }
 
@@ -107,8 +253,8 @@ export default class Tree
     /**
      * Draw the person boxes.
      *
-     * @param {Array}  nodes  Array of descendant nodes
-     * @param {Object} source The root object
+     * @param {Individual[]} nodes  Array of descendant nodes
+     * @param {Object}       source The root object
      *
      * @private
      */
@@ -141,99 +287,38 @@ export default class Tree
 
         let nodeEnter = node
             .enter()
-            .append("g")
-            .attr("class", "person")
-            // Add new nodes on the right side of their child's this._box.
-            // They will be transitioned into their proper position.
-            // .attr("transform", person => {
-            //     return "translate(" + (this._configuration.direction * (source.y0 + (this._box.width / 2))) + ',' + source.x0 + ")";
-            // })
-            // .attr("transform", person => {
-            //     return "translate(" + (this._configuration.direction * (source.y + (this._box.width / 2))) + ',' + source.x + ")";
-            // })
-            // .attr("transform", person => `translate(${source.y0}, ${source.x0})`)
-            .attr("transform", person => {
-                return "translate(" + person.x + "," + person.y + ")";
-            })
-        ;
+            .append("g");
 
-        // Draw the rectangle person boxes. Start new boxes with 0 size so that we can
-        // transition them to their proper size.
-        nodeEnter
+        // Add person block
+        const personBlock = nodeEnter
+            .append('g')
+            .attr("class", person => "person" + (person.data.spouse ? " spouse" : ""))
+            .attr("transform", person => "translate(" + (person.x) + "," + (person.y) + ")");
+
+        // Draw the actual person rectangle with an opacity of 0.5
+        personBlock
             .append("rect")
-            .attr("class", d => (d.data.sex === SEX_FEMALE) ? "female" : (d.data.sex === SEX_MALE) ? "male" : "unknown")
+            .attr(
+                "class",
+                person => (person.data.data.sex === SEX_FEMALE)
+                    ? "female"
+                    : (person.data.data.sex === SEX_MALE) ? "male" : "unknown"
+            )
             .attr("rx", this._box.rx)
             .attr("ry", this._box.ry)
             .attr("x", this._box.x)
             .attr("y", this._box.y)
             .attr("width", this._box.width)
             .attr("height", this._box.height)
-            .attr("fill-opacity", 0.5)
+            .attr("fill-opacity", 0.5);
 
         // Names and Dates
-        nodeEnter
-            .filter(d => (d.data.xref !== ""))
-            .each(function (d) {
+        personBlock
+            .filter(person => person.data.data.xref !== "")
+            .each(function (person) {
                 let element = d3.select(this);
 
-                element
-                    .append("title")
-                    .text(d => d.data.name);
-
-                const imageUrlToLoad = that.getImageToLoad(d);
-
-                // Check if image should be shown or hidden
-                that._box.showImage = !!imageUrlToLoad;
-
-                if (that._box.showImage) {
-                    let group = element
-                        .append("g")
-                        .attr("class", "image");
-
-                    // Background of image (only required if thumbnail has transparency (like the silhouettes))
-                    group
-                        .append("rect")
-                        .attr("rx", that._box.image.rx)
-                        .attr("ry", that._box.image.ry)
-                        .attr("x", that._box.image.x)
-                        .attr("y", that._box.image.y)
-                        .attr("width", that._box.image.width)
-                        .attr("height", that._box.image.height)
-                        .attr("fill", "rgb(255, 255, 255)");
-
-                    // The individual image
-                    let image = group
-                        .append("image")
-                        .attr("x", that._box.image.x)
-                        .attr("y", that._box.image.y)
-                        .attr("width", that._box.image.width)
-                        .attr("height", that._box.image.height)
-                        .attr("clip-path", "url(#clip-image)");
-
-                    dataUrl(imageUrlToLoad)
-                        .then(dataUrl => image.attr("xlink:href", dataUrl))
-                        .catch((exception) => {
-                            console.error(exception);
-                        });
-
-                    // Border around image
-                    group
-                        .append("rect")
-                        .attr("rx", that._box.image.rx)
-                        .attr("ry", that._box.image.ry)
-                        .attr("x", that._box.image.x)
-                        .attr("y", that._box.image.y)
-                        .attr("width", that._box.image.width)
-                        .attr("height", that._box.image.height)
-                        .attr("fill", "none")
-                        .attr("stroke", "rgb(200, 200, 200)")
-                        .attr("stroke-width", 1.5);
-                }
-
-                that.addNames(element, d);
-                that.addDates(element, d);
-
-                that._box.showImage = true;
+                that.drawText(element, person.data);
             });
 
     //     // Merge the update and the enter selections
@@ -410,11 +495,81 @@ export default class Tree
         // ;
         //
         // return;
+    }
 
+    /**
+     * Draws the image and text nodes.
+     *
+     * @param {selection} parent The parent element to which the elements are to be attached
+     * @param {Person}    person The person object containing the individual data
+     */
+    drawText(parent, person)
+    {
+        parent
+            .append("title")
+            .text(person.data.name);
+
+        const imageUrlToLoad = this.getImageToLoad(person);
+
+        // Check if image should be shown or hidden
+        this._box.showImage = !!imageUrlToLoad;
+
+        if (this._box.showImage) {
+            let group = parent
+                .append("g")
+                .attr("class", "image");
+
+            // Background of image (only required if thumbnail has transparency (like the silhouettes))
+            group
+                .append("rect")
+                .attr("rx", this._box.image.rx)
+                .attr("ry", this._box.image.ry)
+                .attr("x", this._box.image.x)
+                .attr("y", this._box.image.y)
+                .attr("width", this._box.image.width)
+                .attr("height", this._box.image.height)
+                .attr("fill", "rgb(255, 255, 255)");
+
+            // The individual image
+            let image = group
+                .append("image")
+                .attr("x", this._box.image.x)
+                .attr("y", this._box.image.y)
+                .attr("width", this._box.image.width)
+                .attr("height", this._box.image.height)
+                .attr("clip-path", "url(#clip-image)");
+
+            dataUrl(imageUrlToLoad)
+                .then(dataUrl => image.attr("xlink:href", dataUrl))
+                .catch((exception) => {
+                    console.error(exception);
+                });
+
+            // Border around image
+            group
+                .append("rect")
+                .attr("rx", this._box.image.rx)
+                .attr("ry", this._box.image.ry)
+                .attr("x", this._box.image.x)
+                .attr("y", this._box.image.y)
+                .attr("width", this._box.image.width)
+                .attr("height", this._box.image.height)
+                .attr("fill", "none")
+                .attr("stroke", "rgb(200, 200, 200)")
+                .attr("stroke-width", 1.5);
+        }
+
+        this.addNames(parent, person);
+        this.addDates(parent, person);
+
+        this._box.showImage = true;
     }
 
     /**
      * Update a person's state when they are clicked.
+     *
+     * @param {Event}  event
+     * @param {Person} person The person object containing the individual data
      */
     togglePerson(event, person)
     {
@@ -442,6 +597,8 @@ export default class Tree
      * expanded it will only reveal one generation. If we don't recursively collapse the ancestors then when
      * the person is clicked on again to expand, all ancestors that were previously showing will be shown again.
      * If you want that behavior then just remove the recursion by removing the if block.
+     *
+     * @param person
      */
     collapse(person)
     {
@@ -466,19 +623,19 @@ export default class Tree
      * additional underline style in order to highlight this one.
      *
      * @param {selection} parent The parent (<text> or <textPath>) element to which the <tspan> elements are to be attached
-     * @param {Object}    datum  The D3 data object containing the individual data
+     * @param {Person}    person The D3 data object containing the individual data
      */
-    addFirstNames(parent, datum)
+    addFirstNames(parent, person)
     {
         let i = 0;
 
-        for (let firstName of datum.data.firstNames) {
+        for (let firstName of person.data.firstNames) {
             // Create a <tspan> element for each given name
             let tspan = parent.append("tspan")
                 .text(firstName);
 
             // The preferred name
-            if (firstName === datum.data.preferredName) {
+            if (firstName === person.data.preferredName) {
                 tspan.attr("class", "preferred");
             }
 
@@ -495,14 +652,14 @@ export default class Tree
      * Creates a single <tspan> element for each last name and append it to the parent element.
      *
      * @param {selection} parent The parent (<text> or <textPath>) element to which the <tspan> elements are to be attached
-     * @param {Object}    datum  The D3 data object containing the individual data
+     * @param {Person}    person The person object containing the individual data
      * @param {Number}    dx     Additional space offset to add between names
      */
-    addLastNames(parent, datum, dx = 0)
+    addLastNames(parent, person, dx = 0)
     {
         let i = 0;
 
-        for (let lastName of datum.data.lastNames) {
+        for (let lastName of person.data.lastNames) {
             // Create a <tspan> element for each last name
             let tspan = parent.append("tspan")
                 .attr("class", "lastName")
@@ -636,9 +793,9 @@ export default class Tree
      * Add the individual names to the given parent element.
      *
      * @param {selection} parent The parent element to which the elements are to be attached
-     * @param {Object}    datum  The D3 data object
+     * @param {Person}    person The person object containing the individual data
      */
-    addNames(parent, datum)
+    addNames(parent, person)
     {
         let name = parent
             .append("g")
@@ -656,15 +813,15 @@ export default class Tree
                 .attr("alignment-baseline", "central")
                 .attr("dy", this._box.text.y + 20);
 
-            this.addFirstNames(text1, datum);
-            this.addLastNames(text2, datum);
+            this.addFirstNames(text1, person);
+            this.addLastNames(text2, person);
 
             // If both first and last names are empty, add the full name as alternative
-            if (!datum.data.firstNames.length
-                && !datum.data.lastNames.length
+            if (!person.data.firstNames.length
+                && !person.data.lastNames.length
             ) {
                 text1.append("tspan")
-                    .text(datum.data.name);
+                    .text(person.data.name);
             }
 
             this.truncateNames(text1);
@@ -677,15 +834,15 @@ export default class Tree
                 .attr("dx", this._box.text.x)
                 .attr("dy", this._box.text.y);
 
-            this.addFirstNames(text1, datum);
-            this.addLastNames(text1, datum, 0.25);
+            this.addFirstNames(text1, person);
+            this.addLastNames(text1, person, 0.25);
 
             // If both first and last names are empty, add the full name as alternative
-            if (!datum.data.firstNames.length
-                && !datum.data.lastNames.length
+            if (!person.data.firstNames.length
+                && !person.data.lastNames.length
             ) {
                 text1.append("tspan")
-                    .text(datum.data.name);
+                    .text(person.data.name);
             }
 
             this.truncateNames(text1);
@@ -696,9 +853,9 @@ export default class Tree
      * Add the individual dates to the given parent element.
      *
      * @param {selection} parent The parent element to which the elements are to be attached
-     * @param {Object}    datum  The D3 data object
+     * @param {Person}    person The person object containing the individual data
      */
-    addDates(parent, datum)
+    addDates(parent, person)
     {
         let table = parent
             .append("g")
@@ -713,10 +870,10 @@ export default class Tree
                 .attr("dy", this._box.text.y + 50);
 
             text.append("title")
-                .text(datum.data.timespan);
+                .text(person.data.timespan);
 
             let tspan = text.append("tspan")
-                .text(datum.data.timespan);
+                .text(person.data.timespan);
 
             if (this.getTextLength(text) > this._box.text.width) {
                 text.selectAll("tspan")
@@ -730,7 +887,7 @@ export default class Tree
 
         let offset = 20;
 
-        if (datum.data.birth) {
+        if (person.data.birth) {
             let col1 = table
                 .append("text")
                 .attr("class", "date")
@@ -752,11 +909,11 @@ export default class Tree
                 .attr("dy", this._box.text.y + offset);
 
             col2.append("title")
-                .text(datum.data.birth);
+                .text(person.data.birth);
 
             let tspan = col2
                 .append("tspan")
-                .text(datum.data.birth)
+                .text(person.data.birth)
                 .attr("x", this._box.text.x + 15);
 
             if (this.getTextLength(col2) > (this._box.text.width - 25)) {
@@ -767,8 +924,8 @@ export default class Tree
             }
         }
 
-        if (datum.data.death) {
-            if (datum.data.birth) {
+        if (person.data.death) {
+            if (person.data.birth) {
                 offset += 20;
             }
 
@@ -793,11 +950,11 @@ export default class Tree
                 .attr("dy", this._box.text.y + offset);
 
             col2.append("title")
-                .text(datum.data.death);
+                .text(person.data.death);
 
             let tspan = col2
                 .append("tspan")
-                .text(datum.data.death)
+                .text(person.data.death)
                 .attr("x", this._box.text.x + 15);
 
             if (this.getTextLength(col2) > (this._box.text.width - 25)) {
@@ -812,14 +969,14 @@ export default class Tree
     /**
      * Return the image file or the placeholder.
      *
-     * @param {Object} datum The D3 data object
+     * @param {Person} person The person object containing the individual data
      *
      * @returns {String}
      */
-    getImageToLoad(datum)
+    getImageToLoad(person)
     {
-        if (datum.data.thumbnail) {
-            return datum.data.thumbnail;
+        if (person.data.thumbnail) {
+            return person.data.thumbnail;
         }
 
         return "";
@@ -828,26 +985,25 @@ export default class Tree
     /**
      * Draw the connecting lines.
      *
-     * @param {Array}  links  Array of links
+     * @param {Link[]} links  Array of links
      * @param {Object} source The root object
      *
      * @private
      */
     drawLinks(links, source)
     {
-        // let that = this;
-
-        let link = this._svg.visual
+        let linkPath = this._svg.visual
             .selectAll("path.link")
-            .data(links, person => person.target.id);
+            .data(links);//, person => person.target.id);
 
         // Add new links. Transition new links from the source's old position to
         // the links final position.
-        let linkEnter = link
+        let linkEnter = linkPath
             .enter()
             .append("path")
             .classed("link", true)
-            .attr("d", person => this._orientation.elbow(person));
+            .attr("d", link => this._orientation.elbow(link));
+
 
         // // Add new links. Transition new links from the source's old position to
         // // the links final position.
@@ -898,9 +1054,9 @@ export default class Tree
     //  */
     // transitionElbow(datum)
     // {
-    //     return "M" + datum.source.y + "," + datum.source.x
-    //         + "H" + datum.source.y
-    //         + "V" + datum.source.x
-    //         + "H" + datum.source.y;
+    //     return "M" + datum.data.source.y + "," + datum.data.source.x
+    //         + "H" + datum.data.source.y
+    //         + "V" + datum.data.source.x
+    //         + "H" + datum.data.source.y;
     // }
 }

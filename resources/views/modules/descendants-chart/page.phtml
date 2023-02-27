@@ -89,9 +89,40 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
             </div>
         </div>
 
+        <div class="collapse" id="showMoreOptions">
+            <div class="form-group row">
+                <label class="col-form-label col-sm-3 wt-page-options-label">
+                    <?= I18N::translate('Layout') ?>
+                </label>
+                <div class="col-sm-9 wt-page-options-value">
+                    <?=
+                    view('components/checkbox', [
+                        'id'      => 'hideSpouses',
+                        'name'    => 'hideSpouses',
+                        'label'   => I18N::translate('Hide the spouses associated with each individual.'),
+                        'checked' => $configuration->getHideSpouses(),
+                    ])
+                    ?>
+                </div>
+            </div>
+        </div>
+
         <div class="form-group row">
             <div class="col-sm-12 wt-page-options-value text-center">
                 <div class="btn-toolbar justify-content-between">
+                    <div class="btn-group btn-group-sm">
+                        <button id="options"
+                                class="btn btn-primary"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#showMoreOptions"
+                                aria-expanded="false"
+                                aria-controls="showMoreOptions">
+                            <span><?= I18N::translate('Show more options') ?></span>
+                            <span class="d-none"><?= I18N::translate('Hide more options') ?></span>
+                        </button>
+                    </div>
+
                     <div class="btn-group btn-group-sm">
                         <input class="btn btn-primary" type="submit" value="<?= I18N::translate('view') ?>">
                     </div>
@@ -145,12 +176,48 @@ function getUrl(baseUrl, generations)
     return url.toString();
 }
 
+/**
+ * Set visibility of "Show more options" to previous state after page reload.
+ * Toggle text on "Show more options" on click.
+ *
+ * @param {Storage} storage
+ */
+function toggleMoreOptions(storage)
+{
+    // Options container
+    const showMoreOptions = document.getElementById('showMoreOptions');
+
+    // Options toggle button
+    const optionsToggle = document.getElementById('options');
+
+    showMoreOptions.addEventListener('shown.bs.collapse', () => {
+        storage.write("showMoreOptions", true);
+    });
+
+    showMoreOptions.addEventListener('hidden.bs.collapse', () => {
+        storage.write("showMoreOptions", false);
+    });
+
+    optionsToggle.addEventListener('click', () => {
+        Array.from(optionsToggle.children).forEach((element, index) => {
+            element.classList.toggle('d-none');
+        });
+    });
+
+    if (storage.read("showMoreOptions")) {
+        optionsToggle.click()
+    }
+}
+
 // Set up storage object
-let storage = new WebtreesDescendantsChart.Storage("webtrees-descendants-chart");
+const storage = new WebtreesDescendantsChart.Storage("webtrees-descendants-chart");
 
 // Register all form elements valid for storing data
 storage.register("generations");
 storage.register("layout");
+
+// Handle option toggle button
+toggleMoreOptions(storage);
 
 // Set initial stored value for radio button group
 let formElements = document.getElementById("webtrees-descendants-chart-form").elements;
@@ -158,7 +225,7 @@ formElements.namedItem("layout").value = storage.read("layout");
 
 const generations = parseInt(storage.read("generations"));
 const treeLayout  = storage.read("layout");
-const ajaxUrl     = getUrl(<?= json_encode($ajaxUrl) ?>, storage.read("generations"))
+const ajaxUrl     = getUrl(<?= json_encode($ajaxUrl) ?>, storage.read("generations"));
 
 document.getElementById("descendants-chart-url")
     .setAttribute('data-wt-ajax-url', ajaxUrl);

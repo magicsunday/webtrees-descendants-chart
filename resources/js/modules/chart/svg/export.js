@@ -15,7 +15,7 @@
 export default class Export
 {
     /**
-     * Triggers the download by creating a new anchor element an simulate a mouse click on it.
+     * Triggers the download by creating a new anchor element and simulate a mouse click on it.
      *
      * @param {String} imgURI   The image URI data stream
      * @param {String} fileName The file name to use in the download dialog

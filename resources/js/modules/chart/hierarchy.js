@@ -35,31 +35,48 @@ export default class Hierarchy
      */
     init(data)
     {
-        // Get the greatest depth
-        const getDepth       = ({children}) => 1 + (children ? Math.max(...children.map(getDepth)) : 0);
-        // const maxGenerations = getDepth(data);
-
         // Construct root node from the hierarchical data
-        let root = d3.hierarchy(
-            data,
-            data => {
-                return data.children;
-            });
+        let root = d3.hierarchy(data);
 
         // Declares a tree layout and assigns the size
         const treeLayout = d3.tree()
             .nodeSize([this._configuration.orientation.nodeWidth, 0])
-            .separation(() => 0.5);
+            .separation((left, right) => this.separation(left, right));
 
-        // Map the node data to the tree layout
+        // Map the root node data to the tree layout
         this._root  = root;
         this._nodes = treeLayout(root);
     }
 
     /**
+     * Returns the separation value.
+     *
+     * @param {Individual} left
+     * @param {Individual} right
+     *
+     * @return {Number}
+     */
+    separation(left, right)
+    {
+        // The left child has spouses (1 or more), add some space between the nodes
+        if (typeof left.data.spouses !== "undefined") {
+            return 0.75;
+        }
+
+        // The right side is a spouse which is linked back to the actual child, so add some space
+        if (typeof right.data.spouse !== "undefined") {
+            return 0.75;
+        }
+
+        // Single siblings and cousins should be close
+        // to each other if parents are the same
+        return left.parent === right.parent ? 0.5 : 0.75;
+    }
+
+    /**
      * Returns the nodes.
      *
-     * @returns {Array}
+     * @returns {Individual}
      *
      * @public
      */
@@ -71,41 +88,12 @@ export default class Hierarchy
     /**
      * Returns the root note.
      *
-     * @returns {Object}
+     * @returns {Individual}
      *
      * @public
      */
     get root()
     {
         return this._root;
-    }
-
-    /**
-     * Create an empty child node object.
-     *
-     * @param {Number} generation Generation of the node
-     * @param {String} sex        The sex of the individual
-     *
-     * @returns {Object}
-     *
-     * @private
-     */
-    createEmptyNode(generation, sex)
-    {
-        return {
-            id               : 0,
-            xref             : "",
-            url              : "",
-            updateUrl        : "",
-            generation       : generation,
-            name             : "",
-            firstNames       : [],
-            lastNames        : [],
-            preferredName    : "",
-            alternativeNames : [],
-            isAltRtl         : false,
-            sex              : sex,
-            timespan         : ""
-        };
     }
 }

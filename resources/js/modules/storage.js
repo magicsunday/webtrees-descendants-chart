@@ -26,9 +26,9 @@ export class Storage
     }
 
     /**
-     * Register a HTML element.
+     * Register an HTML element.
      *
-     * @param {String} name The id or name of a HTML element
+     * @param {String} name The id or name of an HTML element
      */
     register(name)
     {
@@ -52,7 +52,7 @@ export class Storage
     }
 
     /**
-     * This methods stores the value of an input element depending on its type.
+     * This method stores the value of an input element depending on its type.
      *
      * @param {EventTarget|HTMLInputElement} element The HTML input element
      */
@@ -68,7 +68,7 @@ export class Storage
     /**
      * Returns the stored value belonging to the HTML element id.
      *
-     * @param {String} name The id or name of a HTML element
+     * @param {String} name The id or name of an HTML element
      *
      * @returns {String|Boolean|Number}
      */
@@ -80,7 +80,7 @@ export class Storage
     /**
      * Stores a value to the given HTML element id.
      *
-     * @param {String}                name  The id or name of a HTML element
+     * @param {String}                name  The id or name of an HTML element
      * @param {String|Boolean|Number} value The value to store
      */
     write(name, value)
