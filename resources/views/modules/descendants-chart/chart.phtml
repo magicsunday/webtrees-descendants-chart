@@ -41,10 +41,6 @@ const optionGenerations = typeof generations !== "undefined"
     ? generations
     : <?= $configuration->getGenerations() ?>;
 
-const optionHideSpouses = typeof hideSpouses !== "undefined"
-    ? hideSpouses
-    : <?= json_encode($configuration->getHideSpouses()) ?>;
-
 const optionLayout = typeof treeLayout !== "undefined"
     ? treeLayout
     : <?= json_encode($configuration->getLayout()) ?>;
@@ -55,7 +51,6 @@ const descendantsChart = new WebtreesDescendantsChart.DescendantsChart(
     {
         labels      : chartParams.labels,
         generations : optionGenerations,
-        hideSpouses : optionHideSpouses,
         treeLayout  : optionLayout,
         rtl         : chartParams.rtl
     }

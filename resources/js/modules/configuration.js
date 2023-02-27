@@ -22,7 +22,6 @@ export default class Configuration
      *
      * @param {String[]} labels
      * @param {Number}   generations
-     * @param {Boolean}  hideSpouses
      * @param {String}   treeLayout
      * @param {Boolean}  rtl
      * @param {Number}   direction
@@ -30,7 +29,6 @@ export default class Configuration
     constructor(
         labels,
         generations = 4,
-        hideSpouses = false,
         treeLayout = LAYOUT_LEFTRIGHT,
         rtl = false,
         direction = 1
@@ -65,8 +63,6 @@ export default class Configuration
         // this._fontScale = fontScale;
         this.fontColor = "rgb(0, 0, 0)";
 
-        this._hideSpouses = hideSpouses;
-
         // Duration of update animation if clicked on a person
         // this.updateDuration = 1250;
 
@@ -95,16 +91,6 @@ export default class Configuration
     set generations(value)
     {
         this._generations = value;
-    }
-
-    /**
-     * Returns whether to show or hide spouses.
-     *
-     * @returns {Boolean}
-     */
-    get hideSpouses()
-    {
-        return this._hideSpouses;
     }
 
     /**
