@@ -103,6 +103,8 @@ export default class Orientation
 
     /**
      * Normalizes the x and/or y values of an entry.
+     *
+     * @param {Individual} d
      */
     norm(d)
     {
@@ -112,9 +114,11 @@ export default class Orientation
     /**
      * Returns the elbow function depending on the orientation.
      *
+     * @param {Link} link
+     *
      * @returns {String}
      */
-    elbow(d)
+    elbow(link)
     {
         throw "Abstract method elbow() not implemented";
     }

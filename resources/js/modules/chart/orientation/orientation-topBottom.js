@@ -45,8 +45,8 @@ export default class OrientationTopBottom extends Orientation
         d.y = this.direction() * d.depth * (this._boxHeight + this._yOffset);
     }
 
-    elbow(d)
+    elbow(link)
     {
-        return elbowVertical(d, this);
+        return elbowVertical(link, this);
     }
 }

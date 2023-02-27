@@ -26,7 +26,7 @@ export {
 export * from "d3-zoom";
 
 export {
-    hierarchy, tree
+    Node, hierarchy, tree
 } from "d3-hierarchy";
 
 export {

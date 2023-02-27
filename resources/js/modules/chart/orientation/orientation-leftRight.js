@@ -48,8 +48,8 @@ export default class OrientationLeftRight extends Orientation
         d.x = this.direction() * d.depth * (this._boxWidth + this._xOffset);
     }
 
-    elbow(d)
+    elbow(link)
     {
-        return elbowHorizontal(d, this);
+        return elbowHorizontal(link, this);
     }
 }
