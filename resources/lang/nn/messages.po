@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
-"POT-Creation-Date: 2023-01-11 08:14+0100\n"
-"PO-Revision-Date: 2023-01-11 08:14+0100\n"
+"POT-Creation-Date: 2023-02-28 09:07+0100\n"
+"PO-Revision-Date: 2023-02-28 09:07+0100\n"
 "Last-Translator: Rico Sonntag <mail@ricosonntag.de>\n"
 "Language-Team: \n"
 "Language: nn\n"
@@ -11,91 +11,106 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.2.2\n"
-"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-KeywordsList: translate\n"
-"X-Poedit-SearchPath-0: module.php\n"
-"X-Poedit-SearchPath-1: src\n"
-"X-Poedit-SearchPath-2: resources/views\n"
-"X-Poedit-SearchPathExcluded-0: resources/lang/node_modules\n"
-"X-Poedit-SearchPathExcluded-1: resources/lang/.git\n"
-"X-Poedit-SearchPathExcluded-2: resources/lang/css\n"
-"X-Poedit-SearchPathExcluded-3: resources/lang/language\n"
+"X-Poedit-SearchPath-0: webtrees-descendants-chart/module.php\n"
+"X-Poedit-SearchPath-1: webtrees-descendants-chart/src\n"
+"X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
+"X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Module.php:101 src/Module.php:206
+#: webtrees-descendants-chart/src/Module.php:105
+#: webtrees-descendants-chart/src/Module.php:216
 msgid "Descendants chart"
 msgstr "Etterkomardiagram"
 
-#: src/Module.php:111
+#: webtrees-descendants-chart/src/Module.php:115
 msgid "An overview of an individual’s descendants."
 msgstr "Eit diagram som syner ein person sine etterkomarar."
 
-#: src/Module.php:209 src/Traits/ModuleChartTrait.php:38
+#: webtrees-descendants-chart/src/Module.php:219
+#: webtrees-descendants-chart/src/Traits/ModuleChartTrait.php:41
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Etterkomardiagram for %s"
 
-#: src/Module.php:225
+#: webtrees-descendants-chart/src/Module.php:235
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Bruk Ctrl + scroll for zoom"
 
-#: src/Module.php:226
+#: webtrees-descendants-chart/src/Module.php:236
 msgid "Move the view with two fingers"
 msgstr "Bruk to fingrar for å flytte utsnitt"
 
-#: src/Traits/IndividualTrait.php:147
+#: webtrees-module-base/src/Processor/DateProcessor.php:129
 #, php-format
 msgid "Born: %s"
 msgstr "Fødd: %s"
 
-#: src/Traits/IndividualTrait.php:151
+#: webtrees-module-base/src/Processor/DateProcessor.php:133
 #, php-format
 msgid "Died: %s"
 msgstr "Død: %s"
 
-#: src/Traits/IndividualTrait.php:155
+#: webtrees-module-base/src/Processor/DateProcessor.php:137
 msgid "Deceased"
 msgstr "Avliden"
 
-#: resources/views/modules/descendants-chart/page.phtml:37
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:40
 msgid "Individual"
 msgstr "Person"
 
-#: resources/views/modules/descendants-chart/page.phtml:54
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:57
 msgid "Generations"
 msgstr "Generasjonar"
 
-#: resources/views/modules/descendants-chart/page.phtml:71
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:74
 msgid "Orientation"
 msgstr "Orientering"
 
-#: resources/views/modules/descendants-chart/page.phtml:78
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:81
 msgid "left"
 msgstr "venstre"
 
-#: resources/views/modules/descendants-chart/page.phtml:79
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:82
 msgid "right"
 msgstr "høgre"
 
-#: resources/views/modules/descendants-chart/page.phtml:80
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:83
 msgid "up"
 msgstr "opp"
 
-#: resources/views/modules/descendants-chart/page.phtml:81
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:84
 msgid "down"
 msgstr "ned"
 
-#: resources/views/modules/descendants-chart/page.phtml:93
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:95
+msgid "Layout"
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:102
+msgid "Hide the spouses associated with an individual."
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:121
+msgid "Show more options"
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:122
+msgid "Hide more options"
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:127
 msgid "view"
 msgstr "syn"
 
-#: resources/views/modules/descendants-chart/page.phtml:99
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:133
 msgid "Re center"
 msgstr "Tilbakestill"
 
-#: resources/views/modules/descendants-chart/page.phtml:104
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:138
 msgid "Export as PNG"
 msgstr "Eksporter som PNG"
 
-#: resources/views/modules/descendants-chart/page.phtml:107
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:141
 msgid "Export as SVG"
 msgstr "Eksporter som SVG"
