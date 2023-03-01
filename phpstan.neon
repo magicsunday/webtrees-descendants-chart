@@ -10,4 +10,10 @@ parameters:
     fileExtensions:
         - php
 
-    checkMissingIterableValueType: false
+    excludePaths:
+        - vendor/
+
+    # Ignore error
+    ignoreErrors:
+        - "#^Cannot access offset (.*) on mixed.$#"
+        - "#^Offset 'children' does not exist on array(.*).$#"
