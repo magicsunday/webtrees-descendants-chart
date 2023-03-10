@@ -273,7 +273,7 @@ trait IndividualTrait
     {
         $nodeList = $xpath->query($this->xpathPreferredName);
 
-        if (($nodeList !== false) && $nodeList->length) {
+        if (($nodeList !== false) && ($nodeList->length > 0)) {
             $nodeItem = $nodeList->item(0);
 
             return ($nodeItem !== null) ? ($nodeItem->nodeValue ?? '') : '';
@@ -300,7 +300,7 @@ trait IndividualTrait
         $xpath    = $this->getXPath($name);
         $nodeList = $xpath->query($this->xpathAlternativeName);
 
-        if (($nodeList !== false) && $nodeList->length) {
+        if (($nodeList !== false) && ($nodeList->length > 0)) {
             $nodeItem = $nodeList->item(0);
             $name     = ($nodeItem !== null) ? ($nodeItem->nodeValue ?? '') : '';
         }
@@ -319,7 +319,7 @@ trait IndividualTrait
     {
         if (
             $individual->canShow()
-            && $individual->tree()->getPreference('SHOW_HIGHLIGHT_IMAGES')
+            && ($individual->tree()->getPreference('SHOW_HIGHLIGHT_IMAGES') !== '')
         ) {
             $mediaFile = $individual->findHighlightedMediaFile();
 
@@ -327,7 +327,7 @@ trait IndividualTrait
                 return $mediaFile->imageUrl(250, 250, 'contain');
             }
 
-            if ($individual->tree()->getPreference('USE_SILHOUETTE')) {
+            if ($individual->tree()->getPreference('USE_SILHOUETTE') !== '') {
                 return $this->assetUrl(sprintf('images/silhouette-%s.svg', $individual->sex()));
             }
         }

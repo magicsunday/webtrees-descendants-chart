@@ -14,7 +14,7 @@ namespace MagicSunday\Webtrees;
 use Composer\Autoload\ClassLoader;
 use MagicSunday\Webtrees\DescendantsChart\Module;
 
-// Register our namespace
+// Register our required namespace
 $loader = new ClassLoader();
 $loader->addPsr4('MagicSunday\\Webtrees\\DescendantsChart\\', __DIR__ . '/src');
 $loader->register();

@@ -42,5 +42,56 @@
         "psr-4": {
             "MagicSunday\\Webtrees\\DescendantsChart\\Test\\": "test/"
         }
+    },
+    "scripts": {
+        "module:build": [
+            "### Remove any left over files",
+            "rm -Rf webtrees-descendants-chart/",
+            "### Checkout latest version of repository",
+            "git archive --prefix=webtrees-descendants-chart/ HEAD --format=tar | tar -x",
+            "### Remove all not required files from archive",
+            "rm -rf webtrees-descendants-chart/.github",
+            "rm -rf webtrees-descendants-chart/resources/js/modules",
+            "rm -rf webtrees-descendants-chart/test",
+            "rm -f webtrees-descendants-chart/.gitattributes",
+            "rm -f webtrees-descendants-chart/.gitignore",
+            "rm -f webtrees-descendants-chart/composer.json",
+            "rm -f webtrees-descendants-chart/package.json",
+            "rm -f webtrees-descendants-chart/rollup.config.js",
+            "rm -f webtrees-descendants-chart/phpstan.neon",
+            "rm -f webtrees-descendants-chart/phpunit.xml",
+            "### Create archive",
+            "zip --quiet --recurse-paths --move -9 webtrees-descendants-chart.zip webtrees-descendants-chart"
+        ],
+        "module:check": [
+            "### PHP CodeSniffer",
+            "@composer module:phpcs",
+            "### PHPStan",
+            "@composer module:phpstan",
+            "### PHPUnit",
+            "@composer module:phpunit"
+        ],
+        "module:phpcs": [
+            "@composer global require squizlabs/php_codesniffer=* --quiet",
+            "~/.composer/vendor/bin/phpcs src/ --standard=PSR12"
+        ],
+        "module:phpstan": [
+            "@composer global require --quiet phpstan/phpstan=*",
+            "@composer global require --quiet phpstan/extension-installer=*",
+            "@composer global require --quiet phpstan/phpstan-deprecation-rules=*",
+            "@composer global require --quiet phpstan/phpstan-strict-rules=*",
+            "@composer install --quiet",
+            "~/.composer/vendor/bin/phpstan analyse --memory-limit=-1 --xdebug -c phpstan.neon",
+            "@composer install --no-dev --quiet"
+        ],
+        "module:phpunit": [
+            "@composer install --quiet",
+            "@php vendor/bin/phpunit",
+            "@composer install --no-dev --quiet"
+        ]
+    },
+    "scripts-descriptions": {
+        "module:build": "Create a distribution file (webtrees-descendants-chart.zip)",
+        "module:check": "Run various static analysis tools"
     }
 }

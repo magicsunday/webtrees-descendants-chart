@@ -28,7 +28,7 @@ class MultiByteTest extends TestCase
     /**
      * @return string[][]
      */
-    public function convertToHtmlEntitiesDataProvider(): array
+    public static function convertToHtmlEntitiesDataProvider(): array
     {
         // [ input, expected ]
         return [
