@@ -30,7 +30,7 @@ export default class OrientationBottomTop extends Orientation
         this._splittNames = true;
     }
 
-    direction()
+    get direction()
     {
         return -1;
     }
@@ -47,7 +47,7 @@ export default class OrientationBottomTop extends Orientation
 
     norm(d)
     {
-        d.y *= this.direction();
+        d.y *= this.direction;
     }
 
     elbow(link)

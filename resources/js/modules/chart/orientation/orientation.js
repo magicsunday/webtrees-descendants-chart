@@ -32,6 +32,16 @@ export default class Orientation
     }
 
     /**
+     * Returns TRUE if the document is in RTL direction.
+     *
+     * @return {Boolean}
+     */
+    get isDocumentRtl()
+    {
+        return document.dir === "rtl";
+    }
+
+    /**
      * Returns the x-offset between two boxes.
      *
      * @returns {Number}
@@ -86,7 +96,7 @@ export default class Orientation
      *
      * @returns {Number}
      */
-    direction()
+    get direction()
     {
         throw "Abstract method direction() not implemented";
     }
@@ -96,7 +106,7 @@ export default class Orientation
      *
      * @returns {Number}
      */
-    nodeWidth()
+    get nodeWidth()
     {
         throw "Abstract method nodeWidth() not implemented";
     }
@@ -106,7 +116,7 @@ export default class Orientation
      *
      * @returns {Number}
      */
-    nodeHeight()
+    get nodeHeight()
     {
         throw "Abstract method nodeHeight() not implemented";
     }

@@ -7,10 +7,14 @@
 
 import * as d3 from "./d3";
 import dataUrl from "./common/dataUrl";
+import measureText from "./chart/text/measure"
 import {SEX_FEMALE, SEX_MALE} from "./constants";
-import Box from "./chart/box";
 import OrientationLeftRight from "./chart/orientation/orientation-leftRight";
 import OrientationRightLeft from "./chart/orientation/orientation-rightLeft";
+import OrientationTopBottom from "./chart/orientation/orientation-topBottom";
+import OrientationBottomTop from "./chart/orientation/orientation-bottomTop";
+import Image from "./chart/box/image.js";
+import Text from "./chart/box/text.js";
 
 /**
  * The class handles the creation of the tree.
@@ -39,10 +43,35 @@ export default class Tree
 
         this._orientation = this._configuration.orientation;
 
-        // Create a default box container for a person based on the selected orientation
-        this._box = new Box(this._orientation);
+        this._image       = new Image(this._orientation, 20);
+        this._text        = new Text(this._orientation, this._image);
 
         this.draw(this._hierarchy.root);
+    }
+
+    /**
+     * Returns the separation value.
+     *
+     * @param {Node} left
+     * @param {Node} right
+     *
+     * @return {Number}
+     */
+    separation(left, right)
+    {
+        // The left child has spouses (1 or more), add some space between the nodes
+        if (Object.hasOwn(left.data, 'spouses')) {
+            return 1.25;
+        }
+
+        // The right side is a spouse that is linked back to the actual child, so add some space
+        if (Object.hasOwn(right.data, 'spouse')) {
+            return 1.25;
+        }
+
+        // Single siblings and cousins should be close
+        // to each other if parents are the same
+        return left.parent === right.parent ? 1.0 : 2.0;
     }
 
     /**
@@ -54,8 +83,21 @@ export default class Tree
      */
     draw(source)
     {
+        // Declares a tree layout and assigns the size
+        const tree = d3.tree()
+            .nodeSize([this._configuration.orientation.nodeWidth, this._configuration.orientation.nodeHeight])
+            .separation(this.separation);
+
+        // Map the root node data to the tree layout
+        this._nodes = tree(this._hierarchy.root);
+
+        // Normalize node coordinates (swap values for left/right layout)
+        this._hierarchy.root.each((node) => {
+            this._configuration.orientation.norm(node);
+        });
+
         /** @type {Individual[]} */
-        let nodes = this._hierarchy.nodes.descendants();
+        let nodes = this._hierarchy.root.descendants();
         let links = [];
 
         // Remove the pseudo root node
@@ -70,18 +112,18 @@ export default class Tree
             ) {
                 const spouse = this.findSpouseById(node.data.spouse, nodes);
 
-                if ((this._orientation instanceof OrientationLeftRight)
-                    || (this._orientation instanceof OrientationRightLeft)
+                if ((this._orientation instanceof OrientationTopBottom)
+                    || (this._orientation instanceof OrientationBottomTop)
                 ) {
-                    const diffY = ((node.y - spouse.y) - this._orientation.nodeWidth) / 2;
-
-                    node.y -= diffY;
-                    spouse.y += diffY;
-                } else {
                     const diffX = ((node.x - spouse.x) - this._orientation.nodeWidth) / 2;
 
                     node.x -= diffX;
                     spouse.x += diffX;
+                } else {
+                    const diffY = ((node.y - spouse.y) - this._orientation.nodeWidth) / 2;
+
+                    node.y -= diffY;
+                    spouse.y += diffY;
                 }
             }
         });
@@ -168,21 +210,8 @@ export default class Tree
             }
         });
 
-        // // Start with only the first few generations of descendants showing
-        // nodes.forEach((individual) => {
-        //     if (individual.children) {
-        //         individual.children.forEach((child) => this.collapse(child));
-        //     }
-        // });
-
         this.drawNodes(nodes, source);
         this.drawLinks(links, source);
-
-        // Stash the old positions for transition.
-        nodes.forEach((individual) => {
-            individual.x0 = individual.x;
-            individual.y0 = individual.y;
-        });
     }
 
     /**
@@ -220,12 +249,12 @@ export default class Tree
                     || (individual.children.length !== 1)
                     || (typeof child.children !== "undefined")
                 ) {
-                    if ((this._orientation instanceof OrientationLeftRight)
-                        || (this._orientation instanceof OrientationRightLeft)
+                    if ((this._orientation instanceof OrientationTopBottom)
+                        || (this._orientation instanceof OrientationBottomTop)
                     ) {
-                        child.y -= moveBy;
-                    } else {
                         child.x -= moveBy;
+                    } else {
+                        child.y -= moveBy;
                     }
                 }
             }
@@ -263,15 +292,12 @@ export default class Tree
      * Draw the person boxes.
      *
      * @param {Individual[]} nodes  Array of descendant nodes
-     * @param {Object}       source The root object
+     * @param {Individual}   source The root object
      *
      * @private
      */
     drawNodes(nodes, source)
     {
-        let i = 0;
-        let that = this;
-
         // Image clip path
         this._svg
             .defs
@@ -279,299 +305,219 @@ export default class Tree
             .append("clipPath")
             .attr("id", "clip-image")
             .append("rect")
-            .attr("rx", this._box.image.rx)
-            .attr("ry", this._box.image.ry)
-            .attr("x", this._box.image.x)
-            .attr("y", this._box.image.y)
-            .attr("width", this._box.image.width)
-            .attr("height", this._box.image.height);
+            .attr("rx", this._image.rx)
+            .attr("ry", this._image.ry)
+            .attr("x", this._image.x)
+            .attr("y", this._image.y)
+            .attr("width", this._image.width)
+            .attr("height", this._image.height);
 
-        // let t = this._svg.visual
-        //     .transition()
-        //     .duration(this._configuration.duration);
-
-        let node = this._svg.visual
+        this._svg.visual
             .selectAll("g.person")
-            .data(nodes, person => person.id || (person.id = ++i));
+            .data(nodes, person => person.id)
+            .join(
+                enter  => this.nodeEnter(enter, source),
+                update => this.nodeUpdate(update),
+                exit   => this.nodeExit(exit, source)
+            );
 
-        let nodeEnter = node
-            .enter()
-            .append("g");
+        // this.centerTree();
 
-        // Add person block
-        const personBlock = nodeEnter
-            .append('g')
+        // Stash the old positions for transition
+        this._hierarchy.root.eachBefore(d => {
+            d.x0 = d.x;
+            d.y0 = d.y;
+        });
+    }
+
+    /**
+     * Centers the tree around all visible nodes.
+     */
+    centerTree()
+    {
+        // TODO Doesn't work
+
+console.log("centerTree");
+        // const zoom = this._svg.zoom.get();
+        //
+        // d3.select(this._svg)
+        //     // .transition()
+        //     // .duration(0)
+        //     // .delay(100)
+        //     .call(
+        //         zoom.transform,
+        //         d3.zoomIdentity.translate(t.x, t.y).scale(t.k)
+        //     );
+    }
+
+    /**
+     * Enter transition (new nodes).
+     *
+     * @param {selection}  enter
+     * @param {Individual} source
+     */
+    nodeEnter(enter, source)
+    {
+        enter
+            .append("g")
+            .attr("opacity", 0)
             .attr("class", person => "person" + (person.data.spouse ? " spouse" : ""))
-            .attr("transform", person => "translate(" + (person.x) + "," + (person.y) + ")");
+            .attr("transform", (person) => {
+                return "translate(" + (person.x) + "," + (person.y) + ")";
+                // TODO Enable this to zoom from source to person
+                // return "translate(" + (source.x0) + "," + (source.y0) + ")";
+            })
+            // TODO Enable this to collapse/expand node on click
+            // .on("click", (event, d) => this.togglePerson(event, d))
+            .call(
+                // Draw the actual person rectangle with an opacity of 0.5
+                g => {
+                    g.append("rect")
+                        .attr(
+                            "class",
+                            person => (person.data.data.sex === SEX_FEMALE)
+                                ? "female"
+                                : (person.data.data.sex === SEX_MALE) ? "male" : "unknown"
+                        )
 
-        // Draw the actual person rectangle with an opacity of 0.5
-        personBlock
-            .append("rect")
-            .attr(
-                "class",
-                person => (person.data.data.sex === SEX_FEMALE)
-                    ? "female"
-                    : (person.data.data.sex === SEX_MALE) ? "male" : "unknown"
+                        .attr("rx", 20)
+                        .attr("ry", 20)
+                        .attr("x", -(this._orientation.boxWidth / 2))
+                        .attr("y", -(this._orientation.boxHeight / 2))
+                        .attr("width", this._orientation.boxWidth)
+                        .attr("height", this._orientation.boxHeight)
+                        .attr("fill-opacity", 0.5);
+
+                    g.append("title")
+                        .text(person => person.data.data.name);
+                }
             )
-            .attr("rx", this._box.rx)
-            .attr("ry", this._box.ry)
-            .attr("x", this._box.x)
-            .attr("y", this._box.y)
-            .attr("width", this._box.width)
-            .attr("height", this._box.height)
-            .attr("fill-opacity", 0.5);
+            .call(
+                // Draws the node (including image, names and dates)
+                g => this.drawNode(g)
+            )
+            .call(
+                g => g.transition()
+                    .duration(this._configuration.duration)
+                    // .delay(1000)
+                    .attr("opacity", 1)
+                    // TODO Enable this to zoom from source to person
+                    // .attr("transform", (person) => {
+                    //     return "translate(" + (person.x) + "," + (person.y) + ")";
+                    // })
+            );
+    }
 
-        // Names and Dates
-        personBlock
-            .filter(person => person.data.data.xref !== "")
-            .each(function (person) {
-                let element = d3.select(this);
+    /**
+     * Update transition (existing nodes).
+     *
+     * @param {selection} update
+     */
+    nodeUpdate(update)
+    {
+        update
+            .call(
+                g => g.transition()
+                    .duration(this._configuration.duration)
+                    .attr("opacity", 1)
+                    .attr("transform", (person) => {
+                        return "translate(" + (person.x) + "," + (person.y) + ")";
+                    })
+            );
+    }
 
-                that.drawText(element, person.data);
-            });
-
-    //     // Merge the update and the enter selections
-    //     let nodeUpdate = nodeEnter.merge(node);
-    //
-    //     nodeUpdate
-    //         .transition()
-    //         .duration(this._configuration.duration)
-    //         // .attr("transform", person => `translate(${person.y}, ${person.x})`);
-    //         .attr("transform", person => {
-    //             return "translate(" + (this._configuration.direction * person.y) + "," + person.x + ")";
-    //         });
-    //
-    //     // Grow boxes to their proper size
-    //     nodeUpdate.select("rect")
-    //         .attr("x", this._box.x)
-    //         .attr("y", this._box.y)
-    //         .attr("width", this._box.width)
-    //         .attr("height", this._box.height)
-    //         // .attr("fill-opacity", "0.5")
-    //         // .attr({
-    //         //     x: this._box.x,
-    //         //     y: this._box.y,
-    //         //     width: this._box.width,
-    //         //     height: this._box.height
-    //         // })
-    // ;
-    //
-    //     // Move text to it's proper position
-    //     // nodeUpdate.select("text")
-    //     //     .attr("dx", this._box.x + 10)
-    //     //     .style("fill-opacity", 1);
-    //
-    //     // Remove nodes we aren't showing anymore
-    //     let nodeExit = node
-    //         .exit()
-    //         .transition()
-    //         .duration(this._configuration.duration)
-    //         // Transition exit nodes to the source's position
-    //         .attr("transform", person => {
-    //             return "translate(" + (this._configuration.direction * (source.y + (this._box.width / 2))) + ',' + source.x + ")";
-    //         })
-    //         // .attr("transform", person => `translate(${source.y}, ${source.x})`)
-    //         // .attr("transform", (d) => {
-    //         //     return "translate(" + source.y + "," + source.x + ")";
-    //         // })
-    //         .remove();
-    //
-    //     // Shrink boxes as we remove them
-    //     nodeExit.select("rect")
-    //         .attr("x", 0)
-    //         .attr("y", 0)
-    //         .attr("width", 0)
-    //         .attr("height", 0)
-    //         // .attr("fill-opacity", 0)
-    //         // .attr({
-    //         //     x: 0,
-    //         //     y: 0,
-    //         //     width: 0,
-    //         //     height: 0
-    //         // })
-    //     ;
-
-        // Fade out the text as we remove it
-        // nodeExit.select("text")
-        //     .style("fill-opacity", 0)
-        //     .attr("dx", 0);
-
-
-        // nodeEnter
-        //     .filter(d => (d.data.xref !== ""))
-        //     .append("title")
-        //     .text(d => d.data.name);
-
-        // this.addImages(nodeEnter);
-
-        // // Names and Dates
-        // nodeEnter
-        //     .filter(d => (d.data.xref !== ""))
-        //     .each(function (d) {
-        //         let parent = d3.select(this);
-        //
-        //         // Names
-        //         let text1 = parent
-        //             .append("text")
-        //             .attr("dx", -(that.boxWidth / 2) + 80)
-        //             .attr("dy", "-12px")
-        //             .attr("text-anchor", "start")
-        //             .attr("class", "name");
-        //
-        //         that.addNames(text1, d);
-        //
-        //         // Time span
-        //         let text2 = parent
-        //             .append("text")
-        //             .attr("dx", -(that.boxWidth / 2) + 80)
-        //             .attr("dy", "10px")
-        //             .attr("text-anchor", "start")
-        //             .attr("class", "date");
-        //
-        //         that.addTimeSpan(text2, d);
-        //     });
-
-
-        // node.join(
-        //     enter => {
-        //         let nodeEnter = enter
-        //             .append("g")
-        //             .attr("class", "person")
-        //             // .attr("transform", person => `translate(${person.y}, ${person.x})`)
-        //             .attr("transform", person => {
-        //                 return "translate(" + (this._configuration.direction * (source.y0 + (this._box.width / 2))) + ',' + source.x0 + ")";
-        //             })
-        //             .on("click", this.togglePerson.bind(this));
-        //
-        //         nodeEnter
-        //             .append("rect")
-        //             // .attr("x", this._box.x)
-        //             // .attr("y", this._box.y)
-        //             // .attr("width", this._box.width)
-        //             // .attr("height", this._box.height);
-        //             .attr("x", 0)
-        //             .attr("y", 0)
-        //             .attr("width", 0)
-        //             .attr("height", 0);
-        //
-        //         return nodeEnter;
-        //     },
-        //
-        //     update => {
-        //         let nodeUpdate = update
-        //             .call(update => update
-        //                 .transition(t)
-        //                 .attr("transform", person => {
-        //                     return "translate(" + (this._configuration.direction * person.y) + "," + person.x + ")";
-        //                 })
-        //             );
-        //
-        //         nodeUpdate
-        //             .select("rect")
-        //             .attr("x", this._box.x)
-        //             .attr("y", this._box.y)
-        //             .attr("width", this._box.width)
-        //             .attr("height", this._box.height);
-        //
-        //         return nodeUpdate;
-        //     },
-        //
-        //     exit => {
-        //         let nodeExit = exit
-        //             .call(exit => exit
-        //                 .transition(t)
-        //                 .attr("transform", person => {
-        //                     return "translate(" + (this._configuration.direction * (source.y + (this._box.width / 2))) + ',' + source.x + ")";
-        //                 })
-        //             )
-        //             .remove();
-        //
-        //         nodeExit
-        //             .select("rect")
-        //             .attr("x", 0)
-        //             .attr("y", 0)
-        //             .attr("width", 0)
-        //             .attr("height", 0);
-        //
-        //         return nodeExit;
-        //     }
-        // )
-        //     // .selectAll("rect")
-        //     // .attr("x", this._box.x)
-        //     // .attr("y", this._box.y)
-        //     // .attr("width", this._box.width)
-        //     // .attr("height", this._box.height);
-        // ;
-        //
-        // return;
+    /**
+     * Exit transition (nodes to be removed).
+     *
+     * @param {selection}  exit
+     * @param {Individual} source
+     */
+    nodeExit(exit, source)
+    {
+        exit
+            .call(
+                g => g.transition()
+                    .duration(this._configuration.duration)
+                    .attr("opacity", 0)
+                    .attr("transform", () => {
+                        // Transition exit nodes to the source's position
+                        return "translate(" + (source.x0) + "," + (source.y0) + ")";
+                    })
+                    .remove()
+            );
     }
 
     /**
      * Draws the image and text nodes.
      *
      * @param {selection} parent The parent element to which the elements are to be attached
-     * @param {Person}    person The person object containing the individual data
      */
-    drawText(parent, person)
+    drawNode(parent)
     {
-        parent
-            .append("title")
-            .text(person.data.name);
+        const enter = parent.selectAll("g.image")
+            .data((d) => {
+                let images = [];
 
-        const imageUrlToLoad = this.getImageToLoad(person);
+                if (d.data.data.thumbnail) {
+                    images.push({
+                        image: d.data.data.thumbnail
+                    })
+                }
 
-        // Check if image should be shown or hidden
-        this._box.showImage = !!imageUrlToLoad;
+                return images;
+            })
+            .enter();
 
-        if (this._box.showImage) {
-            let group = parent
-                .append("g")
-                .attr("class", "image");
+        const group = enter.append("g")
+            .attr("class", "image");
 
-            // Background of image (only required if thumbnail has transparency (like the silhouettes))
-            group
-                .append("rect")
-                .attr("x", this._box.image.x)
-                .attr("y", this._box.image.y)
-                .attr("rx", this._box.image.rx)
-                .attr("ry", this._box.image.ry)
-                .attr("width", this._box.image.width)
-                .attr("height", this._box.image.height)
-                .attr("fill", "rgb(255, 255, 255)");
+        // Background of image (only required if thumbnail has transparency (like the silhouettes))
+        group
+            .append("rect")
+            .attr("x", this._image.x)
+            .attr("y", this._image.y)
+            .attr("width", this._image.width)
+            .attr("height", this._image.height)
+            .attr("rx", this._image.rx)
+            .attr("ry", this._image.ry)
+            .attr("fill", "rgb(255, 255, 255)");
 
-            // The individual image
-            let image = group
-                .append("image")
-                .attr("x", this._box.image.x)
-                .attr("y", this._box.image.y)
-                .attr("width", this._box.image.width)
-                .attr("height", this._box.image.height)
-                .attr("clip-path", "url(#clip-image)");
+        // The individual image
+        group
+            .append("image")
+            .attr("x", this._image.x)
+            .attr("y", this._image.y)
+            .attr("width", this._image.width)
+            .attr("height", this._image.height)
+            .attr("clip-path", "url(#clip-image)");
 
-            dataUrl(imageUrlToLoad)
-                .then(dataUrl => image.attr("xlink:href", dataUrl))
-                .catch((exception) => {
-                    console.error(exception);
-                });
+        // Border around image
+        group
+            .append("rect")
+            .attr("x", this._image.x)
+            .attr("y", this._image.y)
+            .attr("width", this._image.width)
+            .attr("height", this._image.height)
+            .attr("rx", this._image.rx)
+            .attr("ry", this._image.ry)
+            .attr("fill", "none")
+            .attr("stroke", "rgb(200, 200, 200)")
+            .attr("stroke-width", 1.5);
 
-            // Border around image
-            group
-                .append("rect")
-                .attr("x", this._box.image.x)
-                .attr("y", this._box.image.y)
-                .attr("rx", this._box.image.rx)
-                .attr("ry", this._box.image.ry)
-                .attr("width", this._box.image.width)
-                .attr("height", this._box.image.height)
-                .attr("fill", "none")
-                .attr("stroke", "rgb(200, 200, 200)")
-                .attr("stroke-width", 1.5);
-        }
+        // Asynchronously load the images
+        d3.selectAll("g.image image")
+            .each(function (d) {
+                let image = d3.select(this);
 
-        this.addNames(parent, person);
-        this.addDates(parent, person);
+                dataUrl(d.image)
+                    .then(dataUrl => image.attr("xlink:href", dataUrl))
+                    .catch((exception) => {
+                        console.error(exception);
+                    });
+            });
 
-        this._box.showImage = true;
+        this.appendName(parent);
+        this.appendDate(parent);
     }
 
     /**
@@ -583,526 +529,602 @@ export default class Tree
     togglePerson(event, person)
     {
         if (person.children) {
+            // Collapse
             person._children = person.children;
             person.children = null;
         } else {
+            // Expand
             person.children = person._children;
             person._children = null;
         }
 
         this.draw(person);
-
-        // if (person.collapsed) {
-        //     person.collapsed = false;
-        // } else {
-        //     this.collapse(person);
-        // }
-        //
-        // this.draw(person);
-    }
-
-    /**
-     * Collapse person (hide their ancestors). We recursively collapse the ancestors so that when the person is
-     * expanded, it will only reveal one generation. If we don't recursively collapse the ancestors, then when
-     * the person is clicked on again to expand, all ancestors that were previously showing will be shown again.
-     * If you want that behavior, then just remove the recursion by removing the if block.
-     *
-     * @param person
-     */
-    collapse(person)
-    {
-        if (person.children) {
-            person._children = person.children;
-            person._children.forEach((child) => this.collapse(child));
-            // person._children.forEach(this.collapse);
-            person.children = null;
-        }
-
-        // person.collapsed = true;
-        //
-        // if (person.children) {
-        //     person.children.forEach((child) => this.collapse(child));
-        //     person.children.forEach(this.collapse);
-        // }
-    }
-
-    /**
-     * Creates a single <tspan> element for each single given name and append it to the
-     * parent element. The "tspan" element containing the preferred name gets an
-     * additional underline style in order to highlight this one.
-     *
-     * @param {selection} parent The parent (<text> or <textPath>) element to which the <tspan> elements are to be attached
-     * @param {Person}    person The D3 data object containing the individual data
-     */
-    addFirstNames(parent, person)
-    {
-        let i = 0;
-
-        for (let firstName of person.data.firstNames) {
-            // Create a <tspan> element for each given name
-            let tspan = parent.append("tspan")
-                .text(firstName);
-
-            // The preferred name
-            if (firstName === person.data.preferredName) {
-                tspan.attr("class", "preferred");
-            }
-
-            // Add some spacing between the elements
-            if (i !== 0) {
-                tspan.attr("dx", "0.25em");
-            }
-
-            ++i;
-        }
-    }
-
-    /**
-     * Creates a single <tspan> element for each last name and append it to the parent element.
-     *
-     * @param {selection} parent The parent (<text> or <textPath>) element to which the <tspan> elements are to be attached
-     * @param {Person}    person The person object containing the individual data
-     * @param {Number}    dx     Additional space offset to add between names
-     */
-    addLastNames(parent, person, dx = 0)
-    {
-        let i = 0;
-
-        for (let lastName of person.data.lastNames) {
-            // Create a <tspan> element for each last name
-            let tspan = parent.append("tspan")
-                .attr("class", "lastName")
-                .text(lastName);
-
-            // Add some spacing between the elements
-            if (i !== 0) {
-                tspan.attr("dx", "0.25em");
-            }
-
-            if (dx !== 0) {
-                tspan.attr("dx", dx + "em");
-            }
-
-            ++i;
-        }
-    }
-
-    /**
-     * Creates a single <tspan> element for each alternative name and append it to the parent element.
-     *
-     * @param {selection} parent The parent (<text> or <textPath>) element to which the <tspan> elements are to be attached
-     * @param {Person}    person The D3 data object containing the individual data
-     * @param {Number}    dx     Delta X offset used to create a small spacing between multiple words
-     */
-    addAlternativeName(parent, person, dx = 0)
-    {
-        if (person.data.alternativeName !== "") {
-            // Create a <tspan> element for each alternative name
-            let tspan = parent.append("tspan")
-                .text(person.data.alternativeName);
-        }
-    }
-
-    /**
-     * Loops over the <tspan> elements and truncates the contained texts.
-     *
-     * @param {selection} parent The parent (<text> or <textPath>) element to which the <tspan> elements are attached
-     */
-    truncateNames(parent)
-    {
-        // The total available width that the text can occupy
-        let availableWidth = this._box.text.width;
-
-        // Select all not preferred and not last names
-        // Start truncating from the last element to the first one
-        parent.selectAll("tspan:not(.preferred):not(.lastName)")
-            .nodes()
-            .reverse()
-            .forEach(element =>
-                d3.select(element)
-                    .each(this.truncateText(parent, availableWidth))
-            );
-
-        // Afterward, the preferred ones if text takes still too much space
-        parent.selectAll("tspan.preferred")
-            .each(this.truncateText(parent, availableWidth));
-
-        // Truncate lastnames
-        parent.selectAll("tspan.lastName")
-            .each(this.truncateText(parent, availableWidth));
-    }
-
-    /**
-     * Truncates the textual content of the actual element.
-     *
-     * @param {selection} parent         The parent (<text> or <textPath>) element containing the <tspan> child elements
-     * @param {Number}    availableWidth The total available width the text could take
-     */
-    truncateText(parent, availableWidth)
-    {
-        let that = this;
-
-        return function () {
-            let textLength = that.getTextLength(parent);
-            let tspan      = d3.select(this);
-            let words      = tspan.text().split(/\s+/);
-
-            // If the <tspan> contains multiple words, split them until available width matches
-            for (let i = words.length - 1; i >= 0; --i) {
-                if (textLength > availableWidth) {
-                    // Keep only the first letter
-                    words[i] = words[i].slice(0, 1) + ".";
-
-                    tspan.text(words.join(" "));
-
-                    // Recalculate text length
-                    textLength = that.getTextLength(parent);
-                }
-            }
-        };
-    }
-
-    /**
-     * Truncates a date value.
-     *
-     * @param {selection} parent         The parent (<text> or <textPath>) element containing the <tspan> child elements
-     * @param {Number}    availableWidth The total available width the text could take
-     */
-    truncateDate(parent, availableWidth)
-    {
-        let that = this;
-
-        return function () {
-            let textLength = that.getTextLength(parent);
-            let tspan      = d3.select(this);
-            let text       = tspan.text();
-
-            // Repeat removing the last char until the width matches
-            while ((textLength > availableWidth) && (text.length > 1)) {
-                // Remove last char
-                text = text.slice(0, -1).trim();
-
-                tspan.text(text);
-
-                // Recalculate text length
-                textLength = that.getTextLength(parent);
-            }
-
-            // Remove trailing dot if present
-            if (text[text.length - 1] === ".") {
-                tspan.text(text.slice(0, -1).trim());
-            }
-        };
-    }
-
-    /**
-     * Returns a float representing the computed length of all <tspan> elements within the element.
-     *
-     * @param {selection} parent The parent (<text> or <textPath>) element containing the <tspan> child elements
-     *
-     * @returns {Number}
-     */
-    getTextLength(parent)
-    {
-        let totalWidth = 0;
-
-        // Calculate the total used width of all <tspan> elements
-        parent.selectAll("tspan").each(function () {
-            totalWidth += this.getComputedTextLength();
-        });
-
-        return totalWidth;
     }
 
     /**
      * Add the individual names to the given parent element.
      *
      * @param {selection} parent The parent element to which the elements are to be attached
-     * @param {Person}    person The person object containing the individual data
      */
-    addNames(parent, person)
+    appendName(parent)
     {
-        let name = parent
+        const name = parent
             .append("g")
             .attr("class", "name");
 
         // Top/Bottom and Bottom/Top
-        if (this._orientation.splittNames) {
-            let text1 = name.append("text")
-                .attr("class", "wt-chart-box-name")
-                .attr("text-anchor", "middle")
-                .attr("alignment-baseline", "central")
-                .attr("dy", this._box.text.y - 5);
+        if ((this._orientation instanceof OrientationTopBottom)
+            || (this._orientation instanceof OrientationBottomTop)
+        ) {
+            const enter = name.selectAll("text")
+                .data(datum => [
+                    {
+                        data: datum.data,
+                        isRtl: datum.data.data.isNameRtl,
+                        isAltRtl: datum.data.data.isAltRtl,
+                        withImage: true
+                    }
+                ])
+                .enter();
 
-            let text2 = name.append("text")
-                .attr("class", "wt-chart-box-name")
-                .attr("text-anchor", "middle")
-                .attr("alignment-baseline", "central")
-                .attr("dy", this._box.text.y + 15);
+            enter
+                .call((g) => {
+                    const text = g.append("text")
+                        .attr("class", "wt-chart-box-name")
+                        .attr("text-anchor", "middle")
+                        .attr("direction", d => d.isRtl ? "rtl" : "ltr")
+                        .attr("alignment-baseline", "central")
+                        .attr("y", this._text.y - 5);
 
-            let text3 = name.append("text")
-                .attr("class", "wt-chart-box-name wt-chart-box-name-alt")
-                .attr("text-anchor", "middle")
-                .attr("direction", person.data.isAltRtl ? "rtl": "ltr")
-                .attr("alignment-baseline", "central")
-                .attr("dy", this._box.text.y + 40);
+                    this.addNameElements(
+                        text,
+                        datum => this.createNamesData(text, datum, true, false)
+                    );
+                })
+                .call((g) => {
+                    const text = g.append("text")
+                        .attr("class", "wt-chart-box-name")
+                        .attr("text-anchor", "middle")
+                        .attr("direction", d => d.isRtl ? "rtl" : "ltr")
+                        .attr("alignment-baseline", "central")
+                        .attr("y", this._text.y + 15);
 
-            this.addFirstNames(text1, person);
-            this.addLastNames(text2, person);
-            this.addAlternativeName(text3, person);
+                    this.addNameElements(
+                        text,
+                        datum => this.createNamesData(text, datum, false, true)
+                    );
+                });
 
-            // // If both first and last names are empty, add the full name as an alternative
-            // if (!person.data.firstNames.length
-            //     && !person.data.lastNames.length
-            // ) {
-            //     text1.append("tspan")
-            //         .text(person.data.name);
-            // }
+            // Add alternative name if present
+            enter
+                .filter(d => d.data.data.alternativeName !== "")
+                .call((g) => {
+                    const text = g.append("text")
+                        .attr("class", "wt-chart-box-name")
+                        .attr("text-anchor", "middle")
+                        .attr("direction", d => d.isAltRtl ? "rtl" : "ltr")
+                        .attr("alignment-baseline", "central")
+                        .attr("y", this._text.y + 37)
+                        .classed("wt-chart-box-name-alt", true);
 
-            this.truncateNames(text1);
-            this.truncateNames(text2);
-            this.truncateNames(text3);
+                    this.addNameElements(
+                        text,
+                        datum => this.createAlternativeNamesData(text, datum)
+                    );
+                });
 
         // Left/Right and Right/Left
         } else {
-            let text1 = name.append("text")
-                .attr("class", "wt-chart-box-name")
-                .attr("text-anchor", this._configuration.rtl ? "end" : "start")
-                .attr("dx", this._box.text.x)
-                .attr("dy", this._box.text.y - 10);
+            const enter = name.selectAll("text")
+                .data(datum => [
+                    {
+                        data: datum.data,
+                        isRtl: datum.data.data.isNameRtl,
+                        isAltRtl: datum.data.data.isAltRtl,
+                        withImage: datum.data.data.thumbnail !== ""
+                    }
+                ])
+                .enter();
 
-            let text2 = name.append("text")
-                .attr("class", "wt-chart-box-name wt-chart-box-name-alt")
-                .attr("text-anchor", person.data.isAltRtl ? "end" : "start")
-                .attr("direction", person.data.isAltRtl ? "rtl": "ltr")
-                .attr("dx", this._box.text.x)
-                .attr("dy", this._box.text.y + 8);
+            enter
+                .call((g) => {
+                    const text = g.append("text")
+                            .attr("class", "wt-chart-box-name")
+                            .attr("text-anchor", (d) => {
+                                if (d.isRtl && this._orientation.isDocumentRtl) {
+                                    return "start";
+                                }
 
-            this.addFirstNames(text1, person);
-            this.addLastNames(text1, person, 0.25);
-            this.addAlternativeName(text2, person);
+                                if (d.isRtl || this._orientation.isDocumentRtl) {
+                                    return "end";
+                                }
 
-            // // If both first and last names are empty, add the full name as an alternative
-            // if (!person.data.firstNames.length
-            //     && !person.data.lastNames.length
-            // ) {
-            //     text1.append("tspan")
-            //         .text(person.data.name);
-            // }
+                                return "start";
+                            })
+                            .attr("direction", d => d.isRtl ? "rtl" : "ltr")
+                            .attr("x", d => this.textX(d))
+                            .attr("y", this._text.y - 10);
 
-            this.truncateNames(text1);
-            this.truncateNames(text2);
+                    this.addNameElements(
+                        text,
+                        datum => this.createNamesData(text, datum, true, true)
+                    );
+                });
+
+            // Add alternative name if present
+            enter
+                .filter(datum => datum.data.data.alternativeName !== "")
+                .call((g) => {
+                    const text = g.append("text")
+                        .attr("class", "wt-chart-box-name")
+                        .attr("text-anchor", (d) => {
+                            if (d.isAltRtl && this._orientation.isDocumentRtl) {
+                                return "start";
+                            }
+
+                            if (d.isAltRtl || this._orientation.isDocumentRtl) {
+                                return "end";
+                            }
+
+                            return "start";
+                        })
+                        .attr("direction", d => d.isAltRtl ? "rtl" : "ltr")
+                        .attr("x", d => this.textX(d))
+                        .attr("y", this._text.y + 8)
+                        .classed("wt-chart-box-name-alt", true);
+
+                    this.addNameElements(
+                        text,
+                        datum => this.createAlternativeNamesData(text, datum)
+                    );
+                });
         }
+    }
+
+    /**
+     * Creates a single <tspan> element for each single name and append it to the
+     * parent element. The "tspan" element containing the preferred name gets an
+     * additional underline style in order to highlight this one.
+     *
+     * @param {selection}                       parent The parent element to which the <tspan> elements are to be attached
+     * @param {function(*): LabelElementData[]} data
+     */
+    addNameElements(parent, data)
+    {
+         parent.selectAll("tspan")
+             .data(data)
+             .enter()
+             .call((g) => {
+                 g.append("tspan")
+                     .text(datum => datum.label)
+                     // Add some spacing between the elements
+                     .attr("dx", (datum, index) => {
+                         return index !== 0 ? ((datum.isNameRtl ? -1 : 1) * 0.25) + "em" : null;
+                     })
+                     // Highlight the preferred and last name
+                     .classed("preferred", datum => datum.isPreferred)
+                     .classed("lastName", datum => datum.isLastName);
+             });
     }
 
     /**
      * Add the individual dates to the given parent element.
      *
      * @param {selection} parent The parent element to which the elements are to be attached
-     * @param {Person}    person The person object containing the individual data
      */
-    addDates(parent, person)
+    appendDate(parent)
     {
-        let table = parent
+        const table = parent
             .append("g")
             .attr("class", "table");
 
         // Top/Bottom and Bottom/Top
-        if (this._orientation.splittNames) {
-            let text = table.append("text")
+        if ((this._orientation instanceof OrientationTopBottom)
+            || (this._orientation instanceof OrientationBottomTop)
+        ) {
+            const enter = table.selectAll("text.date")
+                .data(d => [{
+                    label: d.data.data.timespan,
+                    withImage: true
+                }])
+                .enter()
+
+            const text = enter.append("text")
                 .attr("class", "date")
                 .attr("text-anchor", "middle")
                 .attr("alignment-baseline", "central")
-                .attr("dy", this._box.text.y + 70);
+                .attr("y", this._text.y + 75);
 
             text.append("title")
-                .text(person.data.timespan);
+                .text(d => d.label);
 
-            let tspan = text.append("tspan")
-                .text(person.data.timespan);
+            const tspan = text.append("tspan");
 
-            if (this.getTextLength(text) > this._box.text.width) {
-                text.selectAll("tspan")
-                    .each(this.truncateDate(text, this._box.text.width));
-
-                tspan.text(tspan.text() + "…");
-            }
+            tspan.text(d => this.truncateDate(tspan, d.label, this._text.width));
 
             return;
         }
 
-        let offset = 30;
+        const offset = 30;
 
-        if (person.data.birth) {
-            let col1 = table
-                .append("text")
-                .attr("fill", "currentColor")
-                .attr("text-anchor", "middle")
-                .attr("dominant-baseline", "middle")
-                .attr("x", this._box.text.x)
-                .attr("dy", this._box.text.y + offset);
+        const enter = table.selectAll("text")
+            .data((d) => {
+                let data = [];
 
-            col1.append("tspan")
-                .text("★")
-                .attr("x", this._box.text.x + 5);
+                if (d.data.data.birth) {
+                    data.push({
+                        icon: "★",
+                        label: d.data.data.birth,
+                        birth: true,
+                        withImage: d.data.data.thumbnail !== ""
+                    });
+                }
 
-            let col2 = table
-                .append("text")
-                .attr("class", "date")
-                .attr("text-anchor", this._configuration.rtl ? "end" : "start")
-                .attr("dominant-baseline", "middle")
-                .attr("x", this._box.text.x)
-                .attr("dy", this._box.text.y + offset);
+                if (d.data.data.death) {
+                    data.push({
+                        icon: "†",
+                        label: d.data.data.death,
+                        death: true,
+                        withImage: d.data.data.thumbnail !== ""
+                    });
+                }
 
-            col2.append("title")
-                .text(person.data.birth);
+                return data;
+            })
+            .enter();
 
-            let tspan = col2
-                .append("tspan")
-                .text(person.data.birth)
-                .attr("x", this._box.text.x + 15);
+        enter
+            .call((g) => {
+                const col1 = g.append("text")
+                    .attr("fill", "currentColor")
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+                    .attr("x", d => this.textX(d))
+                    // Minor offset here to better center the icon
+                    .attr("y", (d, i) => ((this._text.y + offset) + (i === 0 ? 0 : 21)));
 
-            if (this.getTextLength(col2) > (this._box.text.width - 25)) {
-                col2.selectAll("tspan")
-                    .each(this.truncateDate(col2, this._box.text.width - 25));
+                col1.append("tspan")
+                    .text(d => d.icon)
+                    .attr("dx", (this._orientation.isDocumentRtl ? -1 : 1) * 5);
 
-                tspan.text(tspan.text() + "…");
-            }
-        }
+                const col2 = g.append("text")
+                    .attr("class", "date")
+                    .attr("text-anchor", "start")
+                    .attr("dominant-baseline", "middle")
+                    .attr("x", d => this.textX(d))
+                    .attr("y", (d, i) => ((this._text.y + offset) + (i === 0 ? 0 : 20)));
 
-        if (person.data.death) {
-            if (person.data.birth) {
-                offset += 20;
-            }
+                col2.append("title")
+                    .text(d => d.label);
 
-            let col1 = table
-                .append("text")
-                .attr("fill", "currentColor")
-                .attr("text-anchor", "middle")
-                .attr("dominant-baseline", "middle")
-                .attr("x", this._box.text.x)
-                .attr("dy", this._box.text.y + offset + 1);
+                const tspan = col2.append("tspan");
 
-            col1.append("tspan")
-                .text("†")
-                .attr("x", this._box.text.x + 5);
+                tspan.text(d => this.truncateDate(tspan, d.label, this._text.width - (d.withImage ? this._image.width : 0) - 25))
+                    .attr("dx", (this._orientation.isDocumentRtl ? -1 : 1) * 15)
+                ;
+            });
+    }
 
-            let col2 = table
-                .append("text")
-                .attr("class", "date")
-                .attr("text-anchor", this._configuration.rtl ? "end" : "start")
-                .attr("dominant-baseline", "middle")
-                .attr("x", this._box.text.x)
-                .attr("dy", this._box.text.y + offset);
+    textX(d)
+    {
+        const xPos = this._text.x + (d.withImage ? this._image.width : 0);
 
-            col2.append("title")
-                .text(person.data.death);
-
-            let tspan = col2
-                .append("tspan")
-                .text(person.data.death)
-                .attr("x", this._box.text.x + 15);
-
-            if (this.getTextLength(col2) > (this._box.text.width - 25)) {
-                col2.selectAll("tspan")
-                    .each(this.truncateDate(col2, this._box.text.width - 25));
-
-                tspan.text(tspan.text().trim() + "…");
-            }
-        }
+        // Reverse direction of text elements for RTL layouts
+        return this._orientation.isDocumentRtl ? -xPos : xPos;
     }
 
     /**
-     * Return the image file or the placeholder.
+     * Creates the data array for the names.
      *
-     * @param {Person} person The person object containing the individual data
+     * @param {Object}          parent
+     * @param {NameElementData} datum
+     * @param {Boolean}         addFirstNames
+     * @param {Boolean}         addLastNames
      *
-     * @returns {String}
+     * @return {LabelElementData[]}
      */
-    getImageToLoad(person)
+    createNamesData(parent, datum, addFirstNames, addLastNames)
     {
-        if (person.data.thumbnail) {
-            return person.data.thumbnail;
+        /** @var {LabelElementData[]} names */
+        let names = [];
+
+        if (addFirstNames === true) {
+            names = names.concat(
+                datum.data.data.firstNames.map((firstName) => {
+                    return {
+                        label: firstName,
+                        isPreferred: firstName === datum.data.data.preferredName,
+                        isLastName: false,
+                        isNameRtl: datum.data.data.isNameRtl
+                    }
+                })
+            );
         }
 
-        return "";
+        if (addLastNames === true) {
+            // Append the last names
+            names = names.concat(
+                datum.data.data.lastNames.map((lastName) => {
+                    return {
+                        label: lastName,
+                        isPreferred: false,
+                        isLastName: true,
+                        isNameRtl: datum.data.data.isNameRtl
+                    }
+                })
+            );
+        }
+
+        // // If both first and last names are empty, add the full name as an alternative
+        // if (!datum.data.data.firstNames.length
+        //     && !datum.data.data.lastNames.length
+        // ) {
+        //     names = names.concat([{
+        //         label: datum.data.data.name,
+        //         isPreferred: false,
+        //         isLastName: false
+        //     }]);
+        // }
+
+        const fontSize   = parent.style("font-size");
+        const fontWeight = parent.style("font-weight");
+
+        // The total available width that the text can occupy
+        let availableWidth = this._text.width;
+
+        if (datum.withImage) {
+            if ((this._orientation instanceof OrientationLeftRight)
+                || (this._orientation instanceof OrientationRightLeft)
+            ) {
+                availableWidth -= this._image.width;
+            }
+        }
+
+        return this.truncateNames(names, fontSize, fontWeight, availableWidth);
+    }
+
+    /**
+     * Creates the data array for the alternative name.
+     *
+     * @param {Object}          parent
+     * @param {NameElementData} datum
+     *
+     * @return {LabelElementData[]}
+     */
+    createAlternativeNamesData(parent, datum)
+    {
+        let words = datum.data.data.alternativeName.split(/\s+/);
+
+        /** @var {LabelElementData[]} names */
+        let names = [];
+
+        // Append the alternative names
+        names = names.concat(
+            words.map((word) => {
+                return {
+                    label: word,
+                    isPreferred: false,
+                    isLastName: false,
+                    isNameRtl: datum.data.data.isAltRtl
+                }
+            })
+        );
+
+        const fontSize   = parent.style("font-size");
+        const fontWeight = parent.style("font-weight");
+
+        // The total available width that the text can occupy
+        let availableWidth = this._text.width;
+
+        if (datum.withImage) {
+            if ((this._orientation instanceof OrientationLeftRight)
+                || (this._orientation instanceof OrientationRightLeft)
+            ) {
+                availableWidth -= this._image.width;
+            }
+        }
+
+        return this.truncateNames(names, fontSize, fontWeight, availableWidth);
+    }
+
+    /**
+     * Truncates the list of names.
+     *
+     * @param {LabelElementData[]} names          The names array
+     * @param {String}             fontSize       The font size
+     * @param {Number}             fontWeight     The font weight
+     * @param {Number}             availableWidth The available width
+     *
+     * @return {LabelElementData[]}
+     */
+    truncateNames(names, fontSize, fontWeight, availableWidth)
+    {
+        let text = names.map(item => item.label).join(" ");
+
+        return names
+            // Start truncating from the last element to the first one
+            .reverse()
+            .map((name) => {
+                // Select all not preferred and not last names
+                if ((name.isPreferred === false)
+                    && (name.isLastName === false)
+                ) {
+                    if (this.measureText(text, fontSize, fontWeight) > availableWidth) {
+                        // Keep only the first letter
+                        name.label = name.label.slice(0, 1) + ".";
+                        text       = names.map(item => item.label).join(" ");
+                    }
+                }
+
+                return name;
+            })
+            .map((name) => {
+                // Afterward, the preferred ones if text takes still too much space
+                if (name.isPreferred === true) {
+                    if (this.measureText(text, fontSize, fontWeight) > availableWidth) {
+                        // Keep only the first letter
+                        name.label = name.label.slice(0, 1) + ".";
+                        text       = names.map(item => item.label).join(" ");
+                    }
+                }
+
+                return name;
+            })
+            .map((name) => {
+                // Finally truncate lastnames
+                if (name.isLastName === true) {
+                    if (this.measureText(text, fontSize, fontWeight) > availableWidth) {
+                        // Keep only the first letter
+                        name.label = name.label.slice(0, 1) + ".";
+                        text       = names.map(item => item.label).join(" ");
+                    }
+                }
+
+                return name;
+            })
+            // Revert reversed order again
+            .reverse();
+    }
+
+    /**
+     * Truncates a date value.
+     *
+     * @param {Object} object         The D3 object containing the text value
+     * @param {String} date           The date value to truncate
+     * @param {Number} availableWidth The total available width the text could take
+     *
+     * @return {String}
+     */
+    truncateDate(object, date, availableWidth)
+    {
+        const fontSize   = object.style("font-size");
+        const fontWeight = object.style("font-weight");
+
+        let truncated = false;
+
+        // Repeat removing the last char until the width matches
+        while ((this.measureText(date, fontSize, fontWeight) > availableWidth) && (date.length > 1)) {
+            // Remove last char
+            date      = date.slice(0, -1).trim();
+            truncated = true;
+        }
+
+        // Remove trailing dot if present
+        if (date[date.length - 1] === ".") {
+            date = date.slice(0, -1).trim();
+        }
+
+        return truncated ? (date + "…") : date;
+    }
+
+    /**
+     * Measures the given text and return its width depending on the used font (including size and weight).
+     *
+     * @param {String} text
+     * @param {String} fontSize
+     * @param {Number} fontWeight
+     *
+     * @returns {Number}
+     */
+    measureText(text, fontSize, fontWeight = 400)
+    {
+        const fontFamily = this._svg.get().style("font-family");
+
+        return measureText(text, fontFamily, fontSize, fontWeight);
     }
 
     /**
      * Draw the connecting lines.
      *
-     * @param {Link[]} links  Array of links
-     * @param {Object} source The root object
+     * @param {Link[]}     links  Array of links
+     * @param {Individual} source The root object
      *
      * @private
      */
     drawLinks(links, source)
     {
-        let linkPath = this._svg.visual
+        this._svg.visual
             .selectAll("path.link")
-            .data(links); //, person => person.target.id);
-
-        // Add new links. Transition new links from the source's old position to
-        // the links final position.
-        let linkEnter = linkPath
-            .enter()
-            .append("path")
-            .classed("link", true)
-            .attr("d", link => this._orientation.elbow(link));
-
-
-        // // Add new links. Transition new links from the source's old position to
-        // // the links final position.
-        // let linkEnter = link.enter()
-        //     .append("path")
-        //     .classed("link", true)
-        //     .attr("d", person => {
-        //         const o = {
-        //             x: source.x0,
-        //             y: this._configuration.direction * (source.y0 + (this._box.width / 2))
-        //         };
-        //
-        //         return this.transitionElbow({ source: o, target: o });
-        //     });
-        //
-        // var linkUpdate = linkEnter.merge(link);
-        //
-        // // Update the old links positions
-        // linkUpdate.transition()
-        //     .duration(this._configuration.duration)
-        //     .attr("d", person => this.elbow(person));
-        //
-        // // Remove any links we don't need anymore if part of the tree was collapsed. Transition exit
-        // // links from their current position to the source's new position.
-        // link.exit()
-        //     .transition()
-        //     .duration(this._configuration.duration)
-        //     .attr("d", person => {
-        //         const o = {
-        //             x: source.x,
-        //             y: this._configuration.direction * (source.y + this._box.width / 2)
-        //         };
-        //
-        //         return this.transitionElbow({ source: o, target: o });
-        //     })
-        //     .remove();
+            .data(links)
+            .join(
+                enter  => this.linkEnter(enter, source),
+                update => this.linkUpdate(update),
+                exit   => this.linkExit(exit, source)
+            );
     }
 
-    // /**
-    //  * Use a different elbow function for enter
-    //  * and exit nodes. This is necessary because
-    //  * the function above assumes that the nodes
-    //  * are stationary along the x axis.
-    //  *
-    //  * @param {Object} datum D3 data object
-    //  *
-    //  * @private
-    //  */
-    // transitionElbow(datum)
-    // {
-    //     return "M" + datum.data.source.y + "," + datum.data.source.x
-    //         + "H" + datum.data.source.y
-    //         + "V" + datum.data.source.x
-    //         + "H" + datum.data.source.y;
-    // }
+    /**
+     * Enter transition (new links).
+     *
+     * @param {selection}  enter
+     * @param {Individual} source
+     */
+    linkEnter(enter, source)
+    {
+        enter
+            .append("path")
+            .classed("link", true)
+            .attr("d", link => this._orientation.elbow(link))
+            .call(
+                g => g.transition()
+                    .duration(this._configuration.duration)
+                    .attr("opacity", 1)
+            );
+    }
+
+    /**
+     * Update transition (existing links).
+     *
+     * @param {selection} update
+     */
+    linkUpdate(update)
+    {
+        // TODO Enable for transitions
+        // update
+        //     .call(
+        //         g => g.transition()
+        //             // .duration(this._configuration.duration)
+        //             .attr("opacity", 1)
+        //             .attr("d", (link) => {
+        //                 // link.source.x = source.x;
+        //                 // link.source.y = source.y;
+        //                 //
+        //                 // if (link.target) {
+        //                 //     link.target.x = source.x;
+        //                 //     link.target.y = source.y;
+        //                 // }
+        //
+        //                 return this._orientation.elbow(link);
+        //             })
+        //     );
+    }
+
+    /**
+     * Exit transition (links to be removed).
+     *
+     * @param {selection}  exit
+     * @param {Individual} source
+     */
+    linkExit(exit, source)
+    {
+        // TODO Enable for transitions
+        // exit
+        //     .call(
+        //         g => g.transition()
+        //             .duration(this._configuration.duration)
+        //             .attr("opacity", 0)
+        //             .attr("d", (link) => {
+        //                 // link.source.x = source.x;
+        //                 // link.source.y = source.y;
+        //                 //
+        //                 // if (link.target) {
+        //                 //     link.target.x = source.x;
+        //                 //     link.target.y = source.y;
+        //                 // }
+        //
+        //                 return this._orientation.elbow(link);
+        //             })
+        //             .remove()
+        //     );
+    }
 }

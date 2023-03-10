@@ -26,7 +26,6 @@ export default class Box
     {
         // The default corner radius
         this._cornerRadius = 20;
-        this._showImage    = true;
         this._orientation  = orientation;
 
         // Calculate values
@@ -38,26 +37,6 @@ export default class Box
         this._height = orientation.boxHeight;
 
         this._image = new Image(orientation, this._cornerRadius);
-    }
-
-    /**
-     * Returns TRUE if image should be displayed otherwise FALSE.
-     *
-     * @returns {Boolean}
-     */
-    get showImage()
-    {
-        return this._showImage;
-    }
-
-    /**
-     * Set TRUE to show image or FALSE to hide.
-     *
-     * @param {Boolean} value
-     */
-    set showImage(value)
-    {
-        this._showImage = value;
     }
 
     /**
@@ -139,7 +118,7 @@ export default class Box
     {
         return new Text(
             this._orientation,
-            this._showImage ? this._image : null
+            this._image
         );
     }
 }

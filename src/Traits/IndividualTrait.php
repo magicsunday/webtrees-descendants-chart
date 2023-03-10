@@ -111,6 +111,7 @@ trait IndividualTrait
             'updateUrl'       => $this->getUpdateRoute($individual),
             'generation'      => $generation,
             'name'            => $fullNN,
+            'isNameRtl'       => $this->isRtl($fullNN),
             'firstNames'      => $firstNames,
             'lastNames'       => $lastNames,
             'preferredName'   => $preferredName,

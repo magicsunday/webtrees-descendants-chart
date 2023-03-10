@@ -33,17 +33,17 @@ export default function(link, orientation)
         sourceY -= (link.source.y - link.spouse.y) / 2;
     } else {
         // For each additional family, the link to the child nodes begins at the additional spouse.
-        sourceX += (orientation.boxWidth / 2) * orientation.direction();
+        sourceX += (orientation.boxWidth / 2) * orientation.direction;
     }
 
     // No spouse assigned to source node
     if (link.source.data.data === null) {
-        sourceX += (orientation.boxWidth / 2) * orientation.direction();
+        sourceX += (orientation.boxWidth / 2) * orientation.direction;
         sourceY -= (orientation.boxHeight / 2) + (halfYOffset / 2);
     }
 
     if (link.target !== null) {
-        let targetX = link.target.x - (orientation.direction() * ((orientation.boxWidth / 2) + halfXOffset)),
+        let targetX = link.target.x - (orientation.direction * ((orientation.boxWidth / 2) + halfXOffset)),
             targetY = link.target.y;
 
         const path = d3.path();
@@ -52,7 +52,7 @@ export default function(link, orientation)
         path.moveTo(sourceX, sourceY);
         path.lineTo(targetX, sourceY);
         path.lineTo(targetX, targetY);
-        path.lineTo(targetX + (orientation.direction() * halfXOffset), targetY);
+        path.lineTo(targetX + (orientation.direction * halfXOffset), targetY);
 
         return path.toString();
     }
@@ -138,6 +138,6 @@ function getFirstSpouseLinkOffset(link, orientation)
     const spouseLineOffset = 5;
 
     return (link.source.data.family - Math.ceil(link.spouse.data.spouses.length / 2))
-        * orientation.direction()
+        * orientation.direction
         * spouseLineOffset;
 }

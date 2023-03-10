@@ -7,6 +7,8 @@
 
 import OrientationLeftRight from "../orientation/orientation-leftRight";
 import OrientationRightLeft from "../orientation/orientation-rightLeft";
+import OrientationTopBottom from "../orientation/orientation-topBottom";
+import OrientationBottomTop from "../orientation/orientation-bottomTop";
 
 /**
  * The person text box container.
@@ -27,13 +29,13 @@ export default class Text
     {
         this._orientation  = orientation;
         this._image        = image;
-        this._textPaddingX = 5;
+        this._textPaddingX = 15;
         this._textPaddingY = 15;
 
-        if ((this._orientation instanceof OrientationLeftRight)
-            || (this._orientation instanceof OrientationRightLeft)
+        if ((this._orientation instanceof OrientationTopBottom)
+            || (this._orientation instanceof OrientationBottomTop)
         ) {
-            this._textPaddingX = 15;
+            this._textPaddingX = 5;
             this._textPaddingY = 15;
         }
 
@@ -50,14 +52,7 @@ export default class Text
      */
     calculateX()
     {
-        const xStart = -(this._orientation.boxWidth / 2) + this._textPaddingX;
-
-        if (!this._image) {
-            return xStart;
-        }
-
-        // Adjust x position by width of image
-        return xStart + this._image.width;
+        return -(this._orientation.boxWidth / 2) + this._textPaddingX;
     }
 
     /**
@@ -73,10 +68,6 @@ export default class Text
             return -this._textPaddingY;
         }
 
-        if (!this._image) {
-            return -(this._orientation.boxHeight / 2) + (this._textPaddingY * 2);
-        }
-
         return this._image.y + this._image.height + (this._textPaddingY * 2);
     }
 
@@ -87,20 +78,8 @@ export default class Text
      */
     calculateWidth()
     {
-        // Width of box minus the right/left padding
-        const defaultWidth = this._orientation.boxWidth - (this._textPaddingX * 2);
-
-        if (!this._image) {
-            return defaultWidth;
-        }
-
-        if ((this._orientation instanceof OrientationLeftRight)
-            || (this._orientation instanceof OrientationRightLeft)
-        ) {
-            return defaultWidth - this._image.width;
-        }
-
-        return defaultWidth;
+        // Width of the text minus the right/left padding
+        return this._orientation.boxWidth - (this._textPaddingX * 2);
     }
 
     /**
@@ -131,5 +110,6 @@ export default class Text
     get width()
     {
         return this._width;
+
     }
 }

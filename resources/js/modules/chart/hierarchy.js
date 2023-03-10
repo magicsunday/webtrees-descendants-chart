@@ -37,63 +37,27 @@ export default class Hierarchy
      */
     init(data)
     {
-        // Construct root node from the hierarchical data
-        let root = d3.hierarchy(data);
+        // // Declares a tree layout and assigns the size
+        // const treeLayout = d3.tree()
+        //     .nodeSize([this._configuration.orientation.nodeWidth, 0])
+        //     .separation(this.separation);
 
-        // Declares a tree layout and assigns the size
-        const tree = d3.tree()
-            .nodeSize([this._configuration.orientation.nodeWidth, this._configuration.orientation.nodeHeight])
-            .separation((left, right) => this.separation(left, right));
+        // Construct root node from the hierarchical data
+        this._root = d3.hierarchy(data);
 
         // Map the root node data to the tree layout
-        this._root  = root;
-        this._nodes = tree(root);
+        // treeLayout(this._root);
 
-//         // TODO Calculate height of SVG
-//         if ((this._configuration.orientation instanceof OrientationLeftRight)
-//             || (this._configuration.orientation instanceof OrientationRightLeft)
-//         ) {
-//             let x0 = Infinity;
-//             let x1 = -x0;
-//
-//             root.each(d => {
-//                 if (d.x > x1) x1 = d.x;
-//                 if (d.x < x0) x0 = d.x;
-//             });
-//         }
-//
-//         // const height = x1 - x0 + this._configuration.orientation.nodeHeight * 2;
-// // console.log(height);
-
-        // Normalize node coordinates (swap values for left/right layout)
-        root.each((node) => {
-            this._configuration.orientation.norm(node);
+        // Assign a unique ID to each node
+        this._root.descendants().forEach((d, i) => {
+            d.id = i;
         });
-    }
 
-    /**
-     * Returns the separation value.
-     *
-     * @param {Node} left
-     * @param {Node} right
-     *
-     * @return {Number}
-     */
-    separation(left, right)
-    {
-        // The left child has spouses (1 or more), add some space between the nodes
-        if (Object.hasOwn(left.data, 'spouses')) {
-            return 1.25;
-        }
-
-        // The right side is a spouse that is linked back to the actual child, so add some space
-        if (Object.hasOwn(right.data, 'spouse')) {
-            return 1.25;
-        }
-
-        // Single siblings and cousins should be close
-        // to each other if parents are the same
-        return left.parent === right.parent ? 1.0 : 2.0;
+        // this._nodes = treeLayout(root);
+        // this._nodes = this._root.descendants();
+        //
+        // // Remove the pseudo root node
+        // this._nodes.shift();
     }
 
     /**

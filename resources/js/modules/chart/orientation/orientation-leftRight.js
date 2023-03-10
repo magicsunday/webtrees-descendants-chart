@@ -31,9 +31,9 @@ export default class OrientationLeftRight extends Orientation
         this._yOffset = 20;
     }
 
-    direction()
+    get direction()
     {
-        return 1;
+        return this.isDocumentRtl ? -1 : 1;
     }
 
     get nodeWidth()
@@ -49,7 +49,7 @@ export default class OrientationLeftRight extends Orientation
     norm(d)
     {
         // Swap x and y values
-        [d.x, d.y] = [d.y * this.direction(), d.x];
+        [d.x, d.y] = [d.y * this.direction, d.x];
     }
 
     elbow(link)

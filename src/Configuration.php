@@ -120,6 +120,30 @@ class Configuration
     }
 
     /**
+     * Returns the available tree layouts.
+     *
+     * @return string[]
+     */
+    public function getLayouts(): array
+    {
+        if (I18N::direction() === 'rtl') {
+            return [
+                self::LAYOUT_LEFTRIGHT => view('icons/pedigree-left') . I18N::translate('left'),
+                self::LAYOUT_RIGHTLEFT => view('icons/pedigree-right') . I18N::translate('right'),
+                self::LAYOUT_BOTTOMTOP => view('icons/pedigree-up') . I18N::translate('up'),
+                self::LAYOUT_TOPBOTTOM => view('icons/pedigree-down') . I18N::translate('down'),
+            ];
+        }
+
+        return [
+            self::LAYOUT_RIGHTLEFT => view('icons/pedigree-left') . I18N::translate('left'),
+            self::LAYOUT_LEFTRIGHT => view('icons/pedigree-right') . I18N::translate('right'),
+            self::LAYOUT_BOTTOMTOP => view('icons/pedigree-up') . I18N::translate('up'),
+            self::LAYOUT_TOPBOTTOM => view('icons/pedigree-down') . I18N::translate('down'),
+        ];
+    }
+
+    /**
      * Returns whether to hide spouses or not.
      *
      * @return bool

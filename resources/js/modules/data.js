@@ -71,3 +71,19 @@ import {Node} from "./d3";
  * @property {null|undefined|Individual} spouse The spouse of the source individual
  * @property {null|Coordinate[]}         coords The list of the spouse coordinates
  */
+
+/**
+ * @typedef {Object} NameElementData
+ * @property {Data}    data
+ * @property {Boolean} isRtl
+ * @property {Boolean} isAltRtl
+ * @property {Boolean} withImage
+ */
+
+/**
+ * @typedef {Object} LabelElementData
+ * @property {String}  label
+ * @property {Boolean} isPreferred
+ * @property {Boolean} isLastName
+ * @property {Boolean} isNameRtl
+ */

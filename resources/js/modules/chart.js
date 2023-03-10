@@ -133,7 +133,9 @@ export default class Chart
         // Create tree
         new Tree(this._svg, this._configuration, this._hierarchy);
 
+        // TODO Add separate button to toggle transition to keep clicking?
         this.bindClickEventListener();
+
         this.updateViewBox();
 
 //         const width = 1296;

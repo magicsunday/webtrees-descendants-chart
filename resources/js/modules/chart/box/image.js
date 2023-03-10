@@ -7,7 +7,6 @@
 
 import OrientationLeftRight from "../orientation/orientation-leftRight";
 import OrientationRightLeft from "../orientation/orientation-rightLeft";
-import {LAYOUT_HORIZONTAL_NODE_HEIGHT} from "../../constants.js";
 
 /**
  * The person image box container.
@@ -26,27 +25,19 @@ export default class Image
      */
     constructor(orientation, cornerRadius)
     {
-        this._orientation   = orientation;
-        this._cornerRadius  = cornerRadius;
-        this._imagePaddingX = 5;
-        this._imagePaddingY = 10;
+        this._orientation  = orientation;
+        this._cornerRadius = cornerRadius;
 
-        if ((this._orientation instanceof OrientationLeftRight)
-            || (this._orientation instanceof OrientationRightLeft)
-        ) {
-            this._imagePaddingX = 5;
-            this._imagePaddingY = 5;
-        }
-
-        this._imageRadius   = (LAYOUT_HORIZONTAL_NODE_HEIGHT - (this._imagePaddingX * 2)) / 2;
+        this._imagePadding = 5;
+        this._imageRadius  = Math.min(40, (this._orientation.boxHeight / 2) - this._imagePadding);
 
         // Calculate values
-        this._x      = this.calculateX();
-        this._y      = this.calculateY();
         this._width  = this.calculateImageWidth();
         this._height = this.calculateImageHeight();
-        this._rx     = this._cornerRadius - this._imagePaddingX; //this.calculateCornerRadius();
-        this._ry     = this._cornerRadius - this._imagePaddingX; //this.calculateCornerRadius();
+        this._rx     = this.calculateCornerRadius();
+        this._ry     = this.calculateCornerRadius();
+        this._x      = this.calculateX();
+        this._y      = this.calculateY();
     }
 
     /**
@@ -59,10 +50,12 @@ export default class Image
         if ((this._orientation instanceof OrientationLeftRight)
             || (this._orientation instanceof OrientationRightLeft)
         ) {
-            return -((this._orientation.boxWidth / 2) - this._imagePaddingX);
+            return this._orientation.isDocumentRtl
+                ? (this._width - this._imagePadding)
+                : (-(this._orientation.boxWidth - this._imagePadding) / 2) + this._imagePadding;
         }
 
-        return -((this._orientation.boxWidth / 2) - this._imageRadius + this._imagePaddingX);
+        return -(this._orientation.boxWidth / 2) + (this._width / 2);
     }
 
     /**
@@ -72,7 +65,13 @@ export default class Image
      */
     calculateY()
     {
-        return -(this._orientation.boxHeight / 2) + this._imagePaddingY;
+        if ((this._orientation instanceof OrientationLeftRight)
+            || (this._orientation instanceof OrientationRightLeft)
+        ) {
+            return -this._imageRadius;
+        }
+
+        return -((this._orientation.boxHeight - this._imagePadding) / 2) + this._imagePadding;
     }
 
     /**
