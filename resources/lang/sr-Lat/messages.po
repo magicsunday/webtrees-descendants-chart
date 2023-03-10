@@ -1,0 +1,116 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Descendants chart\n"
+"POT-Creation-Date: 2023-02-28 09:07+0100\n"
+"PO-Revision-Date: 2023-03-03 15:20+0100\n"
+"Last-Translator: Enes Sadikovic enes_s@yahoo.com\n"
+"Language-Team: \n"
+"Language: sr_RS@latin\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Poedit-Basepath: ../../../..\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-SearchPath-0: webtrees-descendants-chart/module.php\n"
+"X-Poedit-SearchPath-1: webtrees-descendants-chart/src\n"
+"X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
+"X-Poedit-SearchPath-3: webtrees-module-base/src\n"
+
+#: webtrees-descendants-chart/src/Module.php:105
+#: webtrees-descendants-chart/src/Module.php:216
+msgid "Descendants chart"
+msgstr "Grafikon potomaka"
+
+#: webtrees-descendants-chart/src/Module.php:115
+msgid "An overview of an individual’s descendants."
+msgstr "Pregled potomaka pojedinca."
+
+#: webtrees-descendants-chart/src/Module.php:219
+#: webtrees-descendants-chart/src/Traits/ModuleChartTrait.php:41
+#, php-format
+msgid "Descendants chart of %s"
+msgstr "Grafikon potomaka osobe %s"
+
+#: webtrees-descendants-chart/src/Module.php:235
+msgid "Use Ctrl + scroll to zoom in the view"
+msgstr "Koristi CTRL + skrol da bi zumirao prikaz"
+
+#: webtrees-descendants-chart/src/Module.php:236
+msgid "Move the view with two fingers"
+msgstr "Pomeraj prikaz sa dva prsta"
+
+#: webtrees-module-base/src/Processor/DateProcessor.php:129
+#, php-format
+msgid "Born: %s"
+msgstr "Rođen: %s"
+
+#: webtrees-module-base/src/Processor/DateProcessor.php:133
+#, php-format
+msgid "Died: %s"
+msgstr "Umro: %s"
+
+#: webtrees-module-base/src/Processor/DateProcessor.php:137
+msgid "Deceased"
+msgstr "Preminuo"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:40
+msgid "Individual"
+msgstr "Osoba"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:57
+msgid "Generations"
+msgstr "Generacije"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:74
+msgid "Orientation"
+msgstr "Orijentacija"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:81
+msgid "left"
+msgstr "levo"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:82
+msgid "right"
+msgstr "desno"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:83
+msgid "up"
+msgstr "gore"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:84
+msgid "down"
+msgstr "dole"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:95
+msgid "Layout"
+msgstr "Prikaz"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:102
+msgid "Hide the spouses associated with an individual."
+msgstr "Sakrij supružnike povezane sa osobom."
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:121
+msgid "Show more options"
+msgstr "Prikaži dodatne opcije"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:122
+msgid "Hide more options"
+msgstr "Sakrij dodatne opcije"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:127
+msgid "view"
+msgstr "pogledaj"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:133
+msgid "Re center"
+msgstr "Ponovo centriraj"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:138
+msgid "Export as PNG"
+msgstr "Eksportuj kao PNG"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:141
+msgid "Export as SVG"
+msgstr "Eksportuj kao SVG"
