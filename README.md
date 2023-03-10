@@ -28,7 +28,7 @@ deactivated via the configuration form so that only the direct descendants are d
 
 ![descendants-chart-4-generations](assets/descendants-chart-4-generations.png)
 
-*Fig. 1: A four generations descendants chart (drawn top to bottom)*
+*Fig. 1: A four generations descendants chart with spouses (drawn top to bottom)*
 
 
 ## Installation
