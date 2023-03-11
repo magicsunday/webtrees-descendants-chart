@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
 "POT-Creation-Date: 2023-02-28 09:07+0100\n"
-"PO-Revision-Date: 2023-02-28 09:07+0100\n"
+"PO-Revision-Date: 2023-03-11 07:36+0100\n"
 "Last-Translator: TheDutchJewel <thedutchjewel@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -85,19 +85,19 @@ msgstr "omlaag"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:95
 msgid "Layout"
-msgstr ""
+msgstr "Indeling"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:102
 msgid "Hide the spouses associated with an individual."
-msgstr ""
+msgstr "Verberg de partners van een persoon."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:121
 msgid "Show more options"
-msgstr ""
+msgstr "Meer opties"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:122
 msgid "Hide more options"
-msgstr ""
+msgstr "Minder opties"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:127
 msgid "view"
