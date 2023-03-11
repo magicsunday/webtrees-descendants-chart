@@ -63,6 +63,8 @@
 
 .webtrees-descendants-chart-container svg .wt-chart-box-name-alt {
     fill: currentColor;
+    font-weight: 500;
+    font-size: 0.85em;
 }
 
 .webtrees-descendants-chart-container svg .wt-chart-box-name:hover:not(.wt-chart-box-name-alt) {

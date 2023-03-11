@@ -19,17 +19,18 @@ import {Node} from "./d3";
  * The plain person data.
  *
  * @typedef {Object} Data
- * @property {Number}   id            The unique ID of the person
- * @property {String}   xref          The unique identifier of the person
- * @property {String}   sex           The sex of the person
- * @property {String}   birth         The birthdate of the person
- * @property {String}   death         The death date of the person
- * @property {String}   timespan      The lifetime description
- * @property {String}   thumbnail     The URL of the thumbnail image
- * @property {String}   name          The full name of the individual
- * @property {String}   preferredName The preferred first name
- * @property {String[]} firstNames    The list of first names
- * @property {String[]} lastNames     The list of last names
+ * @property {Number}   id              The unique ID of the person
+ * @property {String}   xref            The unique identifier of the person
+ * @property {String}   sex             The sex of the person
+ * @property {String}   birth           The birthdate of the person
+ * @property {String}   death           The death date of the person
+ * @property {String}   timespan        The lifetime description
+ * @property {String}   thumbnail       The URL of the thumbnail image
+ * @property {String}   name            The full name of the individual
+ * @property {String}   preferredName   The preferred first name
+ * @property {String[]} firstNames      The list of first names
+ * @property {String[]} lastNames       The list of last names
+ * @property {String}   alternativeName The alternative name of the individual
  */
 
 /**

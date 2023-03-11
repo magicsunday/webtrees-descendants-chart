@@ -25,9 +25,17 @@ export default class Text
      */
     constructor(orientation, image = null)
     {
-        this._orientation = orientation;
-        this._image       = image;
-        this._textPadding = 15;
+        this._orientation  = orientation;
+        this._image        = image;
+        this._textPaddingX = 5;
+        this._textPaddingY = 15;
+
+        if ((this._orientation instanceof OrientationLeftRight)
+            || (this._orientation instanceof OrientationRightLeft)
+        ) {
+            this._textPaddingX = 15;
+            this._textPaddingY = 15;
+        }
 
         // Calculate values
         this._x     = this.calculateX();
@@ -42,7 +50,7 @@ export default class Text
      */
     calculateX()
     {
-        const xStart = -(this._orientation.boxWidth / 2) + this._textPadding;
+        const xStart = -(this._orientation.boxWidth / 2) + this._textPaddingX;
 
         if (!this._image) {
             return xStart;
@@ -62,14 +70,14 @@ export default class Text
         if ((this._orientation instanceof OrientationLeftRight)
             || (this._orientation instanceof OrientationRightLeft)
         ) {
-            return -this._textPadding;
+            return -this._textPaddingY;
         }
 
         if (!this._image) {
-            return -(this._orientation.boxHeight / 2) + (this._textPadding * 2);
+            return -(this._orientation.boxHeight / 2) + (this._textPaddingY * 2);
         }
 
-        return this._image.y + this._image.height + (this._textPadding * 2);
+        return this._image.y + this._image.height + (this._textPaddingY * 2);
     }
 
     /**
@@ -80,7 +88,7 @@ export default class Text
     calculateWidth()
     {
         // Width of box minus the right/left padding
-        const defaultWidth = this._orientation.boxWidth - (this._textPadding * 2);
+        const defaultWidth = this._orientation.boxWidth - (this._textPaddingX * 2);
 
         if (!this._image) {
             return defaultWidth;

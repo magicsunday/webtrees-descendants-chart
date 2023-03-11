@@ -383,7 +383,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         $parents  = [];
 
         $parents[$individual->xref()] = [
-            'data' => $this->getIndividualData($individual, null, $generation),
+            'data' => $this->getIndividualData($individual, $generation),
         ];
 
         if ($families->count() > 0) {
@@ -413,7 +413,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 
                 if ($spouse !== null) {
                     $parentData = [
-                        'data'     => $this->getIndividualData($spouse, $individual, $generation),
+                        'data'     => $this->getIndividualData($spouse, $generation, $individual),
                         'spouse'   => $parents[$individual->xref()]['data']['id'],
                         'family'   => $familyIndex,
                         'children' => array_values($children),
@@ -502,19 +502,13 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     /**
      * Returns whether the given text is in RTL style or not.
      *
-     * @param string[] $text The text to check
+     * @param string $text The text to check
      *
      * @return bool
      */
-    private function isRtl(array $text): bool
+    private function isRtl(string $text): bool
     {
-        foreach ($text as $entry) {
-            if (I18N::scriptDirection(I18N::textScript($entry)) === 'rtl') {
-                return true;
-            }
-        }
-
-        return false;
+        return I18N::scriptDirection(I18N::textScript($text)) === 'rtl';
     }
 
     /**

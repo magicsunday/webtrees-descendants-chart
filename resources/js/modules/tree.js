@@ -61,34 +61,27 @@ export default class Tree
         // Remove the pseudo root node
         nodes.shift();
 
-        // Normalize for fixed-depth
-        nodes.forEach((individual) => {
-            this._orientation.norm(individual);
-        });
-
         // Arrange the position of the individual with the first spouse so that they are close to each other
         nodes.forEach((node) => {
-            if (node.data && node.data.spouse) {
+            // Only the first family
+            if (node.data
+                && node.data.spouse
+                && (node.data.family === 0)
+            ) {
                 const spouse = this.findSpouseById(node.data.spouse, nodes);
 
                 if ((this._orientation instanceof OrientationLeftRight)
                     || (this._orientation instanceof OrientationRightLeft)
                 ) {
-                    const diffY = (((node.y - spouse.y) - this._orientation.boxHeight) - (this._orientation.yOffset / 2));
+                    const diffY = ((node.y - spouse.y) - this._orientation.nodeWidth) / 2;
 
-                    // Only the first family
-                    if ((diffY !== 0) && (node.data.family === 0)) {
-                        node.y -= diffY / 2;
-                        spouse.y += diffY / 2;
-                    }
+                    node.y -= diffY;
+                    spouse.y += diffY;
                 } else {
-                    const diffX = (((node.x - spouse.x) - this._orientation.boxWidth) - (this._orientation.xOffset / 2));
+                    const diffX = ((node.x - spouse.x) - this._orientation.nodeWidth) / 2;
 
-                    // Only the first family
-                    if ((diffX !== 0) && (node.data.family === 0)) {
-                        node.x -= diffX / 2;
-                        spouse.x += diffX / 2;
-                    }
+                    node.x -= diffX;
+                    spouse.x += diffX;
                 }
             }
         });
@@ -97,6 +90,8 @@ export default class Tree
         const firstNodeWithChildren = nodes.find(node => node.children && (node.children.length > 0));
 
         if (typeof firstNodeWithChildren !== "undefined") {
+            const moveBy = this._orientation.nodeWidth / 2;
+
             firstNodeWithChildren.each((node) => {
                 if (
                     Object.hasOwn(node.data, "spouse")
@@ -105,16 +100,6 @@ export default class Tree
                     && Array.isArray(node.children)
                     && (node.children.length >= 1)
                 ) {
-                    let moveBy;
-
-                    if ((this._orientation instanceof OrientationLeftRight)
-                        || (this._orientation instanceof OrientationRightLeft)
-                    ) {
-                        moveBy = (this._orientation.boxHeight / 2) + (this._orientation.yOffset / 4);
-                    } else {
-                        moveBy = (this._orientation.boxWidth / 2) + (this._orientation.xOffset / 4);
-                    }
-
                     this.moveChildren(node, moveBy);
                 }
             });
@@ -190,8 +175,8 @@ export default class Tree
         //     }
         // });
 
-        this.drawLinks(links, source);
         this.drawNodes(nodes, source);
+        this.drawLinks(links, source);
 
         // Stash the old positions for transition.
         nodes.forEach((individual) => {
@@ -546,10 +531,10 @@ export default class Tree
             // Background of image (only required if thumbnail has transparency (like the silhouettes))
             group
                 .append("rect")
-                .attr("rx", this._box.image.rx)
-                .attr("ry", this._box.image.ry)
                 .attr("x", this._box.image.x)
                 .attr("y", this._box.image.y)
+                .attr("rx", this._box.image.rx)
+                .attr("ry", this._box.image.ry)
                 .attr("width", this._box.image.width)
                 .attr("height", this._box.image.height)
                 .attr("fill", "rgb(255, 255, 255)");
@@ -572,10 +557,10 @@ export default class Tree
             // Border around image
             group
                 .append("rect")
-                .attr("rx", this._box.image.rx)
-                .attr("ry", this._box.image.ry)
                 .attr("x", this._box.image.x)
                 .attr("y", this._box.image.y)
+                .attr("rx", this._box.image.rx)
+                .attr("ry", this._box.image.ry)
                 .attr("width", this._box.image.width)
                 .attr("height", this._box.image.height)
                 .attr("fill", "none")
@@ -699,6 +684,22 @@ export default class Tree
             }
 
             ++i;
+        }
+    }
+
+    /**
+     * Creates a single <tspan> element for each alternative name and append it to the parent element.
+     *
+     * @param {selection} parent The parent (<text> or <textPath>) element to which the <tspan> elements are to be attached
+     * @param {Person}    person The D3 data object containing the individual data
+     * @param {Number}    dx     Delta X offset used to create a small spacing between multiple words
+     */
+    addAlternativeName(parent, person, dx = 0)
+    {
+        if (person.data.alternativeName !== "") {
+            // Create a <tspan> element for each alternative name
+            let tspan = parent.append("tspan")
+                .text(person.data.alternativeName);
         }
     }
 
@@ -831,27 +832,36 @@ export default class Tree
                 .attr("class", "wt-chart-box-name")
                 .attr("text-anchor", "middle")
                 .attr("alignment-baseline", "central")
-                .attr("dy", this._box.text.y);
+                .attr("dy", this._box.text.y - 5);
 
             let text2 = name.append("text")
                 .attr("class", "wt-chart-box-name")
                 .attr("text-anchor", "middle")
                 .attr("alignment-baseline", "central")
-                .attr("dy", this._box.text.y + 20);
+                .attr("dy", this._box.text.y + 15);
+
+            let text3 = name.append("text")
+                .attr("class", "wt-chart-box-name wt-chart-box-name-alt")
+                .attr("text-anchor", "middle")
+                .attr("direction", person.data.isAltRtl ? "rtl": "ltr")
+                .attr("alignment-baseline", "central")
+                .attr("dy", this._box.text.y + 40);
 
             this.addFirstNames(text1, person);
             this.addLastNames(text2, person);
+            this.addAlternativeName(text3, person);
 
-            // If both first and last names are empty, add the full name as an alternative
-            if (!person.data.firstNames.length
-                && !person.data.lastNames.length
-            ) {
-                text1.append("tspan")
-                    .text(person.data.name);
-            }
+            // // If both first and last names are empty, add the full name as an alternative
+            // if (!person.data.firstNames.length
+            //     && !person.data.lastNames.length
+            // ) {
+            //     text1.append("tspan")
+            //         .text(person.data.name);
+            // }
 
             this.truncateNames(text1);
             this.truncateNames(text2);
+            this.truncateNames(text3);
 
         // Left/Right and Right/Left
         } else {
@@ -859,20 +869,29 @@ export default class Tree
                 .attr("class", "wt-chart-box-name")
                 .attr("text-anchor", this._configuration.rtl ? "end" : "start")
                 .attr("dx", this._box.text.x)
-                .attr("dy", this._box.text.y);
+                .attr("dy", this._box.text.y - 10);
+
+            let text2 = name.append("text")
+                .attr("class", "wt-chart-box-name wt-chart-box-name-alt")
+                .attr("text-anchor", person.data.isAltRtl ? "end" : "start")
+                .attr("direction", person.data.isAltRtl ? "rtl": "ltr")
+                .attr("dx", this._box.text.x)
+                .attr("dy", this._box.text.y + 8);
 
             this.addFirstNames(text1, person);
             this.addLastNames(text1, person, 0.25);
+            this.addAlternativeName(text2, person);
 
-            // If both first and last names are empty, add the full name as an alternative
-            if (!person.data.firstNames.length
-                && !person.data.lastNames.length
-            ) {
-                text1.append("tspan")
-                    .text(person.data.name);
-            }
+            // // If both first and last names are empty, add the full name as an alternative
+            // if (!person.data.firstNames.length
+            //     && !person.data.lastNames.length
+            // ) {
+            //     text1.append("tspan")
+            //         .text(person.data.name);
+            // }
 
             this.truncateNames(text1);
+            this.truncateNames(text2);
         }
     }
 
@@ -894,7 +913,7 @@ export default class Tree
                 .attr("class", "date")
                 .attr("text-anchor", "middle")
                 .attr("alignment-baseline", "central")
-                .attr("dy", this._box.text.y + 50);
+                .attr("dy", this._box.text.y + 70);
 
             text.append("title")
                 .text(person.data.timespan);
@@ -906,13 +925,13 @@ export default class Tree
                 text.selectAll("tspan")
                     .each(this.truncateDate(text, this._box.text.width));
 
-                tspan.text(tspan.text() + "\u2026");
+                tspan.text(tspan.text() + "…");
             }
 
             return;
         }
 
-        let offset = 20;
+        let offset = 30;
 
         if (person.data.birth) {
             let col1 = table
@@ -924,7 +943,7 @@ export default class Tree
                 .attr("dy", this._box.text.y + offset);
 
             col1.append("tspan")
-                .text("\u2605")
+                .text("★")
                 .attr("x", this._box.text.x + 5);
 
             let col2 = table
@@ -947,7 +966,7 @@ export default class Tree
                 col2.selectAll("tspan")
                     .each(this.truncateDate(col2, this._box.text.width - 25));
 
-                tspan.text(tspan.text() + "\u2026");
+                tspan.text(tspan.text() + "…");
             }
         }
 
@@ -962,10 +981,10 @@ export default class Tree
                 .attr("text-anchor", "middle")
                 .attr("dominant-baseline", "middle")
                 .attr("x", this._box.text.x)
-                .attr("dy", this._box.text.y + offset);
+                .attr("dy", this._box.text.y + offset + 1);
 
             col1.append("tspan")
-                .text("\u2020")
+                .text("†")
                 .attr("x", this._box.text.x + 5);
 
             let col2 = table
@@ -988,7 +1007,7 @@ export default class Tree
                 col2.selectAll("tspan")
                     .each(this.truncateDate(col2, this._box.text.width - 25));
 
-                tspan.text(tspan.text().trim() + "\u2026");
+                tspan.text(tspan.text().trim() + "…");
             }
         }
     }

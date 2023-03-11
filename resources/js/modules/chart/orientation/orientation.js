@@ -23,7 +23,7 @@ export default class Orientation
     constructor(boxWidth, boxHeight)
     {
         // The distance between single nodes
-        this._xOffset = 60;
+        this._xOffset = 30;
         this._yOffset = 60;
 
         this._boxWidth    = boxWidth;
@@ -99,6 +99,16 @@ export default class Orientation
     nodeWidth()
     {
         throw "Abstract method nodeWidth() not implemented";
+    }
+
+    /**
+     * Returns the height of the node.
+     *
+     * @returns {Number}
+     */
+    nodeHeight()
+    {
+        throw "Abstract method nodeHeight() not implemented";
     }
 
     /**

@@ -43,15 +43,6 @@ export default class Configuration
         //
         this.padding   = 15;
 
-        // Padding around the image circle
-        this.imagePadding = 5;
-
-        // The radius of the image
-        // this.imageRadius = (this.orientation.boxHeight / 2) - this.imagePadding;
-
-        // The diameter of the image
-        // this.imageDiameter = this.imageRadius * 2;
-
         // Default number of generations to display
         this._generations = generations;
 
@@ -60,7 +51,6 @@ export default class Configuration
 
         // // Default font size, color and scaling
         this._fontSize  = 14;
-        // this._fontScale = fontScale;
         this.fontColor = "rgb(0, 0, 0)";
 
         // Duration of update animation if clicked on a person

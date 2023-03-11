@@ -6,6 +6,8 @@
  */
 
 import * as d3 from "../d3";
+import OrientationLeftRight from "./orientation/orientation-leftRight.js";
+import OrientationRightLeft from "./orientation/orientation-rightLeft.js";
 
 /**
  * This class handles the hierarchical data.
@@ -39,38 +41,59 @@ export default class Hierarchy
         let root = d3.hierarchy(data);
 
         // Declares a tree layout and assigns the size
-        const treeLayout = d3.tree()
-            .nodeSize([this._configuration.orientation.nodeWidth, 0])
+        const tree = d3.tree()
+            .nodeSize([this._configuration.orientation.nodeWidth, this._configuration.orientation.nodeHeight])
             .separation((left, right) => this.separation(left, right));
 
         // Map the root node data to the tree layout
         this._root  = root;
-        this._nodes = treeLayout(root);
+        this._nodes = tree(root);
+
+//         // TODO Calculate height of SVG
+//         if ((this._configuration.orientation instanceof OrientationLeftRight)
+//             || (this._configuration.orientation instanceof OrientationRightLeft)
+//         ) {
+//             let x0 = Infinity;
+//             let x1 = -x0;
+//
+//             root.each(d => {
+//                 if (d.x > x1) x1 = d.x;
+//                 if (d.x < x0) x0 = d.x;
+//             });
+//         }
+//
+//         // const height = x1 - x0 + this._configuration.orientation.nodeHeight * 2;
+// // console.log(height);
+
+        // Normalize node coordinates (swap values for left/right layout)
+        root.each((node) => {
+            this._configuration.orientation.norm(node);
+        });
     }
 
     /**
      * Returns the separation value.
      *
-     * @param {Individual} left
-     * @param {Individual} right
+     * @param {Node} left
+     * @param {Node} right
      *
      * @return {Number}
      */
     separation(left, right)
     {
         // The left child has spouses (1 or more), add some space between the nodes
-        if (typeof left.data.spouses !== "undefined") {
-            return 0.75;
+        if (Object.hasOwn(left.data, 'spouses')) {
+            return 1.25;
         }
 
         // The right side is a spouse that is linked back to the actual child, so add some space
-        if (typeof right.data.spouse !== "undefined") {
-            return 0.75;
+        if (Object.hasOwn(right.data, 'spouse')) {
+            return 1.25;
         }
 
         // Single siblings and cousins should be close
         // to each other if parents are the same
-        return left.parent === right.parent ? 0.5 : 1.0;
+        return left.parent === right.parent ? 1.0 : 2.0;
     }
 
     /**

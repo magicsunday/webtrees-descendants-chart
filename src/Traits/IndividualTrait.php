@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace MagicSunday\Webtrees\DescendantsChart\Traits;
 
 use DOMDocument;
-use DOMNode;
 use DOMXPath;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Individual;
@@ -27,41 +26,11 @@ use Fisharebest\Webtrees\Individual;
 trait IndividualTrait
 {
     /**
-     * The XPath identifier to extract the first name parts.
-     *
-     * @var string
-     */
-    private string $xpathFirstNames
-        = '//span[@class="NAME"]//text()[parent::*[not(@class="wt-nickname")]][following::span[@class="SURN"]]';
-
-    /**
-     * The XPath identifier to extract the last name parts (surname + surname suffix).
-     *
-     * @var string
-     */
-    private string $xpathLastNames
-        = '//span[@class="NAME"]//span[@class="SURN"]/text()|//span[@class="SURN"]/following::text()';
-
-    /**
-     * The XPath identifier to extract the nickname part.
-     *
-     * @var string
-     */
-    private string $xpathNickname = '//span[@class="NAME"]//q[@class="wt-nickname"]/text()';
-
-    /**
      * The XPath identifier to extract the starred name part.
      *
      * @var string
      */
     private string $xpathPreferredName = '//span[@class="NAME"]//span[@class="starredname"]/text()';
-
-    /**
-     * The XPath identifier to extract the alternative name parts.
-     *
-     * @var string
-     */
-    private string $xpathAlternativeName = '//span[contains(attribute::class, "NAME")]';
 
     /**
      * Returns the primary name used in the chart.
@@ -103,12 +72,12 @@ trait IndividualTrait
      * Get the individual data required for display the chart.
      *
      * @param Individual      $individual The current individual
-     * @param null|Individual $spouse     The current spouse of the individual
      * @param int             $generation The generation the person belongs to
+     * @param null|Individual $spouse     The current spouse of the individual
      *
      * @return array<string, array<string>|bool|int|string|Individual>
      */
-    private function getIndividualData(Individual $individual, Individual $spouse = null, int $generation): array
+    private function getIndividualData(Individual $individual, int $generation, Individual $spouse = null): array
     {
         $primaryName = $this->getPrimaryName(
             $individual,
@@ -124,42 +93,35 @@ trait IndividualTrait
 
         // The name of the person without formatting of the individual parts of the name.
         // Remove placeholders as we do not need them in this module
-        $fullNN = str_replace(
-            [
-                Individual::NOMEN_NESCIO,
-                Individual::PRAENOMEN_NESCIO,
-            ],
-            '',
-            $primaryName['fullNN']
-        );
+        $fullNN = $this->replacePlaceholders($primaryName['fullNN']);
 
         // Extract name parts (Do not change processing order!)
-        $preferredName    = $this->getPreferredName($xpath);
-        $lastNames        = $this->getLastNames($xpath);
-        $firstNames       = $this->getFirstNames($xpath);
-        $alternativeNames = $this->getAlternateNames($individual);
+        $preferredName   = $this->getPreferredName($xpath);
+        $lastNames       = $this->splitAndCleanName($primaryName['surn']);
+        $firstNames      = $this->splitAndCleanName($primaryName['givn']);
+        $alternativeName = $this->getAlternateName($individual);
 
         // Create a unique ID for each individual
         static $id = 0;
 
         return [
-            'id'               => ++$id,
-            'xref'             => $individual->xref(),
-            'url'              => $individual->url(),
-            'updateUrl'        => $this->getUpdateRoute($individual),
-            'generation'       => $generation,
-            'name'             => trim($fullNN),
-            'firstNames'       => $firstNames,
-            'lastNames'        => $lastNames,
-            'preferredName'    => $preferredName,
-            'alternativeNames' => $alternativeNames,
-            'isAltRtl'         => $this->isRtl($alternativeNames),
-            'thumbnail'        => $this->getIndividualImage($individual),
-            'sex'              => $individual->sex(),
-            'birth'            => $this->decodeValue($individual->getBirthDate()->display()),
-            'death'            => $this->decodeValue($individual->getDeathDate()->display()),
-            'timespan'         => $this->getLifetimeDescription($individual),
-            'individual'       => $individual,
+            'id'              => ++$id,
+            'xref'            => $individual->xref(),
+            'url'             => $individual->url(),
+            'updateUrl'       => $this->getUpdateRoute($individual),
+            'generation'      => $generation,
+            'name'            => $fullNN,
+            'firstNames'      => $firstNames,
+            'lastNames'       => $lastNames,
+            'preferredName'   => $preferredName,
+            'alternativeName' => $alternativeName,
+            'isAltRtl'        => $this->isRtl($alternativeName),
+            'thumbnail'       => $this->getIndividualImage($individual),
+            'sex'             => $individual->sex(),
+            'birth'           => $this->decodeValue($individual->getBirthDate()->display()),
+            'death'           => $this->decodeValue($individual->getDeathDate()->display()),
+            'timespan'        => $this->getLifetimeDescription($individual),
+            'individual'      => $individual,
         ];
     }
 
@@ -259,52 +221,43 @@ trait IndividualTrait
     }
 
     /**
-     * Returns all first names from the given full name.
+     * Replace name placeholders.
      *
-     * @param DOMXPath $xpath The DOMXPath instance used to parse for the preferred name.
+     * @param string $value
      *
-     * @return string[]
+     * @return string
      */
-    public function getFirstNames(DOMXPath $xpath): array
+    private function replacePlaceholders(string $value): string
     {
-        $nodeList   = $xpath->query($this->xpathFirstNames);
-        $firstNames = [];
-
-        if ($nodeList !== false) {
-            /** @var DOMNode $node */
-            foreach ($nodeList as $node) {
-                $firstNames[] = $node->nodeValue !== null ? trim($node->nodeValue) : '';
-            }
-        }
-
-        $firstNames = explode(' ', implode(' ', $firstNames));
-
-        return array_values(array_filter($firstNames));
+        return trim(
+            str_replace(
+                [
+                    Individual::NOMEN_NESCIO,
+                    Individual::PRAENOMEN_NESCIO,
+                ],
+                '…',
+                $value
+            )
+        );
     }
 
     /**
-     * Returns all last names from the given full name.
+     * Splits a name into an array, removing all name placeholders.
      *
-     * @param DOMXPath $xpath The DOMXPath instance used to parse for the preferred name.
+     * @param string $name
      *
      * @return string[]
      */
-    public function getLastNames(DOMXPath $xpath): array
+    public function splitAndCleanName(string $name): array
     {
-        $nodeList  = $xpath->query($this->xpathLastNames);
-        $lastNames = [];
-
-        if ($nodeList !== false) {
-            /** @var DOMNode $node */
-            foreach ($nodeList as $node) {
-                $lastNames[] = $node->nodeValue !== null ? trim($node->nodeValue) : '';
-            }
-        }
-
-        // Concat to full last name (as SURN may contain a prefix and a separate suffix)
-        $lastNames = explode(' ', implode(' ', $lastNames));
-
-        return array_values(array_filter($lastNames));
+        return array_values(
+            array_filter(
+                explode(
+                    ' ',
+                    $this->replacePlaceholders($name)
+                )
+            )
+        );
     }
 
     /**
@@ -328,29 +281,24 @@ trait IndividualTrait
     }
 
     /**
-     * Returns the preferred name from the given full name.
+     * Returns the alternative name of the individual.
      *
      * @param Individual $individual
      *
-     * @return string[]
+     * @return string
      */
-    public function getAlternateNames(Individual $individual): array
+    public function getAlternateName(Individual $individual): string
     {
-        $name = $individual->alternateName();
+        if ($individual->canShowName()
+            && ($individual->getPrimaryName() !== $individual->getSecondaryName())
+        ) {
+            $allNames        = $individual->getAllNames();
+            $alternativeName = $allNames[$individual->getSecondaryName()]['fullNN'];
 
-        if ($name === null) {
-            return [];
+            return $this->replacePlaceholders($alternativeName);
         }
 
-        $xpath    = $this->getXPath($name);
-        $nodeList = $xpath->query($this->xpathAlternativeName);
-
-        if (($nodeList !== false) && ($nodeList->length > 0)) {
-            $nodeItem = $nodeList->item(0);
-            $name     = ($nodeItem !== null) ? ($nodeItem->nodeValue ?? '') : '';
-        }
-
-        return array_filter(explode(' ', $name));
+        return '';
     }
 
     /**

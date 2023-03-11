@@ -80,7 +80,7 @@ export default class Chart
         //     .attr("width", viewBoxWidth)
         //     .attr("height", viewBoxHeight);
 
-        // Set view box attribute
+         // Set view box attribute
         this._svg.get()
             .attr("viewBox", [
                 viewBoxLeft,
@@ -135,6 +135,14 @@ export default class Chart
 
         this.bindClickEventListener();
         this.updateViewBox();
+
+//         const width = 1296;
+//         const height = (this._hierarchy.root.descendants().length + 1) * this._configuration.orientation.nodeWidth;
+//
+// console.log('viewBox', [-this._configuration.orientation.nodeWidth / 2, -this._configuration.orientation.nodeWidth * 3 / 2, width, height]);
+//
+//         this._svg.get()
+//             .attr("viewBox", [-this._configuration.orientation.nodeWidth / 2, -this._configuration.orientation.nodeWidth * 3 / 2, width, height])
     }
 
     /**
