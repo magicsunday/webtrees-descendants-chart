@@ -234,7 +234,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
     /**
      * Returns the page title.
      *
-     * @param Individual $individual The individual used in the curret chart
+     * @param Individual $individual The individual used in the current chart
      *
      * @return string
      */
