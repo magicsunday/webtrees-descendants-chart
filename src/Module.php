@@ -11,7 +11,8 @@ declare(strict_types=1);
 
 namespace MagicSunday\Webtrees\DescendantsChart;
 
-use Aura\Router\RouterContainer;
+use Aura\Router\Exception\ImmutableProperty;
+use Aura\Router\Exception\RouteAlreadyExists;
 use Closure;
 use Fig\Http\Message\RequestMethodInterface;
 use Fisharebest\Webtrees\Auth;
@@ -86,13 +87,15 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 
     /**
      * Initialization.
+     *
+     * @return void
+     *
+     * @throws ImmutableProperty
+     * @throws RouteAlreadyExists
      */
     public function boot(): void
     {
-        /** @var RouterContainer $routerContainer */
-        $routerContainer = app(RouterContainer::class);
-
-        $routerContainer->getMap()
+        Registry::routeFactory()->routeMap()
             ->get(self::ROUTE_DEFAULT, self::ROUTE_DEFAULT_URL, $this)
             ->allows(RequestMethodInterface::METHOD_POST);
 
