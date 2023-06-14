@@ -475,7 +475,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
      * @param int             $generation The generation the person belongs to
      * @param null|Individual $spouse
      *
-     * @return array<string, array<string>|bool|int|string>
+     * @return array<string, array<string>|bool|int|string|Individual>
      */
     private function getIndividualData(Individual $individual, int $generation, Individual $spouse = null): array
     {
