@@ -6,20 +6,22 @@
 
 
 <!-- TOC -->
-* [Installation](#installation)
-  * [Using Composer](#using-composer)
-  * [Using Git](#using-git)
-  * [Manual installation](#manual-installation)
-* [Enable module](#enable-module)
-* [Usage](#usage)
-* [Development](#development)
-  * [Run tests](#run-tests)
+* [Descendants chart](#descendants-chart)
+  * [Installation](#installation)
+    * [Using Composer](#using-composer)
+    * [Using Git](#using-git)
+    * [Manual installation](#manual-installation)
+  * [Setup](#setup)
+    * [Enable module](#enable-module)
+  * [Usage](#usage)
+  * [Development](#development)
+    * [Run tests](#run-tests)
 <!-- TOC -->
 
 
 # Descendants chart
-This module provides an SVG descendant chart for the [webtrees](https://www.webtrees.net) genealogical application. 
-It is able to display up to 25 generations of descendants of an individual.
+This module provides an SVG descendant chart for the [webtrees](https://www.webtrees.net) genealogical application.
+It is capable of displaying up to 25 generations of descendants from an individual.
 
 **But beware, if you select too many generations, it may take a while and even slow down your system significantly.**
 
@@ -32,7 +34,7 @@ deactivated via the configuration form so that only the direct descendants are d
 
 
 ## Installation
-Requires webtrees 2.1.
+Requires webtrees 2.2.
 
 ### Using Composer
 To install using [composer](https://getcomposer.org/), just run the following command from the command line 
@@ -68,10 +70,11 @@ To manually install the module, perform the following steps:
 4. Rename the folder to ``webtrees-descendants-chart``
 
 
-## Enable module
+## Setup
+### Enable module
 Go to the control panel (admin section) of your installation and scroll down to the ``Modules`` section. Click 
 on ``Charts`` (in subsection Genealogy). Enable the ``Descendants chart`` custom module (optionally disable the original
-installed descendants chart module) and save your settings.
+installed descendant chart module) and save your settings.
 
 ![Control panel - Module administration](assets/control-panel-modules.png)
 
