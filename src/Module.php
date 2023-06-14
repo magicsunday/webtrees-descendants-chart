@@ -124,7 +124,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     }
 
     /**
-     * Where does this module store its resources.
+     * Returns the path where this module stores its resources.
      *
      * @return string
      */
@@ -211,7 +211,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     /**
      * Returns the page title.
      *
-     * @param Individual $individual The individual used in the curret chart
+     * @param Individual $individual The individual used in the current chart
      *
      * @return string
      */
