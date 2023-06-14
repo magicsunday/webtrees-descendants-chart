@@ -589,7 +589,9 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
      */
     private function getExportStylesheets(): array
     {
-        $stylesheets   = app(ModuleThemeInterface::class)->stylesheets();
+        /** @var ModuleThemeInterface $moduleTheme */
+        $moduleTheme   = Registry::container()->get(ModuleThemeInterface::class);
+        $stylesheets   = $moduleTheme->stylesheets();
         $stylesheets[] = $this->assetUrl('css/svg.css');
 
         return $stylesheets;
