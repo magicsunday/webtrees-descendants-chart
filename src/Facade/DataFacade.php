@@ -21,9 +21,9 @@ use Illuminate\Support\Collection;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Model\Node;
 use MagicSunday\Webtrees\DescendantsChart\Model\NodeData;
-use MagicSunday\Webtrees\DescendantsChart\Processor\DateProcessor;
-use MagicSunday\Webtrees\DescendantsChart\Processor\ImageProcessor;
-use MagicSunday\Webtrees\DescendantsChart\Processor\NameProcessor;
+use MagicSunday\Webtrees\ModuleBase\Processor\DateProcessor;
+use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
+use MagicSunday\Webtrees\ModuleBase\Processor\NameProcessor;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 
