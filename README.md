@@ -32,7 +32,7 @@ deactivated via the configuration form so that only the direct descendants are d
 
 
 ## Installation
-Requires webtrees 2.1.
+Requires webtrees 2.2.
 
 There are several ways to install the module. The method using [composer](#using-composer) is suitable
 for experienced users, as a developer you can also use [git](#using-git) to get a copy of the repository. For all other users,
@@ -91,7 +91,7 @@ Then follow the steps described in [configuration](#configuration) and [usage](#
 
 
 ## Configuration
-Go to the control panel (admin section) of your installation and scroll down to the ``Modules`` section. Click
+Go to the control panel (admin section) of your installation and scroll down to the ``Modules`` section. Click 
 on ``Charts`` (in subsection Genealogy). Enable the ``Descendants chart`` custom module (optionally disable the original
 installed descendant chart module) and save your settings.
 
