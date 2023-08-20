@@ -1,6 +1,6 @@
 {
     "name": "webtrees-descendants-chart",
-    "version": "1.4.1",
+    "version": "1.4.2-dev",
     "license": "GPL-3.0",
     "repository": {
         "type": "git",
