@@ -252,7 +252,8 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             return [];
         }
 
-        $families = $individual->spouseFamilies();
+        // Get spouse families sorted by marriage date
+        $families = $individual->spouseFamilies()->sort(Family::marriageDateComparator());
         $parents  = [];
 
         $parents[$individual->xref()] = [
@@ -269,7 +270,12 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     $spouse = $family->spouse($individual);
                 }
 
-                foreach ($family->children() as $child) {
+                // Get children sorted by birthdate
+                $familyChildren = $family
+                    ->children()
+                    ->sort(Individual::birthDateComparator());
+
+                foreach ($familyChildren as $child) {
                     $childTree = $this->buildJsonTree($child, $generation + 1);
 
                     if (count($childTree) > 0) {
