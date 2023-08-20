@@ -64,6 +64,29 @@ trait IndividualTrait
     private string $xpathAlternativeName = '//span[contains(attribute::class, "NAME")]';
 
     /**
+     * Returns the primary name used in the chart.
+     *
+     * @param Individual $individual     The current individual
+     * @param bool       $useMarriedName TRUE to return the married name instead of the primary one
+     *
+     * @return array
+     */
+    private function getPrimaryName(Individual $individual, bool $useMarriedName = false): array
+    {
+        $allNames = $individual->getAllNames();
+
+        if ($useMarriedName !== false) {
+            foreach ($allNames as $name) {
+                if ($name['type'] === '_MARNM') {
+                    return $name;
+                }
+            }
+        }
+
+        return $allNames[$individual->getPrimaryName()];
+    }
+
+    /**
      * Get the individual data required for display the chart.
      *
      * @param Individual $individual The current individual
@@ -73,7 +96,10 @@ trait IndividualTrait
      */
     private function getIndividualData(Individual $individual, int $generation): array
     {
-        $primaryName = $individual->getAllNames()[$individual->getPrimaryName()];
+        $primaryName = $this->getPrimaryName(
+            $individual,
+            $this->configuration->getShowMarriedNames()
+        );
 
         // The formatted name of the individual (containing HTML)
         $full = $primaryName['full'];
