@@ -115,6 +115,7 @@ trait IndividualTrait
             'birth'            => $this->decodeValue($individual->getBirthDate()->display()),
             'death'            => $this->decodeValue($individual->getDeathDate()->display()),
             'timespan'         => $this->getLifetimeDescription($individual),
+            'individual'       => $individual,
         ];
     }
 

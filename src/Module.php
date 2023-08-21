@@ -12,8 +12,10 @@ declare(strict_types=1);
 namespace MagicSunday\Webtrees\DescendantsChart;
 
 use Aura\Router\RouterContainer;
+use Closure;
 use Fig\Http\Message\RequestMethodInterface;
 use Fisharebest\Webtrees\Auth;
+use Fisharebest\Webtrees\Date;
 use Fisharebest\Webtrees\Family;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Individual;
@@ -23,12 +25,15 @@ use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Registry;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\View;
+use Illuminate\Support\Collection;
 use JsonException;
 use MagicSunday\Webtrees\DescendantsChart\Traits\IndividualTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleCustomTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
 
 /**
  * Descendants chart module class.
@@ -169,15 +174,10 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         if ($ajax) {
             $this->layout = $this->name() . '::layouts/ajax';
 
-            // The root node with all children
-            $root = [
-                'children' => $this->buildJsonTree($individual),
-            ];
-
             return $this->viewResponse(
                 $this->name() . '::modules/descendants-chart/chart',
                 [
-                    'data'          => $root,
+                    'data'          => $this->createJsonTreeStructure($individual),
                     'configuration' => $this->configuration,
                     'chartParams'   => json_encode($this->getChartParameters(), JSON_THROW_ON_ERROR),
                     'stylesheet'    => $this->assetUrl('css/descendants-chart.css'),
@@ -238,12 +238,131 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     }
 
     /**
+     * Creates the JSON tree structure.
+     *
+     * @param Individual $individual
+     *
+     * @return array
+     */
+    private function createJsonTreeStructure(Individual $individual): array
+    {
+        // The root node with all children
+        $root = [
+            'children' => $this->buildJsonTree($individual),
+        ];
+
+        // We need to post-process the data to correct the structure for some special cases
+        return $this->postProcessTreeStructure($root);
+    }
+
+    /**
+     * Post process the tree structure.
+     *
+     * @param array $root
+     *
+     * @return array
+     */
+    private function postProcessTreeStructure(array $root): array
+    {
+        $recursiveIterator = new RecursiveIteratorIterator(
+            new RecursiveArrayIterator($root),
+            RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        if ($this->configuration->getHideSpouses()) {
+            $this->sortChildrenByBirthdate($recursiveIterator);
+        }
+
+        $this->removeObsoleteData($recursiveIterator);
+
+        return $recursiveIterator->getSubIterator() !== null
+            ? $recursiveIterator->getSubIterator()->getArrayCopy()
+            : [];
+    }
+
+    /**
+     * Sort the list of children by their date of birth.
+     *
+     * If the spouses are not displayed, the children in a polygamous family may not be sorted correctly,
+     * for example, if there are several children with different partners who have mixed dates of birth.
+     *
+     * @param RecursiveIteratorIterator $recursiveIterator
+     *
+     * @return void
+     */
+    private function sortChildrenByBirthdate(RecursiveIteratorIterator $recursiveIterator): void
+    {
+        // Sort children by birthdate
+        foreach ($recursiveIterator as $key => $value) {
+            if (is_array($value) && array_key_exists('children', $value)) {
+                $value['children'] = (new Collection($value['children']))
+                    ->sort(self::birthDateComparator())
+                    ->values()
+                    ->toArray();
+
+                $this->updateValueInIterator($recursiveIterator, $value);
+            }
+        }
+    }
+
+    /**
+     * Removes any obsolete/intermediate data from the final structure.
+     *
+     * @param RecursiveIteratorIterator $recursiveIterator
+     *
+     * @return void
+     */
+    private function removeObsoleteData(RecursiveIteratorIterator $recursiveIterator): void
+    {
+        // Remove individual instance as this was only required to sort by birthdate in the previous step
+        foreach ($recursiveIterator as $key => $value) {
+            if (is_array($value) && array_key_exists('individual', $value)) {
+                unset($value['individual']);
+
+                $this->updateValueInIterator($recursiveIterator, $value);
+            }
+        }
+    }
+
+    /**
+     * Updates the value in the iterator.
+     *
+     * @param RecursiveIteratorIterator $recursiveIterator
+     * @param mixed                     $value
+     *
+     * @return void
+     */
+    private function updateValueInIterator(RecursiveIteratorIterator $recursiveIterator, $value): void
+    {
+        // Get the current depth and traverse back up the tree, saving the modifications
+        $currentDepth = $recursiveIterator->getDepth();
+
+        for ($subDepth = $currentDepth; $subDepth >= 0; --$subDepth) {
+            // Get the current level iterator
+            $subIterator = $recursiveIterator->getSubIterator($subDepth);
+
+            // If we are on the level we want to change, use the replacements ($value)
+            // otherwise set the key to the parent iterators value
+            if ($subIterator !== null) {
+                $subIteratorNext = $recursiveIterator->getSubIterator($subDepth + 1);
+
+                $subIterator->offsetSet(
+                    $subIterator->key(),
+                    $subDepth === $currentDepth
+                        ? $value
+                        : ($subIteratorNext !== null ? $subIteratorNext->getArrayCopy() : [])
+                );
+            }
+        }
+    }
+
+    /**
      * Recursively build the data array of the individual ancestors.
      *
      * @param null|Individual $individual The start person
      * @param int             $generation The current generation
      *
-     * @return mixed[]
+     * @return array
      */
     private function buildJsonTree(?Individual $individual, int $generation = 1): array
     {
@@ -311,7 +430,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                         $parents[$individual->xref()]['children'] = [];
                     }
 
-                    // If there is no spouse merge all children from all families
+                    // If there is no spouse, merge all children from all families
                     // of the individual into one list
                     $parents[$individual->xref()]['children'] = array_merge(
                         $parents[$individual->xref()]['children'],
@@ -322,6 +441,21 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         }
 
         return array_values($parents);
+    }
+
+    /**
+     * A closure which will compare individuals by birthdate.
+     *
+     * @return Closure(array,array):int
+     */
+    public static function birthDateComparator(): Closure
+    {
+        return static function (array $x, array $y): int {
+            return Date::compare(
+                $x['data']['individual']->getEstimatedBirthDate(),
+                $y['data']['individual']->getEstimatedBirthDate()
+            );
+        };
     }
 
     /**
