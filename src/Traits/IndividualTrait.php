@@ -132,13 +132,15 @@ trait IndividualTrait
         $firstNames       = $this->getFirstNames($xpath);
         $alternativeNames = $this->getAlternateNames($individual);
 
+        static $id = 0;
+
         return [
-            'id'               => 0,
+            'id'               => ++$id,
             'xref'             => $individual->xref(),
             'url'              => $individual->url(),
             'updateUrl'        => $this->getUpdateRoute($individual),
             'generation'       => $generation,
-            'name'             => $fullNN,
+            'name'             => trim($fullNN),
             'firstNames'       => $firstNames,
             'lastNames'        => $lastNames,
             'preferredName'    => $preferredName,
