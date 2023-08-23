@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
-"POT-Creation-Date: 2023-02-28 09:07+0100\n"
-"PO-Revision-Date: 2023-03-11 07:36+0100\n"
+"POT-Creation-Date: 2023-08-23 14:35+0200\n"
+"PO-Revision-Date: 2023-08-23 14:35+0200\n"
 "Last-Translator: TheDutchJewel <thedutchjewel@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -18,12 +18,12 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: webtrees-descendants-chart/src/Module.php:105
+#: webtrees-descendants-chart/src/Module.php:109
 #: webtrees-descendants-chart/src/Module.php:216
 msgid "Descendants chart"
 msgstr "Afstammelingendiagram"
 
-#: webtrees-descendants-chart/src/Module.php:115
+#: webtrees-descendants-chart/src/Module.php:119
 msgid "An overview of an individual’s descendants."
 msgstr "Een overzicht van de afstammelingen van een persoon."
 
@@ -41,16 +41,19 @@ msgstr "Gebruik Ctrl + scroll om in te zoomen op de weergave"
 msgid "Move the view with two fingers"
 msgstr "Verplaats de weergave met twee vingers"
 
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:199
 #: webtrees-module-base/src/Processor/DateProcessor.php:129
 #, php-format
 msgid "Born: %s"
 msgstr "Geboren: %s"
 
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:203
 #: webtrees-module-base/src/Processor/DateProcessor.php:133
 #, php-format
 msgid "Died: %s"
 msgstr "Overleden: %s"
 
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:207
 #: webtrees-module-base/src/Processor/DateProcessor.php:137
 msgid "Deceased"
 msgstr "Overleden"
@@ -91,26 +94,32 @@ msgstr "Indeling"
 msgid "Hide the spouses associated with an individual."
 msgstr "Verberg de partners van een persoon."
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:121
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:111
+#, fuzzy
+#| msgid "Show more options"
+msgid "Show married names."
+msgstr "Meer opties"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:130
 msgid "Show more options"
 msgstr "Meer opties"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:122
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:131
 msgid "Hide more options"
 msgstr "Minder opties"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:127
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:136
 msgid "view"
 msgstr "weergeven"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:133
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:142
 msgid "Re center"
 msgstr "Opnieuw centreren"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:138
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:147
 msgid "Export as PNG"
 msgstr "Exporteren als PNG"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:141
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:150
 msgid "Export as SVG"
 msgstr "Exporteren als SVG"
