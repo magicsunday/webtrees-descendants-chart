@@ -430,7 +430,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     $parents[] = $parentData;
 
                     // Add spouse to list
-                    $parents[$individual->xref()]['spouses'][] = $spouse->xref();
+                    $parents[$individual->xref()]['spouses'][] = $parentData['data']['id'];
                 } else {
                     $parents[$individual->xref()]['family'] = $familyIndex;
 
