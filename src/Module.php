@@ -64,7 +64,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     /**
      * @var string
      */
-    public const CUSTOM_VERSION = '1.4.3-dev';
+    public const CUSTOM_VERSION = '1.5.0';
 
     /**
      * @var string
@@ -382,11 +382,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         }
 
         // Get spouse families sorted by marriage date
-        $families = $individual
-            ->spouseFamilies()
-            ->sort(Family::marriageDateComparator())
-            ->values();
-
+        $families = $individual->spouseFamilies()->sort(Family::marriageDateComparator());
         $parents  = [];
 
         $parents[$individual->xref()] = [
@@ -434,7 +430,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     $parents[] = $parentData;
 
                     // Add spouse to list
-                    $parents[$individual->xref()]['spouses'][] = $parentData['data']['id'];
+                    $parents[$individual->xref()]['spouses'][] = $spouse->xref();
                 } else {
                     $parents[$individual->xref()]['family'] = $familyIndex;
 
