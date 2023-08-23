@@ -382,7 +382,11 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         }
 
         // Get spouse families sorted by marriage date
-        $families = $individual->spouseFamilies()->sort(Family::marriageDateComparator());
+        $families = $individual
+            ->spouseFamilies()
+            ->sort(Family::marriageDateComparator())
+            ->values();
+
         $parents  = [];
 
         $parents[$individual->xref()] = [
@@ -423,7 +427,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     $parentData = [
                         'data'     => $this->getIndividualData($spouse, $individual, $generation),
                         'spouse'   => $parents[$individual->xref()]['data']['id'],
-                        'family'   => $familyIndex + 1,
+                        'family'   => $familyIndex,
                         'children' => array_values($children),
                     ];
 
@@ -432,7 +436,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     // Add spouse to list
                     $parents[$individual->xref()]['spouses'][] = $parentData['data']['id'];
                 } else {
-                    $parents[$individual->xref()]['family'] = $familyIndex + 1;
+                    $parents[$individual->xref()]['family'] = $familyIndex;
 
                     if (!isset($parents[$individual->xref()]['children'])) {
                         $parents[$individual->xref()]['children'] = [];
