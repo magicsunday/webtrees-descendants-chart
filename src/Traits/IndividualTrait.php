@@ -66,38 +66,46 @@ trait IndividualTrait
     /**
      * Returns the primary name used in the chart.
      *
-     * @param Individual $individual     The current individual
-     * @param bool       $useMarriedName TRUE to return the married name instead of the primary one
+     * @param Individual      $individual     The current individual
+     * @param null|Individual $spouse
+     * @param bool            $useMarriedName TRUE to return the married name instead of the primary one
      *
      * @return array
      */
-    private function getPrimaryName(Individual $individual, bool $useMarriedName = false): array
+    private function getPrimaryName(Individual $individual, Individual $spouse = null, bool $useMarriedName = false): array
     {
-        $allNames = $individual->getAllNames();
+        $individualNames = $individual->getAllNames();
 
-        if ($useMarriedName !== false) {
-            foreach ($allNames as $name) {
-                if ($name['type'] === '_MARNM') {
-                    return $name;
+        if (($useMarriedName !== false) && ($spouse !== null)) {
+            foreach ($individualNames as $individualName) {
+                foreach ($spouse->getAllNames() as $spouseName) {
+                    if (
+                        ($individualName['type'] === '_MARNM')
+                        && ($individualName['surn'] === $spouseName['surn'])
+                    ) {
+                        return $individualName;
+                    }
                 }
             }
         }
 
-        return $allNames[$individual->getPrimaryName()];
+        return $individualNames[$individual->getPrimaryName()];
     }
 
     /**
      * Get the individual data required for display the chart.
      *
-     * @param Individual $individual The current individual
-     * @param int        $generation The generation the person belongs to
+     * @param Individual      $individual The current individual
+     * @param null|Individual $spouse     The current spouse of the individual
+     * @param int             $generation The generation the person belongs to
      *
      * @return array<string, array<string>|bool|int|string>
      */
-    private function getIndividualData(Individual $individual, int $generation): array
+    private function getIndividualData(Individual $individual, Individual $spouse = null, int $generation): array
     {
         $primaryName = $this->getPrimaryName(
             $individual,
+            $spouse,
             $this->configuration->getShowMarriedNames()
         );
 
