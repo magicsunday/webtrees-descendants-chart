@@ -64,7 +64,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     /**
      * @var string
      */
-    public const CUSTOM_VERSION = '1.5.0';
+    public const CUSTOM_VERSION = '1.5.1-dev';
 
     /**
      * @var string
