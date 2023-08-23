@@ -66,10 +66,10 @@ export default class Tree
             this._orientation.norm(individual);
         });
 
-        // Arrange the position of the first spouses so that they are close to each other
+        // Arrange the position of the individual with the first spouse so that they are close to each other
         nodes.forEach((node) => {
             if (node.data && node.data.spouse) {
-                const spouse = nodes.find(individual => individual.data.data.xref === node.data.spouse);
+                const spouse = this.findSpouseById(node.data.spouse, nodes);
 
                 if ((this._orientation instanceof OrientationLeftRight)
                     || (this._orientation instanceof OrientationRightLeft)
@@ -119,9 +119,9 @@ export default class Tree
             });
         }
 
-        // Create list of links between source (node and spouses) and target nodes (children).
+        // Create a list of links between source (node and spouses) and target nodes (children).
         nodes.forEach((node) => {
-            const spouse = nodes.find(individual => individual.data.data.xref === node.data.spouse);
+            const spouse = this.findSpouseById(node.data.spouse, nodes);
 
             if (node.children) {
                 node.children.forEach((child) => {
@@ -145,15 +145,15 @@ export default class Tree
                 // to the respective link as additional values so that they are available later when
                 // calculating the line points.
                 if ((typeof spouse.data.spouses !== "undefined") && (spouse.data.spouses.length > 0)) {
-                    const indexOfSpouse = spouse.data.spouses.indexOf(node.data.data.xref);
+                    const indexOfSpouse = spouse.data.spouses.indexOf(node.data.data.id);
                     const spousesBefore = spouse.data.spouses.slice(0, indexOfSpouse);
 
                     if (spousesBefore.length > 0) {
                         spousesCoords = [];
 
-                        spousesBefore.forEach((xref) => {
-                            // Find matching spouse in list of all nodes
-                            const spouseBefore = nodes.find(individual => individual.data.data.xref === xref);
+                        spousesBefore.forEach((id) => {
+                            // Find matching spouse in the list of all nodes
+                            const spouseBefore = this.findSpouseById(Number(id), nodes);
 
                             // Keep track of the coordinates
                             spousesCoords.push({
@@ -191,6 +191,23 @@ export default class Tree
             individual.x0 = individual.x;
             individual.y0 = individual.y;
         });
+    }
+
+    /**
+     * Finds the related spouse in a list of individuals for the individual ID passed.
+     *
+     * @param {Number}       id
+     * @param {Individual[]} individuals
+     *
+     * @return {Individual}
+     */
+    findSpouseById(id, individuals)
+    {
+        return individuals.find(
+            (spouse) => {
+                return (spouse.data.data.id === id);
+            }
+        );
     }
 
     /**
