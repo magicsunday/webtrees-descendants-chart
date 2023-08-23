@@ -1,15 +1,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
-"POT-Creation-Date: 2023-03-10 07:28+0100\n"
-"PO-Revision-Date: 2023-03-10 07:34+0100\n"
+"POT-Creation-Date: 2023-08-23 14:35+0200\n"
+"PO-Revision-Date: 2023-08-23 14:35+0200\n"
 "Last-Translator: Enes Sadikovic enes_s@yahoo.com\n"
 "Language-Team: \n"
-"Language: sr-Latn\n"
+"Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 "X-Generator: Poedit 3.2.2\n"
 "X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-KeywordsList: translate\n"
@@ -18,12 +19,12 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: webtrees-descendants-chart/src/Module.php:105
+#: webtrees-descendants-chart/src/Module.php:109
 #: webtrees-descendants-chart/src/Module.php:216
 msgid "Descendants chart"
 msgstr "Grafikon potomaka"
 
-#: webtrees-descendants-chart/src/Module.php:115
+#: webtrees-descendants-chart/src/Module.php:119
 msgid "An overview of an individual’s descendants."
 msgstr "Pregled potomaka pojedinca."
 
@@ -41,16 +42,19 @@ msgstr "Koristi CTRL + skrol da bi zumirao prikaz"
 msgid "Move the view with two fingers"
 msgstr "Pomeraj prikaz sa dva prsta"
 
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:199
 #: webtrees-module-base/src/Processor/DateProcessor.php:129
 #, php-format
 msgid "Born: %s"
 msgstr "Rođen: %s"
 
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:203
 #: webtrees-module-base/src/Processor/DateProcessor.php:133
 #, php-format
 msgid "Died: %s"
 msgstr "Umro: %s"
 
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:207
 #: webtrees-module-base/src/Processor/DateProcessor.php:137
 msgid "Deceased"
 msgstr "Preminuo"
@@ -91,26 +95,32 @@ msgstr "Prikaz"
 msgid "Hide the spouses associated with an individual."
 msgstr "Sakrij supružnike povezane sa osobom."
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:121
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:111
+#, fuzzy
+#| msgid "Show more options"
+msgid "Show married names."
+msgstr "Prikaži dodatne opcije"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:130
 msgid "Show more options"
 msgstr "Prikaži dodatne opcije"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:122
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:131
 msgid "Hide more options"
 msgstr "Sakrij dodatne opcije"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:127
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:136
 msgid "view"
 msgstr "pogledaj"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:133
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:142
 msgid "Re center"
 msgstr "Ponovo centriraj"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:138
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:147
 msgid "Export as PNG"
 msgstr "Eksportuj kao PNG"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:141
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:150
 msgid "Export as SVG"
 msgstr "Eksportuj kao SVG"
