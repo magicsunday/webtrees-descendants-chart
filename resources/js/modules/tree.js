@@ -71,23 +71,28 @@ export default class Tree
             if (node.data && node.data.spouse) {
                 const spouse = this.findSpouseById(node.data.spouse, nodes);
 
-                if ((this._orientation instanceof OrientationLeftRight)
-                    || (this._orientation instanceof OrientationRightLeft)
+                // Rearrange spouses only if its one spouse, leave multiple spouses as they are
+                if (spouse.data.spouses
+                    && (spouse.data.spouses.length === 1)
                 ) {
-                    const diffY = (((node.y - spouse.y) - this._orientation.boxHeight) - (this._orientation.yOffset / 2));
+                    if ((this._orientation instanceof OrientationLeftRight)
+                        || (this._orientation instanceof OrientationRightLeft)
+                    ) {
+                        const diffY = (((node.y - spouse.y) - this._orientation.boxHeight) - (this._orientation.yOffset / 2));
 
-                    // Only the first family
-                    if ((diffY !== 0) && (node.data.family === 0)) {
-                        node.y   -= diffY / 2;
-                        spouse.y += diffY / 2;
-                    }
-                } else {
-                    const diffX = (((node.x - spouse.x) - this._orientation.boxWidth) - (this._orientation.xOffset / 2));
+                        // Only the first family
+                        if ((diffY !== 0) && (node.data.family === 0)) {
+                            node.y -= diffY / 2;
+                            spouse.y += diffY / 2;
+                        }
+                    } else {
+                        const diffX = (((node.x - spouse.x) - this._orientation.boxWidth) - (this._orientation.xOffset / 2));
 
-                    // Only the first family
-                    if ((diffX !== 0) && (node.data.family === 0)) {
-                        node.x   -= diffX / 2;
-                        spouse.x += diffX / 2;
+                        // Only the first family
+                        if ((diffX !== 0) && (node.data.family === 0)) {
+                            node.x -= diffX / 2;
+                            spouse.x += diffX / 2;
+                        }
                     }
                 }
             }
@@ -123,7 +128,10 @@ export default class Tree
         nodes.forEach((node) => {
             const spouse = this.findSpouseById(node.data.spouse, nodes);
 
-            if (node.children) {
+            // Process children
+            if ((typeof node.children !== "undefined")
+                && (node.children.length > 0)
+            ) {
                 node.children.forEach((child) => {
                     // Only add links between real children
                     if ((typeof child.data.spouse === "undefined") || (child.data.spouse === null)) {
