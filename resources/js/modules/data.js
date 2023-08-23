@@ -19,6 +19,7 @@ import {Node} from "./d3";
  * The plain person data.
  *
  * @typedef {Object} Data
+ * @property {Number}   id            The unique ID of the person
  * @property {String}   xref          The unique identifier of the person
  * @property {String}   sex           The sex of the person
  * @property {String}   birth         The birthdate of the person
@@ -39,7 +40,7 @@ import {Node} from "./d3";
  * @property {undefined|String[]} spouses  The list of assigned spouses (not available if "spouse" is set)
  * @property {undefined|Object[]} children The list of children of this individual
  * @property {undefined|Number}   family   The family index (0 = first family, 1 = second, ...)
- * @property {undefined|String}   spouse   The XREF of the direct spouse of this individual
+ * @property {undefined|Number}   spouse   The unique ID of the direct spouse of this individual
  */
 
 /**
