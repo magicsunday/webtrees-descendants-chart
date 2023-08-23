@@ -295,12 +295,21 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         // Sort children by birthdate
         foreach ($recursiveIterator as $key => $value) {
             if (is_array($value) && array_key_exists('children', $value)) {
-                $value['children'] = (new Collection($value['children']))
-                    ->sort(self::birthDateComparator())
-                    ->values()
-                    ->toArray();
+                $childrenCollection = new Collection($value['children']);
 
-                $this->updateValueInIterator($recursiveIterator, $value);
+                // Check if each individual in the child list has a valid birthdate
+                if ($childrenCollection->every(
+                    static function (array $value, int $key): bool {
+                        return $value['data']['individual']->getBirthDate()->isOK();
+                    })
+                ) {
+                    $value['children'] = $childrenCollection
+                        ->sort(self::birthDateComparator())
+                        ->values()
+                        ->toArray();
+
+                    $this->updateValueInIterator($recursiveIterator, $value);
+                }
             }
         }
     }
