@@ -79,17 +79,19 @@ function createLinksBetweenSpouses(link, orientation)
     let sourceY = link.source.y;
 
     // Handle multiple spouses
-    if (link.source.data.family > 0) {
-        sourceY = link.spouse.y - (link.source.data.family * orientation.direction() * spouseLineOffset);
+    if ((link.source.data.family > 0)
+        && (link.spouse.data.spouses.length >= 0)
+    ) {
+        sourceY -= (link.spouse.data.spouses.length - link.source.data.family) * orientation.direction() * spouseLineOffset;
     }
 
-    // Add link between first spouse and source
+    // Add a link between first spouse and source
     if (link.coords === null) {
         path.moveTo(link.spouse.x + (orientation.boxWidth / 2), sourceY);
         path.lineTo(link.source.x - (orientation.boxWidth / 2), sourceY);
     }
 
-    // Append lines between source and all spouses
+    // Append lines between the source and all spouses
     if (link.coords && (link.coords.length > 0)) {
         for (let i = 0; i < link.coords.length; ++i) {
             let startX = link.spouse.x + (orientation.boxWidth / 2);
