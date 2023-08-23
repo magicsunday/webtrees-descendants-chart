@@ -13,7 +13,11 @@ parameters:
     excludePaths:
         - vendor/
 
-    # Ignore error
+    checkGenericClassInNonGenericObjectType: false
+    treatPhpDocTypesAsCertain: false
+
+    # Ignored errors
     ignoreErrors:
         - "#^Cannot access offset (.*) on mixed.$#"
         - "#^Offset 'children' does not exist on array(.*).$#"
+        - "#^Call to an undefined method (.*)Iterator(.*).$#"

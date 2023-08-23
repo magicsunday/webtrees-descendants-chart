@@ -120,7 +120,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     }
 
     /**
-     * Where does this module store its resources
+     * Where does this module store its resources.
      *
      * @return string
      */
@@ -243,7 +243,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
      *
      * @param Individual $individual
      *
-     * @return array
+     * @return mixed[]
      */
     private function createJsonTreeStructure(Individual $individual): array
     {
@@ -259,9 +259,9 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     /**
      * Post process the tree structure.
      *
-     * @param array $root
+     * @param mixed[] $root
      *
-     * @return array
+     * @return mixed[]
      */
     private function postProcessTreeStructure(array $root): array
     {
@@ -276,9 +276,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 
         $this->removeObsoleteData($recursiveIterator);
 
-        return $recursiveIterator->getSubIterator() !== null
-            ? $recursiveIterator->getSubIterator()->getArrayCopy()
-            : [];
+        return $recursiveIterator->getInnerIterator()->getArrayCopy();
     }
 
     /**
@@ -299,10 +297,12 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                 $childrenCollection = new Collection($value['children']);
 
                 // Check if each individual in the child list has a valid birthdate
-                if ($childrenCollection->every(
-                    static function (array $value, int $key): bool {
-                        return $value['data']['individual']->getBirthDate()->isOK();
-                    })
+                if (
+                    $childrenCollection->every(
+                        static function (array $value, int $key): bool {
+                            return $value['data']['individual']->getBirthDate()->isOK();
+                        }
+                    )
                 ) {
                     $value['children'] = $childrenCollection
                         ->sort(self::birthDateComparator())
@@ -372,7 +372,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
      * @param null|Individual $individual The start person
      * @param int             $generation The current generation
      *
-     * @return array
+     * @return mixed[]
      */
     private function buildJsonTree(?Individual $individual, int $generation = 1): array
     {
@@ -382,8 +382,12 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         }
 
         // Get spouse families sorted by marriage date
-        $families = $individual->spouseFamilies()->sort(Family::marriageDateComparator());
-        $parents  = [];
+        $families = $individual
+            ->spouseFamilies()
+            ->sort(Family::marriageDateComparator())
+            ->values();
+
+        $parents = [];
 
         $parents[$individual->xref()] = [
             'data' => $this->getIndividualData($individual, null, $generation),
@@ -430,7 +434,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     $parents[] = $parentData;
 
                     // Add spouse to list
-                    $parents[$individual->xref()]['spouses'][] = $spouse->xref();
+                    $parents[$individual->xref()]['spouses'][] = $parentData['data']['id'];
                 } else {
                     $parents[$individual->xref()]['family'] = $familyIndex;
 
@@ -454,7 +458,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     /**
      * A closure which will compare individuals by birthdate.
      *
-     * @return Closure(array,array):int
+     * @return Closure(mixed[],mixed[]):int
      */
     public static function birthDateComparator(): Closure
     {

@@ -159,10 +159,12 @@ export default class Tree
                             const spouseBefore = this.findSpouseById(Number(id), nodes);
 
                             // Keep track of the coordinates
-                            spousesCoords.push({
-                                x: spouseBefore.x,
-                                y: spouseBefore.y
-                            })
+                            if (typeof spouseBefore !== "undefined") {
+                                spousesCoords.push({
+                                    x: spouseBefore.x,
+                                    y: spouseBefore.y
+                                })
+                            }
                         });
                     }
                 }

@@ -70,10 +70,13 @@ trait IndividualTrait
      * @param null|Individual $spouse
      * @param bool            $useMarriedName TRUE to return the married name instead of the primary one
      *
-     * @return array
+     * @return array<string, string>
      */
-    private function getPrimaryName(Individual $individual, Individual $spouse = null, bool $useMarriedName = false): array
-    {
+    private function getPrimaryName(
+        Individual $individual,
+        Individual $spouse = null,
+        bool $useMarriedName = false
+    ): array {
         $individualNames = $individual->getAllNames();
 
         if (($useMarriedName !== false) && ($spouse !== null)) {
@@ -99,7 +102,7 @@ trait IndividualTrait
      * @param null|Individual $spouse     The current spouse of the individual
      * @param int             $generation The generation the person belongs to
      *
-     * @return array<string, array<string>|bool|int|string>
+     * @return array<string, array<string>|bool|int|string|Individual>
      */
     private function getIndividualData(Individual $individual, Individual $spouse = null, int $generation): array
     {
@@ -132,6 +135,7 @@ trait IndividualTrait
         $firstNames       = $this->getFirstNames($xpath);
         $alternativeNames = $this->getAlternateNames($individual);
 
+        // Create a unique ID for each individual
         static $id = 0;
 
         return [
