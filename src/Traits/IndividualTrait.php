@@ -140,7 +140,7 @@ trait IndividualTrait
             'url'              => $individual->url(),
             'updateUrl'        => $this->getUpdateRoute($individual),
             'generation'       => $generation,
-            'name'             => $fullNN,
+            'name'             => trim($fullNN),
             'firstNames'       => $firstNames,
             'lastNames'        => $lastNames,
             'preferredName'    => $preferredName,
