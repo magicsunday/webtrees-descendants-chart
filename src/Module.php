@@ -423,7 +423,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     $parentData = [
                         'data'     => $this->getIndividualData($spouse, $individual, $generation),
                         'spouse'   => $parents[$individual->xref()]['data']['id'],
-                        'family'   => $familyIndex,
+                        'family'   => $familyIndex + 1,
                         'children' => array_values($children),
                     ];
 
@@ -432,7 +432,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     // Add spouse to list
                     $parents[$individual->xref()]['spouses'][] = $parentData['data']['id'];
                 } else {
-                    $parents[$individual->xref()]['family'] = $familyIndex;
+                    $parents[$individual->xref()]['family'] = $familyIndex + 1;
 
                     if (!isset($parents[$individual->xref()]['children'])) {
                         $parents[$individual->xref()]['children'] = [];
