@@ -154,11 +154,12 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                 route(
                     self::ROUTE_DEFAULT,
                     [
-                        'tree'        => $tree->name(),
-                        'xref'        => $validator->string('xref', ''),
-                        'generations' => $validator->integer('generations', 4),
-                        'hideSpouses' => $validator->boolean('hideSpouses', false),
-                        'layout'      => $validator->string('layout', Configuration::LAYOUT_LEFTRIGHT),
+                        'tree'             => $tree->name(),
+                        'xref'             => $validator->string('xref', ''),
+                        'generations'      => $validator->integer('generations', 4),
+                        'hideSpouses'      => $validator->boolean('hideSpouses', false),
+                        'showMarriedNames' => $validator->boolean('showMarriedNames', false),
+                        'layout'           => $validator->string('layout', Configuration::LAYOUT_LEFTRIGHT),
                     ]
                 )
             );
@@ -385,7 +386,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         $parents  = [];
 
         $parents[$individual->xref()] = [
-            'data' => $this->getIndividualData($individual, $generation),
+            'data' => $this->getIndividualData($individual, null, $generation),
         ];
 
         if ($families->count() > 0) {
@@ -426,7 +427,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                 ];
 
                 if ($spouse !== null) {
-                    $parentData['data'] = $this->getIndividualData($spouse, $generation);
+                    $parentData['data'] = $this->getIndividualData($spouse, $individual, $generation);
 
                     $parents[] = $parentData;
 
@@ -479,11 +480,12 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         return $this->chartUrl(
             $individual,
             [
-                'ajax'        => true,
-                'generations' => $this->configuration->getGenerations(),
-                'hideSpouses' => $this->configuration->getHideSpouses(),
-                'layout'      => $this->configuration->getLayout(),
-                'xref'        => $xref,
+                'ajax'             => true,
+                'generations'      => $this->configuration->getGenerations(),
+                'hideSpouses'      => $this->configuration->getHideSpouses(),
+                'showMarriedNames' => $this->configuration->getShowMarriedNames(),
+                'layout'           => $this->configuration->getLayout(),
+                'xref'             => $xref,
             ]
         );
     }

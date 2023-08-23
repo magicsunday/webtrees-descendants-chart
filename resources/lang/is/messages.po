@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
-"POT-Creation-Date: 2023-02-28 09:07+0100\n"
-"PO-Revision-Date: 2023-02-28 09:07+0100\n"
+"POT-Creation-Date: 2023-08-23 14:35+0200\n"
+"PO-Revision-Date: 2023-08-23 14:35+0200\n"
 "Last-Translator: Rico Sonntag <mail@ricosonntag.de>\n"
 "Language-Team: \n"
 "Language: is\n"
@@ -18,12 +18,12 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: webtrees-descendants-chart/src/Module.php:105
+#: webtrees-descendants-chart/src/Module.php:109
 #: webtrees-descendants-chart/src/Module.php:216
 msgid "Descendants chart"
 msgstr "Afkomendagraf"
 
-#: webtrees-descendants-chart/src/Module.php:115
+#: webtrees-descendants-chart/src/Module.php:119
 msgid "An overview of an individual’s descendants."
 msgstr "Yfirlit yfir afkomendur einstaklings."
 
@@ -41,16 +41,19 @@ msgstr "Notaðu Ctrl + skruna til að þysja í ættartrénu"
 msgid "Move the view with two fingers"
 msgstr "Færðu yfirlitið með tveimur fingrum"
 
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:199
 #: webtrees-module-base/src/Processor/DateProcessor.php:129
 #, php-format
 msgid "Born: %s"
 msgstr "Fædd/-ur: %s"
 
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:203
 #: webtrees-module-base/src/Processor/DateProcessor.php:133
 #, php-format
 msgid "Died: %s"
 msgstr "Lést: %s"
 
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:207
 #: webtrees-module-base/src/Processor/DateProcessor.php:137
 msgid "Deceased"
 msgstr "Látin/-n"
@@ -91,26 +94,30 @@ msgstr ""
 msgid "Hide the spouses associated with an individual."
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:121
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:111
+msgid "Show married names."
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:130
 msgid "Show more options"
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:122
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:131
 msgid "Hide more options"
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:127
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:136
 msgid "view"
 msgstr "skoða"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:133
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:142
 msgid "Re center"
 msgstr "Endurmiðja"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:138
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:147
 msgid "Export as PNG"
 msgstr "Flytja út sem PNG"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:141
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:150
 msgid "Export as SVG"
 msgstr "Flytja út sem SVG"

@@ -64,16 +64,50 @@ trait IndividualTrait
     private string $xpathAlternativeName = '//span[contains(attribute::class, "NAME")]';
 
     /**
+     * Returns the primary name used in the chart.
+     *
+     * @param Individual      $individual     The current individual
+     * @param null|Individual $spouse
+     * @param bool            $useMarriedName TRUE to return the married name instead of the primary one
+     *
+     * @return array
+     */
+    private function getPrimaryName(Individual $individual, Individual $spouse = null, bool $useMarriedName = false): array
+    {
+        $individualNames = $individual->getAllNames();
+
+        if (($useMarriedName !== false) && ($spouse !== null)) {
+            foreach ($individualNames as $individualName) {
+                foreach ($spouse->getAllNames() as $spouseName) {
+                    if (
+                        ($individualName['type'] === '_MARNM')
+                        && ($individualName['surn'] === $spouseName['surn'])
+                    ) {
+                        return $individualName;
+                    }
+                }
+            }
+        }
+
+        return $individualNames[$individual->getPrimaryName()];
+    }
+
+    /**
      * Get the individual data required for display the chart.
      *
-     * @param Individual $individual The current individual
-     * @param int        $generation The generation the person belongs to
+     * @param Individual      $individual The current individual
+     * @param null|Individual $spouse     The current spouse of the individual
+     * @param int             $generation The generation the person belongs to
      *
      * @return array<string, array<string>|bool|int|string>
      */
-    private function getIndividualData(Individual $individual, int $generation): array
+    private function getIndividualData(Individual $individual, Individual $spouse = null, int $generation): array
     {
-        $primaryName = $individual->getAllNames()[$individual->getPrimaryName()];
+        $primaryName = $this->getPrimaryName(
+            $individual,
+            $spouse,
+            $this->configuration->getShowMarriedNames()
+        );
 
         // The formatted name of the individual (containing HTML)
         $full = $primaryName['full'];

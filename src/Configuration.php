@@ -129,4 +129,15 @@ class Configuration
         return Validator::queryParams($this->request)
             ->boolean('hideSpouses', false);
     }
+
+    /**
+     * Returns whether to show the married names or not.
+     *
+     * @return bool
+     */
+    public function getShowMarriedNames(): bool
+    {
+        return Validator::queryParams($this->request)
+            ->boolean('showMarriedNames', false);
+    }
 }

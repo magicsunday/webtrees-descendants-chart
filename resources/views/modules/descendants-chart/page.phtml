@@ -96,12 +96,21 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
                 </label>
                 <div class="col-sm-9 wt-page-options-value">
                     <?=
-                    view('components/checkbox', [
-                        'id'      => 'hideSpouses',
-                        'name'    => 'hideSpouses',
-                        'label'   => I18N::translate('Hide the spouses associated with an individual.'),
-                        'checked' => $configuration->getHideSpouses(),
-                    ])
+                        view('components/checkbox', [
+                            'id'      => 'hideSpouses',
+                            'name'    => 'hideSpouses',
+                            'label'   => I18N::translate('Hide the spouses associated with an individual.'),
+                            'checked' => $configuration->getHideSpouses(),
+                        ])
+                    ?>
+
+                    <?=
+                        view('components/checkbox', [
+                            'id'      => 'showMarriedNames',
+                            'name'    => 'showMarriedNames',
+                            'label'   => I18N::translate('Show married names.'),
+                            'checked' => $configuration->getShowMarriedNames(),
+                        ])
                     ?>
                 </div>
             </div>
