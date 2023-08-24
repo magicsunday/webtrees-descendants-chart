@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
 "POT-Creation-Date: 2023-08-23 14:35+0200\n"
-"PO-Revision-Date: 2023-08-23 14:35+0200\n"
+"PO-Revision-Date: 2023-08-23 16:35+0200\n"
 "Last-Translator: Rico Sonntag <mail@ricosonntag.de>\n"
 "Language-Team: \n"
 "Language: nn\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 "X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: webtrees-descendants-chart/module.php\n"
@@ -88,23 +88,23 @@ msgstr "ned"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:95
 msgid "Layout"
-msgstr ""
+msgstr "Utsjånad"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:102
 msgid "Hide the spouses associated with an individual."
-msgstr ""
+msgstr "Skjul etterkomarar sine ektefeller"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:111
 msgid "Show married names."
-msgstr ""
+msgstr "Syn namn som gift"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:130
 msgid "Show more options"
-msgstr ""
+msgstr "Syn fleire val"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:131
 msgid "Hide more options"
-msgstr ""
+msgstr "Skjul fleire val"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:136
 msgid "view"
