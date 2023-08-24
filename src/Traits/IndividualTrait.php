@@ -79,15 +79,19 @@ trait IndividualTrait
     ): array {
         $individualNames = $individual->getAllNames();
 
-        if (($useMarriedName !== false) && ($spouse !== null)) {
+        if ($useMarriedName !== false) {
             foreach ($individualNames as $individualName) {
-                foreach ($spouse->getAllNames() as $spouseName) {
-                    if (
-                        ($individualName['type'] === '_MARNM')
-                        && ($individualName['surn'] === $spouseName['surn'])
-                    ) {
-                        return $individualName;
+                if ($spouse !== null) {
+                    foreach ($spouse->getAllNames() as $spouseName) {
+                        if (
+                            ($individualName['type'] === '_MARNM')
+                            && ($individualName['surn'] === $spouseName['surn'])
+                        ) {
+                            return $individualName;
+                        }
                     }
+                } elseif ($individualName['type'] === '_MARNM') {
+                    return $individualName;
                 }
             }
         }
