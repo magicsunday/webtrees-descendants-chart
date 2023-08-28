@@ -381,7 +381,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             return [];
         }
 
-        // Get spouse families sorted by marriage date
+        // Get spouse families
         $families = $individual->spouseFamilies();
         $parents  = [];
 
@@ -399,10 +399,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     $spouse = $family->spouse($individual);
                 }
 
-                // Get children sorted by birthdate
-                $familyChildren = $family->children();
-
-                foreach ($familyChildren as $child) {
+                foreach ($family->children() as $child) {
                     $childTree = $this->buildJsonTree($child, $generation + 1);
 
                     if (count($childTree) > 0) {
