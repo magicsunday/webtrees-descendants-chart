@@ -120,7 +120,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     }
 
     /**
-     * Where does this module store its resources.
+     * Where does this module store its resources?
      *
      * @return string
      */

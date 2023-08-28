@@ -11,10 +11,6 @@
     unicode-bidi: bidi-override !important;
 }
 
-#webtrees-descendants-chart-container svg text {
-    font-weight: bold;
-}
-
 #webtrees-descendants-chart-container svg rect.female {
     stroke: var(--sex-f-fg, rgb(255, 32, 128));
     stroke-dasharray: none;
@@ -51,16 +47,24 @@
     /*shape-rendering: crispEdges;*/
 }
 
-#webtrees-descendants-chart-container svg g.name text {
-    font-weight: bold;
-}
-
 #webtrees-descendants-chart-container svg g.name tspan.preferred {
     text-decoration: underline;
 }
 
 #webtrees-descendants-chart-container svg text.date {
-    fill: rgb(127, 127, 127);
+    fill: currentColor;
     font-weight: normal;
     font-size: 13px;
+}
+
+#webtrees-descendants-chart-container svg .wt-chart-box-name {
+    fill: var(--link-color, currentColor);
+}
+
+#webtrees-descendants-chart-container svg .wt-chart-box-name-alt {
+    fill: currentColor;
+}
+
+#webtrees-descendants-chart-container svg .wt-chart-box-name:hover:not(.wt-chart-box-name-alt) {
+    fill: var(--link-color-hover);
 }

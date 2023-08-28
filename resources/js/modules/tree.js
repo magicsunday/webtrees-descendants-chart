@@ -711,7 +711,7 @@ export default class Tree
         let availableWidth = this._box.text.width;
 
         // Select all not preferred and not last names
-        // Start truncating from last element to the first one
+        // Start truncating from the last element to the first one
         parent.selectAll("tspan:not(.preferred):not(.lastName)")
             .nodes()
             .reverse()
@@ -744,7 +744,7 @@ export default class Tree
             let tspan      = d3.select(this);
             let words      = tspan.text().split(/\s+/);
 
-            // If the <tspan> contains multiple words split them until available width matches
+            // If the <tspan> contains multiple words, split them until available width matches
             for (let i = words.length - 1; i >= 0; --i) {
                 if (textLength > availableWidth) {
                     // Keep only the first letter
@@ -826,11 +826,13 @@ export default class Tree
         // Top/Bottom and Bottom/Top
         if (this._orientation.splittNames) {
             let text1 = name.append("text")
+                .attr("class", "wt-chart-box-name")
                 .attr("text-anchor", "middle")
                 .attr("alignment-baseline", "central")
                 .attr("dy", this._box.text.y);
 
             let text2 = name.append("text")
+                .attr("class", "wt-chart-box-name")
                 .attr("text-anchor", "middle")
                 .attr("alignment-baseline", "central")
                 .attr("dy", this._box.text.y + 20);
@@ -838,7 +840,7 @@ export default class Tree
             this.addFirstNames(text1, person);
             this.addLastNames(text2, person);
 
-            // If both first and last names are empty, add the full name as alternative
+            // If both first and last names are empty, add the full name as an alternative
             if (!person.data.firstNames.length
                 && !person.data.lastNames.length
             ) {
@@ -852,6 +854,7 @@ export default class Tree
         // Left/Right and Right/Left
         } else {
             let text1 = name.append("text")
+                .attr("class", "wt-chart-box-name")
                 .attr("text-anchor", this._configuration.rtl ? "end" : "start")
                 .attr("dx", this._box.text.x)
                 .attr("dy", this._box.text.y);
@@ -859,7 +862,7 @@ export default class Tree
             this.addFirstNames(text1, person);
             this.addLastNames(text1, person, 0.25);
 
-            // If both first and last names are empty, add the full name as alternative
+            // If both first and last names are empty, add the full name as an alternative
             if (!person.data.firstNames.length
                 && !person.data.lastNames.length
             ) {
@@ -912,7 +915,7 @@ export default class Tree
         if (person.data.birth) {
             let col1 = table
                 .append("text")
-                .attr("class", "date")
+                .attr("fill", "currentColor")
                 .attr("text-anchor", "middle")
                 .attr("dominant-baseline", "middle")
                 .attr("x", this._box.text.x)
@@ -953,7 +956,7 @@ export default class Tree
 
             let col1 = table
                 .append("text")
-                .attr("class", "date")
+                .attr("fill", "currentColor")
                 .attr("text-anchor", "middle")
                 .attr("dominant-baseline", "middle")
                 .attr("x", this._box.text.x)
