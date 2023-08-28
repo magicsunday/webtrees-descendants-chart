@@ -64,7 +64,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     /**
      * @var string
      */
-    public const CUSTOM_VERSION = '1.5.3-dev';
+    public const CUSTOM_VERSION = '1.6.0';
 
     /**
      * @var string
@@ -120,7 +120,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     }
 
     /**
-     * Where does this module store its resources?
+     * Where does this module store its resources.
      *
      * @return string
      */
