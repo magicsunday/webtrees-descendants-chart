@@ -45,6 +45,9 @@ export class DescendantsChart
         // Set up chart instance
         this._chart = new Chart(this._parent, this._configuration);
 
+        // List of css files used to render SVG export
+        this._cssFiles = [];
+
         this.init();
     }
 
@@ -91,13 +94,13 @@ export class DescendantsChart
     }
 
     /**
-     * Sets the URL to the CSS file used in SVG export.
+     * Sets the URLs to the CSS files used in SVG export.
      *
-     * @param {String} cssFile
+     * @param {String[]} cssFiles
      */
-    set cssFile(cssFile)
+    set cssFiles(cssFiles)
     {
-        this._cssFile = cssFile;
+        this._cssFiles = cssFiles;
     }
 
     /**
@@ -131,7 +134,6 @@ export class DescendantsChart
         this._chart.svg
             .export('png')
             .svgToImage(this._chart.svg, "descendants-chart.png");
-
     }
 
     /**
@@ -143,6 +145,6 @@ export class DescendantsChart
     {
         this._chart.svg
             .export('svg')
-            .svgToImage(this._chart.svg, this._cssFile, "descendants-chart.svg");
+            .svgToImage(this._chart.svg, this._cssFiles, "descendants-chart.svg");
     }
 }

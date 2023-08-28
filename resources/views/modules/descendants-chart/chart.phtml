@@ -9,6 +9,7 @@
 
 declare(strict_types=1);
 
+use Fisharebest\Webtrees\Module\ModuleThemeInterface;
 use Fisharebest\Webtrees\View;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
 
@@ -35,7 +36,13 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
 <script>
 
 const chartParams = <?= $chartParams ?>;
-const cssUrl      = <?= json_encode($svgStylesheet) ?>;
+const cssFiles    = [];
+
+<?php foreach (app(ModuleThemeInterface::class)->stylesheets() as $stylesheet) : ?>
+    cssFiles.push(<?= json_encode($stylesheet) ?>);
+<?php endforeach ?>
+
+cssFiles.push(<?= json_encode($svgStylesheet) ?>);
 
 const optionGenerations = typeof generations !== "undefined"
     ? generations
@@ -56,7 +63,7 @@ const descendantsChart = new WebtreesDescendantsChart.DescendantsChart(
     }
 );
 
-descendantsChart.cssFile = cssUrl;
+descendantsChart.cssFiles = cssFiles;
 
 // Draw chart
 descendantsChart.draw(<?= json_encode($data) ?>);
