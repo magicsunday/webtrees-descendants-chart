@@ -405,7 +405,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     if (count($childTree) > 0) {
                         foreach ($childTree as $childData) {
                             if ($childData['data'] !== null) {
-                                $children[$childData['data']['xref']] = $childData;
+                                $children[$childData['data']['id']] = $childData;
                             } else {
                                 $children[$childData['spouse']]['children'] = $childData['children'];
                                 $children[$childData['spouse']]['family'] = $childData['family'];
