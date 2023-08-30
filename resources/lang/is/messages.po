@@ -88,23 +88,23 @@ msgstr "niður"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:95
 msgid "Layout"
-msgstr ""
+msgstr "Útlit"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:102
 msgid "Hide the spouses associated with an individual."
-msgstr ""
+msgstr "Fela maka sem tengjast einstaklingi."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:111
 msgid "Show married names."
-msgstr ""
+msgstr "Birta giftingarnöfn."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:130
 msgid "Show more options"
-msgstr ""
+msgstr "Birta fleiri valkosti"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:131
 msgid "Hide more options"
-msgstr ""
+msgstr "Fela fleiri valkosti"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:136
 msgid "view"
