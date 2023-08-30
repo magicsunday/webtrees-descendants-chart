@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace MagicSunday\Webtrees\DescendantsChart;
 
-use Aura\Router\RouterContainer;
 use Closure;
 use Fig\Http\Message\RequestMethodInterface;
 use Fisharebest\Webtrees\Auth;
@@ -89,10 +88,8 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
      */
     public function boot(): void
     {
-        /** @var RouterContainer $routerContainer */
-        $routerContainer = app(RouterContainer::class);
-
-        $routerContainer->getMap()
+        Registry::routeFactory()
+            ->routeMap()
             ->get(self::ROUTE_DEFAULT, self::ROUTE_DEFAULT_URL, $this)
             ->allows(RequestMethodInterface::METHOD_POST);
 
@@ -546,4 +543,5 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         $stylesheets[] = $this->assetUrl('css/svg.css');
 
         return $stylesheets;
-    }}
+    }
+}
