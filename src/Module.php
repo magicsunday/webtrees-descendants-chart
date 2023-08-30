@@ -22,6 +22,7 @@ use Fisharebest\Webtrees\Individual;
 use Fisharebest\Webtrees\Module\DescendancyChartModule;
 use Fisharebest\Webtrees\Module\ModuleChartInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
+use Fisharebest\Webtrees\Module\ModuleThemeInterface;
 use Fisharebest\Webtrees\Registry;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\View;
@@ -178,12 +179,11 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
             return $this->viewResponse(
                 $this->name() . '::modules/descendants-chart/chart',
                 [
-                    'data'          => $this->createJsonTreeStructure($individual),
-                    'configuration' => $this->configuration,
-                    'chartParams'   => json_encode($this->getChartParameters(), JSON_THROW_ON_ERROR),
-                    'stylesheet'    => $this->assetUrl('css/descendants-chart.css'),
-                    'svgStylesheet' => $this->assetUrl('css/svg.css'),
-                    'javascript'    => $this->assetUrl('js/descendants-chart.min.js'),
+                    'data'              => $this->createJsonTreeStructure($individual),
+                    'configuration'     => $this->configuration,
+                    'chartParams'       => json_encode($this->getChartParameters(), JSON_THROW_ON_ERROR),
+                    'exportStylesheets' => $this->getExportStylesheets(),
+                    'javascript'        => $this->assetUrl('js/descendants-chart.min.js'),
                 ]
             );
         }
@@ -197,8 +197,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                 'individual'    => $individual,
                 'tree'          => $tree,
                 'configuration' => $this->configuration,
-                'stylesheet'    => $this->assetUrl('css/descendants-chart.css'),
-                'svgStylesheet' => $this->assetUrl('css/svg.css'),
+                'stylesheets'   => $this->getStylesheets(),
                 'javascript'    => $this->assetUrl('js/descendants-chart-storage.min.js'),
             ]
         );
@@ -519,4 +518,31 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 
         return false;
     }
-}
+
+    /**
+     * Returns a list of used stylesheets with this module.
+     *
+     * @return array<string>
+     */
+    private function getStylesheets(): array
+    {
+        $stylesheets = [];
+
+        $stylesheets[] = $this->assetUrl('css/descendants-chart.css');
+        $stylesheets[] = $this->assetUrl('css/svg.css');
+
+        return $stylesheets;
+    }
+
+    /**
+     * Returns a list required stylesheets for the SVG export.
+     *
+     * @return array<string>
+     */
+    private function getExportStylesheets(): array
+    {
+        $stylesheets   = app(ModuleThemeInterface::class)->stylesheets();
+        $stylesheets[] = $this->assetUrl('css/svg.css');
+
+        return $stylesheets;
+    }}

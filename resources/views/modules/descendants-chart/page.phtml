@@ -23,13 +23,12 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
  * @var Tree          $tree
  * @var array         $chartParams
  * @var string        $javascript
- * @var string        $stylesheet
- * @var string        $svgStylesheet
+ * @var string[]      $stylesheets
  * @var string        $ajaxUrl
  */
 ?>
 
-<div id="page-descendants">
+<div class="webtrees-descendants-chart">
     <h2 class="wt-page-title"><?= $title ?></h2>
 
     <form id="webtrees-descendants-chart-form" method="post" class="wt-page-options wt-page-options-descendants-chart d-print-none">
@@ -160,8 +159,9 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
 </div>
 
 <?php View::push('styles') ?>
-<link rel="stylesheet" href="<?= e($stylesheet) ?>">
-<link rel="stylesheet" href="<?= e($svgStylesheet) ?>">
+    <?php foreach ($stylesheets as $stylesheet) : ?>
+        <link rel="stylesheet" href="<?= e($stylesheet) ?>">
+    <?php endforeach ?>
 <?php View::endpush(); ?>
 
 <?php View::push('javascript'); ?>

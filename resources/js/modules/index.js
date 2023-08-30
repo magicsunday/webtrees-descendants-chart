@@ -45,9 +45,6 @@ export class DescendantsChart
         // Set up chart instance
         this._chart = new Chart(this._parent, this._configuration);
 
-        // List of css files used to render SVG export
-        this._cssFiles = [];
-
         this.init();
     }
 

@@ -16,17 +16,14 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
 /**
  * @var string        $javascript
  * @var Configuration $configuration
+ * @var array         $id                The unique chart ID
  * @var array         $chartParams
- * @var string        $svgStylesheet
- * @var array         $data          The chart data
+ * @var string[]      $exportStylesheets A list of stylesheets used by SVG export
+ * @var array         $data              The chart data
  */
 ?>
 
 <div id="webtrees-descendants-chart-container"></div>
-
-<?php View::push('styles') ?>
-<link rel="stylesheet" href="<?= e($svgStylesheet) ?>">
-<?php View::endpush(); ?>
 
 <?php View::push('javascript'); ?>
 <script src="<?= e($javascript) ?>"></script>
@@ -36,13 +33,7 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
 <script>
 
 const chartParams = <?= $chartParams ?>;
-const cssFiles    = [];
-
-<?php foreach (app(ModuleThemeInterface::class)->stylesheets() as $stylesheet) : ?>
-    cssFiles.push(<?= json_encode($stylesheet) ?>);
-<?php endforeach ?>
-
-cssFiles.push(<?= json_encode($svgStylesheet) ?>);
+const cssFiles    = <?= json_encode($exportStylesheets) ?>;
 
 const optionGenerations = typeof generations !== "undefined"
     ? generations
