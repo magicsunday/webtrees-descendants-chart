@@ -11,7 +11,6 @@ https://github.com/d3/d3-transition
 https://github.com/d3/d3-zoom
 https://github.com/d3/d3-hierarchy
 https://github.com/d3/d3-path
-https://github.com/d3/d3-shape
 https://github.com/d3/d3-fetch
 */
 
@@ -32,10 +31,6 @@ export {
 export {
     path
 } from "d3-path";
-
-export {
-    line
-} from "d3-shape";
 
 export {
     json, text

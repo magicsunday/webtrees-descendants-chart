@@ -5,6 +5,8 @@
  * LICENSE file that was distributed with this source code.
  */
 
+import {Node} from "./d3";
+
 /**
  * This files defines the internal used structures of objects.
  *
@@ -12,8 +14,6 @@
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
-
-import {Node} from "./d3";
 
 /**
  * The plain person data.
