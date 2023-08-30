@@ -25,9 +25,11 @@ export class DescendantsChart
      * @param {Object} options  A list of options passed from outside to the application
      *
      * @param {String[]} options.labels
+     * @param {Boolean}  options.rtl
      * @param {Number}   options.generations
      * @param {String}   options.treeLayout
-     * @param {Boolean}  options.rtl
+     * @param {String[]} options.cssFiles
+     * @param {Data[]}   options.data
      */
     constructor(selector, options)
     {
@@ -42,10 +44,13 @@ export class DescendantsChart
             options.rtl
         );
 
+        this._cssFiles = options.cssFiles;
+
         // Set up chart instance
         this._chart = new Chart(this._parent, this._configuration);
 
         this.init();
+        this.draw(options.data);
     }
 
     /**
@@ -88,16 +93,6 @@ export class DescendantsChart
     get configuration()
     {
         return this._configuration;
-    }
-
-    /**
-     * Sets the URLs to the CSS files used in SVG export.
-     *
-     * @param {String[]} cssFiles
-     */
-    set cssFiles(cssFiles)
-    {
-        this._cssFiles = cssFiles;
     }
 
     /**

@@ -1,14 +1,14 @@
 /* Form */
 
 /* SVG */
-#webtrees-descendants-chart-container {
+.webtrees-descendants-chart-container {
     position: relative;
     font-size: unset;
     display: flex;
     flex: auto;
 }
 
-#webtrees-descendants-chart-container svg {
+.webtrees-descendants-chart-container svg {
     display: block;
     margin: auto;
     cursor: move;
@@ -19,21 +19,21 @@
     /*filter: drop-shadow(3px 1px 3px rgba(0, 0, 0, 0.4));*/
 }
 
-#webtrees-descendants-chart-container svg:active {
+.webtrees-descendants-chart-container svg:active {
     cursor: grabbing;
     /*cursor: -webkit-grabbing;*/
 }
 
-#webtrees-descendants-chart-container svg .person {
+.webtrees-descendants-chart-container svg .person {
     cursor: pointer;
 }
 
-#webtrees-descendants-chart-container svg rect.background {
+.webtrees-descendants-chart-container svg rect.background {
     fill: none;
     pointer-events: all;
 }
 
-#webtrees-descendants-chart-container div.overlay {
+.webtrees-descendants-chart-container div.overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -51,12 +51,12 @@
 }
 
 @supports (-webkit-backdrop-filter: none) {
-    #webtrees-descendants-chart-container div.overlay {
+    .webtrees-descendants-chart-container div.overlay {
         -webkit-backdrop-filter: blur(1em);
     }
 }
 
-#webtrees-descendants-chart-container div.overlay .tooltip {
+.webtrees-descendants-chart-container div.overlay .tooltip {
     font-size: 22px;
     color: #5a6268;
     position: relative;
@@ -70,11 +70,11 @@
 }
 
 @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-    #webtrees-descendants-chart-container div.overlay {
+    .webtrees-descendants-chart-container div.overlay {
         background: rgba(0, 0, 0, 0.5);
     }
 
-    #webtrees-descendants-chart-container div.overlay .tooltip {
+    .webtrees-descendants-chart-container div.overlay .tooltip {
         color: white;
     }
 }

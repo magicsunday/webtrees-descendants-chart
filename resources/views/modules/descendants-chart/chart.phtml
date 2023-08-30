@@ -9,7 +9,6 @@
 
 declare(strict_types=1);
 
-use Fisharebest\Webtrees\Module\ModuleThemeInterface;
 use Fisharebest\Webtrees\View;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
 
@@ -23,7 +22,7 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
  */
 ?>
 
-<div id="webtrees-descendants-chart-container"></div>
+<div class="webtrees-descendants-chart-container" id="webtrees-descendants-chart-container-<?= $id ?>"></div>
 
 <?php View::push('javascript'); ?>
 <script src="<?= e($javascript) ?>"></script>
@@ -32,32 +31,29 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
 <?php View::push('javascript'); ?>
 <script>
 
-const chartParams = <?= $chartParams ?>;
-const cssFiles    = <?= json_encode($exportStylesheets) ?>;
-
-const optionGenerations = typeof generations !== "undefined"
-    ? generations
-    : <?= $configuration->getGenerations() ?>;
-
-const optionLayout = typeof treeLayout !== "undefined"
-    ? treeLayout
-    : <?= json_encode($configuration->getLayout()) ?>;
-
-// Create chart instance with stored configuration
-const descendantsChart = new WebtreesDescendantsChart.DescendantsChart(
-    "#webtrees-descendants-chart-container",
+// Create chart instance
+new WebtreesDescendantsChart.DescendantsChart(
+    "#webtrees-descendants-chart-container-<?= $id ?>",
     {
-        labels      : chartParams.labels,
-        generations : optionGenerations,
-        treeLayout  : optionLayout,
-        rtl         : chartParams.rtl
+        labels: <?= json_encode($chartParams['labels']) ?>,
+        rtl: <?= json_encode($chartParams['rtl']) ?>,
+        cssFiles: <?= json_encode($exportStylesheets) ?>,
+
+        get generations() {
+            return typeof generations !== "undefined"
+                ? generations
+                : <?= $configuration->getGenerations() ?>
+        },
+
+        get treeLayout() {
+            return typeof treeLayout !== "undefined"
+                ? treeLayout
+                : <?= json_encode($configuration->getLayout()) ?>;
+        },
+
+        data: <?= json_encode($data) ?>
     }
 );
-
-descendantsChart.cssFiles = cssFiles;
-
-// Draw chart
-descendantsChart.draw(<?= json_encode($data) ?>);
 
 </script>
 <?php View::endpush(); ?>
