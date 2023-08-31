@@ -103,14 +103,19 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
                         ])
                     ?>
 
-                    <?=
-                        view('components/checkbox', [
-                            'id'      => 'showMarriedNames',
-                            'name'    => 'showMarriedNames',
-                            'label'   => I18N::translate('Show married names.'),
-                            'checked' => $configuration->getShowMarriedNames(),
-                        ])
-                    ?>
+                    <div class="form-element-with-description">
+                        <?=
+                            view('components/checkbox', [
+                                'id'      => 'showMarriedNames',
+                                'name'    => 'showMarriedNames',
+                                'label'   => I18N::translate('Show married names.'),
+                                'checked' => $configuration->getShowMarriedNames(),
+                            ])
+                        ?>
+                        <small class="form-text text-muted">
+                            <?= I18N::translate('Shows the married name of the partner if this has a separate name entry of the type "MARRIED" or "_MARNM".') ?>
+                        </small>
+                    </div>
                 </div>
             </div>
         </div>
