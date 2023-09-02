@@ -99,9 +99,10 @@ export default class Tree
         if (typeof firstNodeWithChildren !== "undefined") {
             firstNodeWithChildren.each((node) => {
                 if (
-                    (typeof node.data.spouse !== "undefined")
+                    Object.hasOwn(node.data, "spouse")
                     && (node.data.spouse !== null)
-                    && node.children
+                    && Object.hasOwn(node, "children")
+                    && Array.isArray(node.children)
                     && (node.children.length >= 1)
                 ) {
                     let moveBy = 0;
@@ -124,7 +125,8 @@ export default class Tree
             const spouse = this.findSpouseById(node.data.spouse, nodes);
 
             // Process children
-            if ((typeof node.children !== "undefined")
+            if (Object.hasOwn(node, "children")
+                && Array.isArray(node.children)
                 && (node.children.length > 0)
             ) {
                 node.children.forEach((child) => {
