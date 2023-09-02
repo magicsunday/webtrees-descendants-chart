@@ -55,7 +55,7 @@ export default class Configuration
         // Default number of generations to display
         this._generations = generations;
 
-        // Left/Right padding of text (used with truncation)
+        // Left/Right padding of a text (used with truncation)
         this.textPadding = 8;
 
         // // Default font size, color and scaling

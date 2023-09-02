@@ -56,7 +56,7 @@ export default class Svg
     }
 
     /**
-     * Initialiaze the <svg> element events.
+     * Initialize the <svg> element events.
      *
      * @param {Overlay} overlay
      */
@@ -82,10 +82,10 @@ export default class Svg
             })
             .on("touchmove", (event) => {
                 if (event.touches.length >= 2) {
-                    // Hide tooltip on more than 2 fingers
+                    // Hide tooltip on more than two fingers
                     overlay.hide();
                 } else {
-                    // Show tooltip if less than 2 fingers are used
+                    // Show tooltip if less than two fingers are used
                     overlay.show(this._configuration.labels.move);
                 }
             })

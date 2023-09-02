@@ -105,7 +105,7 @@ export default class Tree
                     && Array.isArray(node.children)
                     && (node.children.length >= 1)
                 ) {
-                    let moveBy = 0;
+                    let moveBy;
 
                     if ((this._orientation instanceof OrientationLeftRight)
                         || (this._orientation instanceof OrientationRightLeft)
@@ -618,9 +618,9 @@ export default class Tree
 
     /**
      * Collapse person (hide their ancestors). We recursively collapse the ancestors so that when the person is
-     * expanded it will only reveal one generation. If we don't recursively collapse the ancestors then when
+     * expanded, it will only reveal one generation. If we don't recursively collapse the ancestors, then when
      * the person is clicked on again to expand, all ancestors that were previously showing will be shown again.
-     * If you want that behavior then just remove the recursion by removing the if block.
+     * If you want that behavior, then just remove the recursion by removing the if block.
      *
      * @param person
      */
@@ -722,7 +722,7 @@ export default class Tree
                     .each(this.truncateText(parent, availableWidth))
             );
 
-        // Afterwards the preferred ones if text takes still too much space
+        // Afterward, the preferred ones if text takes still too much space
         parent.selectAll("tspan.preferred")
             .each(this.truncateText(parent, availableWidth));
 

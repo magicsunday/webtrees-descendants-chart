@@ -44,7 +44,7 @@ export default class PngExport extends Export
     }
 
     /**
-     * Returns the viewbox of the SVG. Mainly used to apply a padding around the chart.
+     * Returns the view-box of the SVG. Mainly used to apply a padding around the chart.
      *
      * @param {SVGGraphicsElement} svg The SVG element
      *

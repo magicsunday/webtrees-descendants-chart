@@ -61,7 +61,7 @@ export default class Zoom
 
         // Add zoom filter
         this._zoom.filter((event) => {
-            // Allow "wheel" event only while control key is pressed
+            // Allow "wheel" event only while the control key is pressed
             if (event.type === "wheel") {
                 if (!event.ctrlKey) {
                     return false;
@@ -70,16 +70,16 @@ export default class Zoom
                 const transform = d3.zoomTransform(this);
 
                 if (transform.k) {
-                    // Prevent zooming below lowest level
+                    // Prevent zooming below the lowest level
                     if ((transform.k <= MIN_ZOOM) && (event.deltaY > 0)) {
-                        // Prevent browsers page zoom while holding down the control key
+                        // Prevent browser page zoom while holding down the control key
                         event.preventDefault();
                         return false;
                     }
 
                     // Prevent zooming above highest level
                     if ((transform.k >= MAX_ZOOM) && (event.deltaY < 0)) {
-                        // Prevent browsers page zoom while holding down the control key
+                        // Prevent browser page zoom while holding down the control key
                         event.preventDefault();
                         return false;
                     }
@@ -98,7 +98,7 @@ export default class Zoom
     }
 
     /**
-     * Returns the internal d3 zoom behaviour.
+     * Returns the internal d3 zoom behavior.
      *
      * @returns {zoom}
      */
