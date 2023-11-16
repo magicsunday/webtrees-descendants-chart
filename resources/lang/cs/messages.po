@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
 "POT-Creation-Date: 2023-08-31 07:24+0200\n"
-"PO-Revision-Date: 2023-11-16 10:15+0100\n"
+"PO-Revision-Date: 2023-11-16 10:51+0100\n"
 "Last-Translator: Jakub Cabal <jakubcabal@gmail.com>\n"
 "Language-Team: \n"
 "Language: cs\n"
@@ -108,7 +108,7 @@ msgstr "Skrýt další volby"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:135
 msgid "view"
-msgstr "pohled"
+msgstr "zobrazit"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:141
 msgid "Re center"
