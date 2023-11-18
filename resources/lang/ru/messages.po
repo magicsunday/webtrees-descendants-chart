@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
-"POT-Creation-Date: 2023-08-23 14:35+0200\n"
-"PO-Revision-Date: 2023-08-23 14:35+0200\n"
+"POT-Creation-Date: 2023-11-18 18:49+0100\n"
+"PO-Revision-Date: 2023-11-18 18:49+0100\n"
 "Last-Translator: Rico Sonntag <mail@ricosonntag.de>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.4.1\n"
 "X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: webtrees-descendants-chart/module.php\n"
@@ -18,106 +18,116 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: webtrees-descendants-chart/src/Module.php:109
-#: webtrees-descendants-chart/src/Module.php:216
+#: webtrees-descendants-chart/src/Configuration.php:131
+#: webtrees-descendants-chart/src/Configuration.php:139
+msgid "left"
+msgstr "влево"
+
+#: webtrees-descendants-chart/src/Configuration.php:132
+#: webtrees-descendants-chart/src/Configuration.php:140
+msgid "right"
+msgstr "вправо"
+
+#: webtrees-descendants-chart/src/Configuration.php:133
+#: webtrees-descendants-chart/src/Configuration.php:141
+msgid "up"
+msgstr "вверх"
+
+#: webtrees-descendants-chart/src/Configuration.php:134
+#: webtrees-descendants-chart/src/Configuration.php:142
+msgid "down"
+msgstr "вниз"
+
+#: webtrees-descendants-chart/src/Module.php:107
+#: webtrees-descendants-chart/src/Module.php:213
 msgid "Descendants chart"
 msgstr "Потомки (новое)"
 
-#: webtrees-descendants-chart/src/Module.php:119
+#: webtrees-descendants-chart/src/Module.php:117
 msgid "An overview of an individual’s descendants."
 msgstr "Диаграмма потомков в виде дерева."
 
-#: webtrees-descendants-chart/src/Module.php:219
+#: webtrees-descendants-chart/src/Module.php:216
 #: webtrees-descendants-chart/src/Traits/ModuleChartTrait.php:41
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Диаграмма потомков у %s"
 
-#: webtrees-descendants-chart/src/Module.php:235
+#: webtrees-descendants-chart/src/Module.php:232
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Используйте Ctrl + scroll, чтобы  увеличить"
 
-#: webtrees-descendants-chart/src/Module.php:236
+#: webtrees-descendants-chart/src/Module.php:233
 msgid "Move the view with two fingers"
 msgstr "Измените вид двумя пальцами"
 
-#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:199
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:170
 #: webtrees-module-base/src/Processor/DateProcessor.php:129
 #, php-format
 msgid "Born: %s"
 msgstr "Рождение: %s"
 
-#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:203
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:174
 #: webtrees-module-base/src/Processor/DateProcessor.php:133
 #, php-format
 msgid "Died: %s"
 msgstr "Смерть: %s"
 
-#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:207
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:178
 #: webtrees-module-base/src/Processor/DateProcessor.php:137
 msgid "Deceased"
 msgstr "Умерший"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:40
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:39
 msgid "Individual"
 msgstr "Человек"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:57
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:56
 msgid "Generations"
 msgstr "Поколения"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:74
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:73
 msgid "Orientation"
 msgstr "Ориентация"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:81
-msgid "left"
-msgstr "влево"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:82
-msgid "right"
-msgstr "вправо"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:83
-msgid "up"
-msgstr "вверх"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:84
-msgid "down"
-msgstr "вниз"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:95
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:89
 msgid "Layout"
 msgstr "Ansicht"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:102
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:96
 msgid "Hide the spouses associated with an individual."
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:111
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:106
 msgid "Show married names."
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:130
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:111
+msgid ""
+"Shows the married name of the partner if this has a separate name entry of "
+"the type \"MARRIED\" or \"_MARNM\"."
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:129
 msgid "Show more options"
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:131
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:130
 msgid "Hide more options"
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:136
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:135
 msgid "view"
 msgstr "обновить"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:142
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:141
 msgid "Re center"
 msgstr "Центрировать"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:147
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:146
 msgid "Export as PNG"
 msgstr "Экспорт в PNG"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:150
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:149
 msgid "Export as SVG"
 msgstr "Экспорт в SVG"

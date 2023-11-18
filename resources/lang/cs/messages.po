@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
-"POT-Creation-Date: 2023-08-31 07:24+0200\n"
-"PO-Revision-Date: 2023-11-16 10:51+0100\n"
+"POT-Creation-Date: 2023-11-18 18:49+0100\n"
+"PO-Revision-Date: 2023-11-18 18:49+0100\n"
 "Last-Translator: Jakub Cabal <jakubcabal@gmail.com>\n"
 "Language-Team: \n"
 "Language: cs\n"
@@ -17,6 +17,26 @@ msgstr ""
 "X-Poedit-SearchPath-1: webtrees-descendants-chart/src\n"
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
+
+#: webtrees-descendants-chart/src/Configuration.php:131
+#: webtrees-descendants-chart/src/Configuration.php:139
+msgid "left"
+msgstr "vlevo"
+
+#: webtrees-descendants-chart/src/Configuration.php:132
+#: webtrees-descendants-chart/src/Configuration.php:140
+msgid "right"
+msgstr "vpravo"
+
+#: webtrees-descendants-chart/src/Configuration.php:133
+#: webtrees-descendants-chart/src/Configuration.php:141
+msgid "up"
+msgstr "nahoru"
+
+#: webtrees-descendants-chart/src/Configuration.php:134
+#: webtrees-descendants-chart/src/Configuration.php:142
+msgid "down"
+msgstr "dolů"
 
 #: webtrees-descendants-chart/src/Module.php:107
 #: webtrees-descendants-chart/src/Module.php:213
@@ -41,19 +61,19 @@ msgstr "Pomocí Ctrl + kolečko zvětšit pohled"
 msgid "Move the view with two fingers"
 msgstr "Přemístit pohled dvěma prsty"
 
-#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:207
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:170
 #: webtrees-module-base/src/Processor/DateProcessor.php:129
 #, php-format
 msgid "Born: %s"
 msgstr "Narozen/a: %s"
 
-#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:211
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:174
 #: webtrees-module-base/src/Processor/DateProcessor.php:133
 #, php-format
 msgid "Died: %s"
 msgstr "Zemřel/a: %s"
 
-#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:215
+#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:178
 #: webtrees-module-base/src/Processor/DateProcessor.php:137
 msgid "Deceased"
 msgstr "Zesnulý/á"
@@ -70,33 +90,23 @@ msgstr "Generace"
 msgid "Orientation"
 msgstr "Natočení"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:80
-msgid "left"
-msgstr "vlevo"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:81
-msgid "right"
-msgstr "vpravo"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:82
-msgid "up"
-msgstr "nahoru"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:83
-msgid "down"
-msgstr "dolů"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:94
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:89
 msgid "Layout"
 msgstr "Rozložení"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:101
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:96
 msgid "Hide the spouses associated with an individual."
 msgstr "Skrýt manžele/manželky."
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:110
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:106
 msgid "Show married names."
 msgstr "Zobrazit manželská jména."
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:111
+msgid ""
+"Shows the married name of the partner if this has a separate name entry of "
+"the type \"MARRIED\" or \"_MARNM\"."
+msgstr ""
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:129
 msgid "Show more options"
