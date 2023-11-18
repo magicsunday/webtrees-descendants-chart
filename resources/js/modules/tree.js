@@ -43,8 +43,8 @@ export default class Tree
 
         this._orientation = this._configuration.orientation;
 
-        this._image       = new Image(this._orientation, 20);
-        this._text        = new Text(this._orientation, this._image);
+        this._image = new Image(this._orientation, 20);
+        this._text  = new Text(this._orientation, this._image);
 
         this.draw(this._hierarchy.root);
     }
@@ -64,7 +64,7 @@ export default class Tree
             return 1.25;
         }
 
-        // The right side is a spouse that is linked back to the actual child, so add some space
+        // The right side is a spouse linked back to the actual child, so add some space
         if (Object.hasOwn(right.data, 'spouse')) {
             return 1.25;
         }
