@@ -290,7 +290,8 @@ trait IndividualTrait
      */
     public function getAlternateName(Individual $individual): string
     {
-        if ($individual->canShowName()
+        if (
+            $individual->canShowName()
             && ($individual->getPrimaryName() !== $individual->getSecondaryName())
         ) {
             $allNames        = $individual->getAllNames();
