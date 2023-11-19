@@ -103,27 +103,24 @@ export default class Tree
         // Remove the pseudo root node
         nodes.shift();
 
-        // Arrange the position of the individual with the first spouse so that they are close to each other
+        // Arrange the position of the individual with the first spouse so that they are close to each other.
+        // Since the line of connection between the individual and the first spouse begins between these two,
+        // this prevents the lines of connection from overlapping with other children and their partners.
         nodes.forEach((node) => {
-            // Only the first family
             if (node.data
-                && node.data.spouse
-                && (node.data.family === 0)
+                && Array.isArray(node.data.spouses)
+                && (node.data.spouses.length >= 1)
             ) {
-                const spouse = this.findSpouseById(node.data.spouse, nodes);
+                // Find the first spouse
+                const spouse = this.findSpouseById(node.data.spouses[0], nodes);
 
+                // Position the node directly above the first spouse
                 if ((this._orientation instanceof OrientationTopBottom)
                     || (this._orientation instanceof OrientationBottomTop)
                 ) {
-                    const diffX = ((node.x - spouse.x) - this._orientation.nodeWidth) / 2;
-
-                    node.x -= diffX;
-                    spouse.x += diffX;
+                    node.x = spouse.x - this._orientation.nodeWidth;
                 } else {
-                    const diffY = ((node.y - spouse.y) - this._orientation.nodeWidth) / 2;
-
-                    node.y -= diffY;
-                    spouse.y += diffY;
+                    node.y = spouse.y - this._orientation.nodeWidth;
                 }
             }
         });
@@ -131,6 +128,7 @@ export default class Tree
         // Find the first node with children
         const firstNodeWithChildren = nodes.find(node => node.children && (node.children.length > 0));
 
+        // Center the children between the individual and the spouse
         if (typeof firstNodeWithChildren !== "undefined") {
             const moveBy = this._orientation.nodeWidth / 2;
 
@@ -172,7 +170,7 @@ export default class Tree
             if (typeof spouse !== "undefined") {
                 let spousesCoords = null;
 
-                // In order to draw only the respective intermediate lines, we need the information
+                // To draw only the respective intermediate lines, we need the information
                 // about the position of the previous spouses in the row. The coordinates are attached
                 // to the respective link as additional values so that they are available later when
                 // calculating the line points.
