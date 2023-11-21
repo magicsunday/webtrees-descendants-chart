@@ -38,7 +38,7 @@ import {Node} from "./d3";
  *
  * @typedef {Object} Person
  * @property {null|Data}          data     The data object of the individual
- * @property {undefined|String[]} spouses  The list of assigned spouses (not available if "spouse" is set)
+ * @property {undefined|Number[]} spouses  The list of assigned spouse IDs (not available if "spouse" is set)
  * @property {undefined|Object[]} children The list of children of this individual
  * @property {undefined|Number}   family   The family index (0 = first family, 1 = second, ...)
  * @property {undefined|Number}   spouse   The unique ID of the direct spouse of this individual

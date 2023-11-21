@@ -71,14 +71,40 @@ trait IndividualTrait
     /**
      * Get the individual data required for display the chart.
      *
-     * @param Individual      $individual The current individual
      * @param int             $generation The generation the person belongs to
+     * @param null|Individual $individual The current individual
      * @param null|Individual $spouse     The current spouse of the individual
      *
      * @return array<string, array<string>|bool|int|string|Individual>
      */
-    private function getIndividualData(Individual $individual, int $generation, Individual $spouse = null): array
+    private function getIndividualData(int $generation, Individual $individual = null, Individual $spouse = null): array
     {
+        // Create a unique ID for each individual
+        static $id = 0;
+
+        if ($individual === null) {
+            return [
+                'id'              => ++$id,
+                'xref'            => '',
+                'url'             => '',
+                'updateUrl'       => '',
+                'generation'      => $generation,
+                'name'            => '',
+                'isNameRtl'       => '',
+                'firstNames'      => [],
+                'lastNames'       => [],
+                'preferredName'   => '',
+                'alternativeName' => '',
+                'isAltRtl'        => '',
+                'thumbnail'       => '',
+                'sex'             => 'U',
+                'birth'           => '',
+                'death'           => '',
+                'timespan'        => '',
+                'individual'      => null,
+            ];
+        }
+
         $primaryName = $this->getPrimaryName(
             $individual,
             $spouse,
@@ -100,9 +126,6 @@ trait IndividualTrait
         $lastNames       = $this->splitAndCleanName($primaryName['surn']);
         $firstNames      = $this->splitAndCleanName($primaryName['givn']);
         $alternativeName = $this->getAlternateName($individual);
-
-        // Create a unique ID for each individual
-        static $id = 0;
 
         return [
             'id'              => ++$id,

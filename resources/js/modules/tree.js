@@ -183,7 +183,7 @@ export default class Tree
 
                         spousesBefore.forEach((id) => {
                             // Find matching spouse in the list of all nodes
-                            const spouseBefore = this.findSpouseById(Number(id), nodes);
+                            const spouseBefore = this.findSpouseById(id, nodes);
 
                             // Keep track of the coordinates
                             if (typeof spouseBefore !== "undefined") {
@@ -377,7 +377,6 @@ console.log("centerTree");
                                 ? "female"
                                 : (person.data.data.sex === SEX_MALE) ? "male" : "unknown"
                         )
-
                         .attr("rx", 20)
                         .attr("ry", 20)
                         .attr("x", -(this._orientation.boxWidth / 2))

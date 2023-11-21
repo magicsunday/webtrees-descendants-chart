@@ -383,7 +383,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         $parents  = [];
 
         $parents[$individual->xref()] = [
-            'data' => $this->getIndividualData($individual, $generation),
+            'data' => $this->getIndividualData($generation, $individual),
         ];
 
         if ($families->count() > 0) {
@@ -411,36 +411,77 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     }
                 }
 
-                if ($spouse !== null) {
-                    $parentData = [
-                        'data'     => $this->getIndividualData($spouse, $generation, $individual),
-                        'spouse'   => $parents[$individual->xref()]['data']['id'],
-                        'family'   => $familyIndex,
-                        'children' => array_values($children),
-                    ];
+                if (!$this->configuration->getHideSpouses()) {
+                    if (
+                        ($spouse !== null)
+                        || ($families->count() > 1)
+                    ) {
+                        $parentData = [
+                            'data'     => $this->getIndividualData($generation, $spouse, $individual),
+                            'spouse'   => $parents[$individual->xref()]['data']['id'],
+                            'family'   => $familyIndex,
+                            'children' => array_values($children),
+                        ];
 
-                    $parents[] = $parentData;
+                        $parents[] = $parentData;
 
-                    // Add spouse to list
-                    $parents[$individual->xref()]['spouses'][] = $parentData['data']['id'];
-                } else {
-                    $parents[$individual->xref()]['family'] = $familyIndex;
-
-                    if (!isset($parents[$individual->xref()]['children'])) {
-                        $parents[$individual->xref()]['children'] = [];
+                        // Add spouse to list
+                        $parents[$individual->xref()]['spouses'][] = $parentData['data']['id'];
+                    } else {
+                        // If there is no spouse, merge all children from all families
+                        // of the individual into one list
+                        $parents = $this->addFamilyAndChildren(
+                            $parents,
+                            $individual,
+                            $familyIndex,
+                            $children
+                        );
                     }
-
+                } else {
                     // If there is no spouse, merge all children from all families
                     // of the individual into one list
-                    $parents[$individual->xref()]['children'] = array_merge(
-                        $parents[$individual->xref()]['children'],
-                        array_values($children)
+                    $parents = $this->addFamilyAndChildren(
+                        $parents,
+                        $individual,
+                        $familyIndex,
+                        $children
                     );
                 }
             }
         }
 
         return array_values($parents);
+    }
+
+    /**
+     * Add the family and children to the parent individual.
+     *
+     * @param array      $parents
+     * @param Individual $individual
+     * @param int        $familyIndex
+     * @param array      $children
+     *
+     * @return array
+     */
+    private function addFamilyAndChildren(
+        array $parents,
+        Individual $individual,
+        int $familyIndex,
+        array $children
+    ): array {
+        $xref                     = $individual->xref();
+        $parents[$xref]['family'] = $familyIndex;
+
+        if (!isset($parents[$xref]['children'])) {
+            $parents[$xref]['children'] = [];
+        }
+
+        $parents[$xref]['children'] = array_merge(
+            $parents[$xref]['children'],
+            array_values($children)
+        );
+
+        return $parents;
     }
 
     /**
