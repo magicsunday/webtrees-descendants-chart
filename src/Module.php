@@ -11,11 +11,8 @@ declare(strict_types=1);
 
 namespace MagicSunday\Webtrees\DescendantsChart;
 
-use Closure;
 use Fig\Http\Message\RequestMethodInterface;
 use Fisharebest\Webtrees\Auth;
-use Fisharebest\Webtrees\Date;
-use Fisharebest\Webtrees\Family;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Individual;
 use Fisharebest\Webtrees\Module\DescendancyChartModule;
@@ -23,17 +20,14 @@ use Fisharebest\Webtrees\Module\ModuleChartInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleThemeInterface;
 use Fisharebest\Webtrees\Registry;
+use Fisharebest\Webtrees\Services\ChartService;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\View;
-use Illuminate\Support\Collection;
-use JsonException;
-use MagicSunday\Webtrees\DescendantsChart\Traits\IndividualTrait;
+use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleCustomTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use RecursiveArrayIterator;
-use RecursiveIteratorIterator;
 
 /**
  * Descendants chart module class.
@@ -46,10 +40,9 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 {
     use ModuleCustomTrait;
     use ModuleChartTrait;
-    use IndividualTrait;
 
-    private const ROUTE_DEFAULT     = 'webtrees-descendants-chart';
-    private const ROUTE_DEFAULT_URL = '/tree/{tree}/webtrees-descendants-chart/{xref}';
+    public const ROUTE_DEFAULT     = 'webtrees-descendants-chart';
+    public const ROUTE_DEFAULT_URL = '/tree/{tree}/webtrees-descendants-chart/{xref}';
 
     /**
      * @var string
@@ -82,6 +75,26 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
      * @var Configuration
      */
     private Configuration $configuration;
+
+    /**
+     * @var DataFacade
+     */
+    private DataFacade $dataFacade;
+
+    /**
+     * Constructor.
+     *
+     * @param ChartService $chartService
+     * @param DataFacade   $dataFacade
+     */
+    public function __construct(
+        ChartService $chartService,
+        DataFacade $dataFacade
+    ) {
+        parent::__construct($chartService);
+
+        $this->dataFacade = $dataFacade;
+    }
 
     /**
      * Initialization.
@@ -118,7 +131,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     }
 
     /**
-     * Where does this module store its resources.
+     * Where does this module store its resources?
      *
      * @return string
      */
@@ -133,8 +146,6 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
      * @param ServerRequestInterface $request
      *
      * @return ResponseInterface
-     *
-     * @throws JsonException
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -170,6 +181,11 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 
         $this->configuration = new Configuration($request);
 
+        $this->dataFacade
+            ->setModule($this)
+            ->setConfiguration($this->configuration)
+            ->setRoute(self::ROUTE_DEFAULT);
+
         if ($ajax) {
             $this->layout = $this->name() . '::layouts/ajax';
 
@@ -177,7 +193,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                 $this->name() . '::modules/descendants-chart/chart',
                 [
                     'id'                => uniqid(),
-                    'data'              => $this->createJsonTreeStructure($individual),
+                    'data'              => $this->dataFacade->createTreeStructure($individual),
                     'configuration'     => $this->configuration,
                     'chartParams'       => $this->getChartParameters(),
                     'exportStylesheets' => $this->getExportStylesheets(),
@@ -236,270 +252,6 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
     }
 
     /**
-     * Creates the JSON tree structure.
-     *
-     * @param Individual $individual
-     *
-     * @return mixed[]
-     */
-    private function createJsonTreeStructure(Individual $individual): array
-    {
-        // The root node with all children
-        $root = [
-            'children' => $this->buildJsonTree($individual),
-        ];
-
-        // We need to post-process the data to correct the structure for some special cases
-        return $this->postProcessTreeStructure($root);
-    }
-
-    /**
-     * Post process the tree structure.
-     *
-     * @param mixed[] $root
-     *
-     * @return mixed[]
-     */
-    private function postProcessTreeStructure(array $root): array
-    {
-        $recursiveIterator = new RecursiveIteratorIterator(
-            new RecursiveArrayIterator($root),
-            RecursiveIteratorIterator::SELF_FIRST
-        );
-
-        if ($this->configuration->getHideSpouses()) {
-            $this->sortChildrenByBirthdate($recursiveIterator);
-        }
-
-        $this->removeObsoleteData($recursiveIterator);
-
-        return $recursiveIterator->getInnerIterator()->getArrayCopy();
-    }
-
-    /**
-     * Sort the list of children by their date of birth.
-     *
-     * If the spouses are not displayed, the children in a polygamous family may not be sorted correctly,
-     * for example, if there are several children with different partners who have mixed dates of birth.
-     *
-     * @param RecursiveIteratorIterator $recursiveIterator
-     *
-     * @return void
-     */
-    private function sortChildrenByBirthdate(RecursiveIteratorIterator $recursiveIterator): void
-    {
-        // Sort children by birthdate
-        foreach ($recursiveIterator as $key => $value) {
-            if (is_array($value) && array_key_exists('children', $value)) {
-                $childrenCollection = new Collection($value['children']);
-
-                // Check if each individual in the child list has a valid birthdate
-                if (
-                    $childrenCollection->every(
-                        static function (array $value, int $key): bool {
-                            return $value['data']['individual']->getBirthDate()->isOK();
-                        }
-                    )
-                ) {
-                    $value['children'] = $childrenCollection
-                        ->sort(self::birthDateComparator())
-                        ->values()
-                        ->toArray();
-
-                    $this->updateValueInIterator($recursiveIterator, $value);
-                }
-            }
-        }
-    }
-
-    /**
-     * Removes any obsolete/intermediate data from the final structure.
-     *
-     * @param RecursiveIteratorIterator $recursiveIterator
-     *
-     * @return void
-     */
-    private function removeObsoleteData(RecursiveIteratorIterator $recursiveIterator): void
-    {
-        // Remove individual instance as this was only required to sort by birthdate in the previous step
-        foreach ($recursiveIterator as $key => $value) {
-            if (is_array($value) && array_key_exists('individual', $value)) {
-                unset($value['individual']);
-
-                $this->updateValueInIterator($recursiveIterator, $value);
-            }
-        }
-    }
-
-    /**
-     * Updates the value in the iterator.
-     *
-     * @param RecursiveIteratorIterator $recursiveIterator
-     * @param mixed                     $value
-     *
-     * @return void
-     */
-    private function updateValueInIterator(RecursiveIteratorIterator $recursiveIterator, $value): void
-    {
-        // Get the current depth and traverse back up the tree, saving the modifications
-        $currentDepth = $recursiveIterator->getDepth();
-
-        for ($subDepth = $currentDepth; $subDepth >= 0; --$subDepth) {
-            // Get the current level iterator
-            $subIterator = $recursiveIterator->getSubIterator($subDepth);
-
-            // If we are on the level we want to change, use the replacements ($value)
-            // otherwise set the key to the parent iterators value
-            if ($subIterator !== null) {
-                $subIteratorNext = $recursiveIterator->getSubIterator($subDepth + 1);
-
-                $subIterator->offsetSet(
-                    $subIterator->key(),
-                    $subDepth === $currentDepth
-                        ? $value
-                        : ($subIteratorNext !== null ? $subIteratorNext->getArrayCopy() : [])
-                );
-            }
-        }
-    }
-
-    /**
-     * Recursively build the data array of the individual ancestors.
-     *
-     * @param null|Individual $individual The start person
-     * @param int             $generation The current generation
-     *
-     * @return mixed[]
-     */
-    private function buildJsonTree(?Individual $individual, int $generation = 1): array
-    {
-        // Maximum generation reached
-        if (($individual === null) || ($generation > $this->configuration->getGenerations())) {
-            return [];
-        }
-
-        // Get spouse families
-        $families = $individual->spouseFamilies();
-        $parents  = [];
-
-        $parents[$individual->xref()] = [
-            'data' => $this->getIndividualData($generation, $individual),
-        ];
-
-        if ($families->count() > 0) {
-            /** @var Family $family */
-            foreach ($families as $familyIndex => $family) {
-                $children = [];
-                $spouse   = null;
-
-                if (!$this->configuration->getHideSpouses()) {
-                    $spouse = $family->spouse($individual);
-                }
-
-                foreach ($family->children() as $child) {
-                    $childTree = $this->buildJsonTree($child, $generation + 1);
-
-                    if (count($childTree) > 0) {
-                        foreach ($childTree as $childData) {
-                            if ($childData['data'] !== null) {
-                                $children[$childData['data']['id']] = $childData;
-                            } else {
-                                $children[$childData['spouse']]['children'] = $childData['children'];
-                                $children[$childData['spouse']]['family'] = $childData['family'];
-                            }
-                        }
-                    }
-                }
-
-                if (!$this->configuration->getHideSpouses()) {
-                    if (
-                        ($spouse !== null)
-                        || ($families->count() > 1)
-                    ) {
-                        $parentData = [
-                            'data'     => $this->getIndividualData($generation, $spouse, $individual),
-                            'spouse'   => $parents[$individual->xref()]['data']['id'],
-                            'family'   => $familyIndex,
-                            'children' => array_values($children),
-                        ];
-
-                        $parents[] = $parentData;
-
-                        // Add spouse to list
-                        $parents[$individual->xref()]['spouses'][] = $parentData['data']['id'];
-                    } else {
-                        // If there is no spouse, merge all children from all families
-                        // of the individual into one list
-                        $parents = $this->addFamilyAndChildren(
-                            $parents,
-                            $individual,
-                            $familyIndex,
-                            $children
-                        );
-                    }
-                } else {
-                    // If there is no spouse, merge all children from all families
-                    // of the individual into one list
-                    $parents = $this->addFamilyAndChildren(
-                        $parents,
-                        $individual,
-                        $familyIndex,
-                        $children
-                    );
-                }
-            }
-        }
-
-        return array_values($parents);
-    }
-
-    /**
-     * Add the family and children to the parent individual.
-     *
-     * @param array      $parents
-     * @param Individual $individual
-     * @param int        $familyIndex
-     * @param array      $children
-     *
-     * @return array
-     */
-    private function addFamilyAndChildren(
-        array $parents,
-        Individual $individual,
-        int $familyIndex,
-        array $children
-    ): array {
-        $xref                     = $individual->xref();
-        $parents[$xref]['family'] = $familyIndex;
-
-        if (!isset($parents[$xref]['children'])) {
-            $parents[$xref]['children'] = [];
-        }
-
-        $parents[$xref]['children'] = array_merge(
-            $parents[$xref]['children'],
-            array_values($children)
-        );
-
-        return $parents;
-    }
-
-    /**
-     * A closure which will compare individuals by birthdate.
-     *
-     * @return Closure(mixed[],mixed[]):int
-     */
-    public static function birthDateComparator(): Closure
-    {
-        return static function (array $x, array $y): int {
-            return Date::compare(
-                $x['data']['individual']->getEstimatedBirthDate(),
-                $y['data']['individual']->getEstimatedBirthDate()
-            );
-        };
-    }
-
-    /**
      *
      * @param Individual $individual
      * @param string     $xref
@@ -519,37 +271,6 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                 'xref'             => $xref,
             ]
         );
-    }
-
-    /**
-     * Get the raw update URL. The "xref" parameter must be the last one as the URL gets appended
-     * with the clicked individual id in order to load the required chart data.
-     *
-     * @param Individual $individual
-     *
-     * @return string
-     */
-    private function getUpdateRoute(Individual $individual): string
-    {
-        return $this->chartUrl(
-            $individual,
-            [
-                'generations' => $this->configuration->getGenerations(),
-                'layout'      => $this->configuration->getLayout(),
-            ]
-        );
-    }
-
-    /**
-     * Returns whether the given text is in RTL style or not.
-     *
-     * @param string $text The text to check
-     *
-     * @return bool
-     */
-    private function isRtl(string $text): bool
-    {
-        return I18N::scriptDirection(I18N::textScript($text)) === 'rtl';
     }
 
     /**
