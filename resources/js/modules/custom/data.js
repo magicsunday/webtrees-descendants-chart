@@ -5,7 +5,7 @@
  * LICENSE file distributed with this source code.
  */
 
-import {Node} from "./d3";
+import {Node} from "../lib/d3";
 
 /**
  * This files defines the internal used structures of objects.

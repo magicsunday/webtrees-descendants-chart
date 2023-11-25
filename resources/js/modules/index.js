@@ -5,9 +5,9 @@
  * LICENSE file distributed with this source code.
  */
 
-import * as d3 from "./d3";
-import Configuration from "./configuration";
-import Chart from "./chart";
+import * as d3 from "./lib/d3";
+import Configuration from "./custom/configuration";
+import Chart from "./lib/chart";
 
 /**
  * The application class.
@@ -137,6 +137,11 @@ export class DescendantsChart
     {
         this._chart.svg
             .export('svg')
-            .svgToImage(this._chart.svg, this._cssFiles, "descendants-chart.svg");
+            .svgToImage(
+                this._chart.svg,
+                this._cssFiles,
+                "webtrees-descendants-chart-container",
+                "descendants-chart.svg"
+            );
     }
 }

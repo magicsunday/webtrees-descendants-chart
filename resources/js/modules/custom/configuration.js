@@ -5,8 +5,8 @@
  * LICENSE file distributed with this source code.
  */
 
-import {LAYOUT_LEFTRIGHT} from "./constants";
-import OrientationCollection from "./chart/orientation-collection";
+import OrientationCollection from "../lib/chart/orientation-collection";
+import {LAYOUT_LEFTRIGHT} from "../lib/constants";
 
 /**
  * This class handles the configuration of the application.
@@ -59,7 +59,7 @@ export default class Configuration
         this.rtl    = rtl;
         this.labels = labels;
 
-        // direction` is either 1 (forward) or -1 (backward)
+        // Direction is either 1 (forward) or -1 (backward)
         this.direction = direction;
     }
 

@@ -5,9 +5,7 @@
  * LICENSE file distributed with this source code.
  */
 
-import * as d3 from "../d3";
-import OrientationLeftRight from "./orientation/orientation-leftRight.js";
-import OrientationRightLeft from "./orientation/orientation-rightLeft.js";
+import * as d3 from "../lib/d3";
 
 /**
  * This class handles the hierarchical data.
@@ -63,7 +61,7 @@ export default class Hierarchy
     /**
      * Returns the nodes.
      *
-     * @returns {Individual}
+     * @returns {Individual[]}
      *
      * @public
      */

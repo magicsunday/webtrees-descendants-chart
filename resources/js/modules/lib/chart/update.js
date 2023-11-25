@@ -62,7 +62,7 @@ export default class Update
                 type: "POST",
                 url: indSelector.attr("data-ajax--url"),
                 data: {
-                    q : data.xref
+                    q : data.data.xref
                 }
             }).then(function (data) {
                 // Create the option and append to Select2

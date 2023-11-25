@@ -181,13 +181,13 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
 
         $this->configuration = new Configuration($request);
 
-        $this->dataFacade
-            ->setModule($this)
-            ->setConfiguration($this->configuration)
-            ->setRoute(self::ROUTE_DEFAULT);
-
         if ($ajax) {
             $this->layout = $this->name() . '::layouts/ajax';
+
+            $this->dataFacade
+                ->setModule($this)
+                ->setConfiguration($this->configuration)
+                ->setRoute(self::ROUTE_DEFAULT);
 
             return $this->viewResponse(
                 $this->name() . '::modules/descendants-chart/chart',

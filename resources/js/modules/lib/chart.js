@@ -5,10 +5,10 @@
  * LICENSE file distributed with this source code.
  */
 import * as d3 from "./d3";
-import Hierarchy from "./chart/hierarchy";
-import Tree from "./tree";
-import Overlay from "./chart/overlay";
+import Hierarchy from "../custom/hierarchy";
 import Svg from "./chart/svg";
+import Overlay from "./chart/overlay";
+import Tree from "../custom/tree";
 
 const MIN_HEIGHT  = 300;
 const MIN_PADDING = 10;   // Minimum padding around view box
@@ -80,7 +80,7 @@ export default class Chart
         //     .attr("width", viewBoxWidth)
         //     .attr("height", viewBoxHeight);
 
-         // Set view box attribute
+        // Set view box attribute
         this._svg.get()
             .attr("viewBox", [
                 viewBoxLeft,

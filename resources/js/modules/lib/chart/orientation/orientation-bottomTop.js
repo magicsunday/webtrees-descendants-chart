@@ -6,7 +6,7 @@
  */
 
 import Orientation from "./orientation";
-import elbowHorizontal from "../elbow/horizontal";
+import elbowVertical from "../../tree/elbow/vertical";
 
 /**
  * This class handles the orientation of the tree.
@@ -15,7 +15,7 @@ import elbowHorizontal from "../elbow/horizontal";
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
-export default class OrientationLeftRight extends Orientation
+export default class OrientationBottomTop extends Orientation
 {
     /**
      * Constructor.
@@ -27,33 +27,31 @@ export default class OrientationLeftRight extends Orientation
     {
         super(boxWidth, boxHeight);
 
-        this._xOffset = 40;
-        this._yOffset = 20;
+        this._splittNames = true;
     }
 
     get direction()
     {
-        return this.isDocumentRtl ? -1 : 1;
+        return -1;
     }
 
     get nodeWidth()
     {
-        return this._boxHeight + this._yOffset;
+        return this._boxWidth + this._xOffset;
     }
 
     get nodeHeight()
     {
-        return this._boxWidth + this._xOffset;
+        return this._boxHeight + this._yOffset;
     }
 
     norm(d)
     {
-        // Swap x and y values
-        [d.x, d.y] = [d.y * this.direction, d.x];
+        d.y *= this.direction;
     }
 
     elbow(link)
     {
-        return elbowHorizontal(link, this);
+        return elbowVertical(link, this);
     }
 }
