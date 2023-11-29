@@ -197,6 +197,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
                     'configuration'     => $this->configuration,
                     'chartParams'       => $this->getChartParameters(),
                     'exportStylesheets' => $this->getExportStylesheets(),
+                    'stylesheets'       => $this->getStylesheets(),
                     'javascript'        => $this->assetUrl('js/descendants-chart.min.js'),
                 ]
             );
