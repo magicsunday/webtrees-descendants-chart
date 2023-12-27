@@ -17,6 +17,7 @@ use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Individual;
 use Fisharebest\Webtrees\Module\DescendancyChartModule;
 use Fisharebest\Webtrees\Module\ModuleChartInterface;
+use Fisharebest\Webtrees\Module\ModuleConfigInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleThemeInterface;
 use Fisharebest\Webtrees\Registry;
@@ -26,6 +27,7 @@ use Fisharebest\Webtrees\View;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleCustomTrait;
+use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleConfigTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -36,10 +38,11 @@ use Psr\Http\Message\ServerRequestInterface;
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
-class Module extends DescendancyChartModule implements ModuleCustomInterface
+class Module extends DescendancyChartModule implements ModuleCustomInterface, ModuleConfigInterface
 {
     use ModuleCustomTrait;
     use ModuleChartTrait;
+    use ModuleConfigTrait;
 
     public const ROUTE_DEFAULT     = 'webtrees-descendants-chart';
     public const ROUTE_DEFAULT_URL = '/tree/{tree}/webtrees-descendants-chart/{xref}';
@@ -179,7 +182,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface
         $individual = Registry::individualFactory()->make($xref, $tree);
         $individual = Auth::checkIndividualAccess($individual, false, true);
 
-        $this->configuration = new Configuration($request);
+        $this->configuration = new Configuration($request, $this);
 
         if ($ajax) {
             $this->layout = $this->name() . '::layouts/ajax';

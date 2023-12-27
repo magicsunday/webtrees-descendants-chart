@@ -51,37 +51,8 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
             </div>
         </div>
 
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label wt-page-options-label" for="generations">
-                <?= I18N::translate('Generations') ?>
-            </label>
-            <div class="col-sm-9 wt-page-options-value">
-                <?=
-                    view('components/select', [
-                        'id'       => 'generations',
-                        'name'     => 'generations',
-                        'selected' => $configuration->getGenerations(),
-                        'options'  => $configuration->getGenerationsList(),
-                        'class'    => 'form-control-sm',
-                    ])
-                ?>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-form-label col-sm-3 wt-page-options-label">
-                <?= I18N::translate('Orientation') ?>
-            </label>
-            <div class="col-sm-9 wt-page-options-value" id="layout">
-                <?=
-                    view('components/radios-inline', [
-                        'name'     => 'layout',
-                        'options'  => $configuration->getLayouts(),
-                        'selected' => $configuration->getLayout(),
-                    ])
-                ?>
-            </div>
-        </div>
+        <?= view($moduleName.'::modules/descendants-chart/form/generations', ['configuration' => $configuration]) ?>
+        <?= view($moduleName.'::modules/descendants-chart/form/orientation', ['configuration' => $configuration]) ?>
 
         <div class="collapse" id="showMoreOptions">
             <div class="form-group row">

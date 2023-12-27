@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * This file is part of the package magicsunday/webtrees-descendants-chart.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+use Fisharebest\Webtrees\I18N;
+use MagicSunday\Webtrees\DescendantsChart\Configuration;
+
+/**
+ * @var Configuration $configuration
+ */
+?>
+
+<div class="form-group row">
+    <label class="col-form-label col-sm-3 wt-page-options-label">
+        <?= I18N::translate('Orientation') ?>
+    </label>
+    <div class="col-sm-9 wt-page-options-value" id="layout">
+        <?=
+        view('components/radios-inline', [
+            'name'     => 'layout',
+            'options'  => $configuration->getLayouts(),
+            'selected' => $configuration->getLayout(),
+        ])
+        ?>
+    </div>
+</div>
