@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * This file is part of the package magicsunday/webtrees-descendants-chart.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+use Fisharebest\Webtrees\I18N;
+use MagicSunday\Webtrees\DescendantsChart\Configuration;
+
+/**
+ * @var Configuration $configuration
+ * @var string        $moduleName
+ */
+?>
+
+<div class="form-group row">
+    <label class="col-form-label col-sm-3 wt-page-options-label">
+        <?= I18N::translate('Layout') ?>
+    </label>
+    <div class="col-sm-9 wt-page-options-value">
+        <?=
+            view($moduleName . '::modules/components/checkbox', [
+                'name'      => 'hideSpouses',
+                'label'     => I18N::translate('Hide the spouses associated with an individual.'),
+                'checked'   => $configuration->getHideSpouses(),
+                'unchecked' => '0',
+            ])
+        ?>
+
+        <div class="form-element-with-description">
+            <?=
+                view($moduleName . '::modules/components/checkbox', [
+                    'name'      => 'showMarriedNames',
+                    'label'     => I18N::translate('Show married names.'),
+                    'checked'   => $configuration->getShowMarriedNames(),
+                    'unchecked' => '0',
+                ])
+            ?>
+            <small class="form-text text-muted">
+                <?= I18N::translate('Shows the married name of the partner if this has a separate name entry of the type "MARRIED" or "_MARNM".') ?>
+            </small>
+        </div>
+    </div>
+</div>

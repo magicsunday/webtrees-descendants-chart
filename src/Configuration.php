@@ -189,8 +189,20 @@ class Configuration
      */
     public function getHideSpouses(): bool
     {
-        return Validator::queryParams($this->request)
-            ->boolean('hideSpouses', false);
+        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
+            $validator = Validator::parsedBody($this->request);
+        } else {
+            $validator = Validator::queryParams($this->request);
+        }
+
+        return $validator
+            ->boolean(
+                'hideSpouses',
+                (bool) $this->module->getPreference(
+                    'default_hide_spouses',
+                    '0'
+                )
+            );
     }
 
     /**
@@ -200,7 +212,19 @@ class Configuration
      */
     public function getShowMarriedNames(): bool
     {
-        return Validator::queryParams($this->request)
-            ->boolean('showMarriedNames', false);
+        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
+            $validator = Validator::parsedBody($this->request);
+        } else {
+            $validator = Validator::queryParams($this->request);
+        }
+
+        return $validator
+            ->boolean(
+                'showMarriedNames',
+                (bool) $this->module->getPreference(
+                    'default_show_married_names',
+                    '0'
+                )
+            );
     }
 }
