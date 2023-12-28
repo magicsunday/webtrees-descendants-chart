@@ -32,10 +32,16 @@ export class Storage
      */
     register(name)
     {
-        let input       = document.getElementById(name);
+        // Use "querySelector" here as the ID of a checkbox elements may additionally contain a hyphen and the value
+        let input = document.querySelector('[id^="' + name + '"]');
+
+        if (input === null) {
+            return;
+        }
+
         let storedValue = this.read(name);
 
-        if (storedValue) {
+        if (storedValue !== null) {
             if (input.type && (input.type === "checkbox")) {
                 input.checked = storedValue;
             } else {
@@ -70,11 +76,15 @@ export class Storage
      *
      * @param {String} name The id or name of an HTML element
      *
-     * @returns {String|Boolean|Number}
+     * @returns {null|String|Boolean|Number}
      */
     read(name)
     {
-        return this._storage[name];
+        if (this._storage.hasOwnProperty(name)) {
+            return this._storage[name];
+        }
+
+        return null;
     }
 
     /**

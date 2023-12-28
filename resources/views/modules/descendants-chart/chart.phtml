@@ -40,15 +40,11 @@ new WebtreesDescendantsChart.DescendantsChart(
         cssFiles: <?= json_encode($exportStylesheets) ?>,
 
         get generations() {
-            return typeof generations !== "undefined"
-                ? generations
-                : <?= $configuration->getGenerations() ?>
+            return generations ?? <?= $configuration->getGenerations() ?>
         },
 
         get treeLayout() {
-            return typeof treeLayout !== "undefined"
-                ? treeLayout
-                : <?= json_encode($configuration->getLayout()) ?>;
+            return treeLayout ?? <?= json_encode($configuration->getLayout()) ?>;
         },
 
         data: <?= json_encode($data) ?>

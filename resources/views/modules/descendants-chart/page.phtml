@@ -41,7 +41,6 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
             <div class="col-sm-9 wt-page-options-value">
                 <?=
                     view('components/select-individual', [
-                        'id'         => 'xref',
                         'name'       => 'xref',
                         'individual' => $individual,
                         'tree'       => $tree,
@@ -51,11 +50,11 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
             </div>
         </div>
 
-        <?= view($moduleName.'::modules/descendants-chart/form/generations', ['configuration' => $configuration]) ?>
-        <?= view($moduleName.'::modules/descendants-chart/form/orientation', ['configuration' => $configuration]) ?>
+        <?= view($moduleName . '::modules/descendants-chart/form/generations', ['configuration' => $configuration]) ?>
+        <?= view($moduleName . '::modules/descendants-chart/form/orientation', ['configuration' => $configuration]) ?>
 
         <div class="collapse" id="showMoreOptions">
-            <?= view($moduleName.'::modules/descendants-chart/form/layout', ['configuration' => $configuration, 'moduleName' => $moduleName]) ?>
+            <?= view($moduleName . '::modules/descendants-chart/form/layout', ['configuration' => $configuration, 'moduleName' => $moduleName]) ?>
         </div>
 
         <div class="form-group row mt-2">
@@ -167,6 +166,8 @@ const storage = new WebtreesDescendantsChart.Storage("webtrees-descendants-chart
 // Register all form elements valid for storing data
 storage.register("generations");
 storage.register("layout");
+storage.register("hideSpouses");
+storage.register("showMarriedNames");
 
 // Handle option toggle button
 toggleMoreOptions(storage);
