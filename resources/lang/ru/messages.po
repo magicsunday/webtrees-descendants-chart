@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
-"POT-Creation-Date: 2023-11-18 18:49+0100\n"
-"PO-Revision-Date: 2023-11-18 18:49+0100\n"
+"POT-Creation-Date: 2023-12-28 17:38+0100\n"
+"PO-Revision-Date: 2023-12-28 17:38+0100\n"
 "Last-Translator: Rico Sonntag <mail@ricosonntag.de>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: webtrees-descendants-chart/module.php\n"
@@ -18,116 +18,147 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: webtrees-descendants-chart/src/Configuration.php:131
-#: webtrees-descendants-chart/src/Configuration.php:139
+#: webtrees-descendants-chart/src/Configuration.php:170
+#: webtrees-descendants-chart/src/Configuration.php:178
 msgid "left"
 msgstr "влево"
 
-#: webtrees-descendants-chart/src/Configuration.php:132
-#: webtrees-descendants-chart/src/Configuration.php:140
+#: webtrees-descendants-chart/src/Configuration.php:171
+#: webtrees-descendants-chart/src/Configuration.php:179
 msgid "right"
 msgstr "вправо"
 
-#: webtrees-descendants-chart/src/Configuration.php:133
-#: webtrees-descendants-chart/src/Configuration.php:141
+#: webtrees-descendants-chart/src/Configuration.php:172
+#: webtrees-descendants-chart/src/Configuration.php:180
 msgid "up"
 msgstr "вверх"
 
-#: webtrees-descendants-chart/src/Configuration.php:134
-#: webtrees-descendants-chart/src/Configuration.php:142
+#: webtrees-descendants-chart/src/Configuration.php:173
+#: webtrees-descendants-chart/src/Configuration.php:181
 msgid "down"
 msgstr "вниз"
 
-#: webtrees-descendants-chart/src/Module.php:107
-#: webtrees-descendants-chart/src/Module.php:213
+#: webtrees-descendants-chart/src/Module.php:123
+#: webtrees-descendants-chart/src/Module.php:234
 msgid "Descendants chart"
 msgstr "Потомки (новое)"
 
-#: webtrees-descendants-chart/src/Module.php:117
+#: webtrees-descendants-chart/src/Module.php:133
 msgid "An overview of an individual’s descendants."
 msgstr "Диаграмма потомков в виде дерева."
 
-#: webtrees-descendants-chart/src/Module.php:216
+#: webtrees-descendants-chart/src/Module.php:237
 #: webtrees-descendants-chart/src/Traits/ModuleChartTrait.php:41
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Диаграмма потомков у %s"
 
-#: webtrees-descendants-chart/src/Module.php:232
+#: webtrees-descendants-chart/src/Module.php:253
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Используйте Ctrl + scroll, чтобы  увеличить"
 
-#: webtrees-descendants-chart/src/Module.php:233
+#: webtrees-descendants-chart/src/Module.php:254
 msgid "Move the view with two fingers"
 msgstr "Измените вид двумя пальцами"
 
-#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:170
+#: webtrees-descendants-chart/src/Processor/DateProcessor.php:129
 #: webtrees-module-base/src/Processor/DateProcessor.php:129
 #, php-format
 msgid "Born: %s"
 msgstr "Рождение: %s"
 
-#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:174
+#: webtrees-descendants-chart/src/Processor/DateProcessor.php:133
 #: webtrees-module-base/src/Processor/DateProcessor.php:133
 #, php-format
 msgid "Died: %s"
 msgstr "Смерть: %s"
 
-#: webtrees-descendants-chart/src/Traits/IndividualTrait.php:178
+#: webtrees-descendants-chart/src/Processor/DateProcessor.php:137
 #: webtrees-module-base/src/Processor/DateProcessor.php:137
 msgid "Deceased"
 msgstr "Умерший"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:39
-msgid "Individual"
-msgstr "Человек"
+#: webtrees-descendants-chart/src/Traits/ModuleConfigTrait.php:68
+#, php-format
+msgid "The preferences for the module “%s” have been updated."
+msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:56
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
+msgid "Control panel"
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
+msgid "Modules"
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:44
+msgid "save"
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:49
+msgid "cancel"
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
 msgstr "Поколения"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:73
-msgid "Orientation"
-msgstr "Ориентация"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:89
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:23
 msgid "Layout"
 msgstr "Ansicht"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:96
-msgid "Hide the spouses associated with an individual."
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:29
+msgid "Hide the spouses associated with an individual"
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:106
-msgid "Show married names."
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:39
+msgid "Show married names"
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:111
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:45
 msgid ""
 "Shows the married name of the partner if this has a separate name entry of "
 "the type \"MARRIED\" or \"_MARNM\"."
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:129
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:53
+msgid "Open individual in new browser window/tab"
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:59
+msgid ""
+"Open the current individual's detail page in a new browser window/tab when "
+"it's left-clicked, otherwise the current window/tab is used."
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/orientation.phtml:22
+msgid "Orientation"
+msgstr "Ориентация"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:39
+msgid "Individual"
+msgstr "Человек"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:71
 msgid "Show more options"
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:130
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:72
 msgid "Hide more options"
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:135
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:77
 msgid "view"
 msgstr "обновить"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:141
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:83
 msgid "Re center"
 msgstr "Центрировать"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:146
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:88
 msgid "Export as PNG"
 msgstr "Экспорт в PNG"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:149
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:91
 msgid "Export as SVG"
 msgstr "Экспорт в SVG"

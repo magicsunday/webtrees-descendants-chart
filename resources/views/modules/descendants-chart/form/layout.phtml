@@ -26,27 +26,27 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
         <?=
             view($moduleName . '::modules/components/checkbox', [
                 'name'      => 'hideSpouses',
-                'label'     => I18N::translate('Hide the spouses associated with an individual.'),
+                'label'     => I18N::translate('Hide the spouses associated with an individual'),
                 'checked'   => $configuration->getHideSpouses(),
                 'unchecked' => '0',
             ])
         ?>
 
-        <div class="form-element-with-description">
+        <div class="mt-3">
             <?=
                 view($moduleName . '::modules/components/checkbox', [
                     'name'      => 'showMarriedNames',
-                    'label'     => I18N::translate('Show married names.'),
+                    'label'     => I18N::translate('Show married names'),
                     'checked'   => $configuration->getShowMarriedNames(),
                     'unchecked' => '0',
                 ])
             ?>
-            <small class="form-text text-muted">
+            <small class="ps-4 form-text text-muted form-element-description">
                 <?= I18N::translate('Shows the married name of the partner if this has a separate name entry of the type "MARRIED" or "_MARNM".') ?>
             </small>
         </div>
 
-        <div class="mt-3 form-element-with-description">
+        <div class="mt-3">
             <?=
             view($moduleName . '::modules/components/checkbox', [
                 'name'      => 'openNewTabOnIndividualClick',
@@ -55,7 +55,7 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
                 'unchecked' => '0',
             ])
             ?>
-            <small class="form-text text-muted">
+            <small class="ps-4 form-text text-muted form-element-description">
                 <?= I18N::translate('Open the current individual\'s detail page in a new browser window/tab when it\'s left-clicked, otherwise the current window/tab is used.') ?>
             </small>
         </div>
