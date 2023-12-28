@@ -184,7 +184,7 @@ export default class Chart
      */
     redirectToIndividual(url)
     {
-        this._configuration.openNewTabOnIndividualClick
+        this._configuration.openNewTabOnClick
             ? window.open(url, "_blank")
             : window.location = url;
     }

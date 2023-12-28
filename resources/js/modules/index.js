@@ -28,7 +28,7 @@ export class DescendantsChart
      * @param {Boolean}  options.rtl
      * @param {Number}   options.generations
      * @param {String}   options.treeLayout
-     * @param {Boolean}  options.openNewTabOnIndividualClick
+     * @param {Boolean}  options.openNewTabOnClick
      * @param {String[]} options.cssFiles
      * @param {Data[]}   options.data
      */
@@ -42,7 +42,7 @@ export class DescendantsChart
             options.labels,
             options.generations,
             options.treeLayout,
-            options.openNewTabOnIndividualClick,
+            options.openNewTabOnClick,
             options.rtl
         );
 

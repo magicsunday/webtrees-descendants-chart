@@ -233,7 +233,7 @@ class Configuration
      *
      * @return bool
      */
-    public function getOpenNewTabOnIndividualClick(): bool
+    public function getOpenNewTabOnClick(): bool
     {
         if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
             $validator = Validator::parsedBody($this->request);
@@ -243,9 +243,9 @@ class Configuration
 
         return $validator
             ->boolean(
-                'openNewTabOnIndividualClick',
+                'openNewTabOnClick',
                 (bool) $this->module->getPreference(
-                    'default_openNewTabOnIndividualClick',
+                    'default_openNewTabOnClick',
                     '1'
                 )
             );

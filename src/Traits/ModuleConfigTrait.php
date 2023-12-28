@@ -61,7 +61,7 @@ trait ModuleConfigTrait
         $this->setPreference('default_layout', $configuration->getLayout());
         $this->setPreference('default_hideSpouses', (string) $configuration->getHideSpouses());
         $this->setPreference('default_showMarriedNames', (string) $configuration->getShowMarriedNames());
-        $this->setPreference('default_openNewTabOnIndividualClick', (string) $configuration->getOpenNewTabOnIndividualClick());
+        $this->setPreference('default_openNewTabOnClick', (string) $configuration->getOpenNewTabOnClick());
 
         FlashMessages::addMessage(
             I18N::translate(

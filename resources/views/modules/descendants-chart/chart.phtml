@@ -47,8 +47,8 @@ new WebtreesDescendantsChart.DescendantsChart(
             return treeLayout ?? <?= json_encode($configuration->getLayout()) ?>;
         },
 
-        get openNewTabOnIndividualClick() {
-            return openNewTabOnIndividualClick ?? <?= json_encode($configuration->getOpenNewTabOnIndividualClick()) ?>;
+        get openNewTabOnClick() {
+            return openNewTabOnClick ?? <?= json_encode($configuration->getOpenNewTabOnClick()) ?>;
         },
 
         data: <?= json_encode($data) ?>

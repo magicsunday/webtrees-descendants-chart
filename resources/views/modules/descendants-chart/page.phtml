@@ -168,7 +168,7 @@ storage.register("generations");
 storage.register("layout");
 storage.register("hideSpouses");
 storage.register("showMarriedNames");
-storage.register("openNewTabOnIndividualClick");
+storage.register("openNewTabOnClick");
 
 // Handle option toggle button
 toggleMoreOptions(storage);
@@ -177,10 +177,10 @@ toggleMoreOptions(storage);
 let formElements = document.getElementById("webtrees-descendants-chart-form").elements;
 formElements.namedItem("layout").value = storage.read("layout");
 
-const generations                 = parseInt(storage.read("generations"));
-const treeLayout                  = storage.read("layout");
-const openNewTabOnIndividualClick = storage.read("openNewTabOnIndividualClick");
-const ajaxUrl                     = getUrl(<?= json_encode($ajaxUrl) ?>, storage.read("generations"));
+const generations       = parseInt(storage.read("generations"));
+const treeLayout        = storage.read("layout");
+const openNewTabOnClick = storage.read("openNewTabOnClick");
+const ajaxUrl           = getUrl(<?= json_encode($ajaxUrl) ?>, storage.read("generations"));
 
 document.getElementById("descendants-chart-url")
     .setAttribute('data-wt-ajax-url', ajaxUrl);

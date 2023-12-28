@@ -23,7 +23,7 @@ export default class Configuration
      * @param {String[]} labels
      * @param {Number}   generations
      * @param {String}   treeLayout
-     * @param {Boolean}  openNewTabOnIndividualClick
+     * @param {Boolean}  openNewTabOnClick
      * @param {Boolean}  rtl
      * @param {Number}   direction
      */
@@ -31,7 +31,7 @@ export default class Configuration
         labels,
         generations = 4,
         treeLayout = LAYOUT_LEFTRIGHT,
-        openNewTabOnIndividualClick = true,
+        openNewTabOnClick = true,
         rtl = false,
         direction = 1
     ) {
@@ -39,7 +39,7 @@ export default class Configuration
         this._treeLayout   = treeLayout;
         this._orientations = new OrientationCollection();
 
-        this._openNewTabOnIndividualClick = openNewTabOnIndividualClick;
+        this._openNewTabOnClick = openNewTabOnClick;
 
         //
         this.duration = 750;
@@ -122,8 +122,8 @@ export default class Configuration
      *
      * @returns {Boolean}
      */
-    get openNewTabOnIndividualClick()
+    get openNewTabOnClick()
     {
-        return this._openNewTabOnIndividualClick;
+        return this._openNewTabOnClick;
     }
 }
