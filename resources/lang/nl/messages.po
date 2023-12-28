@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
 "POT-Creation-Date: 2023-12-28 17:38+0100\n"
-"PO-Revision-Date: 2023-12-28 17:38+0100\n"
-"Last-Translator: Rico Sonntag <mail@ricosonntag.de>\n"
+"PO-Revision-Date: 2023-12-28 21:32+0100\n"
+"Last-Translator: TheDutchJewel <thedutchjewel@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -81,23 +81,23 @@ msgstr "Overleden"
 #: webtrees-descendants-chart/src/Traits/ModuleConfigTrait.php:68
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
-msgstr ""
+msgstr "De voorkeuren voor de module \"%s\" zijn bijgewerkt."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
-msgstr ""
+msgstr "Controlepaneel"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
-msgstr ""
+msgstr "Modules"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:44
 msgid "save"
-msgstr ""
+msgstr "opslaan"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:49
 msgid "cancel"
-msgstr ""
+msgstr "annuleren"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
@@ -125,13 +125,16 @@ msgstr ""
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:53
 msgid "Open individual in new browser window/tab"
-msgstr ""
+msgstr "Open persoon in nieuw browservenster/tabblad"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:59
 msgid ""
 "Open the current individual's detail page in a new browser window/tab when "
 "it's left-clicked, otherwise the current window/tab is used."
 msgstr ""
+"Open de detailpagina van de huidige persoon in een nieuw browservenster/"
+"tabblad als er met de linkermuisknop op wordt geklikt, anders wordt het "
+"huidige venster/tabblad gebruikt."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
