@@ -58,9 +58,10 @@ trait ModuleConfigTrait
         $configuration = new Configuration($request, $this);
 
         $this->setPreference('default_generations', (string) $configuration->getGenerations());
-        $this->setPreference('default_tree_layout', $configuration->getLayout());
-        $this->setPreference('default_hide_spouses', (string) $configuration->getHideSpouses());
-        $this->setPreference('default_show_married_names', (string) $configuration->getShowMarriedNames());
+        $this->setPreference('default_layout', $configuration->getLayout());
+        $this->setPreference('default_hideSpouses', (string) $configuration->getHideSpouses());
+        $this->setPreference('default_showMarriedNames', (string) $configuration->getShowMarriedNames());
+        $this->setPreference('default_openNewTabOnIndividualClick', (string) $configuration->getOpenNewTabOnIndividualClick());
 
         FlashMessages::addMessage(
             I18N::translate(

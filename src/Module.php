@@ -166,12 +166,13 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
                 route(
                     self::ROUTE_DEFAULT,
                     [
-                        'tree'             => $tree->name(),
-                        'xref'             => $validator->string('xref', ''),
-                        'generations'      => $validator->integer('generations', 4),
-                        'hideSpouses'      => $validator->boolean('hideSpouses', false),
-                        'showMarriedNames' => $validator->boolean('showMarriedNames', false),
-                        'layout'           => $validator->string('layout', Configuration::LAYOUT_LEFTRIGHT),
+                        'tree'                        => $tree->name(),
+                        'xref'                        => $validator->string('xref', ''),
+                        'generations'                 => $validator->integer('generations', 4),
+                        'hideSpouses'                 => $validator->boolean('hideSpouses', false),
+                        'showMarriedNames'            => $validator->boolean('showMarriedNames', false),
+                        'openNewTabOnIndividualClick' => $validator->boolean('openNewTabOnIndividualClick', true),
+                        'layout'                      => $validator->string('layout', Configuration::LAYOUT_LEFTRIGHT),
                     ]
                 )
             );
@@ -267,12 +268,13 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
         return $this->chartUrl(
             $individual,
             [
-                'ajax'             => true,
-                'generations'      => $this->configuration->getGenerations(),
-                'hideSpouses'      => $this->configuration->getHideSpouses(),
-                'showMarriedNames' => $this->configuration->getShowMarriedNames(),
-                'layout'           => $this->configuration->getLayout(),
-                'xref'             => $xref,
+                'ajax'                        => true,
+                'generations'                 => $this->configuration->getGenerations(),
+                'hideSpouses'                 => $this->configuration->getHideSpouses(),
+                'showMarriedNames'            => $this->configuration->getShowMarriedNames(),
+                'openNewTabOnIndividualClick' => $this->configuration->getOpenNewTabOnIndividualClick(),
+                'layout'                      => $this->configuration->getLayout(),
+                'xref'                        => $xref,
             ]
         );
     }

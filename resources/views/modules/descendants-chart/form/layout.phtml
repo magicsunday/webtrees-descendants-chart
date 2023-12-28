@@ -45,5 +45,19 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
                 <?= I18N::translate('Shows the married name of the partner if this has a separate name entry of the type "MARRIED" or "_MARNM".') ?>
             </small>
         </div>
+
+        <div class="mt-3 form-element-with-description">
+            <?=
+            view($moduleName . '::modules/components/checkbox', [
+                'name'      => 'openNewTabOnIndividualClick',
+                'label'     => I18N::translate('Open individual in new browser window/tab'),
+                'checked'   => $configuration->getOpenNewTabOnIndividualClick(),
+                'unchecked' => '0',
+            ])
+            ?>
+            <small class="form-text text-muted">
+                <?= I18N::translate('Open the current individual\'s detail page in a new browser window/tab when it\'s left-clicked, otherwise the current window/tab is used.') ?>
+            </small>
+        </div>
     </div>
 </div>

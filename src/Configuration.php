@@ -152,7 +152,7 @@ class Configuration
             ->string(
                 'layout',
                 $this->module->getPreference(
-                    'default_tree_layout',
+                    'default_layout',
                     self::DEFAULT_TREE_LAYOUT
                 )
             );
@@ -199,7 +199,7 @@ class Configuration
             ->boolean(
                 'hideSpouses',
                 (bool) $this->module->getPreference(
-                    'default_hide_spouses',
+                    'default_hideSpouses',
                     '0'
                 )
             );
@@ -222,8 +222,31 @@ class Configuration
             ->boolean(
                 'showMarriedNames',
                 (bool) $this->module->getPreference(
-                    'default_show_married_names',
+                    'default_showMarriedNames',
                     '0'
+                )
+            );
+    }
+
+    /**
+     * Returns whether to open a new browser window/tab on left-click on an individual or not.
+     *
+     * @return bool
+     */
+    public function getOpenNewTabOnIndividualClick(): bool
+    {
+        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
+            $validator = Validator::parsedBody($this->request);
+        } else {
+            $validator = Validator::queryParams($this->request);
+        }
+
+        return $validator
+            ->boolean(
+                'openNewTabOnIndividualClick',
+                (bool) $this->module->getPreference(
+                    'default_openNewTabOnIndividualClick',
+                    '1'
                 )
             );
     }
