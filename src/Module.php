@@ -60,7 +60,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
     /**
      * @var string
      */
-    public const CUSTOM_VERSION = '1.7.2-dev';
+    public const CUSTOM_VERSION = '1.8.0';
 
     /**
      * @var string
