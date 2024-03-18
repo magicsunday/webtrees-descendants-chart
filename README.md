@@ -1,22 +1,18 @@
-![Latest version](https://img.shields.io/github/v/release/magicsunday/webtrees-descendants-chart?sort=semver)
-![License](https://img.shields.io/github/license/magicsunday/webtrees-descendants-chart)
-![PHPStan](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/phpstan.yml/badge.svg)
-![PHPCodeSniffer](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/phpcs.yml/badge.svg)
-![CodeQL](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/codeql-analysis.yml/badge.svg)
-
-![Code Climate](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart/badges/gpa.svg)
-![Issue Count](https://codeclimate.com/github/magicsunday/webtrees-descendants-chart/badges/issue_count.svg)
+[![Latest version](https://img.shields.io/github/v/release/magicsunday/webtrees-descendants-chart?sort=semver)](https://github.com/magicsunday/webtrees-descendants-chart/releases/latest)
+[![License](https://img.shields.io/github/license/magicsunday/webtrees-descendants-chart)](https://github.com/magicsunday/webtrees-descendants-chart/blob/main/LICENSE)
+[![CI](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/ci.yml/badge.svg)](https://github.com/magicsunday/webtrees-descendants-chart/actions/workflows/ci.yml)
 
 
 <!-- TOC -->
-* [Installation](#installation)
-  * [Using Composer](#using-composer)
-  * [Using Git](#using-git)
-  * [Manual installation](#manual-installation)
-* [Enable module](#enable-module)
-* [Usage](#usage)
-* [Development](#development)
-  * [Run tests](#run-tests)
+* [Descendants chart](#descendants-chart)
+  * [Installation](#installation)
+    * [Using Composer](#using-composer)
+    * [Using Git](#using-git)
+    * [Manual installation](#manual-installation)
+  * [Enable module](#enable-module)
+  * [Usage](#usage)
+  * [Development](#development)
+    * [Run tests](#run-tests)
 <!-- TOC -->
 
 

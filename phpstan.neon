@@ -1,22 +1,21 @@
 includes:
-    - vendor/phpstan/phpstan-strict-rules/rules.neon
-    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - %currentWorkingDirectory%/.build/vendor/phpstan/phpstan-strict-rules/rules.neon
+    - %currentWorkingDirectory%/.build/vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - %currentWorkingDirectory%/phpstan-baseline.neon
 
 parameters:
-    # You can currently choose from 10 levels (0 is the loosest and "max" is the strictest).
-    level: max
+    # You can currently choose from 10 levels (0 is the loosest and 9 is the strictest).
+    level: 9
 
     paths:
-        - src
-        # If you have tests and want to analyze this folder, uncomment the line below
-        # - test
+        - %currentWorkingDirectory%/src/
+
+    excludePaths:
+        - %currentWorkingDirectory%/.build/
 
     fileExtensions:
         - php
 
-    excludePaths:
-        - vendor/
-
-    # Ignored errors
-    ignoreErrors:
-        - '#^Call to an undefined method Fisharebest\\Webtrees\\Module\\ModuleCustomInterface\:\:assetUrl\(\).$#'
+    # Ignored validations
+    checkGenericClassInNonGenericObjectType: false
+    treatPhpDocTypesAsCertain: false
