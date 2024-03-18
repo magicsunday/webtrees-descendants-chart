@@ -159,12 +159,13 @@ class DataFacade
                         && $nodeData->getData()->getIndividual()->getBirthDate()->isOK()
                 )
             ) {
-                $item->setChildren(
-                    $childrenCollection
-                        ->sort($this->birthDateComparator())
-                        ->values()
-                        ->toArray()
-                );
+                /** @var Node[] $children */
+                $children = $childrenCollection
+                    ->sort($this->birthDateComparator())
+                    ->values()
+                    ->toArray();
+
+                $item->setChildren($children);
             }
         }
     }
