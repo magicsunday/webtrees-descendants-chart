@@ -4,7 +4,7 @@
  * This file is part of the package magicsunday/webtrees-descendants-chart.
  *
  * For the full copyright and license information, please read the
- * LICENSE file distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  */
 
 declare(strict_types=1);
@@ -63,6 +63,7 @@ class DataFacade
     public function setModule(ModuleCustomInterface $module): DataFacade
     {
         $this->module = $module;
+
         return $this;
     }
 
@@ -74,6 +75,7 @@ class DataFacade
     public function setConfiguration(Configuration $configuration): DataFacade
     {
         $this->configuration = $configuration;
+
         return $this;
     }
 
@@ -85,6 +87,7 @@ class DataFacade
     public function setRoute(string $route): DataFacade
     {
         $this->route = $route;
+
         return $this;
     }
 
@@ -152,10 +155,8 @@ class DataFacade
             // Check if each individual in the child list has a valid birthdate
             if (
                 $childrenCollection->every(
-                    static function (Node $nodeData): bool {
-                        return ($nodeData->getData()->getIndividual() !== null)
-                            && $nodeData->getData()->getIndividual()->getBirthDate()->isOK();
-                    }
+                    static fn (Node $nodeData): bool => ($nodeData->getData()->getIndividual() instanceof Individual)
+                        && $nodeData->getData()->getIndividual()->getBirthDate()->isOK()
                 )
             ) {
                 $item->setChildren(
@@ -175,22 +176,20 @@ class DataFacade
      */
     private function birthDateComparator(): Closure
     {
-        return static function (Node $nodeData1, Node $nodeData2): int {
-            return Date::compare(
-                $nodeData1->getData()->getIndividual() !== null
-                    ? $nodeData1->getData()->getIndividual()->getEstimatedBirthDate()
-                    : new Date(''),
-                $nodeData2->getData()->getIndividual() !== null
-                    ? $nodeData2->getData()->getIndividual()->getEstimatedBirthDate()
-                    : new Date('')
-            );
-        };
+        return static fn (Node $nodeData1, Node $nodeData2): int => Date::compare(
+            $nodeData1->getData()->getIndividual() instanceof Individual
+                ? $nodeData1->getData()->getIndividual()->getEstimatedBirthDate()
+                : new Date(''),
+            $nodeData2->getData()->getIndividual() instanceof Individual
+                ? $nodeData2->getData()->getIndividual()->getEstimatedBirthDate()
+                : new Date('')
+        );
     }
 
     /**
      * Recursively build the data array of the individual ancestors.
      *
-     * @param null|Individual $individual The start person
+     * @param Individual|null $individual The start person
      * @param int             $generation The current generation
      *
      * @return Node[]
@@ -198,14 +197,14 @@ class DataFacade
     private function buildTreeStructure(?Individual $individual, int $generation = 1): array
     {
         // Maximum generation reached
-        if (($individual === null) || ($generation > $this->configuration->getGenerations())) {
+        if ((!$individual instanceof Individual) || ($generation > $this->configuration->getGenerations())) {
             return [];
         }
 
         // Get spouse families
         $families = $individual->spouseFamilies();
 
-        $nodes = [];
+        $nodes                      = [];
         $nodes[$individual->xref()] = new Node(
             $this->getNodeData($generation, $individual)
         );
@@ -273,15 +272,15 @@ class DataFacade
      * Get the node data required for display the chart.
      *
      * @param int             $generation The generation the person belongs to
-     * @param null|Individual $individual The current individual
-     * @param null|Individual $spouse
+     * @param Individual|null $individual The current individual
+     * @param Individual|null $spouse
      *
      * @return NodeData
      */
     private function getNodeData(
         int $generation,
-        Individual $individual = null,
-        Individual $spouse = null
+        ?Individual $individual = null,
+        ?Individual $spouse = null
     ): NodeData {
         // Create a unique ID for each individual
         static $id = 0;
@@ -290,7 +289,7 @@ class DataFacade
         $treeData->setId(++$id)
             ->setGeneration($generation);
 
-        if ($individual === null) {
+        if (!$individual instanceof Individual) {
             return $treeData;
         }
 

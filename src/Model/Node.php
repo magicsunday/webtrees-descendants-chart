@@ -3,8 +3,8 @@
 /**
  * This file is part of the package magicsunday/webtrees-descendants-chart.
  *
- * For the full copyright and license information; please read the
- * LICENSE file distributed with this source code.
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
  */
 
 declare(strict_types=1);
@@ -81,6 +81,7 @@ class Node implements JsonSerializable
     public function setSpouse(int $spouse): Node
     {
         $this->spouse = $spouse;
+
         return $this;
     }
 
@@ -92,6 +93,7 @@ class Node implements JsonSerializable
     public function setFamily(int $family): Node
     {
         $this->family = $family;
+
         return $this;
     }
 
@@ -111,6 +113,7 @@ class Node implements JsonSerializable
     public function setChildren(array $children): Node
     {
         $this->children = $children;
+
         return $this;
     }
 
@@ -122,6 +125,7 @@ class Node implements JsonSerializable
     public function addSpouse(int $spouse): Node
     {
         $this->spouses[] = $spouse;
+
         return $this;
     }
 
@@ -141,11 +145,11 @@ class Node implements JsonSerializable
             $jsonData['spouse'] = $this->spouse;
         }
 
-        if (count($this->children) > 0) {
+        if ($this->children !== []) {
             $jsonData['children'] = $this->children;
         }
 
-        if (count($this->spouses) > 0) {
+        if ($this->spouses !== []) {
             $jsonData['spouses'] = $this->spouses;
         }
 

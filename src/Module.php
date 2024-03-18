@@ -4,7 +4,7 @@
  * This file is part of the package magicsunday/webtrees-descendants-chart.
  *
  * For the full copyright and license information, please read the
- * LICENSE file distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  */
 
 declare(strict_types=1);
@@ -26,8 +26,8 @@ use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\View;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
-use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleCustomTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleConfigTrait;
+use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleCustomTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -44,7 +44,8 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
     use ModuleChartTrait;
     use ModuleConfigTrait;
 
-    public const ROUTE_DEFAULT     = 'webtrees-descendants-chart';
+    public const ROUTE_DEFAULT = 'webtrees-descendants-chart';
+
     public const ROUTE_DEFAULT_URL = '/tree/{tree}/webtrees-descendants-chart/{xref}';
 
     /**
@@ -231,13 +232,11 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
      */
     private function getPageTitle(Individual $individual): string
     {
-        $title = I18N::translate('Descendants chart');
-
         if ($individual->canShowName()) {
-            $title = I18N::translate('Descendants chart of %s', $individual->fullName());
+            return I18N::translate('Descendants chart of %s', $individual->fullName());
         }
 
-        return $title;
+        return I18N::translate('Descendants chart');
     }
 
     /**
@@ -257,7 +256,6 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
     }
 
     /**
-     *
      * @param Individual $individual
      * @param string     $xref
      *
@@ -286,12 +284,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
      */
     private function getStylesheets(): array
     {
-        $stylesheets = [];
-
-        $stylesheets[] = $this->assetUrl('css/descendants-chart.css');
-        $stylesheets[] = $this->assetUrl('css/svg.css');
-
-        return $stylesheets;
+        return [$this->assetUrl('css/descendants-chart.css'), $this->assetUrl('css/svg.css')];
     }
 
     /**
