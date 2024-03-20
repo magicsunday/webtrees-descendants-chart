@@ -1,5 +1,5 @@
 /**
- * This file is part of the package magicsunday/webtrees-descendant-chart.
+ * This file is part of the package magicsunday/webtrees-descendants-chart.
  *
  * For the full copyright and license information, please read the
  * LICENSE file distributed with this source code.
@@ -17,7 +17,7 @@ import * as d3 from "../d3.js";
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
- * @link    https://github.com/magicsunday/webtrees-descendant-chart/
+ * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
 export default class Name
 {
@@ -93,22 +93,24 @@ export default class Name
                 });
 
             // Add alternative name if present
-            enter
-                .filter(d => d.data.data.alternativeName !== "")
-                .call((g) => {
-                    const text = g.append("text")
-                        .attr("class", "wt-chart-box-name")
-                        .attr("text-anchor", "middle")
-                        .attr("direction", d => d.isAltRtl ? "rtl" : "ltr")
-                        .attr("alignment-baseline", "central")
-                        .attr("y", this._text.y + 37)
-                        .classed("wt-chart-box-name-alt", true);
+            if (this._svg._configuration.showAlternativeName) {
+                enter
+                    .filter(d => d.data.data.alternativeName !== "")
+                    .call((g) => {
+                        const text = g.append("text")
+                            .attr("class", "wt-chart-box-name")
+                            .attr("text-anchor", "middle")
+                            .attr("direction", d => d.isAltRtl ? "rtl" : "ltr")
+                            .attr("alignment-baseline", "central")
+                            .attr("y", this._text.y + 40)
+                            .classed("wt-chart-box-name-alt", true);
 
-                    this.addNameElements(
-                        text,
-                        datum => this.createAlternativeNamesData(text, datum)
-                    );
-                });
+                        this.addNameElements(
+                            text,
+                            datum => this.createAlternativeNamesData(text, datum)
+                        );
+                    });
+            }
 
             // Left/Right and Right/Left
         } else {
@@ -162,32 +164,34 @@ export default class Name
                 });
 
             // Add alternative name if present
-            enter
-                .filter(datum => datum.data.data.alternativeName !== "")
-                .call((g) => {
-                    const text = g.append("text")
-                        .attr("class", "wt-chart-box-name")
-                        .attr("text-anchor", (d) => {
-                            if (d.isAltRtl && this._orientation.isDocumentRtl) {
+            if (this._svg._configuration.showAlternativeName) {
+                enter
+                    .filter(datum => datum.data.data.alternativeName !== "")
+                    .call((g) => {
+                        const text = g.append("text")
+                            .attr("class", "wt-chart-box-name")
+                            .attr("text-anchor", (d) => {
+                                if (d.isAltRtl && this._orientation.isDocumentRtl) {
+                                    return "start";
+                                }
+
+                                if (d.isAltRtl || this._orientation.isDocumentRtl) {
+                                    return "end";
+                                }
+
                                 return "start";
-                            }
+                            })
+                            .attr("direction", d => d.isAltRtl ? "rtl" : "ltr")
+                            .attr("x", d => this.textX(d))
+                            .attr("y", this._text.y + 8)
+                            .classed("wt-chart-box-name-alt", true);
 
-                            if (d.isAltRtl || this._orientation.isDocumentRtl) {
-                                return "end";
-                            }
-
-                            return "start";
-                        })
-                        .attr("direction", d => d.isAltRtl ? "rtl" : "ltr")
-                        .attr("x", d => this.textX(d))
-                        .attr("y", this._text.y + 8)
-                        .classed("wt-chart-box-name-alt", true);
-
-                    this.addNameElements(
-                        text,
-                        datum => this.createAlternativeNamesData(text, datum)
-                    );
-                });
+                        this.addNameElements(
+                            text,
+                            datum => this.createAlternativeNamesData(text, datum)
+                        );
+                    });
+            }
         }
     }
 

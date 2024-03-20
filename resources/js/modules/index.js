@@ -29,6 +29,7 @@ export class DescendantsChart
      * @param {Number}   options.generations
      * @param {String}   options.treeLayout
      * @param {Boolean}  options.openNewTabOnClick
+     * @param {Boolean}  options.showAlternativeName
      * @param {String[]} options.cssFiles
      * @param {Data[]}   options.data
      */
@@ -43,6 +44,7 @@ export class DescendantsChart
             options.generations,
             options.treeLayout,
             options.openNewTabOnClick,
+            options.showAlternativeName,
             options.rtl
         );
 

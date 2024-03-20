@@ -10,6 +10,7 @@ import NodeDrawer from "../lib/tree/node-drawer";
 import LinkDrawer from "../lib/tree/link-drawer";
 import OrientationTopBottom from "../lib/chart/orientation/orientation-topBottom";
 import OrientationBottomTop from "../lib/chart/orientation/orientation-bottomTop";
+import {LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET} from "../lib/constants.js";
 
 /**
  * The class handles the creation of the tree.

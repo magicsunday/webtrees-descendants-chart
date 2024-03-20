@@ -167,13 +167,14 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
                 route(
                     self::ROUTE_DEFAULT,
                     [
-                        'tree'              => $tree->name(),
-                        'xref'              => $validator->string('xref', ''),
-                        'generations'       => $validator->integer('generations', 4),
-                        'hideSpouses'       => $validator->boolean('hideSpouses', false),
-                        'showMarriedNames'  => $validator->boolean('showMarriedNames', false),
-                        'openNewTabOnClick' => $validator->boolean('openNewTabOnClick', true),
-                        'layout'            => $validator->string('layout', Configuration::LAYOUT_LEFTRIGHT),
+                        'tree'                => $tree->name(),
+                        'xref'                => $validator->string('xref', ''),
+                        'generations'         => $validator->integer('generations', 4),
+                        'hideSpouses'         => $validator->boolean('hideSpouses', false),
+                        'showMarriedNames'    => $validator->boolean('showMarriedNames', false),
+                        'layout'              => $validator->string('layout', Configuration::LAYOUT_LEFTRIGHT),
+                        'openNewTabOnClick'   => $validator->boolean('openNewTabOnClick', true),
+                        'showAlternativeName' => $validator->boolean('showAlternativeName', true),
                     ]
                 )
             );

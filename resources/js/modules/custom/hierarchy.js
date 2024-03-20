@@ -6,6 +6,9 @@
  */
 
 import * as d3 from "../lib/d3";
+import OrientationTopBottom from "../lib/chart/orientation/orientation-topBottom.js";
+import OrientationBottomTop from "../lib/chart/orientation/orientation-bottomTop.js";
+import {LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET} from "../lib/constants.js";
 
 /**
  * This class handles the hierarchical data.
@@ -35,6 +38,15 @@ export default class Hierarchy
      */
     init(data)
     {
+        // Adjust box height if we are going to display the alternative names
+        if (this._configuration.showAlternativeName) {
+            if ((this._configuration.orientation instanceof OrientationTopBottom)
+                || (this._configuration.orientation instanceof OrientationBottomTop)
+            ) {
+                this._configuration.orientation.boxHeight += LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET;
+            }
+        }
+
         // // Declares a tree layout and assigns the size
         // const treeLayout = d3.tree()
         //     .nodeSize([this._configuration.orientation.nodeWidth, 0])

@@ -24,6 +24,7 @@ export default class Configuration
      * @param {Number}   generations
      * @param {String}   treeLayout
      * @param {Boolean}  openNewTabOnClick
+     * @param {Boolean}  showAlternativeName
      * @param {Boolean}  rtl
      * @param {Number}   direction
      */
@@ -32,6 +33,7 @@ export default class Configuration
         generations = 4,
         treeLayout = LAYOUT_LEFTRIGHT,
         openNewTabOnClick = true,
+        showAlternativeName = true,
         rtl = false,
         direction = 1
     ) {
@@ -40,6 +42,7 @@ export default class Configuration
         this._orientations = new OrientationCollection();
 
         this._openNewTabOnClick = openNewTabOnClick;
+        this._showAlternativeName = showAlternativeName;
 
         //
         this.duration = 750;
@@ -125,5 +128,15 @@ export default class Configuration
     get openNewTabOnClick()
     {
         return this._openNewTabOnClick;
+    }
+
+    /**
+     * Returns whether to show or hide the alternative name.
+     *
+     * @returns {Boolean}
+     */
+    get showAlternativeName()
+    {
+        return this._showAlternativeName;
     }
 }
