@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
-"POT-Creation-Date: 2023-12-28 17:38+0100\n"
-"PO-Revision-Date: 2023-12-28 21:32+0100\n"
+"POT-Creation-Date: 2024-03-20 13:51+0100\n"
+"PO-Revision-Date: 2024-03-20 13:51+0100\n"
 "Last-Translator: TheDutchJewel <thedutchjewel@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -18,32 +18,32 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: webtrees-descendants-chart/src/Configuration.php:170
-#: webtrees-descendants-chart/src/Configuration.php:178
+#: webtrees-descendants-chart/src/Configuration.php:173
+#: webtrees-descendants-chart/src/Configuration.php:181
 msgid "left"
 msgstr "links"
 
-#: webtrees-descendants-chart/src/Configuration.php:171
-#: webtrees-descendants-chart/src/Configuration.php:179
+#: webtrees-descendants-chart/src/Configuration.php:174
+#: webtrees-descendants-chart/src/Configuration.php:182
 msgid "right"
 msgstr "rechts"
 
-#: webtrees-descendants-chart/src/Configuration.php:172
-#: webtrees-descendants-chart/src/Configuration.php:180
+#: webtrees-descendants-chart/src/Configuration.php:175
+#: webtrees-descendants-chart/src/Configuration.php:183
 msgid "up"
 msgstr "omhoog"
 
-#: webtrees-descendants-chart/src/Configuration.php:173
-#: webtrees-descendants-chart/src/Configuration.php:181
+#: webtrees-descendants-chart/src/Configuration.php:176
+#: webtrees-descendants-chart/src/Configuration.php:184
 msgid "down"
 msgstr "omlaag"
 
-#: webtrees-descendants-chart/src/Module.php:123
-#: webtrees-descendants-chart/src/Module.php:234
+#: webtrees-descendants-chart/src/Module.php:124
+#: webtrees-descendants-chart/src/Module.php:240
 msgid "Descendants chart"
 msgstr "Afstammelingendiagram"
 
-#: webtrees-descendants-chart/src/Module.php:133
+#: webtrees-descendants-chart/src/Module.php:134
 msgid "An overview of an individual’s descendants."
 msgstr "Een overzicht van de afstammelingen van een persoon."
 
@@ -78,7 +78,7 @@ msgstr "Overleden: %s"
 msgid "Deceased"
 msgstr "Overleden"
 
-#: webtrees-descendants-chart/src/Traits/ModuleConfigTrait.php:68
+#: webtrees-descendants-chart/src/Traits/ModuleConfigTrait.php:87
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
 msgstr "De voorkeuren voor de module \"%s\" zijn bijgewerkt."
@@ -135,6 +135,17 @@ msgstr ""
 "Open de detailpagina van de huidige persoon in een nieuw browservenster/"
 "tabblad als er met de linkermuisknop op wordt geklikt, anders wordt het "
 "huidige venster/tabblad gebruikt."
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:67
+msgid "Show alternative name of individual"
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:73
+msgid ""
+"Displays a person's alternate name, if available. This simultaneously "
+"enlarges the individuals' respective boxes to create the necessary space for "
+"the display."
+msgstr ""
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
