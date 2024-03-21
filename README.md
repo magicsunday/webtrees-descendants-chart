@@ -37,7 +37,7 @@ Requires webtrees 2.1.
 To install using [composer](https://getcomposer.org/), just run the following command from the command line 
 at the root directory of your webtrees installation.
 
-``` 
+```shell
 composer require magicsunday/webtrees-descendants-chart
 ```
 
@@ -46,7 +46,7 @@ To make this possible, the "magicsunday/webtrees-module-base" package is used. A
 may be required here to authorize the execution of the package.
 
 To remove the module run:
-```
+```shell
 composer remove magicsunday/webtrees-descendants-chart
 ```
 
@@ -54,7 +54,7 @@ composer remove magicsunday/webtrees-descendants-chart
 If you are using ``git``, you could also clone the current main branch directly into your ``modules_v4`` directory 
 by calling:
 
-```
+```shell
 git clone https://github.com/magicsunday/webtrees-descendants-chart.git modules_v4/webtrees-descendants-chart
 ```
 
@@ -88,14 +88,14 @@ in order to be able to use it elsewhere.
 ## Development
 To build/update the javascript, run the following commands:
 
-```
+```shell
 nvm install node
 npm install
 npm run prepare
 ```
 
 ### Run tests
-```
+```shell
 composer update
 
 composer ci:test
