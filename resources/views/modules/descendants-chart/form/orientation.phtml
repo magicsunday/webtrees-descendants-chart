@@ -17,10 +17,10 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
  */
 ?>
 
-<fieldset class="form-group row">
-    <legend class="col-form-label col-sm-3 wt-page-options-label">
+<div class="row">
+    <div class="col-form-label col-sm-3 wt-page-options-label">
         <?= I18N::translate('Orientation') ?>
-    </legend>
+    </div>
     <div class="col-sm-9 wt-page-options-value" id="layout">
         <?=
         view('components/radios-inline', [
@@ -30,4 +30,4 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
         ])
         ?>
     </div>
-</fieldset>
+</div>
