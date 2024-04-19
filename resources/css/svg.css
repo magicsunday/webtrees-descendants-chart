@@ -32,9 +32,9 @@
     fill: var(--sex-u-bg, rgb(255, 255, 255));
 }
 
-.webtrees-descendants-chart-container svg .spouse rect.male,
-.webtrees-descendants-chart-container svg .spouse rect.female,
-.webtrees-descendants-chart-container svg .spouse rect.unknown {
+.webtrees-descendants-chart-container svg rect.male.spouse,
+.webtrees-descendants-chart-container svg rect.female.spouse,
+.webtrees-descendants-chart-container svg rect.unknown.spouse  {
     stroke-dasharray: 5;
     stroke-width: 1px;
 }
