@@ -45,8 +45,7 @@ export default class Date
     appendDate(parent)
     {
         const table = parent
-            .append("g")
-            .attr("class", "table");
+            .append("g");
 
         // Top/Bottom and Bottom/Top
         if ((this._orientation instanceof OrientationTopBottom)
@@ -112,7 +111,7 @@ export default class Date
         enter
             .call((g) => {
                 const col1 = g.append("text")
-                    .attr("fill", "currentColor")
+                    .attr("class", "date")
                     .attr("text-anchor", "middle")
                     .attr("dominant-baseline", "middle")
                     .attr("x", d => this.textX(d))

@@ -285,7 +285,10 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
      */
     private function getStylesheets(): array
     {
-        return [$this->assetUrl('css/descendants-chart.css'), $this->assetUrl('css/svg.css')];
+        return [
+            $this->assetUrl('css/descendants-chart.css'),
+            $this->assetUrl('css/svg.css'),
+        ];
     }
 
     /**
