@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
 "POT-Creation-Date: 2024-03-20 13:51+0100\n"
-"PO-Revision-Date: 2024-03-20 13:51+0100\n"
+"PO-Revision-Date: 2024-04-06 07:54+0200\n"
 "Last-Translator: Rico Sonntag <mail@ricosonntag.de>\n"
 "Language-Team: \n"
 "Language: nb\n"
@@ -81,23 +81,23 @@ msgstr "Død"
 #: webtrees-descendants-chart/src/Traits/ModuleConfigTrait.php:87
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
-msgstr ""
+msgstr "Innstillingene for modulen “%s” har blitt oppdatert."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
-msgstr ""
+msgstr "Kontrollpanel"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
-msgstr ""
+msgstr "Moduler"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:44
 msgid "save"
-msgstr ""
+msgstr "lagre"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:49
 msgid "cancel"
-msgstr ""
+msgstr "avbryt"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
@@ -120,20 +120,24 @@ msgid ""
 "Shows the married name of the partner if this has a separate name entry of "
 "the type \"MARRIED\" or \"_MARNM\"."
 msgstr ""
+"Viser partners navn som gift dersom dette er lagret med type \"MARRIED\" "
+"eller\"_MARNM\"."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:53
 msgid "Open individual in new browser window/tab"
-msgstr ""
+msgstr "Åpne person i nytt vindu/fane"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:59
 msgid ""
 "Open the current individual's detail page in a new browser window/tab when "
 "it's left-clicked, otherwise the current window/tab is used."
 msgstr ""
+"Åpner gjeldende persons faktaside i nytt vindu/fane ved venstreklikk. Om "
+"ikke, åpnes siden i samme vindu/fane."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:67
 msgid "Show alternative name of individual"
-msgstr ""
+msgstr "Vis alternativt navn på person"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:73
 msgid ""
@@ -141,6 +145,8 @@ msgid ""
 "enlarges the individuals' respective boxes to create the necessary space for "
 "the display."
 msgstr ""
+"Viser alternative navn på personer, om dette er tilgjengelig. Dette vil "
+"samtidig utvide personbokser for å gi plass til visningen."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
@@ -152,7 +158,7 @@ msgstr "Person"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:71
 msgid "Show more options"
-msgstr "Vis flere vag"
+msgstr "Vis flere valg"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:72
 msgid "Hide more options"
