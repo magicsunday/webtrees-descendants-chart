@@ -61,7 +61,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
     /**
      * @var string
      */
-    public const CUSTOM_VERSION = '1.8.1';
+    public const CUSTOM_VERSION = '1.8.2-dev';
 
     /**
      * @var string
@@ -204,7 +204,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
                     'chartParams'       => $this->getChartParameters(),
                     'exportStylesheets' => $this->getExportStylesheets(),
                     'stylesheets'       => $this->getStylesheets(),
-                    'javascript'        => $this->assetUrl('js/descendants-chart.min.js'),
+                    'javascript'        => $this->assetUrl('js/descendants-chart-' . self::CUSTOM_VERSION . '.min.js'),
                 ]
             );
         }
@@ -285,7 +285,10 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
      */
     private function getStylesheets(): array
     {
-        return [$this->assetUrl('css/descendants-chart.css'), $this->assetUrl('css/svg.css')];
+        return [
+            $this->assetUrl('css/descendants-chart.css'),
+            $this->assetUrl('css/svg.css'),
+        ];
     }
 
     /**
