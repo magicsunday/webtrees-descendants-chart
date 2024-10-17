@@ -1,6 +1,6 @@
 {
     "name": "webtrees-descendants-chart",
-    "version": "1.8.2",
+    "version": "1.8.3-dev",
     "description": "This modules provides an SVG descendants chart for the [webtrees](https://www.webtrees.net) genealogy application.",
     "keywords": [
         "webtrees",
