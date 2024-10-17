@@ -11,7 +11,7 @@
       * [Latest version](#latest-version)
     * [Using Git](#using-git)
   * [Configuration](#configuration)
-    * [Usage](#usage)
+  * [Usage](#usage)
   * [Development](#development)
     * [Run tests](#run-tests)
 <!-- TOC -->
@@ -99,7 +99,7 @@ installed descendant chart module) and save your settings.
 
 *Fig. 2: Control panel - Module administration*
 
-### Usage
+## Usage
 At the charts' menu, you will find a new link called `Descendants chart`. Use the provided configuration options
 to adjust the layout of the charts according to your needs.
 
