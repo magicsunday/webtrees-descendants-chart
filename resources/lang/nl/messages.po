@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
 "POT-Creation-Date: 2024-03-20 13:51+0100\n"
-"PO-Revision-Date: 2024-03-20 13:51+0100\n"
+"PO-Revision-Date: 2024-10-18 08:47+0200\n"
 "Last-Translator: TheDutchJewel <thedutchjewel@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: webtrees-descendants-chart/module.php\n"
@@ -109,11 +109,11 @@ msgstr "Indeling"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:29
 msgid "Hide the spouses associated with an individual"
-msgstr "Verberg de partners van een persoon."
+msgstr "Verberg de partners van een persoon"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:39
 msgid "Show married names"
-msgstr "Toon huwelijksnamen."
+msgstr "Toon huwelijksnamen"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:45
 msgid ""
@@ -138,7 +138,7 @@ msgstr ""
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:67
 msgid "Show alternative name of individual"
-msgstr ""
+msgstr "Toon alternatieve naam van persoon"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:73
 msgid ""
@@ -146,6 +146,9 @@ msgid ""
 "enlarges the individuals' respective boxes to create the necessary space for "
 "the display."
 msgstr ""
+"Toont de alternatieve naam van een persoon, indien beschikbaar. Dit vergroot "
+"tegelijkertijd de respectievelijke persoonsvakken om de nodige ruimte voor "
+"de weergave te maken."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
