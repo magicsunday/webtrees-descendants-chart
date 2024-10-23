@@ -51,7 +51,7 @@ export default class Tree
      * @param {Node} left
      * @param {Node} right
      *
-     * @return {Number}
+     * @return {number}
      */
     separation(left, right)
     {
@@ -213,7 +213,7 @@ export default class Tree
     /**
      * Finds the related spouse in a list of individuals for the individual ID passed.
      *
-     * @param {Number}       id
+     * @param {number}       id
      * @param {Individual[]} individuals
      *
      * @return {Individual}
@@ -233,7 +233,7 @@ export default class Tree
      * Moves all child nodes by the specified amount.
      *
      * @param {Individual} individual The individual whose children are to be moved
-     * @param {Number}     moveBy     The amount by which to move the child nodes
+     * @param {number}     moveBy     The amount by which to move the child nodes
      *
      * @private
      */

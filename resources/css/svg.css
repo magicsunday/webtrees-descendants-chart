@@ -32,7 +32,7 @@
 
 .webtrees-descendants-chart-container svg rect.male.spouse,
 .webtrees-descendants-chart-container svg rect.female.spouse,
-.webtrees-descendants-chart-container svg rect.unknown.spouse  {
+.webtrees-descendants-chart-container svg rect.unknown.spouse {
     stroke-dasharray: 5;
     stroke-width: 1px;
 }
