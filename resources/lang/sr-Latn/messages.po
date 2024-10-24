@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
-"POT-Creation-Date: 2024-03-20 13:51+0100\n"
-"PO-Revision-Date: 2024-03-20 13:51+0100\n"
+"POT-Creation-Date: 2024-10-24 07:44+0200\n"
+"PO-Revision-Date: 2024-10-24 07:44+0200\n"
 "Last-Translator: Rico Sonntag <mail@ricosonntag.de>\n"
 "Language-Team: \n"
 "Language: sr\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: webtrees-descendants-chart/module.php\n"
@@ -84,6 +84,26 @@ msgstr "Preminuo"
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
+#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/center-button.phtml:18
+msgid "Re center"
+msgstr "Ponovo centriraj"
+
+#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
+msgid "Switch between full screen mode and normal view"
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/help-button.phtml:17
+msgid "Show help"
+msgstr ""
+
+#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/png-export-button.phtml:18
+msgid "Export as PNG"
+msgstr "Eksportuj kao PNG"
+
+#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/svg-export-button.phtml:18
+msgid "Export as SVG"
+msgstr "Eksportuj kao SVG"
+
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
 msgstr ""
@@ -153,26 +173,14 @@ msgstr "Orijentacija"
 msgid "Individual"
 msgstr "Osoba"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:71
-msgid "Show more options"
-msgstr "Prikaži dodatne opcije"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:72
-msgid "Hide more options"
-msgstr "Sakrij dodatne opcije"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:77
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:64
 msgid "view"
 msgstr "pogledaj"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:83
-msgid "Re center"
-msgstr "Ponovo centriraj"
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:75
+msgid "Show more options"
+msgstr "Prikaži dodatne opcije"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:88
-msgid "Export as PNG"
-msgstr "Eksportuj kao PNG"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:91
-msgid "Export as SVG"
-msgstr "Eksportuj kao SVG"
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:76
+msgid "Hide more options"
+msgstr "Sakrij dodatne opcije"
