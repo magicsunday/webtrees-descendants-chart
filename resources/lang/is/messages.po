@@ -51,7 +51,7 @@ msgstr "Yfirlit yfir afkomendur einstaklings."
 #: webtrees-descendants-chart/src/Traits/ModuleChartTrait.php:41
 #, php-format
 msgid "Descendants chart of %s"
-msgstr "Niðjakort fyrir %s"
+msgstr "Afkomendagraf fyrir %s"
 
 #: webtrees-descendants-chart/src/Module.php:253
 msgid "Use Ctrl + scroll to zoom in the view"
@@ -81,7 +81,7 @@ msgstr "Látin/-n"
 #: webtrees-descendants-chart/src/Traits/ModuleConfigTrait.php:87
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
-msgstr ""
+msgstr "Kjörstillingar fyrir eininguna “%s“ hafa verið uppfærðar."
 
 #: webtrees-descendants-chart/resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
@@ -105,19 +105,19 @@ msgstr "Flytja út sem SVG"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
-msgstr ""
+msgstr "Stjórnborð"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
-msgstr ""
+msgstr "Einingar"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:44
 msgid "save"
-msgstr ""
+msgstr "vista"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:49
 msgid "cancel"
-msgstr ""
+msgstr "hætta"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
@@ -139,28 +139,31 @@ msgstr "Birta giftingarnöfn."
 msgid ""
 "Shows the married name of the partner if this has a separate name entry of "
 "the type \"MARRIED\" or \"_MARNM\"."
-msgstr ""
+msgstr "Sýnir giftingarnafn maka ef þetta hefur sérstaka nafnafærslu af "
+"gerðinni “MARRIED“ eða “_MARNM“."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:53
 msgid "Open individual in new browser window/tab"
-msgstr ""
+msgstr "Opnaðu einstakling í nýjum vafraglugga/flipa"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:59
 msgid ""
 "Open the current individual's detail page in a new browser window/tab when "
 "it's left-clicked, otherwise the current window/tab is used."
-msgstr ""
+msgstr "Opnaðu upplýsingasíðu viðkomandi einstaklings í nýjum vafraglugga/flipa þegar "
+"vinstrismellt er á hann, annars er núverandi gluggi/flipi notaður."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:67
 msgid "Show alternative name of individual"
-msgstr ""
+msgstr "Sýna aukanafn einstaklings"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:73
 msgid ""
 "Displays a person's alternate name, if available. This simultaneously "
 "enlarges the individuals' respective boxes to create the necessary space for "
 "the display."
-msgstr ""
+msgstr "Birtir aukanafn einstaklings, ef það er til staðar. Þetta stækkar samtímis "
+"kassa viðkomandi einstaklings til að skapa nauðsynlegt pláss fyrir skjáinn."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
