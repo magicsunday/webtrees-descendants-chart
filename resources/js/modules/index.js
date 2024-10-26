@@ -21,16 +21,16 @@ export class DescendantsChart
     /**
      * Constructor.
      *
-     * @param {String} selector The CSS selector of the HTML element used to assign the chart too
-     * @param {Object} options  A list of options passed from outside to the application
+     * @param {string} selector The CSS selector of the HTML element used to assign the chart too
+     * @param {object} options  A list of options passed from outside to the application
      *
-     * @param {String[]} options.labels
-     * @param {Boolean}  options.rtl
-     * @param {Number}   options.generations
-     * @param {String}   options.treeLayout
-     * @param {Boolean}  options.openNewTabOnClick
-     * @param {Boolean}  options.showAlternativeName
-     * @param {String[]} options.cssFiles
+     * @param {string[]} options.labels
+     * @param {boolean}  options.rtl
+     * @param {number}   options.generations
+     * @param {string}   options.treeLayout
+     * @param {boolean}  options.openNewTabOnClick
+     * @param {boolean}  options.showAlternativeName
+     * @param {string[]} options.cssFiles
      * @param {Data[]}   options.data
      */
     constructor(selector, options)
@@ -58,38 +58,6 @@ export class DescendantsChart
     }
 
     /**
-     * @private
-     */
-    init()
-    {
-        // Bind click event on center button
-        d3.select("#centerButton")
-            .on("click", () => this.center());
-
-        // Bind click event on export as PNG button
-        d3.select("#exportPNG")
-            .on("click", () => this.exportPNG());
-
-        // Bind click event on export as SVG button
-        d3.select("#exportSVG")
-            .on("click", () => this.exportSVG());
-    }
-
-    /**
-     * Resets the chart to initial zoom level and position.
-     *
-     * @private
-     */
-    center()
-    {
-        this._chart
-            .svg.get()
-            .transition()
-            .duration(750)
-            .call(this._chart.svg.zoom.get().transform, d3.zoomIdentity);
-    }
-
-    /**
      * Returns the configuration object.
      *
      * @returns {Configuration}
@@ -100,9 +68,57 @@ export class DescendantsChart
     }
 
     /**
+     * @private
+     */
+    init()
+    {
+        // Bind click event on center button
+        d3.select("#centerButton")
+            .on("click", () => this._chart.center());
+
+        // Bind click event on export as PNG button
+        d3.select("#exportPNG")
+            .on("click", () => this.exportPNG());
+
+        // Bind click event on export as SVG button
+        d3.select("#exportSVG")
+            .on("click", () => this.exportSVG());
+
+        this.addEventListeners();
+    }
+
+    /**
+     * Add event listeners.
+     */
+    addEventListeners()
+    {
+        // Listen for fullscreen change event
+        document.addEventListener(
+            "fullscreenchange",
+            () => {
+                if (document.fullscreenElement) {
+                    // Add attribute to the body element to indicate fullscreen state
+                    document.body.setAttribute("fullscreen", "");
+                } else {
+                    document.body.removeAttribute("fullscreen");
+                }
+
+                this._chart.updateViewBox();
+            }
+        );
+
+        // Listen for orientation change event
+        screen.orientation.addEventListener(
+            "change",
+            () => {
+                this._chart.updateViewBox();
+            });
+    }
+
+    /**
      * Updates the chart.
      *
-     * @param {String} url The update url
+     * @param {string} url The update url
      */
     update(url)
     {
@@ -112,7 +128,7 @@ export class DescendantsChart
     /**
      * Draws the chart.
      *
-     * @param {Object} data The JSON encoded chart data
+     * @param {object} data The JSON encoded chart data
      */
     draw(data)
     {

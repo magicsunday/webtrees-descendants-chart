@@ -34,7 +34,7 @@ export default class Hierarchy
     /**
      * Initialize the hierarchical chart data.
      *
-     * @param {Object} data The JSON encoded chart data
+     * @param {object} data The JSON encoded chart data
      */
     init(data)
     {
