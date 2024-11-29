@@ -95,6 +95,9 @@
         "ci:cgl": [
             "php-cs-fixer fix --diff --verbose"
         ],
+        "ci:rector": [
+            "rector process --config rector.php"
+        ],
         "ci:test": [
             "@ci:test:php:lint",
             "@ci:test:php:phpstan",
