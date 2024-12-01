@@ -89,7 +89,7 @@
             "rector process --config rector.php --dry-run"
         ],
         "ci:cgl": [
-            "php-cs-fixer fix --diff --verbose"
+            "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix --diff --verbose"
         ],
         "ci:rector": [
             "rector process --config rector.php"
@@ -97,7 +97,8 @@
         "ci:test": [
             "@ci:test:php:lint",
             "@ci:test:php:phpstan",
-            "@ci:test:php:rector"
+            "@ci:test:php:rector",
+            "@ci:cgl --dry-run"
         ],
         "module:check": [
             "@ci:test"
