@@ -34,7 +34,8 @@
 .webtrees-descendants-chart-container svg rect.female.spouse,
 .webtrees-descendants-chart-container svg rect.unknown.spouse {
     stroke-dasharray: 5;
-    stroke-width: 1px;
+    stroke-width: 3px;
+    stroke-opacity: 50%;
 }
 
 .webtrees-descendants-chart-container svg path.link {
