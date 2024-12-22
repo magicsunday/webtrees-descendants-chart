@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
 "POT-Creation-Date: 2024-12-22 12:28+0100\n"
-"PO-Revision-Date: 2024-12-22 12:55+0100\n"
+"PO-Revision-Date: 2024-12-22 19:53+0100\n"
 "Last-Translator: TheDutchJewel <thedutchjewel@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -114,11 +114,11 @@ msgstr ""
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:50
 msgid "Hide the SVG export button"
-msgstr ""
+msgstr "Verberg de SVG-exportknop"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:60
 msgid "Hide the PNG export button"
-msgstr ""
+msgstr "Verberg de PNG-exportknop"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:73
 msgid "save"
