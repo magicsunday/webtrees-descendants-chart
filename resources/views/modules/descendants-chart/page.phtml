@@ -82,7 +82,7 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
     </form>
 
     <div class="row webtrees-descendants-fullscreen-container">
-        <?= view($moduleName . '::modules/components/buttonbar', ['moduleName' => $moduleName]) ?>
+        <?= view($moduleName . '::modules/components/buttonbar', ['configuration' => $configuration, 'moduleName' => $moduleName]) ?>
 
         <div id="descendants-chart-url" class="wt-ajax-load wt-page-content wt-chart wt-chart-descendants mt-0"></div>
     </div>
