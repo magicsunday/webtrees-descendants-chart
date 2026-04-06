@@ -1,13 +1,19 @@
 {
     "name": "magicsunday/webtrees-descendants-chart",
-    "description": "This modules provides an SVG descendants chart for the [webtrees](https://www.webtrees.net) genealogy application.",
+    "description": "This module provides an SVG descendants chart for the webtrees genealogy application.",
     "license": "GPL-3.0-or-later",
     "type": "webtrees-module",
     "keywords": [
         "webtrees",
         "module",
-        "descendant",
-        "chart"
+        "descendants-chart",
+        "chart",
+        "svg",
+        "d3",
+        "genealogy",
+        "descendants",
+        "family-tree",
+        "visualization"
     ],
     "authors": [
         {
