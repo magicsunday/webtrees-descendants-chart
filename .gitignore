@@ -25,3 +25,6 @@ resources/js/descendants-chart-storage.js
 # Allow minified file
 !resources/js/descendants-chart-*.min.js
 webtrees-descendants-chart.zip
+
+# Playwright
+.playwright-mcp/
