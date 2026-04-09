@@ -17,18 +17,16 @@ import {LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET} from "../lib/constants.js";
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
-export default class Hierarchy
-{
+export default class Hierarchy {
     /**
      * Constructor.
      *
      * @param {Configuration} configuration The application configuration
      */
-    constructor(configuration)
-    {
+    constructor(configuration) {
         this._configuration = configuration;
-        this._nodes         = null;
-        this._root          = null;
+        this._nodes = null;
+        this._root = null;
     }
 
     /**
@@ -36,8 +34,7 @@ export default class Hierarchy
      *
      * @param {object} data The JSON encoded chart data
      */
-    init(data)
-    {
+    init(data) {
         // Adjust box height if we are going to display the alternative names
         if (this._configuration.showAlternativeName) {
             if ((this._configuration.orientation instanceof OrientationTopBottom)
@@ -77,8 +74,7 @@ export default class Hierarchy
      *
      * @public
      */
-    get nodes()
-    {
+    get nodes() {
         return this._nodes;
     }
 
@@ -89,8 +85,7 @@ export default class Hierarchy
      *
      * @public
      */
-    get root()
-    {
+    get root() {
         return this._root;
     }
 }

@@ -16,8 +16,7 @@ import Chart from "./lib/chart";
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
-export class DescendantsChart
-{
+export class DescendantsChart {
     /**
      * Constructor.
      *
@@ -33,10 +32,9 @@ export class DescendantsChart
      * @param {string[]} options.cssFiles
      * @param {Data[]}   options.data
      */
-    constructor(selector, options)
-    {
+    constructor(selector, options) {
         this._selector = selector;
-        this._parent   = d3.select(this._selector);
+        this._parent = d3.select(this._selector);
 
         // Set up configuration
         this._configuration = new Configuration(
@@ -45,7 +43,7 @@ export class DescendantsChart
             options.treeLayout,
             options.openNewTabOnClick,
             options.showAlternativeName,
-            options.rtl
+            options.rtl,
         );
 
         this._cssFiles = options.cssFiles;
@@ -62,16 +60,14 @@ export class DescendantsChart
      *
      * @returns {Configuration}
      */
-    get configuration()
-    {
+    get configuration() {
         return this._configuration;
     }
 
     /**
      * @private
      */
-    init()
-    {
+    init() {
         // Bind click event on center button
         d3.select("#centerButton")
             .on("click", () => this._chart.center());
@@ -90,8 +86,7 @@ export class DescendantsChart
     /**
      * Add event listeners.
      */
-    addEventListeners()
-    {
+    addEventListeners() {
         // Listen for fullscreen change event
         document.addEventListener(
             "fullscreenchange",
@@ -104,7 +99,7 @@ export class DescendantsChart
                 }
 
                 this._chart.updateViewBox();
-            }
+            },
         );
 
         // Listen for orientation change event
@@ -120,8 +115,7 @@ export class DescendantsChart
      *
      * @param {string} url The update url
      */
-    update(url)
-    {
+    update(url) {
         this._chart.update(url);
     }
 
@@ -130,8 +124,7 @@ export class DescendantsChart
      *
      * @param {object} data The JSON encoded chart data
      */
-    draw(data)
-    {
+    draw(data) {
         this._chart.data = data;
         this._chart.draw();
     }
@@ -141,10 +134,9 @@ export class DescendantsChart
      *
      * @private
      */
-    exportPNG()
-    {
+    exportPNG() {
         this._chart.svg
-            .export('png')
+            .export("png")
             .svgToImage(this._chart.svg, "descendants-chart.png");
     }
 
@@ -153,15 +145,14 @@ export class DescendantsChart
      *
      * @private
      */
-    exportSVG()
-    {
+    exportSVG() {
         this._chart.svg
-            .export('svg')
+            .export("svg")
             .svgToImage(
                 this._chart.svg,
                 this._cssFiles,
                 "webtrees-descendants-chart-container",
-                "descendants-chart.svg"
+                "descendants-chart.svg",
             );
     }
 }

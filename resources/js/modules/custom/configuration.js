@@ -15,8 +15,7 @@ import {LAYOUT_LEFTRIGHT} from "../lib/constants";
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
-export default class Configuration
-{
+export default class Configuration {
     /**
      * Constructor.
      *
@@ -35,10 +34,10 @@ export default class Configuration
         openNewTabOnClick = true,
         showAlternativeName = true,
         rtl = false,
-        direction = 1
+        direction = 1,
     ) {
         // The layout/orientation of the tree
-        this._treeLayout   = treeLayout;
+        this._treeLayout = treeLayout;
         this._orientations = new OrientationCollection();
 
         this._openNewTabOnClick = openNewTabOnClick;
@@ -48,7 +47,7 @@ export default class Configuration
         this.duration = 750;
 
         //
-        this.padding   = 15;
+        this.padding = 15;
 
         // Default number of generations to display
         this._generations = generations;
@@ -57,13 +56,13 @@ export default class Configuration
         this.textPadding = 8;
 
         // // Default font size, color and scaling
-        this._fontSize  = 14;
+        this._fontSize = 14;
         this.fontColor = "rgb(0, 0, 0)";
 
         // Duration of update animation if clicked on a person
         // this.updateDuration = 1250;
 
-        this.rtl    = rtl;
+        this.rtl = rtl;
         this.labels = labels;
 
         // Direction is either 1 (forward) or -1 (backward)
@@ -75,8 +74,7 @@ export default class Configuration
      *
      * @returns {number}
      */
-    get generations()
-    {
+    get generations() {
         return this._generations;
     }
 
@@ -85,8 +83,7 @@ export default class Configuration
      *
      * @param {number} value The number of generations to display
      */
-    set generations(value)
-    {
+    set generations(value) {
         this._generations = value;
     }
 
@@ -95,8 +92,7 @@ export default class Configuration
      *
      * @returns {string}
      */
-    get treeLayout()
-    {
+    get treeLayout() {
         return this._treeLayout;
     }
 
@@ -105,8 +101,7 @@ export default class Configuration
      *
      * @param {string} value Tree layout value
      */
-    set treeLayout(value)
-    {
+    set treeLayout(value) {
         this._treeLayout = value;
     }
 
@@ -115,8 +110,7 @@ export default class Configuration
      *
      * @returns {Orientation}
      */
-    get orientation()
-    {
+    get orientation() {
         return this._orientations.get()[this.treeLayout];
     }
 
@@ -125,8 +119,7 @@ export default class Configuration
      *
      * @returns {boolean}
      */
-    get openNewTabOnClick()
-    {
+    get openNewTabOnClick() {
         return this._openNewTabOnClick;
     }
 
@@ -135,8 +128,7 @@ export default class Configuration
      *
      * @returns {boolean}
      */
-    get showAlternativeName()
-    {
+    get showAlternativeName() {
         return this._showAlternativeName;
     }
 }

@@ -19,8 +19,7 @@ import {LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET} from "../lib/constants.js";
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
-export default class Tree
-{
+export default class Tree {
     /**
      * Constructor.
      *
@@ -28,11 +27,10 @@ export default class Tree
      * @param {Configuration} configuration The configuration
      * @param {Hierarchy}     hierarchy     The hierarchical data
      */
-    constructor(svg, configuration, hierarchy)
-    {
-        this._svg           = svg;
+    constructor(svg, configuration, hierarchy) {
+        this._svg = svg;
         this._configuration = configuration;
-        this._hierarchy     = hierarchy;
+        this._hierarchy = hierarchy;
 
         this._hierarchy.root.x0 = 0;
         this._hierarchy.root.y0 = 0;
@@ -53,15 +51,14 @@ export default class Tree
      *
      * @return {number}
      */
-    separation(left, right)
-    {
+    separation(left, right) {
         // The left child has spouses (1 or more), add some space between the nodes
-        if (Object.hasOwn(left.data, 'spouses')) {
+        if (Object.hasOwn(left.data, "spouses")) {
             return 1.25;
         }
 
         // The right side is a spouse linked back to the actual child, so add some space
-        if (Object.hasOwn(right.data, 'spouse')) {
+        if (Object.hasOwn(right.data, "spouse")) {
             return 1.25;
         }
 
@@ -77,8 +74,7 @@ export default class Tree
      *
      * @public
      */
-    draw(source)
-    {
+    draw(source) {
         // Declares a tree layout and assigns the size
         const tree = d3.tree()
             .nodeSize([this._configuration.orientation.nodeWidth, this._configuration.orientation.nodeHeight])
@@ -93,8 +89,8 @@ export default class Tree
         });
 
         /** @type {Individual[]} */
-        let nodes = this._hierarchy.root.descendants();
-        let links = [];
+        const nodes = this._hierarchy.root.descendants();
+        const links = [];
 
         // Remove the pseudo root node
         nodes.shift();
@@ -157,7 +153,7 @@ export default class Tree
                             spouse: spouse,
                             source: node,
                             target: child,
-                            coords: null
+                            coords: null,
                         });
                     }
                 });
@@ -185,8 +181,8 @@ export default class Tree
                             if (typeof spouseBefore !== "undefined") {
                                 spousesCoords.push({
                                     x: spouseBefore.x,
-                                    y: spouseBefore.y
-                                })
+                                    y: spouseBefore.y,
+                                });
                             }
                         });
                     }
@@ -198,7 +194,7 @@ export default class Tree
                         spouse: spouse,
                         source: node,
                         target: null,
-                        coords: spousesCoords
+                        coords: spousesCoords,
                     });
                 }
             }
@@ -220,12 +216,11 @@ export default class Tree
      *
      * @private
      */
-    findSpouseById(id, individuals)
-    {
+    findSpouseById(id, individuals) {
         return individuals.find(
             (spouse) => {
                 return (spouse.data.data.id === id);
-            }
+            },
         );
     }
 
@@ -237,8 +232,7 @@ export default class Tree
      *
      * @private
      */
-    moveChildren(individual, moveBy)
-    {
+    moveChildren(individual, moveBy) {
         individual.each((child) => {
             if (child.depth !== individual.depth) {
                 // - first family only
@@ -291,11 +285,10 @@ export default class Tree
     /**
      * Centers the tree around all visible nodes.
      */
-    centerTree()
-    {
+    centerTree() {
         // TODO Doesn't work
 
-console.log("centerTree");
+        console.log("centerTree");
         // const zoom = this._svg.zoom.get();
         //
         // d3.select(this._svg)
@@ -314,8 +307,7 @@ console.log("centerTree");
      * @param {Event}  event
      * @param {Person} person The person object containing the individual data
      */
-    togglePerson(event, person)
-    {
+    togglePerson(event, person) {
         if (person.children) {
             // Collapse
             person._children = person.children;
