@@ -75,6 +75,7 @@
             "rm -f webtrees-descendants-chart/.gitignore",
             "rm -f webtrees-descendants-chart/composer.json",
             "rm -f webtrees-descendants-chart/package.json",
+            "rm -f webtrees-descendants-chart/eslint.config.js",
             "rm -f webtrees-descendants-chart/rollup.config.js",
             "rm -f webtrees-descendants-chart/phpstan.neon",
             "rm -f webtrees-descendants-chart/phpstan-baseline.neon",
@@ -102,10 +103,14 @@
         "ci:rector": [
             "rector process --config rector.php"
         ],
+        "ci:test:js:lint": [
+            "npm run lint"
+        ],
         "ci:test": [
             "@ci:test:php:lint",
             "@ci:test:php:phpstan",
             "@ci:test:php:rector",
+            "@ci:test:js:lint",
             "@ci:cgl --dry-run"
         ],
         "module:check": [
