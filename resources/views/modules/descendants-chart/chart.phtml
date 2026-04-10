@@ -25,39 +25,37 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
 <div class="webtrees-descendants-chart-container" id="webtrees-descendants-chart-container-<?= $id ?>"></div>
 
 <?php View::push('javascript'); ?>
-<script src="<?= e($javascript) ?>"></script>
-<?php View::endpush(); ?>
+<script type="module">
 
-<?php View::push('javascript'); ?>
-<script>
+import(<?= json_encode(e($javascript)) ?>).then((module) => {
+    const { DescendantsChart } = module.default || module;
+    new DescendantsChart(
+        "#webtrees-descendants-chart-container-<?= $id ?>",
+        {
+            labels: <?= json_encode($chartParams['labels']) ?>,
+            rtl: <?= json_encode($chartParams['rtl']) ?>,
+            cssFiles: <?= json_encode($exportStylesheets) ?>,
 
-// Create chart instance
-new WebtreesDescendantsChart.DescendantsChart(
-    "#webtrees-descendants-chart-container-<?= $id ?>",
-    {
-        labels: <?= json_encode($chartParams['labels']) ?>,
-        rtl: <?= json_encode($chartParams['rtl']) ?>,
-        cssFiles: <?= json_encode($exportStylesheets) ?>,
+            get generations() {
+                return (typeof generations !== "undefined" && generations !== null) ? generations : <?= $configuration->getGenerations() ?>
+            },
 
-        get generations() {
-            return (typeof generations !== "undefined" && generations !== null) ? generations : <?= $configuration->getGenerations() ?>
-        },
+            get treeLayout() {
+                return (typeof treeLayout !== "undefined" && treeLayout !== null) ? treeLayout : <?= json_encode($configuration->getLayout()) ?>;
+            },
 
-        get treeLayout() {
-            return (typeof treeLayout !== "undefined" && treeLayout !== null) ? treeLayout : <?= json_encode($configuration->getLayout()) ?>;
-        },
+            get openNewTabOnClick() {
+                return (typeof openNewTabOnClick !== "undefined" && openNewTabOnClick !== null) ? openNewTabOnClick : <?= json_encode($configuration->getOpenNewTabOnClick()) ?>;
+            },
 
-        get openNewTabOnClick() {
-            return (typeof openNewTabOnClick !== "undefined" && openNewTabOnClick !== null) ? openNewTabOnClick : <?= json_encode($configuration->getOpenNewTabOnClick()) ?>;
-        },
+            get showAlternativeName() {
+                return (typeof showAlternativeName !== "undefined" && showAlternativeName !== null) ? showAlternativeName : <?= json_encode($configuration->getShowAlternativeName()) ?>;
+            },
 
-        get showAlternativeName() {
-            return (typeof showAlternativeName !== "undefined" && showAlternativeName !== null) ? showAlternativeName : <?= json_encode($configuration->getShowAlternativeName()) ?>;
-        },
-
-        data: <?= json_encode($data) ?>
-    }
-);
+            data: <?= json_encode($data) ?>
+        }
+    );
+});
 
 </script>
 <?php View::endpush(); ?>
