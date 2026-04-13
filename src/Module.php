@@ -118,7 +118,6 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
             ->allows(RequestMethodInterface::METHOD_POST);
 
         View::registerNamespace($this->name(), $this->resourcesFolder() . 'views/');
-        View::registerCustomView('::modules/charts/chart', $this->name() . '::modules/charts/chart');
     }
 
     /**
