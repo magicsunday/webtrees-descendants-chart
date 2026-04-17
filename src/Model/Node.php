@@ -23,21 +23,12 @@ use JsonSerializable;
 class Node implements JsonSerializable
 {
     /**
-     * @var NodeData
-     */
-    protected NodeData $data;
-
-    /**
      * The ID of the spouse.
-     *
-     * @var int
      */
     protected int $spouse = 0;
 
     /**
      * The ID of the family.
-     *
-     * @var int
      */
     protected int $family = 0;
 
@@ -60,9 +51,8 @@ class Node implements JsonSerializable
      *
      * @param NodeData $data
      */
-    public function __construct(NodeData $data)
+    public function __construct(protected NodeData $data)
     {
-        $this->data = $data;
     }
 
     /**

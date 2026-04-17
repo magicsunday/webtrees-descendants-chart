@@ -5,12 +5,11 @@
  * LICENSE file distributed with this source code.
  */
 
-import * as d3 from "../lib/d3";
-import NodeDrawer from "../lib/tree/node-drawer";
-import LinkDrawer from "../lib/tree/link-drawer";
-import OrientationTopBottom from "../lib/chart/orientation/orientation-topBottom";
-import OrientationBottomTop from "../lib/chart/orientation/orientation-bottomTop";
-import {LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET} from "../lib/constants.js";
+import * as d3 from "../lib/d3.js";
+import NodeDrawer from "../lib/tree/node-drawer.js";
+import LinkDrawer from "../lib/tree/link-drawer.js";
+import OrientationTopBottom from "../lib/chart/orientation/orientation-topBottom.js";
+import OrientationBottomTop from "../lib/chart/orientation/orientation-bottomTop.js";
 
 /**
  * The class handles the creation of the tree.
@@ -307,7 +306,7 @@ export default class Tree {
      * @param {Event}  event
      * @param {Person} person The person object containing the individual data
      */
-    togglePerson(event, person) {
+    togglePerson(_event, person) {
         if (person.children) {
             // Collapse
             person._children = person.children;

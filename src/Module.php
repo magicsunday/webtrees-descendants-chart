@@ -30,6 +30,7 @@ use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleConfigTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleCustomTrait;
+use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -50,10 +51,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
 
     public const ROUTE_DEFAULT_URL = '/tree/{tree}/webtrees-descendants-chart/{xref}';
 
-    /**
-     * @var string
-     */
-    private const GITHUB_REPO = 'magicsunday/webtrees-descendants-chart';
+    private const string GITHUB_REPO = 'magicsunday/webtrees-descendants-chart';
 
     /**
      * @var string
@@ -77,15 +75,8 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
 
     /**
      * The configuration instance.
-     *
-     * @var Configuration
      */
     private Configuration $configuration;
-
-    /**
-     * @var DataFacade
-     */
-    private DataFacade $dataFacade;
 
     /**
      * Constructor.
@@ -95,11 +86,9 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
      */
     public function __construct(
         ChartService $chartService,
-        DataFacade $dataFacade
+        private DataFacade $dataFacade,
     ) {
         parent::__construct($chartService);
-
-        $this->dataFacade = $dataFacade;
     }
 
     /**
@@ -110,6 +99,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
      * @throws ImmutableProperty
      * @throws RouteAlreadyExists
      */
+    #[Override]
     public function boot(): void
     {
         Registry::routeFactory()
@@ -125,6 +115,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
      *
      * @return string
      */
+    #[Override]
     public function title(): string
     {
         return I18N::translate('Descendants chart');
@@ -135,6 +126,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
      *
      * @return string
      */
+    #[Override]
     public function description(): string
     {
         return I18N::translate('An overview of an individual’s descendants.');
@@ -145,6 +137,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
      *
      * @return string
      */
+    #[Override]
     public function resourcesFolder(): string
     {
         return __DIR__ . '/../resources/';
@@ -157,6 +150,7 @@ class Module extends DescendancyChartModule implements ModuleCustomInterface, Mo
      *
      * @return ResponseInterface
      */
+    #[Override]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $tree = Validator::attributes($request)->tree();

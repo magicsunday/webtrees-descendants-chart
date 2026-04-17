@@ -38,21 +38,14 @@ class DataFacade
 {
     /**
      * The module.
-     *
-     * @var ModuleCustomInterface
      */
     private ModuleCustomInterface $module;
 
     /**
      * The configuration instance.
-     *
-     * @var Configuration
      */
     private Configuration $configuration;
 
-    /**
-     * @var string
-     */
     private string $route;
 
     /**
@@ -281,7 +274,7 @@ class DataFacade
     private function getNodeData(
         int $generation,
         ?Individual $individual = null,
-        ?Individual $spouse = null
+        ?Individual $spouse = null,
     ): NodeData {
         // Create a unique ID for each individual
         static $id = 0;
@@ -354,7 +347,7 @@ class DataFacade
      */
     private function chartUrl(
         Individual $individual,
-        array $parameters = []
+        array $parameters = [],
     ): string {
         return route(
             $this->route,

@@ -5,7 +5,7 @@
  * LICENSE file distributed with this source code.
  */
 
-import * as d3 from "../lib/d3";
+import * as d3 from "../lib/d3.js";
 import OrientationTopBottom from "../lib/chart/orientation/orientation-topBottom.js";
 import OrientationBottomTop from "../lib/chart/orientation/orientation-bottomTop.js";
 import {LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET} from "../lib/constants.js";
