@@ -140,17 +140,31 @@ msgstr "Útlit"
 msgid "Hide the spouses associated with an individual"
 msgstr "Fela maka sem tengjast einstaklingi."
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:39
-msgid "Show married names"
-msgstr "Birta giftingarnöfn."
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:36
+msgid "Married names"
+msgstr "Giftingarnöfn"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:45
+#: webtrees-descendants-chart/src/Configuration.php:267
+msgid "Birth name only"
+msgstr "Aðeins fæðingarnafn"
+
+#: webtrees-descendants-chart/src/Configuration.php:268
+msgid "Married name only"
+msgstr "Aðeins giftingarnafn"
+
+#: webtrees-descendants-chart/src/Configuration.php:269
+msgid "Birth name with married name in brackets"
+msgstr "Fæðingarnafn með giftingarnafni innan sviga"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:46
 msgid ""
-"Shows the married name of the partner if this has a separate name entry of "
-"the type \"MARRIED\" or \"_MARNM\"."
+"Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
+"shown — replacing the birth name, appended in brackets after the birth name, "
+"or hidden."
 msgstr ""
-"Sýnir giftingarnafn maka ef þetta hefur sérstaka nafnafærslu af gerðinni "
-"\"MARRIED\" eða \"_MARNM\"."
+"Hvort giftingarnafnið (úr nafnafærslu af gerðinni \"MARRIED\" eða "
+"\"_MARNM\") sé sýnt — kemur í stað fæðingarnafns, bætt við innan sviga á "
+"eftir fæðingarnafni, eða falið."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:53
 msgid "Open individual in new browser window/tab"

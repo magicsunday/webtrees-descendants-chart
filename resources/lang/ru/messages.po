@@ -140,15 +140,31 @@ msgstr "Ansicht"
 msgid "Hide the spouses associated with an individual"
 msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:39
-msgid "Show married names"
-msgstr ""
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:36
+msgid "Married names"
+msgstr "Фамилии в браке"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:45
+#: webtrees-descendants-chart/src/Configuration.php:267
+msgid "Birth name only"
+msgstr "Только имя при рождении"
+
+#: webtrees-descendants-chart/src/Configuration.php:268
+msgid "Married name only"
+msgstr "Только фамилия в браке"
+
+#: webtrees-descendants-chart/src/Configuration.php:269
+msgid "Birth name with married name in brackets"
+msgstr "Имя при рождении с фамилией в браке в скобках"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:46
 msgid ""
-"Shows the married name of the partner if this has a separate name entry of "
-"the type \"MARRIED\" or \"_MARNM\"."
+"Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
+"shown — replacing the birth name, appended in brackets after the birth name, "
+"or hidden."
 msgstr ""
+"Отображается ли фамилия в браке (из записи имени типа \"MARRIED\" или "
+"\"_MARNM\") — заменяя имя при рождении, добавляясь в скобках после имени "
+"при рождении, или скрывается."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:53
 msgid "Open individual in new browser window/tab"

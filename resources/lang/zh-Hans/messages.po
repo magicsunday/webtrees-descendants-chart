@@ -132,15 +132,30 @@ msgstr "布局"
 msgid "Hide the spouses associated with an individual"
 msgstr "隐藏与个人关联的配偶"
 
-#: resources/views/modules/descendants-chart/form/layout.phtml:39
-msgid "Show married names"
-msgstr "显示婚后姓名"
+#: resources/views/modules/descendants-chart/form/layout.phtml:36
+msgid "Married names"
+msgstr "婚后姓名"
 
-#: resources/views/modules/descendants-chart/form/layout.phtml:45
+#: src/Configuration.php:267
+msgid "Birth name only"
+msgstr "仅出生姓名"
+
+#: src/Configuration.php:268
+msgid "Married name only"
+msgstr "仅婚后姓名"
+
+#: src/Configuration.php:269
+msgid "Birth name with married name in brackets"
+msgstr "出生姓名后附婚后姓名（括号内）"
+
+#: resources/views/modules/descendants-chart/form/layout.phtml:46
 msgid ""
-"Shows the married name of the partner if this has a separate name entry of "
-"the type \"MARRIED\" or \"_MARNM\"."
-msgstr "如果配偶具有 “MARRIED” 或 “_MARNM” 类型的独立姓名条目，则显示其婚后姓名。"
+"Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
+"shown — replacing the birth name, appended in brackets after the birth name, "
+"or hidden."
+msgstr ""
+"是否显示婚后姓名（来自 \"MARRIED\" 或 \"_MARNM\" 类型的姓名条目）— 替换出生姓"
+"名、附加在出生姓名后的括号内或隐藏。"
 
 #: resources/views/modules/descendants-chart/form/layout.phtml:53
 msgid "Open individual in new browser window/tab"

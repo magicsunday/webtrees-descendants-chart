@@ -140,17 +140,31 @@ msgstr "Indeling"
 msgid "Hide the spouses associated with an individual"
 msgstr "Verberg de partners van een persoon"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:39
-msgid "Show married names"
-msgstr "Toon huwelijksnamen"
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:36
+msgid "Married names"
+msgstr "Huwelijksnamen"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:45
+#: webtrees-descendants-chart/src/Configuration.php:267
+msgid "Birth name only"
+msgstr "Alleen geboortenaam"
+
+#: webtrees-descendants-chart/src/Configuration.php:268
+msgid "Married name only"
+msgstr "Alleen huwelijksnaam"
+
+#: webtrees-descendants-chart/src/Configuration.php:269
+msgid "Birth name with married name in brackets"
+msgstr "Geboortenaam met huwelijksnaam tussen haakjes"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:46
 msgid ""
-"Shows the married name of the partner if this has a separate name entry of "
-"the type \"MARRIED\" or \"_MARNM\"."
+"Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
+"shown — replacing the birth name, appended in brackets after the birth name, "
+"or hidden."
 msgstr ""
-"Toont de huwelijksnaam van de partner als deze een aparte naamsvermelding "
-"heeft van het type \"MARRIED\" of \"_MARNM\"."
+"Of de huwelijksnaam (uit een naamsvermelding van het type \"MARRIED\" of "
+"\"_MARNM\") wordt weergegeven — ter vervanging van de geboortenaam, tussen "
+"haakjes achter de geboortenaam, of verborgen."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:53
 msgid "Open individual in new browser window/tab"

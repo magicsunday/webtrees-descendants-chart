@@ -144,17 +144,31 @@ msgstr "Postavitev"
 msgid "Hide the spouses associated with an individual"
 msgstr "Skrij partnerje, povezane z osebo"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:39
-msgid "Show married names"
-msgstr "Prikaži poročni priimek"
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:36
+msgid "Married names"
+msgstr "Poročni priimki"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:45
+#: webtrees-descendants-chart/src/Configuration.php:267
+msgid "Birth name only"
+msgstr "Samo rojstno ime"
+
+#: webtrees-descendants-chart/src/Configuration.php:268
+msgid "Married name only"
+msgstr "Samo poročni priimek"
+
+#: webtrees-descendants-chart/src/Configuration.php:269
+msgid "Birth name with married name in brackets"
+msgstr "Rojstno ime s poročnim priimkom v oklepaju"
+
+#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:46
 msgid ""
-"Shows the married name of the partner if this has a separate name entry of "
-"the type \"MARRIED\" or \"_MARNM\"."
+"Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
+"shown — replacing the birth name, appended in brackets after the birth name, "
+"or hidden."
 msgstr ""
-"Prikaže poročni priimek partnerja, če ima ta ločen vnos imena vrste "
-"\"MARRIED\" ali \"_MARNM\"."
+"Ali je poročni priimek (iz vnosa imena vrste \"MARRIED\" ali \"_MARNM\") "
+"prikazan — namesto rojstnega imena, dodan v oklepaju za rojstnim imenom ali "
+"skrit."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:53
 msgid "Open individual in new browser window/tab"
