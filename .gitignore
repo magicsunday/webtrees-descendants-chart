@@ -12,12 +12,6 @@ composer.lock
 .build/
 node_modules/
 
-# Cache
-.php-cs-fixer.cache
-.phplint.cache
-.phpunit.result.cache
-.phpunit.cache
-
 # Custom
 resources/js/descendants-chart-*.js
 resources/js/descendants-chart-storage.js
