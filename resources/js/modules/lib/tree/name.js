@@ -434,8 +434,15 @@ export default class Name {
                 // Finally truncate lastnames
                 if (name.isLastName === true) {
                     if (this.measureText(text, fontSize, fontWeight) > availableWidth) {
-                        // Keep only the first letter
-                        name.label = `${name.label.slice(0, 1)}.`;
+                        // Bracketed entries (e.g. the married-name suffix "(Müller)")
+                        // would otherwise truncate to "(." — drop them entirely
+                        // since the suffix is supplementary information.
+                        if (name.label.startsWith("(") && name.label.endsWith(")")) {
+                            name.label = "";
+                        } else {
+                            // Keep only the first letter
+                            name.label = `${name.label.slice(0, 1)}.`;
+                        }
                         text = names.map(item => item.label).join(" ");
                     }
                 }
@@ -443,7 +450,10 @@ export default class Name {
                 return name;
             })
             // Revert reversed order again
-            .reverse();
+            .reverse()
+            // Drop entries whose label was emptied during truncation, so no
+            // empty tspan / orphan dx-spacing renders.
+            .filter(name => name.label !== "");
     }
 
     /**
