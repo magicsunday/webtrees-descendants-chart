@@ -30,6 +30,7 @@ use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleConfigTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleCustomTrait;
+use MagicSunday\Webtrees\ModuleBase\Contract\ModuleAssetUrlInterface;
 use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -41,7 +42,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
-class Module extends DescendancyChartModule implements ModuleCustomInterface, ModuleConfigInterface
+class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, ModuleCustomInterface, ModuleConfigInterface
 {
     use ModuleCustomTrait;
     use ModuleChartTrait;
