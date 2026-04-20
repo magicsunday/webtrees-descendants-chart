@@ -62,6 +62,8 @@
     font-size: 0.85em;
 }
 
-.webtrees-descendants-chart-container svg text.wt-chart-box-name:hover:not(.wt-chart-box-name-alt) {
-    fill: var(--link-color-hover);
+.webtrees-descendants-chart-container svg g.person:hover rect.male,
+.webtrees-descendants-chart-container svg g.person:hover rect.female,
+.webtrees-descendants-chart-container svg g.person:hover rect.unknown {
+    filter: saturate(1.5) brightness(0.92);
 }
