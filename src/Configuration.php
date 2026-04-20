@@ -69,6 +69,31 @@ class Configuration
     public const DEFAULT_TREE_LAYOUT = self::LAYOUT_LEFTRIGHT;
 
     /**
+     * Married-names display mode: only the birth name is shown.
+     */
+    public const string MARRIED_NAMES_OFF = 'off';
+
+    /**
+     * Married-names display mode: the married name replaces the birth name.
+     */
+    public const string MARRIED_NAMES_ONLY = 'married_only';
+
+    /**
+     * Married-names display mode: birth name with married surname appended in
+     * brackets, e.g. "Schmidt (Müller)".
+     */
+    public const string MARRIED_NAMES_BIRTH_AND_MARRIED = 'birth_and_married';
+
+    /**
+     * @var list<string>
+     */
+    private const array MARRIED_NAMES_MODES = [
+        self::MARRIED_NAMES_OFF,
+        self::MARRIED_NAMES_ONLY,
+        self::MARRIED_NAMES_BIRTH_AND_MARRIED,
+    ];
+
+    /**
      * Configuration constructor.
      *
      * @param ServerRequestInterface $request
@@ -200,11 +225,16 @@ class Configuration
     }
 
     /**
-     * Returns whether to show the married names or not.
+     * Returns the married-names display mode (one of the MARRIED_NAMES_* constants).
      *
-     * @return bool
+     * Reads the `marriedNamesMode` request parameter when present; otherwise falls
+     * back to the `default_marriedNamesMode` module preference; otherwise migrates
+     * from the legacy `default_showMarriedNames` boolean preference (true →
+     * `married_only`, false → `off`). Returns `off` when the value is unrecognised.
+     *
+     * @return string
      */
-    public function getShowMarriedNames(): bool
+    public function getMarriedNamesMode(): string
     {
         if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
             $validator = Validator::parsedBody($this->request);
@@ -212,14 +242,32 @@ class Configuration
             $validator = Validator::queryParams($this->request);
         }
 
-        return $validator
-            ->boolean(
-                'showMarriedNames',
-                (bool) $this->module->getPreference(
-                    'default_showMarriedNames',
-                    '0'
-                )
-            );
+        $legacyDefault = ((bool) $this->module->getPreference('default_showMarriedNames', '0'))
+            ? self::MARRIED_NAMES_ONLY
+            : self::MARRIED_NAMES_OFF;
+
+        $default = $this->module->getPreference('default_marriedNamesMode', $legacyDefault);
+
+        $mode = $validator->string('marriedNamesMode', $default);
+
+        return in_array($mode, self::MARRIED_NAMES_MODES, true)
+            ? $mode
+            : self::MARRIED_NAMES_OFF;
+    }
+
+    /**
+     * Returns the list of married-names display modes keyed by storage value,
+     * with translated labels — for use in the configuration form.
+     *
+     * @return array<string, string>
+     */
+    public function getMarriedNamesModes(): array
+    {
+        return [
+            self::MARRIED_NAMES_OFF               => I18N::translate('Birth name only'),
+            self::MARRIED_NAMES_ONLY              => I18N::translate('Married name only'),
+            self::MARRIED_NAMES_BIRTH_AND_MARRIED => I18N::translate('Birth name with married name in brackets'),
+        ];
     }
 
     /**

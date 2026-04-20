@@ -70,8 +70,8 @@ trait ModuleConfigTrait
             (string) $configuration->getHideSpouses()
         );
         $this->setPreference(
-            'default_showMarriedNames',
-            (string) $configuration->getShowMarriedNames()
+            'default_marriedNamesMode',
+            $configuration->getMarriedNamesMode()
         );
         $this->setPreference(
             'default_openNewTabOnClick',

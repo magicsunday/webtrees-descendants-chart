@@ -288,10 +288,12 @@ class DataFacade
             return $treeData;
         }
 
+        $marriedNamesMode = $this->configuration->getMarriedNamesMode();
+
         $nameProcessor = new NameProcessor(
             $individual,
             $spouse,
-            $this->configuration->getShowMarriedNames()
+            $marriedNamesMode === Configuration::MARRIED_NAMES_ONLY
         );
 
         $dateProcessor  = new DateProcessor($individual);
@@ -299,6 +301,21 @@ class DataFacade
 
         $fullNN          = $nameProcessor->getFullName();
         $alternativeName = $nameProcessor->getAlternateName($individual);
+        $lastNames       = $nameProcessor->getLastNames();
+
+        // For "birth + married" mode, append the married surname (in brackets)
+        // both to the full-name string and the lastNames array. The JS renderer
+        // locates each lastName entry inside the full-name string via indexOf,
+        // so the bracketed entry must literally appear in both.
+        if ($marriedNamesMode === Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED) {
+            $marriedSurnames = $nameProcessor->getMarriedSurnames($spouse);
+
+            if ($marriedSurnames !== []) {
+                $marriedSuffix = '(' . implode(' ', $marriedSurnames) . ')';
+                $fullNN .= ' ' . $marriedSuffix;
+                $lastNames[] = $marriedSuffix;
+            }
+        }
 
         $treeData
             ->setXref($individual->xref())
@@ -307,7 +324,7 @@ class DataFacade
             ->setName($fullNN)
             ->setIsNameRtl($this->isRtl($fullNN))
             ->setFirstNames($nameProcessor->getFirstNames())
-            ->setLastNames($nameProcessor->getLastNames())
+            ->setLastNames($lastNames)
             ->setPreferredName($nameProcessor->getPreferredName())
             ->setAlternativeName($alternativeName)
             ->setIsAltRtl($this->isRtl($alternativeName))
