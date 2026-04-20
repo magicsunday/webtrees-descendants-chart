@@ -24,6 +24,7 @@ use MagicSunday\Webtrees\DescendantsChart\Model\NodeData;
 use MagicSunday\Webtrees\ModuleBase\Processor\DateProcessor;
 use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
 use MagicSunday\Webtrees\ModuleBase\Processor\NameProcessor;
+use MagicSunday\Webtrees\ModuleBase\Contract\ModuleAssetUrlInterface;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 
@@ -39,7 +40,7 @@ class DataFacade
     /**
      * The module.
      */
-    private ModuleCustomInterface $module;
+    private ModuleCustomInterface&ModuleAssetUrlInterface $module;
 
     /**
      * The configuration instance.
@@ -49,11 +50,11 @@ class DataFacade
     private string $route;
 
     /**
-     * @param ModuleCustomInterface $module
+     * @param ModuleCustomInterface&ModuleAssetUrlInterface $module
      *
      * @return DataFacade
      */
-    public function setModule(ModuleCustomInterface $module): DataFacade
+    public function setModule(ModuleCustomInterface&ModuleAssetUrlInterface $module): DataFacade
     {
         $this->module = $module;
 
