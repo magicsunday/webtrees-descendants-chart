@@ -39,7 +39,7 @@ Module.php (entry point, registers routes)
 ### PHP (`src/`)
 - **Module.php** — Entry point, extends webtrees DescendantsChartModule, registers chart route.
 - **Configuration.php** — Reads form parameters from request (POST/GET) with user preference fallback.
-- **Facade/DataFacade.php** — Builds hierarchical Node tree, recursing through spouse families to the configured generation depth. Passes `$spouse` and `$showMarriedNames` into NameProcessor for partner name selection.
+- **Facade/DataFacade.php** — Builds hierarchical Node tree, recursing through spouse families to the configured generation depth. Passes `$spouse` and the married-names mode (`off` / `married_only` / `birth_and_married`) into NameProcessor; in `birth_and_married` mode it also calls `getMarriedSurnames()` and appends the bracketed suffix to `name` + `lastNames`.
 - **Model/Node, NodeData** — Tree node with JSON serialization for D3.
 - **Shared classes from [`magicsunday/webtrees-module-base`](https://github.com/magicsunday/webtrees-module-base)** (composer dependency `^1.1`):
   - `Processor/DateProcessor` — date extraction; descendants currently uses the legacy locale-aware methods (`getBirthDate`, `getDeathDate`, `getLifetimeDescription`).
@@ -64,7 +64,7 @@ Module.php (entry point, registers routes)
 - **ES module loading**: `import().then(({ DescendantsChart }) => ...)` in `<script type="module">`, avoiding the `webtrees.load()` race condition.
 - **Storage flow**: `page.phtml` reads localStorage → injects as JS variables → `chart.phtml` getter checks `typeof varName !== "undefined"` before falling back to PHP defaults.
 - **Orientation strategy**: chart layout is configurable in 4 directions (top-bottom, bottom-top, left-right, right-left) via the orientation-collection.js + matching `Orientation*` classes (node coordinate transforms + elbow connector geometry).
-- **Married-name resolution**: when `showMarriedNames` is enabled, NameProcessor iterates the partner's `_MARNM` records to pick a married name whose surname matches the spouse's; falls back to the primary name otherwise.
+- **Married-name modes**: configurable via `marriedNamesMode` (3-value: `off`, `married_only`, `birth_and_married`). `married_only` swaps the primary to a `_MARNM` record matching the spouse's surname (NameProcessor's `useMarriedName` flag). `birth_and_married` keeps the birth-name primary and appends the married surname in brackets, e.g. `Schmidt (Müller)` — appended both to the full-name string and the `lastNames` array so the JS renderer (which locates each `lastNames` entry inside the full string via `indexOf`) shows the bracketed entry. Migrates from the legacy boolean `default_showMarriedNames` preference (true → `married_only`, false → `off`).
 - **Block template**: Overrides core `modules/charts/chart.phtml` — must stay in sync with webtrees core changes (e.g. VanillaJS conversion).
 
 ## Release process
