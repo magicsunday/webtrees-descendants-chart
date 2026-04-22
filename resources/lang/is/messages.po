@@ -110,15 +110,15 @@ msgstr "Einingar"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:44
 msgid "General"
-msgstr ""
+msgstr "Almennt"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:50
 msgid "Hide the SVG export button"
-msgstr ""
+msgstr "Fela SVG útflutningshnappinn"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:60
 msgid "Hide the PNG export button"
-msgstr ""
+msgstr "Fela PNG útflutningshnappinn"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:73
 msgid "save"
