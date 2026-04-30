@@ -35,7 +35,10 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
         <?= view($moduleName . '::modules/descendants-chart/form/orientation', ['configuration' => $configuration]) ?>
     </div>
     <div class="mb-3">
-        <?= view($moduleName . '::modules/descendants-chart/form/layout', ['configuration' => $configuration, 'moduleName'    => $moduleName]) ?>
+        <?= view($moduleName . '::modules/descendants-chart/form/display', ['moduleName' => $moduleName, 'configuration' => $configuration]) ?>
+    </div>
+    <div class="mb-3">
+        <?= view($moduleName . '::modules/descendants-chart/form/details', ['moduleName' => $moduleName, 'configuration' => $configuration]) ?>
     </div>
 
     <div class="mb-3">
