@@ -32,6 +32,7 @@ use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleConfigTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleCustomTrait;
 use MagicSunday\Webtrees\ModuleBase\Contract\ModuleAssetUrlInterface;
+use MagicSunday\Webtrees\ModuleBase\Model\NameAbbreviation;
 use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -253,36 +254,15 @@ class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, 
     {
         return [
             'rtl'              => I18N::direction() === 'rtl',
-            'nameAbbreviation' => $this->resolveNameAbbreviation($tree),
-            'labels'           => [
+            'nameAbbreviation' => NameAbbreviation::resolve(
+                $this->configuration->getNameAbbreviation(),
+                $tree->getPreference('SURNAME_TRADITION')
+            ),
+            'labels' => [
                 'zoom' => I18N::translate('Use Ctrl + scroll to zoom in the view'),
                 'move' => I18N::translate('Move the view with two fingers'),
             ],
         ];
-    }
-
-    /**
-     * Resolves the configured name-abbreviation strategy into a concrete
-     * GIVEN or SURNAME value the JS layer can use directly. AUTO maps to
-     * SURNAME for Icelandic-tradition trees (where surnames are typically
-     * patronymics and people are addressed by given name) and GIVEN for
-     * everything else.
-     *
-     * @param Tree $tree
-     *
-     * @return string Configuration::NAME_ABBREV_GIVEN or NAME_ABBREV_SURNAME
-     */
-    private function resolveNameAbbreviation(Tree $tree): string
-    {
-        $configured = $this->configuration->getNameAbbreviation();
-
-        if ($configured !== Configuration::NAME_ABBREV_AUTO) {
-            return $configured;
-        }
-
-        return $tree->getPreference('SURNAME_TRADITION') === 'icelandic'
-            ? Configuration::NAME_ABBREV_SURNAME
-            : Configuration::NAME_ABBREV_GIVEN;
     }
 
     /**

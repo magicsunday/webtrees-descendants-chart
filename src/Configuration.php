@@ -16,6 +16,7 @@ use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Module\AbstractModule;
 use Fisharebest\Webtrees\Module\PedigreeChartModule;
 use Fisharebest\Webtrees\Validator;
+use MagicSunday\Webtrees\ModuleBase\Model\NameAbbreviation;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -92,18 +93,6 @@ class Configuration
         self::MARRIED_NAMES_ONLY,
         self::MARRIED_NAMES_BIRTH_AND_MARRIED,
     ];
-
-    /**
-     * Name-abbreviation strategies. {@see getNameAbbreviation()} returns the
-     * stored value as-is; {@see Module::resolveNameAbbreviation()} resolves
-     * AUTO into one of GIVEN/SURNAME server-side based on the tree's
-     * SURNAME_TRADITION before serialising into chart parameters.
-     */
-    public const string NAME_ABBREV_AUTO = 'AUTO';
-
-    public const string NAME_ABBREV_GIVEN = 'GIVEN';
-
-    public const string NAME_ABBREV_SURNAME = 'SURNAME';
 
     /**
      * Configuration constructor.
@@ -383,17 +372,17 @@ class Configuration
     public function getNameAbbreviationList(): array
     {
         return [
-            self::NAME_ABBREV_AUTO    => I18N::translate("Automatic (based on tree's surname tradition)"),
-            self::NAME_ABBREV_GIVEN   => I18N::translate('Abbreviate given names first'),
-            self::NAME_ABBREV_SURNAME => I18N::translate('Abbreviate surnames first'),
+            NameAbbreviation::AUTO    => I18N::translate("Automatic (based on tree's surname tradition)"),
+            NameAbbreviation::GIVEN   => I18N::translate('Abbreviate given names first'),
+            NameAbbreviation::SURNAME => I18N::translate('Abbreviate surnames first'),
         ];
     }
 
     /**
-     * Returns the name-abbreviation strategy as stored. One of NAME_ABBREV_AUTO,
-     * NAME_ABBREV_GIVEN, NAME_ABBREV_SURNAME. The chart-render path resolves
-     * AUTO to GIVEN/SURNAME via the tree's SURNAME_TRADITION before serialising
-     * to the JS config — see {@see Module::resolveNameAbbreviation()}.
+     * Returns the name-abbreviation strategy as stored. One of
+     * {@see NameAbbreviation::AUTO}, GIVEN or SURNAME. The chart-render path
+     * resolves AUTO to GIVEN/SURNAME via the tree's SURNAME_TRADITION before
+     * serialising to the JS config — see {@see Module::getChartParameters()}.
      *
      * @return string
      */
@@ -410,12 +399,12 @@ class Configuration
                 'nameAbbreviation',
                 $this->module->getPreference(
                     'default_nameAbbreviation',
-                    self::NAME_ABBREV_AUTO
+                    NameAbbreviation::AUTO
                 )
             );
 
-        return in_array($value, [self::NAME_ABBREV_AUTO, self::NAME_ABBREV_GIVEN, self::NAME_ABBREV_SURNAME], true)
+        return in_array($value, NameAbbreviation::CHOICES, true)
             ? $value
-            : self::NAME_ABBREV_AUTO;
+            : NameAbbreviation::AUTO;
     }
 }
