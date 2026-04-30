@@ -207,3 +207,18 @@ msgstr "Prikaži dodatne opcije"
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:76
 msgid "Hide more options"
 msgstr "Sakrij dodatne opcije"
+
+msgid "Name abbreviation when space is tight"
+msgstr "Skraćivanje imena kada je prostor ograničen"
+
+msgid "Automatic (based on tree's surname tradition)"
+msgstr "Automatski (na osnovu tradicije prezimena stabla)"
+
+msgid "Abbreviate given names first"
+msgstr "Prvo skrati lična imena"
+
+msgid "Abbreviate surnames first"
+msgstr "Prvo skrati prezimena"
+
+msgid "Controls which name part shrinks first when a box is too narrow for the full name. \"Automatic\" uses the tree's surname tradition (Icelandic abbreviates surnames; everything else abbreviates given names)."
+msgstr "Kontroliše koji deo imena se prvo skraćuje kada je kutija preuzak za puno ime. „Automatski“ koristi tradiciju prezimena stabla (islandska tradicija skraćuje prezimena; sve ostale skraćuju lična imena)."

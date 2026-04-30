@@ -5,7 +5,7 @@
  * LICENSE file distributed with this source code.
  */
 
-import { measureText } from "@magicsunday/webtrees-chart-lib";
+import { measureText, truncateNames } from "@magicsunday/webtrees-chart-lib";
 import OrientationTopBottom from "../chart/orientation/orientation-topBottom.js";
 import OrientationBottomTop from "../chart/orientation/orientation-bottomTop.js";
 import OrientationLeftRight from "../chart/orientation/orientation-leftRight.js";
@@ -353,7 +353,17 @@ export default class Name {
         const fontSize = parent.style("font-size");
         const fontWeight = parent.style("font-weight");
 
-        return this.truncateNames(names, fontSize, fontWeight, availableWidth);
+        return truncateNames(
+            names,
+            availableWidth,
+            (text) => this.measureText(text, fontSize, fontWeight),
+            {
+                strategy: this._svg._configuration.nameAbbreviation,
+                // Married-name suffixes like "(Müller)" are supplementary;
+                // drop them entirely instead of truncating to "(.".
+                dropEmptyBracketed: true,
+            },
+        );
     }
 
     /**
@@ -384,76 +394,6 @@ export default class Name {
         );
 
         return names;
-    }
-
-    /**
-     * Truncates the list of names.
-     *
-     * @param {LabelElementData[]} names          The names array
-     * @param {string}             fontSize       The font size
-     * @param {number}             fontWeight     The font weight
-     * @param {number}             availableWidth The available width
-     *
-     * @returns {LabelElementData[]}
-     *
-     * @private
-     */
-    truncateNames(names, fontSize, fontWeight, availableWidth) {
-        let text = names.map(item => item.label).join(" ");
-
-        return names
-            // Start truncating from the last element to the first one
-            .reverse()
-            .map((name) => {
-                // Select all not preferred and not last names
-                if ((name.isPreferred === false)
-                    && (name.isLastName === false)
-                ) {
-                    if (this.measureText(text, fontSize, fontWeight) > availableWidth) {
-                        // Keep only the first letter
-                        name.label = `${name.label.slice(0, 1)}.`;
-                        text = names.map(item => item.label).join(" ");
-                    }
-                }
-
-                return name;
-            })
-            .map((name) => {
-                // Afterward, the preferred ones, if the text takes still too much space
-                if (name.isPreferred === true) {
-                    if (this.measureText(text, fontSize, fontWeight) > availableWidth) {
-                        // Keep only the first letter
-                        name.label = `${name.label.slice(0, 1)}.`;
-                        text = names.map(item => item.label).join(" ");
-                    }
-                }
-
-                return name;
-            })
-            .map((name) => {
-                // Finally truncate lastnames
-                if (name.isLastName === true) {
-                    if (this.measureText(text, fontSize, fontWeight) > availableWidth) {
-                        // Bracketed entries (e.g. the married-name suffix "(Müller)")
-                        // would otherwise truncate to "(." — drop them entirely
-                        // since the suffix is supplementary information.
-                        if (name.label.startsWith("(") && name.label.endsWith(")")) {
-                            name.label = "";
-                        } else {
-                            // Keep only the first letter
-                            name.label = `${name.label.slice(0, 1)}.`;
-                        }
-                        text = names.map(item => item.label).join(" ");
-                    }
-                }
-
-                return name;
-            })
-            // Revert reversed order again
-            .reverse()
-            // Drop entries whose label was emptied during truncation, so no
-            // empty tspan / orphan dx-spacing renders.
-            .filter(name => name.label !== "");
     }
 
     /**

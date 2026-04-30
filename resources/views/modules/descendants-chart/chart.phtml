@@ -51,6 +51,8 @@ import(<?= json_encode($javascript) ?>).then(({ DescendantsChart }) => {
                 return (typeof showAlternativeName !== "undefined" && showAlternativeName !== null) ? showAlternativeName : <?= json_encode($configuration->getShowAlternativeName()) ?>;
             },
 
+            nameAbbreviation: <?= json_encode($chartParams['nameAbbreviation']) ?>,
+
             data: <?= json_encode($data) ?>
         }
     );

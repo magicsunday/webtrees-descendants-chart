@@ -43,6 +43,7 @@ export class DescendantsChart {
             options.treeLayout,
             options.openNewTabOnClick,
             options.showAlternativeName,
+            options.nameAbbreviation,
             options.rtl,
         );
 
