@@ -6,30 +6,21 @@
  */
 
 import * as d3 from "../d3.js";
-import OrientationTopBottom from "../chart/orientation/orientation-topBottom.js";
-import OrientationBottomTop from "../chart/orientation/orientation-bottomTop.js";
-import {MARRIAGE_STAGGER_PX, SPOUSE_GAP_PX} from "../constants.js";
+import {LINE_END_TRIM_PX} from "../constants.js";
 
 /**
- * The class handles the creation of the tree connecting paths.
+ * Renders the connection bundles produced by `connection-builder.js`.
  *
- * Two link kinds are produced by `Tree.draw()`:
- *   - "elbow"    — parent couple → child couple, drawn via the orientation's
- *                  orthogonal elbow function
- *   - "marriage" — straight segment connecting two adjacent members of the
- *                  same couple, computed locally below
+ * Each bundle is a pure-geometry FamilyConnection descriptor:
+ *   { father, mother, children, intermediateBoxes, marriageStagger }
+ * The drawer doesn't know anything about d3, the family-node encoding,
+ * or polygamy bookkeeping — it just turns positions into SVG paths.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
 export default class LinkDrawer {
-    /**
-     * Constructor.
-     *
-     * @param {Svg}           svg
-     * @param {Configuration} configuration The configuration
-     */
     constructor(svg, configuration) {
         this._svg = svg;
         this._configuration = configuration;
@@ -37,65 +28,183 @@ export default class LinkDrawer {
     }
 
     /**
-     * Returns true when the active orientation lays generations along the
-     * vertical axis, i.e. couples spread horizontally inside one row.
+     * Public entry. `connections` is the list returned by
+     * `buildConnections()`. Each entry may emit several SVG paths
+     * (a marriage chain plus one elbow per child).
      */
-    get _isVerticalLayout() {
-        return (this._orientation instanceof OrientationTopBottom)
-            || (this._orientation instanceof OrientationBottomTop);
+    drawLinks(connections, _source) {
+        const flatLinks = [];
+        for (const connection of connections) {
+            if (connection.mother) {
+                flatLinks.push({
+                    kind: "marriage",
+                    d:    this._marriagePath(connection),
+                });
+            }
+
+            if (connection.children.length > 0) {
+                // One path per connection covers all children — the
+                // shared source-drop and spine segments only show up
+                // once in the path data, so the browser draws each
+                // line exactly once.
+                flatLinks.push({
+                    kind: "elbow",
+                    d:    this._elbowsPath(connection),
+                });
+            }
+        }
+
+        this._svg.visual
+            .selectAll("path.link")
+            .data(flatLinks)
+            .join(
+                (enter) => enter.append("path")
+                    .classed("link", true)
+                    .classed("marriage", (link) => link.kind === "marriage")
+                    .attr("d", (link) => link.d)
+                    .call((selection) => selection.transition()
+                        .duration(this._configuration.duration)
+                        .attr("opacity", 1)),
+                (update) => update.attr("d", (link) => link.d),
+                (exit) => exit.remove(),
+            );
     }
 
     /**
-     * Builds the SVG path for a marriage line linking two adjacent members
-     * of one couple. Stops a few px before each box edge so the line doesn't
-     * visually merge with the box border.
-     *
-     * @param {object} link `{ kind: "marriage", couple, leftIdx }`
-     *
-     * @returns {string}
+     * Marriage line as a chain of segments through the inter-box gaps
+     * between father and mother. Adjacent (father, mother) pairs collapse
+     * to a single segment in their shared gap; polygamous continuations
+     * with intermediate boxes between father and mother emit one segment
+     * per gap so the line never crosses an unrelated person's box.
      */
+    _marriagePath(connection) {
+        const orientation = this._orientation;
+        const direction   = orientation.direction;
+        const isVertical  = this._orientation.isVertical;
+        const stackBox    = isVertical ? orientation.boxWidth : orientation.boxHeight;
+        const halfBox     = stackBox / 2;
+        const trim        = LINE_END_TRIM_PX;
+        const path        = d3.path();
+
+        // Cross-axis position of the line. For polygamous additional
+        // marriages the stagger pulls the line off the row centre so
+        // each marriage bundle stays visually distinguishable; the
+        // last (innermost) marriage runs through the row centre itself.
+        const crossAxisCoord = isVertical
+            ? connection.father.y + connection.marriageStagger * direction
+            : connection.father.x + connection.marriageStagger * direction;
+
+        // Walk father → intermediates → mother in spread-axis order so
+        // each segment lands cleanly between two adjacent boxes.
+        const spreadAxis = isVertical ? "x" : "y";
+        const sequence = [connection.father, ...connection.intermediateBoxes, connection.mother]
+            .sort((a, b) => a[spreadAxis] - b[spreadAxis]);
+
+        for (let i = 0; i + 1 < sequence.length; i++) {
+            const leftBox  = sequence[i];
+            const rightBox = sequence[i + 1];
+
+            const segmentStart = leftBox[spreadAxis]  + halfBox + trim;
+            const segmentEnd   = rightBox[spreadAxis] - halfBox - trim;
+            if (segmentEnd <= segmentStart) continue;
+
+            this._straightSegment(path, segmentStart, segmentEnd, crossAxisCoord);
+        }
+
+        return path.toString();
+    }
+
     /**
-     * Marriage from `members[0]` (real-person) to `members[spouseIdx]`,
-     * drawn as a chain of short segments through every inter-box gap on
-     * the way so the line never crosses a box rectangle (which would hide
-     * it). Each marriage gets its own cross-axis stagger so simultaneous
-     * marriages of one real-person stay distinguishable.
+     * All elbow lines from one parent block to its children, drawn as a
+     * single SVG path. Shared geometry (the source drop and the spine
+     * across the elbow row) is emitted exactly once so the renderer
+     * doesn't stack multiple strokes on top of each other.
      *
-     * @param {{couple: object, spouseIdx: number, spouseCount: number}} link
+     * Source placement depends on the family shape:
+     * - Direct couple (father + mother adjacent): emerge from the marriage
+     *   line at the couple midpoint.
+     * - Continuation polygamous marriage (mother behind intermediate
+     *   boxes): drop from the mother's box edge towards the children.
+     * - Singleton parent (no mother): drop from the father's box edge.
      */
-    marriagePath(link) {
-        const couple = link.couple;
-        const spouseIdx = link.spouseIdx;
-        const stackBox = this._isVerticalLayout
-            ? this._orientation.boxWidth
-            : this._orientation.boxHeight;
-        const gap = SPOUSE_GAP_PX;
-        const memberCount = couple.data.members.length;
-
-        const stride = stackBox + gap;
-        const start = -((memberCount - 1) * stride) / 2;
-        // First spouse furthest from the box-row centre, every subsequent
-        // spouse one step closer, last spouse on the centre.
-        const spouseCount = memberCount - 1;
-        const stagger = MARRIAGE_STAGGER_PX * (spouseCount - spouseIdx);
-
+    _elbowsPath(connection) {
+        const orientation = this._orientation;
+        const direction   = orientation.direction;
+        const isVertical  = this._orientation.isVertical;
+        const halfBoxHeight = orientation.boxHeight / 2;
+        const halfBoxWidth  = orientation.boxWidth / 2;
+        const halfYOffset   = orientation.yOffset / 2;
+        const halfXOffset   = orientation.xOffset / 2;
         const path = d3.path();
-        const lineEndOffset = 2;
 
-        // Walk through every inter-box gap from member[0] up to member[spouseIdx],
-        // emitting one short segment per gap so the line never crosses a box.
-        for (let i = 0; i < spouseIdx; i++) {
-            const leftCentre = start + i * stride;
-            const rightCentre = leftCentre + stride;
-            const segStart = leftCentre + (stackBox / 2) + lineEndOffset;
-            const segEnd   = rightCentre - (stackBox / 2) - lineEndOffset;
+        const dropFromEdge = !connection.mother
+            || connection.intermediateBoxes.length > 0;
+        const dropAnchor = connection.mother || connection.father;
 
-            if (this._isVerticalLayout) {
-                path.moveTo(couple.x + segStart, couple.y + stagger);
-                path.lineTo(couple.x + segEnd,   couple.y + stagger);
-            } else {
-                path.moveTo(couple.x + stagger, couple.y + segStart);
-                path.lineTo(couple.x + stagger, couple.y + segEnd);
+        if (isVertical) {
+            const sourceX = dropFromEdge
+                ? dropAnchor.x
+                : (connection.father.x + connection.mother.x) / 2;
+            const sourceY = dropFromEdge
+                ? dropAnchor.y + (halfBoxHeight * direction)
+                : (connection.father.y + connection.mother.y) / 2
+                    + connection.marriageStagger * direction;
+
+            // Children are all on the next generation row, share elbowY.
+            const elbowY  = connection.children[0].y
+                - (halfBoxHeight * direction)
+                - (halfYOffset * direction);
+            const targetY = connection.children[0].y - (halfBoxHeight * direction);
+
+            // Source drop down to the elbow row.
+            path.moveTo(sourceX, sourceY);
+            path.lineTo(sourceX, elbowY);
+
+            // Spine across the elbow row, covering source and every child.
+            const childXs = connection.children.map((child) => child.x);
+            const spineMin = Math.min(sourceX, ...childXs);
+            const spineMax = Math.max(sourceX, ...childXs);
+            if (spineMax > spineMin) {
+                path.moveTo(spineMin, elbowY);
+                path.lineTo(spineMax, elbowY);
+            }
+
+            // Per-child drop from the elbow row to the child box top.
+            for (const child of connection.children) {
+                path.moveTo(child.x, elbowY);
+                path.lineTo(child.x, targetY);
+            }
+        } else {
+            const sourceY = dropFromEdge
+                ? dropAnchor.y
+                : (connection.father.y + connection.mother.y) / 2;
+            const sourceX = dropFromEdge
+                ? dropAnchor.x + (halfBoxWidth * direction)
+                : (connection.father.x + connection.mother.x) / 2
+                    + connection.marriageStagger * direction;
+
+            const elbowX  = connection.children[0].x
+                - (halfBoxWidth * direction)
+                - (halfXOffset * direction);
+            const targetX = connection.children[0].x - (halfBoxWidth * direction);
+
+            // Source run-out to the elbow column.
+            path.moveTo(sourceX, sourceY);
+            path.lineTo(elbowX,  sourceY);
+
+            // Spine across the elbow column, covering source and every child.
+            const childYs = connection.children.map((child) => child.y);
+            const spineMin = Math.min(sourceY, ...childYs);
+            const spineMax = Math.max(sourceY, ...childYs);
+            if (spineMax > spineMin) {
+                path.moveTo(elbowX, spineMin);
+                path.lineTo(elbowX, spineMax);
+            }
+
+            // Per-child run from the elbow column to the child box edge.
+            for (const child of connection.children) {
+                path.moveTo(elbowX,  child.y);
+                path.lineTo(targetX, child.y);
             }
         }
 
@@ -103,67 +212,16 @@ export default class LinkDrawer {
     }
 
     /**
-     * Draw the connecting lines.
-     *
-     * @param {Link[]}     links  Array of links (mixed elbow + marriage)
-     * @param {Individual} source The root object
-     *
-     * @public
+     * Emit one straight segment along the spread axis at the given
+     * cross-axis coordinate.
      */
-    drawLinks(links, source) {
-        this._svg.visual
-            .selectAll("path.link")
-            .data(links)
-            .join(
-                enter => this.linkEnter(enter, source),
-                update => this.linkUpdate(update),
-                exit => this.linkExit(exit, source),
-            );
-    }
-
-    /**
-     * Enter transition (new links).
-     *
-     * @param {Selection}  enter
-     * @param {Individual} source
-     *
-     * @private
-     */
-    linkEnter(enter, _source) {
-        enter
-            .append("path")
-            .classed("link", true)
-            .classed("marriage", link => link.kind === "marriage")
-            .attr("d", link => link.kind === "marriage"
-                ? this.marriagePath(link)
-                : this._orientation.elbow(link))
-            .call(
-                g => g.transition()
-                    .duration(this._configuration.duration)
-                    .attr("opacity", 1),
-            );
-    }
-
-    /**
-     * Update transition (existing links).
-     *
-     * @param {Selection} update
-     *
-     * @private
-     */
-    linkUpdate(_update) {
-        // TODO Enable for transitions
-    }
-
-    /**
-     * Exit transition (links to be removed).
-     *
-     * @param {Selection}  exit
-     * @param {Individual} source
-     *
-     * @private
-     */
-    linkExit(_exit, _source) {
-        // TODO Enable for transitions
+    _straightSegment(path, spreadStart, spreadEnd, crossAxisCoord) {
+        if (this._orientation.isVertical) {
+            path.moveTo(spreadStart, crossAxisCoord);
+            path.lineTo(spreadEnd,   crossAxisCoord);
+        } else {
+            path.moveTo(crossAxisCoord, spreadStart);
+            path.lineTo(crossAxisCoord, spreadEnd);
+        }
     }
 }

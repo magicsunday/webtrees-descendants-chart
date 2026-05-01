@@ -8,29 +8,29 @@
 import * as d3 from "../lib/d3.js";
 import NodeDrawer from "../lib/tree/node-drawer.js";
 import LinkDrawer from "../lib/tree/link-drawer.js";
-import OrientationTopBottom from "../lib/chart/orientation/orientation-topBottom.js";
-import OrientationBottomTop from "../lib/chart/orientation/orientation-bottomTop.js";
 import {COUSIN_GAP_PX, SIBLING_GAP_PX, SPOUSE_GAP_PX} from "../lib/constants.js";
+import {familyRenderedWidth} from "../lib/family-tree.js";
+import {buildConnections} from "../lib/tree/connection-builder.js";
 
 /**
- * The class handles the creation of the tree.
+ * Lays out one descendants chart. The d3 hierarchy is a tree of
+ * FamilyNodes (see family-tree.js); each node represents one
+ * (real-person + 0..1 spouse + their children-as-FamilyNodes).
  *
- * Each d3 node represents one family ("couple node") that holds 1..N members
- * (real-person + 0..N spouses). d3.tree() lays out the couple nodes; the
- * renderer expands each node into its individual person boxes at draw time.
+ * After d3.tree() lays the family-nodes out, `connection-builder`
+ * walks the result and turns it into pure-geometry payloads:
+ *   - a flat list of person-box renderables
+ *   - a list of FamilyConnection descriptors (father, mother, children,
+ *     intermediate-boxes, marriage stagger)
+ * The drawers consume those without ever touching the d3 hierarchy
+ * themselves, so the line-drawing logic stays generic and independent
+ * of where the boxes ended up.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
 export default class Tree {
-    /**
-     * Constructor.
-     *
-     * @param {Svg}           svg
-     * @param {Configuration} configuration The configuration
-     * @param {Hierarchy}     hierarchy     The hierarchical data
-     */
     constructor(svg, configuration, hierarchy) {
         this._svg = svg;
         this._configuration = configuration;
@@ -48,152 +48,62 @@ export default class Tree {
     }
 
     /**
-     * Returns the box dimension along the sibling/spread axis. For vertical
-     * layouts that's `boxWidth`, for horizontal layouts the boxes stack along
-     * y so we use `boxHeight`. d3-tree's `nodeSize.x` works in this same axis
-     * after the orientation's `norm()` swap.
+     * Returns the box dimension along the sibling/spread axis.
      */
     get _stackBox() {
-        return ((this._orientation instanceof OrientationTopBottom)
-            || (this._orientation instanceof OrientationBottomTop))
+        return this._orientation.isVertical
             ? this._orientation.boxWidth
             : this._orientation.boxHeight;
     }
 
     /**
-     * The width (along the sibling axis) occupied by a couple node when
-     * rendered. Singletons take one box; couples take two boxes plus the
-     * inner spouse gap; trios add another (box + gap), and so on.
-     */
-    coupleWidth(node) {
-        const memberCount = (node.data && Array.isArray(node.data.members))
-            ? node.data.members.length
-            : 1;
-        const box = this._stackBox;
-        return box + Math.max(0, memberCount - 1) * (box + SPOUSE_GAP_PX);
-    }
-
-    /**
-     * Variable-width separation. Returned in `nodeSize.x` units which we set
-     * to `_stackBox`. Math: required centre-to-centre distance equals the
-     * sum of each node's half-width plus the appropriate sibling/cousin gap.
-     * d3.tree()'s apportion() step still handles wider sub-tree contours on
-     * top, so this is the minimum buffer rather than a collision-avoidance
-     * value.
+     * Variable-width separation. Family-nodes that share the same `real`
+     * sit at spouse-gap distance; same-parent siblings get sibling-gap;
+     * cross-parent cousins get cousin-gap.
      */
     separation = (left, right) => {
         const baseline = this._stackBox;
-        const halfLeft  = this.coupleWidth(left)  / 2;
-        const halfRight = this.coupleWidth(right) / 2;
-        const gap = (left.parent === right.parent) ? SIBLING_GAP_PX : COUSIN_GAP_PX;
-        return (halfLeft + halfRight + gap) / baseline;
+        const widthLeft  = familyRenderedWidth(left.data,  baseline, SPOUSE_GAP_PX);
+        const widthRight = familyRenderedWidth(right.data, baseline, SPOUSE_GAP_PX);
+
+        let gap;
+        if (sameRealId(left, right)) {
+            gap = SPOUSE_GAP_PX;
+        } else if (left.parent === right.parent) {
+            gap = SIBLING_GAP_PX;
+        } else {
+            gap = COUSIN_GAP_PX;
+        }
+
+        return ((widthLeft + widthRight) / 2 + gap) / baseline;
     };
 
-    /**
-     * Draw the tree.
-     *
-     * @param {Individual} source The root object
-     *
-     * @public
-     */
     draw(source) {
-        // nodeSize.x = boxWidth (160) is the baseline against which separation()
-        // returns multipliers; nodeSize.y stays at the orientation default for
-        // generation spacing.
         const tree = d3.tree()
-            .nodeSize([this._orientation.boxWidth, this._orientation.nodeHeight])
+            .nodeSize([this._stackBox, this._orientation.nodeHeight])
             .separation(this.separation);
 
-        this._nodes = tree(this._hierarchy.root);
-
-        // Normalize node coordinates (swap values for left/right layout)
+        tree(this._hierarchy.root);
         this._hierarchy.root.each((node) => {
             this._configuration.orientation.norm(node);
         });
 
-        /** @type {Node[]} */
-        const nodes = this._hierarchy.root.descendants();
+        const { renderedBoxes, connections } = buildConnections(
+            this._hierarchy.root,
+            this._orientation,
+            this._orientation.isVertical
+        );
 
-        // Build the link list. Two kinds:
-        //   "elbow"    — parent → child couple, originates at the matching
-        //                family's spouse position (so polygamous families
-        //                each get their own line bundle)
-        //   "marriage" — straight line between consecutive members of a couple
-        //
-        // Children are flattened into `node.children` by the hierarchy
-        // accessor in the same order as `memberFamilies[*].children`, so we
-        // walk both lists in parallel to recover the family-of-origin.
-        const links = [];
-        nodes.forEach((node) => {
-            const memberCount = (node.data && Array.isArray(node.data.members))
-                ? node.data.members.length
-                : 0;
-
-            // Marriage lines: one per pair (real-person, members[k]) so each
-            // spouse has its own line back to the real-person, even in
-            // polygamous couples. The k-index is also used by the renderer to
-            // stagger the lines so multiple marriages don't overlap.
-            for (let k = 1; k < memberCount; k++) {
-                links.push({
-                    kind:         "marriage",
-                    couple:       node,
-                    spouseIdx:    k,
-                    spouseCount:  memberCount - 1,
-                });
-            }
-
-            const dChildren = Array.isArray(node.children) ? node.children : [];
-            if (dChildren.length === 0) {
-                return;
-            }
-
-            const families = (node.data && Array.isArray(node.data.memberFamilies))
-                ? node.data.memberFamilies
-                : [{ family: 0, spouseIndex: null, children: dChildren.map((c) => c.data) }];
-
-            let cursor = 0;
-            families.forEach((family, familyOrder) => {
-                const familyChildCount = Array.isArray(family.children)
-                    ? family.children.length
-                    : 0;
-
-                for (let i = 0; i < familyChildCount; i++) {
-                    const target = dChildren[cursor + i];
-                    if (target) {
-                        links.push({
-                            kind:        "elbow",
-                            source:      node,
-                            target:      target,
-                            spouseIndex: family.spouseIndex,
-                            familyOrder: familyOrder,
-                            familyCount: families.length,
-                        });
-                    }
-                }
-
-                cursor += familyChildCount;
-            });
-        });
-
-        // Draw lines first so the person boxes overlap any rounding-error stubs.
-        this._linkDrawer.drawLinks(links, source);
-        this._nodeDrawer.drawNodes(nodes, source);
+        // Lines first so the boxes overlap any rounding-error stubs.
+        this._linkDrawer.drawLinks(connections, source);
+        this._nodeDrawer.drawNodes(renderedBoxes, source);
     }
 
-    /**
-     * Centers the tree around all visible nodes.
-     */
     centerTree() {
         // TODO Doesn't work
         console.log("centerTree");
     }
 
-    /**
-     * Update a person's state when they are clicked.
-     *
-     * @param {Event}  event
-     * @param {Person} person The person object containing the individual data
-     */
     togglePerson(_event, person) {
         if (person.children) {
             person._children = person.children;
@@ -205,4 +115,11 @@ export default class Tree {
 
         this.draw(person);
     }
+}
+
+function sameRealId(left, right) {
+    if (!left.data || !right.data) return false;
+    if (left.data.kind !== "family" || right.data.kind !== "family") return false;
+    if (!left.data.real || !right.data.real) return false;
+    return left.data.real.id === right.data.real.id;
 }

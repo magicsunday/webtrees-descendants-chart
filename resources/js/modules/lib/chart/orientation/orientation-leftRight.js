@@ -6,7 +6,6 @@
  */
 
 import Orientation from "./orientation.js";
-import elbowHorizontal from "../../tree/elbow/horizontal.js";
 
 /**
  * This class handles the orientation of the tree.
@@ -44,9 +43,5 @@ export default class OrientationLeftRight extends Orientation {
     norm(d) {
         // Swap x and y values
         [d.x, d.y] = [d.y * this.direction, d.x];
-    }
-
-    elbow(link) {
-        return elbowHorizontal(link, this);
     }
 }

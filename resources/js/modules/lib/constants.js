@@ -49,7 +49,7 @@ export const SEX_FEMALE = "F";
  * @const
  */
 // Pixel gap between adjacent person boxes inside one couple.
-export const SPOUSE_GAP_PX = 15;
+export const SPOUSE_GAP_PX = 30;
 // Pixel gap between adjacent same-parent siblings.
 export const SIBLING_GAP_PX = 30;
 // Pixel gap between adjacent cross-parent cousins.
@@ -59,7 +59,6 @@ export const COUSIN_GAP_PX = 78;
 // centre, every subsequent spouse pulls in by one step, the last spouse
 // lands at the centre — keeps multi-marriage bundles distinguishable.
 export const MARRIAGE_STAGGER_PX = 5;
-// Cross-axis stagger between elbow-line origins of successive families,
-// so multiple-family parent-to-child line bundles don't collapse onto
-// each other on the same row.
-export const FAMILY_LINE_OFFSET_PX = 5;
+// Pixels trimmed from each end of a marriage segment so the line stops
+// just short of the adjacent box edges instead of touching them.
+export const LINE_END_TRIM_PX = 2;

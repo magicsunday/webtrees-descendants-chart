@@ -6,7 +6,6 @@
  */
 
 import Orientation from "./orientation.js";
-import elbowVertical from "../../tree/elbow/vertical.js";
 
 /**
  * This class handles the orientation of the tree.
@@ -32,6 +31,10 @@ export default class OrientationBottomTop extends Orientation {
         return -1;
     }
 
+    get isVertical() {
+        return true;
+    }
+
     get nodeWidth() {
         return this._boxWidth + this._xOffset;
     }
@@ -42,9 +45,5 @@ export default class OrientationBottomTop extends Orientation {
 
     norm(d) {
         d.y *= this.direction;
-    }
-
-    elbow(link) {
-        return elbowVertical(link, this);
     }
 }

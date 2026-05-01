@@ -102,6 +102,17 @@ export default class Orientation {
     }
 
     /**
+     * TRUE for layouts whose spread axis is X (top-bottom / bottom-top),
+     * FALSE for layouts whose spread axis is Y (left-right / right-left).
+     * Lets consumers branch on layout shape without instanceof chains.
+     *
+     * @returns {boolean}
+     */
+    get isVertical() {
+        return false;
+    }
+
+    /**
      * Returns the width of the node.
      *
      * @returns {number}
@@ -126,16 +137,5 @@ export default class Orientation {
      */
     norm(_d) {
         throw "Abstract method norm() not implemented";
-    }
-
-    /**
-     * Returns the elbow function depending on the orientation.
-     *
-     * @param {Link} link
-     *
-     * @returns {string}
-     */
-    elbow(_link) {
-        throw "Abstract method elbow() not implemented";
     }
 }

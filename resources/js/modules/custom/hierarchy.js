@@ -6,9 +6,8 @@
  */
 
 import * as d3 from "../lib/d3.js";
-import OrientationTopBottom from "../lib/chart/orientation/orientation-topBottom.js";
-import OrientationBottomTop from "../lib/chart/orientation/orientation-bottomTop.js";
 import {LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET} from "../lib/constants.js";
+import {buildFamilyTree} from "../lib/family-tree.js";
 
 /**
  * This class handles the hierarchical data.
@@ -25,49 +24,28 @@ export default class Hierarchy {
      */
     constructor(configuration) {
         this._configuration = configuration;
-        this._nodes = null;
         this._root = null;
     }
 
     /**
      * Initialize the hierarchical chart data.
      *
-     * Each node represents one family — see PHP `CoupleNode`. The d3-children
-     * of a family node is the concatenation of every `memberFamilies[].children`
-     * entry, so d3.tree() lays the descendants out under the couple as a whole
-     * (no per-spouse subtree positioning).
+     * The wire-format CoupleNode is converted to a tree of FamilyNodes —
+     * each (real-person + 0..1 spouse + their children-as-FamilyNodes).
+     * Polygamous individuals contribute multiple FamilyNodes that share
+     * the same `real`. d3.tree() then centres each family-node directly
+     * over its own children.
      *
      * @param {object} data The JSON encoded chart data
      */
     init(data) {
         // Adjust box height if we are going to display the alternative names
-        if (this._configuration.showAlternativeName) {
-            if ((this._configuration.orientation instanceof OrientationTopBottom)
-                || (this._configuration.orientation instanceof OrientationBottomTop)
-            ) {
-                this._configuration.orientation.boxHeight += LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET;
-            }
+        if (this._configuration.showAlternativeName && this._configuration.orientation.isVertical) {
+            this._configuration.orientation.boxHeight += LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET;
         }
 
-        this._root = d3.hierarchy(
-            data,
-            (datum) => {
-                if (!datum || !Array.isArray(datum.memberFamilies)) {
-                    return null;
-                }
-
-                const children = [];
-                for (const family of datum.memberFamilies) {
-                    if (Array.isArray(family.children)) {
-                        for (const child of family.children) {
-                            children.push(child);
-                        }
-                    }
-                }
-
-                return children.length > 0 ? children : null;
-            }
-        );
+        const familyTree = buildFamilyTree(data);
+        this._root = d3.hierarchy(familyTree);
 
         // Assign a unique ID to each node
         this._root.descendants().forEach((d, i) => {
@@ -76,20 +54,9 @@ export default class Hierarchy {
     }
 
     /**
-     * Returns the nodes.
+     * Returns the root node of the d3 hierarchy.
      *
-     * @returns {Individual[]}
-     *
-     * @public
-     */
-    get nodes() {
-        return this._nodes;
-    }
-
-    /**
-     * Returns the root note.
-     *
-     * @returns {Individual}
+     * @returns {Node}
      *
      * @public
      */
