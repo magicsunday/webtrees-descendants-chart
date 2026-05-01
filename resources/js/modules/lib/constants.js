@@ -61,11 +61,3 @@ export const SIBLING_GAP_PX = 30;
 // pedigree's separation() uses for cousins, so descendants and pedigree
 // stay visually aligned.
 export const COUSIN_GAP_PX = 78;
-// Cross-axis stagger between successive marriage lines for the same
-// real-person. The first spouse's line sits furthest from the box-row
-// centre, every subsequent spouse pulls in by one step, the last spouse
-// lands at the centre — keeps multi-marriage bundles distinguishable.
-export const MARRIAGE_STAGGER_PX = 5;
-// Pixels trimmed from each end of a marriage segment so the line stops
-// just short of the adjacent box edges instead of touching them.
-export const LINE_END_TRIM_PX = 2;

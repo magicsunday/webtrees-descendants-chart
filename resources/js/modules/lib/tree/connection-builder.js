@@ -5,7 +5,8 @@
  * LICENSE file distributed with this source code.
  */
 
-import {MARRIAGE_STAGGER_PX, SPOUSE_GAP_PX} from "../constants.js";
+import {MARRIAGE_STAGGER_PX} from "@magicsunday/webtrees-chart-lib";
+import {SPOUSE_GAP_PX} from "../constants.js";
 import {familyRenderableMembers} from "../family-tree.js";
 
 /**

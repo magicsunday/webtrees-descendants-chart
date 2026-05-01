@@ -5,9 +5,6 @@
  * LICENSE file distributed with this source code.
  */
 
-import OrientationLeftRight from "../orientation/orientation-leftRight.js";
-import OrientationRightLeft from "../orientation/orientation-rightLeft.js";
-
 /**
  * The person text box container.
  *
@@ -54,9 +51,7 @@ export default class Text {
      * @returns {number}
      */
     calculateY() {
-        if ((this._orientation instanceof OrientationLeftRight)
-            || (this._orientation instanceof OrientationRightLeft)
-        ) {
+        if (!this._orientation.isVertical) {
             return -this._textPaddingY;
         }
 
