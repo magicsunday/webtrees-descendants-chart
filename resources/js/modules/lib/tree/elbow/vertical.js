@@ -38,15 +38,19 @@ export default function(link, orientation) {
     // Family-of-origin offset: midway between real-person (members[0]) and
     // the family's spouse (members[spouseIndex]) in spread-axis pixels.
     const sourceXOffset = familyOriginOffset(link, boxWidth);
-
     const sourceX = link.source.x + sourceXOffset;
-    let sourceY = link.source.y + (halfBoxHeight * dir);
 
-    // Spread the multi-family outgoing-line bundle vertically so they don't
-    // overlap on the same Y row.
-    if (link.familyCount > 1) {
-        const offsetSteps = link.familyOrder - Math.floor(link.familyCount / 2);
-        sourceY += offsetSteps * FAMILY_LINE_OFFSET_PX * dir;
+    let sourceY;
+    if (link.familyOrder === 0) {
+        // First family: line emerges between the real-person and the first
+        // spouse, with a tiny upward stagger when more spouses follow so the
+        // outgoing bundles of additional marriages don't pile on this one.
+        sourceY = link.source.y - firstFamilyStaggerY(link, dir);
+    } else {
+        // Additional families: drop the line straight down from the spouse's
+        // bottom edge; no stagger needed because each family already has its
+        // own X origin via familyOriginOffset.
+        sourceY = link.source.y + (halfBoxHeight * dir);
     }
 
     const targetX = link.target.x;
@@ -60,6 +64,23 @@ export default function(link, orientation) {
     path.lineTo(targetX, targetY);
 
     return path.toString();
+}
+
+/**
+ * Y-shift applied to the FIRST family's line origin so that, in polygamous
+ * couples, the additional-family lines (which originate further down at
+ * each spouse's box bottom) don't visually merge with the first one.
+ *
+ * @param {{familyCount: number}} link
+ * @param {number} dir
+ *
+ * @returns {number}
+ */
+function firstFamilyStaggerY(link, dir) {
+    if (link.familyCount <= 1) {
+        return 0;
+    }
+    return (0 - Math.ceil(link.familyCount / 2)) * dir * FAMILY_LINE_OFFSET_PX;
 }
 
 /**

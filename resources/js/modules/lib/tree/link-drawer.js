@@ -57,11 +57,8 @@ export default class LinkDrawer {
     /**
      * Marriage from `members[0]` (real-person) to `members[spouseIdx]`,
      * drawn as a chain of short segments through every inter-box gap on
-     * the way. This avoids running the line through the box rectangles
-     * (which would be hidden by them) and matches the pre-refactor visual
-     * pattern where every marriage was a discrete, fully-visible path.
-     *
-     * Each marriage gets its own cross-axis stagger so simultaneous
+     * the way so the line never crosses a box rectangle (which would hide
+     * it). Each marriage gets its own cross-axis stagger so simultaneous
      * marriages of one real-person stay distinguishable.
      *
      * @param {{couple: object, spouseIdx: number, spouseCount: number}} link
@@ -77,9 +74,10 @@ export default class LinkDrawer {
 
         const stride = stackBox + gap;
         const start = -((memberCount - 1) * stride) / 2;
-        // Stagger from 0 (first spouse, line in main gap) and grow outward
-        // for each additional spouse.
-        const stagger = MARRIAGE_STAGGER_PX * (spouseIdx - 1);
+        // First spouse furthest from the box-row centre, every subsequent
+        // spouse one step closer, last spouse on the centre.
+        const spouseCount = memberCount - 1;
+        const stagger = MARRIAGE_STAGGER_PX * (spouseCount - spouseIdx);
 
         const path = d3.path();
         const lineEndOffset = 2;

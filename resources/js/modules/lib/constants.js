@@ -55,8 +55,10 @@ export const SIBLING_GAP_PX = 30;
 // Pixel gap between adjacent cross-parent cousins.
 export const COUSIN_GAP_PX = 78;
 // Cross-axis stagger between successive marriage lines for the same
-// real-person, so multiple marriages stay visually distinguishable.
-export const MARRIAGE_STAGGER_PX = 8;
+// real-person. The first spouse's line sits furthest from the box-row
+// centre, every subsequent spouse pulls in by one step, the last spouse
+// lands at the centre — keeps multi-marriage bundles distinguishable.
+export const MARRIAGE_STAGGER_PX = 5;
 // Cross-axis stagger between elbow-line origins of successive families,
 // so multiple-family parent-to-child line bundles don't collapse onto
 // each other on the same row.

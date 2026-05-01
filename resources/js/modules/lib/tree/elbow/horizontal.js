@@ -37,13 +37,17 @@ export default function(link, orientation) {
     // In horizontal layout the spread axis is Y, so the family-of-origin
     // offset shifts the line origin along Y.
     const sourceYOffset = familyOriginOffset(link, boxHeight);
-
     const sourceY = link.source.y + sourceYOffset;
-    let sourceX = link.source.x + (halfBoxWidth * dir);
 
-    if (link.familyCount > 1) {
-        const offsetSteps = link.familyOrder - Math.floor(link.familyCount / 2);
-        sourceX += offsetSteps * FAMILY_LINE_OFFSET_PX * dir;
+    let sourceX;
+    if (link.familyOrder === 0) {
+        // First family: line emerges between the real-person and the first
+        // spouse, with a tiny stagger when more spouses follow so the
+        // additional-family line bundles don't merge with this one.
+        sourceX = link.source.x - firstFamilyStaggerX(link, dir);
+    } else {
+        // Additional families: line starts at the spouse's leading edge.
+        sourceX = link.source.x + (halfBoxWidth * dir);
     }
 
     const targetX = link.target.x - (halfBoxWidth * dir);
@@ -57,6 +61,18 @@ export default function(link, orientation) {
     path.lineTo(targetX, targetY);
 
     return path.toString();
+}
+
+/**
+ * Mirror of `firstFamilyStaggerY` from the vertical elbow — same formula,
+ * just applied to the X axis because the chart flows horizontally here.
+ */
+function firstFamilyStaggerX(link, dir) {
+    if (link.familyCount <= 1) {
+        return 0;
+    }
+    const spouseCount = link.familyCount;
+    return (0 - Math.ceil(spouseCount / 2)) * dir * FAMILY_LINE_OFFSET_PX;
 }
 
 function familyOriginOffset(link, boxHeight) {
