@@ -291,6 +291,7 @@ class DataFacade
             ->setAlternativeName($alternativeName)
             ->setIsAltRtl($this->isRtl($alternativeName))
             ->setThumbnail($imageProcessor->getHighlightImageUrl())
+            ->setSilhouette($imageProcessor->getSilhouetteUrl())
             ->setSex($individual->sex())
             ->setBirth($dateProcessor->getBirthDate())
             ->setDeath($dateProcessor->getDeathDate())
