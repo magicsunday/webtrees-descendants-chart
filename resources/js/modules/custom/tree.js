@@ -10,9 +10,14 @@ import NodeDrawer from "../lib/tree/node-drawer.js";
 import LinkDrawer from "../lib/tree/link-drawer.js";
 import OrientationTopBottom from "../lib/chart/orientation/orientation-topBottom.js";
 import OrientationBottomTop from "../lib/chart/orientation/orientation-bottomTop.js";
+import {COUSIN_GAP_PX, SIBLING_GAP_PX, SPOUSE_GAP_PX} from "../lib/constants.js";
 
 /**
  * The class handles the creation of the tree.
+ *
+ * Each d3 node represents one family ("couple node") that holds 1..N members
+ * (real-person + 0..N spouses). d3.tree() lays out the couple nodes; the
+ * renderer expands each node into its individual person boxes at draw time.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
@@ -43,28 +48,46 @@ export default class Tree {
     }
 
     /**
-     * Returns the separation value.
-     *
-     * @param {Node} left
-     * @param {Node} right
-     *
-     * @return {number}
+     * Returns the box dimension along the sibling/spread axis. For vertical
+     * layouts that's `boxWidth`, for horizontal layouts the boxes stack along
+     * y so we use `boxHeight`. d3-tree's `nodeSize.x` works in this same axis
+     * after the orientation's `norm()` swap.
      */
-    separation(left, right) {
-        // The left child has spouses (1 or more), add some space between the nodes
-        if (Object.hasOwn(left.data, "spouses")) {
-            return 1.25;
-        }
-
-        // The right side is a spouse linked back to the actual child, so add some space
-        if (Object.hasOwn(right.data, "spouse")) {
-            return 1.25;
-        }
-
-        // Single siblings and cousins should be close
-        // to each other if parents are the same
-        return left.parent === right.parent ? 1.0 : 2.0;
+    get _stackBox() {
+        return ((this._orientation instanceof OrientationTopBottom)
+            || (this._orientation instanceof OrientationBottomTop))
+            ? this._orientation.boxWidth
+            : this._orientation.boxHeight;
     }
+
+    /**
+     * The width (along the sibling axis) occupied by a couple node when
+     * rendered. Singletons take one box; couples take two boxes plus the
+     * inner spouse gap; trios add another (box + gap), and so on.
+     */
+    coupleWidth(node) {
+        const memberCount = (node.data && Array.isArray(node.data.members))
+            ? node.data.members.length
+            : 1;
+        const box = this._stackBox;
+        return box + Math.max(0, memberCount - 1) * (box + SPOUSE_GAP_PX);
+    }
+
+    /**
+     * Variable-width separation. Returned in `nodeSize.x` units which we set
+     * to `_stackBox`. Math: required centre-to-centre distance equals the
+     * sum of each node's half-width plus the appropriate sibling/cousin gap.
+     * d3.tree()'s apportion() step still handles wider sub-tree contours on
+     * top, so this is the minimum buffer rather than a collision-avoidance
+     * value.
+     */
+    separation = (left, right) => {
+        const baseline = this._stackBox;
+        const halfLeft  = this.coupleWidth(left)  / 2;
+        const halfRight = this.coupleWidth(right) / 2;
+        const gap = (left.parent === right.parent) ? SIBLING_GAP_PX : COUSIN_GAP_PX;
+        return (halfLeft + halfRight + gap) / baseline;
+    };
 
     /**
      * Draw the tree.
@@ -74,12 +97,13 @@ export default class Tree {
      * @public
      */
     draw(source) {
-        // Declares a tree layout and assigns the size
+        // nodeSize.x = boxWidth (160) is the baseline against which separation()
+        // returns multipliers; nodeSize.y stays at the orientation default for
+        // generation spacing.
         const tree = d3.tree()
-            .nodeSize([this._configuration.orientation.nodeWidth, this._configuration.orientation.nodeHeight])
+            .nodeSize([this._orientation.boxWidth, this._orientation.nodeHeight])
             .separation(this.separation);
 
-        // Map the root node data to the tree layout
         this._nodes = tree(this._hierarchy.root);
 
         // Normalize node coordinates (swap values for left/right layout)
@@ -87,217 +111,81 @@ export default class Tree {
             this._configuration.orientation.norm(node);
         });
 
-        /** @type {Individual[]} */
+        /** @type {Node[]} */
         const nodes = this._hierarchy.root.descendants();
+
+        // Build the link list. Two kinds:
+        //   "elbow"    — parent → child couple, originates at the matching
+        //                family's spouse position (so polygamous families
+        //                each get their own line bundle)
+        //   "marriage" — straight line between consecutive members of a couple
+        //
+        // Children are flattened into `node.children` by the hierarchy
+        // accessor in the same order as `memberFamilies[*].children`, so we
+        // walk both lists in parallel to recover the family-of-origin.
         const links = [];
-
-        // Remove the pseudo root node
-        nodes.shift();
-
-        // Arrange the position of the individual with the first spouse so that they are close to each other.
-        // Since the line of connection between the individual and the first spouse begins between these two,
-        // this prevents the lines of connection from overlapping with other children and their partners.
         nodes.forEach((node) => {
-            if (node.data
-                && Array.isArray(node.data.spouses)
-                && (node.data.spouses.length >= 1)
-            ) {
-                // Find the first spouse
-                const spouse = this.findSpouseById(node.data.spouses[0], nodes);
+            const memberCount = (node.data && Array.isArray(node.data.members))
+                ? node.data.members.length
+                : 0;
 
-                // Position the node directly above the first spouse
-                if ((this._orientation instanceof OrientationTopBottom)
-                    || (this._orientation instanceof OrientationBottomTop)
-                ) {
-                    node.x = spouse.x - this._orientation.nodeWidth;
-                } else {
-                    node.y = spouse.y - this._orientation.nodeWidth;
-                }
-            }
-        });
-
-        // Find the first node with children
-        const firstNodeWithChildren = nodes.find(node => node.children && (node.children.length > 0));
-
-        // Center the children between the individual and the spouse
-        if (typeof firstNodeWithChildren !== "undefined") {
-            const moveBy = this._orientation.nodeWidth / 2;
-
-            firstNodeWithChildren.each((node) => {
-                if (
-                    Object.hasOwn(node.data, "spouse")
-                    && (node.data.spouse !== null)
-                    && Object.hasOwn(node, "children")
-                    && Array.isArray(node.children)
-                    && (node.children.length >= 1)
-                ) {
-                    this.moveChildren(node, moveBy);
-                }
-            });
-        }
-
-        // Create a list of links between source (node and spouses) and target nodes (children).
-        nodes.forEach((node) => {
-            const spouse = this.findSpouseById(node.data.spouse, nodes);
-
-            // Process children
-            if (Object.hasOwn(node, "children")
-                && Array.isArray(node.children)
-                && (node.children.length > 0)
-            ) {
-                node.children.forEach((child) => {
-                    // Only add links between real children
-                    if ((typeof child.data.spouse === "undefined") || (child.data.spouse === null)) {
-                        links.push({
-                            spouse: spouse,
-                            source: node,
-                            target: child,
-                            coords: null,
-                        });
-                    }
+            // Marriage lines: one per pair (real-person, members[k]) so each
+            // spouse has its own line back to the real-person, even in
+            // polygamous couples. The k-index is also used by the renderer to
+            // stagger the lines so multiple marriages don't overlap.
+            for (let k = 1; k < memberCount; k++) {
+                links.push({
+                    kind:         "marriage",
+                    couple:       node,
+                    spouseIdx:    k,
+                    spouseCount:  memberCount - 1,
                 });
             }
 
-            if (typeof spouse !== "undefined") {
-                let spousesCoords = null;
+            const dChildren = Array.isArray(node.children) ? node.children : [];
+            if (dChildren.length === 0) {
+                return;
+            }
 
-                // To draw only the respective intermediate lines, we need the information
-                // about the position of the previous spouses in the row. The coordinates are attached
-                // to the respective link as additional values so that they are available later when
-                // calculating the line points.
-                if ((typeof spouse.data.spouses !== "undefined") && (spouse.data.spouses.length > 0)) {
-                    const indexOfSpouse = spouse.data.spouses.indexOf(node.data.data.id);
-                    const spousesBefore = spouse.data.spouses.slice(0, indexOfSpouse);
+            const families = (node.data && Array.isArray(node.data.memberFamilies))
+                ? node.data.memberFamilies
+                : [{ family: 0, spouseIndex: null, children: dChildren.map((c) => c.data) }];
 
-                    if (spousesBefore.length > 0) {
-                        spousesCoords = [];
+            let cursor = 0;
+            families.forEach((family, familyOrder) => {
+                const familyChildCount = Array.isArray(family.children)
+                    ? family.children.length
+                    : 0;
 
-                        spousesBefore.forEach((id) => {
-                            // Find matching spouse in the list of all nodes
-                            const spouseBefore = this.findSpouseById(id, nodes);
-
-                            // Keep track of the coordinates
-                            if (typeof spouseBefore !== "undefined") {
-                                spousesCoords.push({
-                                    x: spouseBefore.x,
-                                    y: spouseBefore.y,
-                                });
-                            }
+                for (let i = 0; i < familyChildCount; i++) {
+                    const target = dChildren[cursor + i];
+                    if (target) {
+                        links.push({
+                            kind:        "elbow",
+                            source:      node,
+                            target:      target,
+                            spouseIndex: family.spouseIndex,
+                            familyOrder: familyOrder,
+                            familyCount: families.length,
                         });
                     }
                 }
 
-                if (node.data.data !== null) {
-                    // Add link between individual and spouse
-                    links.push({
-                        spouse: spouse,
-                        source: node,
-                        target: null,
-                        coords: spousesCoords,
-                    });
-                }
-            }
+                cursor += familyChildCount;
+            });
         });
 
-        // To avoid artifacts caused by rounding errors when drawing the links,
-        // we draw them first so that the nodes can then overlap them.
+        // Draw lines first so the person boxes overlap any rounding-error stubs.
         this._linkDrawer.drawLinks(links, source);
         this._nodeDrawer.drawNodes(nodes, source);
     }
-
-    /**
-     * Finds the related spouse in a list of individuals for the individual ID passed.
-     *
-     * @param {number}       id
-     * @param {Individual[]} individuals
-     *
-     * @return {Individual}
-     *
-     * @private
-     */
-    findSpouseById(id, individuals) {
-        return individuals.find(
-            (spouse) => {
-                return (spouse.data.data.id === id);
-            },
-        );
-    }
-
-    /**
-     * Moves all child nodes by the specified amount.
-     *
-     * @param {Individual} individual The individual whose children are to be moved
-     * @param {number}     moveBy     The amount by which to move the child nodes
-     *
-     * @private
-     */
-    moveChildren(individual, moveBy) {
-        individual.each((child) => {
-            if (child.depth !== individual.depth) {
-                // - first family only
-                // - if more than one child
-                // - if child has children too
-                if (
-                    (individual.data.family === 0)
-                    || (individual.children.length !== 1)
-                    || (typeof child.children !== "undefined")
-                ) {
-                    if ((this._orientation instanceof OrientationTopBottom)
-                        || (this._orientation instanceof OrientationBottomTop)
-                    ) {
-                        child.x -= moveBy;
-                    } else {
-                        child.y -= moveBy;
-                    }
-                }
-            }
-        });
-    }
-
-    // /**
-    //  * Draw the tree.
-    //  *
-    //  * @public
-    //  */
-    // update(source)
-    // {
-    //     let nodes = this._hierarchy.nodes.descendants();
-    //     let links = this._hierarchy.nodes.links();
-    //
-    //     // // Start with only the first few generations of ancestors showing
-    //     // nodes.forEach((person) => {
-    //     //     if (person.children) {
-    //     //         person.children.forEach((child) => this.collapse(child));
-    //     //     }
-    //     // });
-    //
-    //     this.drawLinks(links, source);
-    //     this.drawNodes(nodes, source);
-    //
-    //     // Stash the old positions for transition.
-    //     nodes.forEach((person) => {
-    //         person.x0 = person.x;
-    //         person.y0 = person.y;
-    //     });
-    // }
 
     /**
      * Centers the tree around all visible nodes.
      */
     centerTree() {
         // TODO Doesn't work
-
         console.log("centerTree");
-        // const zoom = this._svg.zoom.get();
-        //
-        // d3.select(this._svg)
-        //     // .transition()
-        //     // .duration(0)
-        //     // .delay(100)
-        //     .call(
-        //         zoom.transform,
-        //         d3.zoomIdentity.translate(t.x, t.y).scale(t.k)
-        //     );
     }
 
     /**
@@ -308,11 +196,9 @@ export default class Tree {
      */
     togglePerson(_event, person) {
         if (person.children) {
-            // Collapse
             person._children = person.children;
             person.children = null;
         } else {
-            // Expand
             person.children = person._children;
             person._children = null;
         }

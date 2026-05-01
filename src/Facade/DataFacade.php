@@ -19,14 +19,12 @@ use Fisharebest\Webtrees\Individual;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Illuminate\Support\Collection;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
-use MagicSunday\Webtrees\DescendantsChart\Model\Node;
+use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\DescendantsChart\Model\NodeData;
 use MagicSunday\Webtrees\ModuleBase\Contract\ModuleAssetUrlInterface;
 use MagicSunday\Webtrees\ModuleBase\Processor\DateProcessor;
 use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
 use MagicSunday\Webtrees\ModuleBase\Processor\NameProcessor;
-use RecursiveArrayIterator;
-use RecursiveIteratorIterator;
 
 /**
  * Facade class to hide complex logic to generate the structure required to display the tree.
@@ -86,181 +84,145 @@ class DataFacade
     }
 
     /**
-     * Creates the JSON tree structure.
+     * Creates the JSON couple-tree structure.
      *
-     * @param Individual $individual
+     * The root subject of the chart is wrapped in a single-family pseudo
+     * `CoupleNode` so the JSON shape stays uniform: every level is a list of
+     * couple nodes inside a `memberFamilies[].children` slot.
      *
-     * @return array<string, Node[]>
+     * @return array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>}|null
      */
-    public function createTreeStructure(Individual $individual): array
+    public function createTreeStructure(Individual $individual): ?array
     {
-        $tree = $this->buildTreeStructure($individual);
+        $rootCouple = $this->buildCoupleStructure($individual);
 
-        // We need to post-process the data to correct the structure for some special cases
-        $tree = $this->postProcessTreeStructure($tree);
-
-        // Return the root node with all children
-        return [
-            'children' => $tree,
-        ];
-    }
-
-    /**
-     * Post process the tree structure.
-     *
-     * @param Node[] $root
-     *
-     * @return Node[]
-     */
-    private function postProcessTreeStructure(array $root): array
-    {
-        /** @var RecursiveIteratorIterator<RecursiveArrayIterator<int, Node>> $recursiveIterator */
-        $recursiveIterator = new RecursiveIteratorIterator(
-            new RecursiveArrayIterator($root),
-            RecursiveIteratorIterator::SELF_FIRST
-        );
+        if (!$rootCouple instanceof CoupleNode) {
+            return null;
+        }
 
         if ($this->configuration->getHideSpouses()) {
-            $this->sortChildrenByBirthdate($recursiveIterator);
+            $this->sortChildrenByBirthdate($rootCouple);
         }
 
-        /** @var RecursiveArrayIterator<int|string, Node> $innerIterator */
-        $innerIterator = $recursiveIterator->getInnerIterator();
-
-        return $innerIterator->getArrayCopy();
+        return $rootCouple->jsonSerialize();
     }
 
     /**
-     * Sort the list of children by their date of birth.
-     *
-     * If the spouses are not displayed, the children in a polygamous family may not be sorted correctly,
-     * for example, if there are several children with different partners who have mixed dates of birth.
-     *
-     * @param RecursiveIteratorIterator<RecursiveArrayIterator<int, Node>> $recursiveIterator
-     *
-     * @return void
+     * Recursively walk a couple node and order each family's children by
+     * birthdate. Only runs in the hide-spouses code path because that is the
+     * mode where mixed-family children may otherwise interleave incorrectly.
      */
-    private function sortChildrenByBirthdate(RecursiveIteratorIterator $recursiveIterator): void
+    private function sortChildrenByBirthdate(CoupleNode $couple): void
     {
-        /** @var Node $item */
-        foreach ($recursiveIterator as $item) {
-            $childrenCollection = new Collection($item->getChildren());
+        $sorted = [];
 
-            // Check if each individual in the child list has a valid birthdate
-            if (
-                $childrenCollection->every(
-                    static fn (Node $nodeData): bool => ($nodeData->getData()->getIndividual() instanceof Individual)
-                        && $nodeData->getData()->getIndividual()->getBirthDate()->isOK()
-                )
-            ) {
-                /** @var Node[] $children */
-                $children = $childrenCollection
-                    ->sort($this->birthDateComparator())
-                    ->values()
-                    ->toArray();
+        foreach ($couple->getMemberFamilies() as $entry) {
+            $sortedChildren = (new Collection($entry['children']))
+                ->sort($this->birthDateComparator())
+                ->values()
+                ->all();
 
-                $item->setChildren($children);
+            $sorted[] = [
+                'family'      => $entry['family'],
+                'spouseIndex' => $entry['spouseIndex'],
+                'children'    => $sortedChildren,
+            ];
+
+            foreach ($sortedChildren as $child) {
+                $this->sortChildrenByBirthdate($child);
             }
         }
+
+        $couple->setSortedFamilies($sorted);
     }
 
     /**
-     * A closure which will compare individuals by birthdate.
+     * A closure which will compare couple nodes by the real-person's birthdate.
      *
-     * @return Closure(Node, Node):int
+     * @return Closure(CoupleNode, CoupleNode):int
      */
     private function birthDateComparator(): Closure
     {
-        return static fn (Node $nodeData1, Node $nodeData2): int => Date::compare(
-            $nodeData1->getData()->getIndividual() instanceof Individual
-                ? $nodeData1->getData()->getIndividual()->getEstimatedBirthDate()
-                : new Date(''),
-            $nodeData2->getData()->getIndividual() instanceof Individual
-                ? $nodeData2->getData()->getIndividual()->getEstimatedBirthDate()
-                : new Date('')
-        );
+        return static function (CoupleNode $left, CoupleNode $right): int {
+            $leftIndividual  = $left->getMembers()[0]->getIndividual();
+            $rightIndividual = $right->getMembers()[0]->getIndividual();
+
+            return Date::compare(
+                $leftIndividual instanceof Individual && $leftIndividual->getBirthDate()->isOK()
+                    ? $leftIndividual->getEstimatedBirthDate()
+                    : new Date(''),
+                $rightIndividual instanceof Individual && $rightIndividual->getBirthDate()->isOK()
+                    ? $rightIndividual->getEstimatedBirthDate()
+                    : new Date('')
+            );
+        };
     }
 
     /**
-     * Recursively build the data array of the individual ancestors.
+     * Recursively build the couple-tree for a single chart subject.
      *
-     * @param Individual|null $individual The start person
-     * @param int             $generation The current generation
-     *
-     * @return Node[]
+     * Returns one `CoupleNode` whose first member is `$individual`. Each of
+     * the individual's spouse-families is recorded in `memberFamilies`,
+     * carrying the matching spouse (also added to `members`) and the recursive
+     * couple nodes for the family's children.
      */
-    private function buildTreeStructure(?Individual $individual, int $generation = 1): array
+    private function buildCoupleStructure(?Individual $individual, int $generation = 1): ?CoupleNode
     {
-        // Maximum generation reached
         if ((!$individual instanceof Individual) || ($generation > $this->configuration->getGenerations())) {
-            return [];
+            return null;
         }
 
-        // Get spouse families
+        $couple = new CoupleNode($this->getNodeData($generation, $individual));
+
         $families = $individual->spouseFamilies();
 
-        $nodes                      = [];
-        $nodes[$individual->xref()] = new Node(
-            $this->getNodeData($generation, $individual)
-        );
+        if ($families->count() === 0) {
+            return $couple;
+        }
 
-        if ($families->count() > 0) {
-            /** @var Family $family */
-            foreach ($families as $familyIndex => $family) {
-                $children = [];
-                $spouse   = null;
+        $hideSpouses    = $this->configuration->getHideSpouses();
+        $mergedChildren = [];
 
-                if (!$this->configuration->getHideSpouses()) {
-                    $spouse = $family->spouse($individual);
+        /** @var Family $family */
+        foreach ($families as $familyIndex => $family) {
+            $children = [];
+
+            foreach ($family->children() as $child) {
+                $childCouple = $this->buildCoupleStructure($child, $generation + 1);
+
+                if ($childCouple instanceof CoupleNode) {
+                    $children[] = $childCouple;
                 }
+            }
 
-                foreach ($family->children() as $child) {
-                    $childTree = $this->buildTreeStructure($child, $generation + 1);
+            if ($hideSpouses) {
+                // Polygamous families are merged into a single childless-spouse list later.
+                array_push($mergedChildren, ...$children);
 
-                    foreach ($childTree as $childData) {
-                        $children[$childData->getData()->getId()] = $childData;
-                    }
-                }
+                continue;
+            }
 
-                // If there is more than one family for an individual, but not all spouses are known, a
-                // "fake" spouse must still be added here. So that when drawing the tree, the children
-                // can be assigned to the correct family and spouse.
-                if (
-                    !$this->configuration->getHideSpouses()
-                    && (
-                        ($spouse !== null)
-                        || ($families->count() > 1)
-                    )
-                ) {
-                    $node = new Node(
-                        $this->getNodeData($generation, $spouse, $individual)
-                    );
+            $spouse      = $family->spouse($individual);
+            $hasSpouse   = $spouse instanceof Individual;
+            $needsSpouse = $hasSpouse || ($families->count() > 1);
 
-                    $node
-                        ->setSpouse($nodes[$individual->xref()]->getData()->getId())
-                        ->setFamily($familyIndex)
-                        ->setChildren(array_values($children));
-
-                    $nodes[] = $node;
-
-                    // Add spouse to list
-                    $nodes[$individual->xref()]->addSpouse($node->getData()->getId());
-                } else {
-                    // If there is no spouse, merge all children from all families
-                    // of the individual into one list
-                    $nodes[$individual->xref()]
-                        ->setFamily($familyIndex)
-                        ->setChildren(
-                            array_merge(
-                                $nodes[$individual->xref()]->getChildren(),
-                                array_values($children)
-                            )
-                        );
-                }
+            if ($needsSpouse) {
+                $spouseIndex = $couple->addSpouse(
+                    $this->getNodeData($generation, $hasSpouse ? $spouse : null, $individual)
+                );
+                $couple->addFamily($familyIndex, $spouseIndex, $children);
+            } else {
+                // Single family with no recorded spouse → record the children
+                // directly under the real-person, no spouse entry.
+                $couple->addFamily($familyIndex, null, $children);
             }
         }
 
-        return array_values($nodes);
+        if ($hideSpouses) {
+            $couple->addFamily(0, null, $mergedChildren);
+        }
+
+        return $couple;
     }
 
     /**

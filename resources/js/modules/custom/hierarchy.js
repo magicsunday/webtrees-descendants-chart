@@ -32,6 +32,11 @@ export default class Hierarchy {
     /**
      * Initialize the hierarchical chart data.
      *
+     * Each node represents one family — see PHP `CoupleNode`. The d3-children
+     * of a family node is the concatenation of every `memberFamilies[].children`
+     * entry, so d3.tree() lays the descendants out under the couple as a whole
+     * (no per-spouse subtree positioning).
+     *
      * @param {object} data The JSON encoded chart data
      */
     init(data) {
@@ -44,27 +49,30 @@ export default class Hierarchy {
             }
         }
 
-        // // Declares a tree layout and assigns the size
-        // const treeLayout = d3.tree()
-        //     .nodeSize([this._configuration.orientation.nodeWidth, 0])
-        //     .separation(this.separation);
+        this._root = d3.hierarchy(
+            data,
+            (datum) => {
+                if (!datum || !Array.isArray(datum.memberFamilies)) {
+                    return null;
+                }
 
-        // Construct root node from the hierarchical data
-        this._root = d3.hierarchy(data);
+                const children = [];
+                for (const family of datum.memberFamilies) {
+                    if (Array.isArray(family.children)) {
+                        for (const child of family.children) {
+                            children.push(child);
+                        }
+                    }
+                }
 
-        // Map the root node data to the tree layout
-        // treeLayout(this._root);
+                return children.length > 0 ? children : null;
+            }
+        );
 
         // Assign a unique ID to each node
         this._root.descendants().forEach((d, i) => {
             d.id = i;
         });
-
-        // this._nodes = treeLayout(root);
-        // this._nodes = this._root.descendants();
-        //
-        // // Remove the pseudo root node
-        // this._nodes.shift();
     }
 
     /**

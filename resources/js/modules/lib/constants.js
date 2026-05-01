@@ -39,3 +39,25 @@ export const LAYOUT_RIGHTLEFT = "left";
  */
 export const SEX_MALE = "M";
 export const SEX_FEMALE = "F";
+
+/**
+ * Inter-box gaps used by the layout. All link-drawing code derives its
+ * positions from these constants so changing any value rebalances the
+ * whole tree without breaking marriage/elbow geometry.
+ *
+ * @type {number}
+ * @const
+ */
+// Pixel gap between adjacent person boxes inside one couple.
+export const SPOUSE_GAP_PX = 15;
+// Pixel gap between adjacent same-parent siblings.
+export const SIBLING_GAP_PX = 30;
+// Pixel gap between adjacent cross-parent cousins.
+export const COUSIN_GAP_PX = 78;
+// Cross-axis stagger between successive marriage lines for the same
+// real-person, so multiple marriages stay visually distinguishable.
+export const MARRIAGE_STAGGER_PX = 8;
+// Cross-axis stagger between elbow-line origins of successive families,
+// so multiple-family parent-to-child line bundles don't collapse onto
+// each other on the same row.
+export const FAMILY_LINE_OFFSET_PX = 5;
