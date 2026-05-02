@@ -274,16 +274,22 @@ class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, 
      */
     private function getAjaxRoute(Individual $individual, string $xref): string
     {
+        // Forward every parameter the user can change on the form so the AJAX
+        // request rebuilding the chart partial sees the current selection
+        // instead of falling back to module preference defaults — `showNicknames`
+        // and `showAlternativeName` change rendered names in DataFacade.
         return $this->chartUrl(
             $individual,
             [
-                'ajax'              => true,
-                'generations'       => $this->configuration->getGenerations(),
-                'hideSpouses'       => $this->configuration->getHideSpouses(),
-                'marriedNamesMode'  => $this->configuration->getMarriedNamesMode(),
-                'openNewTabOnClick' => $this->configuration->getOpenNewTabOnClick(),
-                'layout'            => $this->configuration->getLayout(),
-                'xref'              => $xref,
+                'ajax'                => true,
+                'generations'         => $this->configuration->getGenerations(),
+                'hideSpouses'         => $this->configuration->getHideSpouses(),
+                'marriedNamesMode'    => $this->configuration->getMarriedNamesMode(),
+                'openNewTabOnClick'   => $this->configuration->getOpenNewTabOnClick(),
+                'showAlternativeName' => $this->configuration->getShowAlternativeName(),
+                'showNicknames'       => $this->configuration->getShowNicknames(),
+                'layout'              => $this->configuration->getLayout(),
+                'xref'                => $xref,
             ]
         );
     }

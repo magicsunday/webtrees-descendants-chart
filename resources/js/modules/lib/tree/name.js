@@ -309,12 +309,15 @@ export default class Name {
         for (const i in datum.data.data.lastNames) {
             let pos;
 
-            // Check if last name already exists in first names list, in case first name equals last name
+            // Check if last name already exists in first names list, in case first name equals last name.
+            // `pos` is the absolute index from String.indexOf, so the offset for the next search must be
+            // the absolute position past the matched substring — accumulating with `+=` over-shoots and
+            // skips later occurrences (visible with names like "Anna Anna Anna Schmidt").
             do {
                 pos = datum.data.data.name.indexOf(datum.data.data.lastNames[i], lastnameOffset);
 
                 if (pos !== -1 && firstnameMap.has(pos)) {
-                    lastnameOffset += pos + datum.data.data.lastNames[i].length;
+                    lastnameOffset = pos + datum.data.data.lastNames[i].length;
                 }
             } while (pos !== -1 && firstnameMap.has(pos));
 

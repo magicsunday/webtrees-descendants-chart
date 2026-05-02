@@ -82,6 +82,10 @@ trait ModuleConfigTrait
             (string) $configuration->getShowAlternativeName()
         );
         $this->setPreference(
+            'default_showNicknames',
+            (string) $configuration->getShowNicknames()
+        );
+        $this->setPreference(
             'default_hideSvgExport',
             (string) $configuration->getHideSvgExport()
         );
