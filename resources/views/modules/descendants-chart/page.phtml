@@ -29,40 +29,39 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
 ?>
 
 <div class="webtrees-descendants-chart">
-    <h2 class="wt-page-title"><?= $title ?></h2>
+    <h2 class="wt-page-title"><?php echo $title; ?></h2>
 
     <form id="webtrees-descendants-chart-form" method="post" class="wt-page-options wt-page-options-descendants-chart d-print-none">
-        <?= csrf_field() ?>
+        <?php echo csrf_field(); ?>
 
         <div class="row">
             <label class="col-sm-3 col-form-label wt-page-options-label" for="xref">
-                <?= I18N::translate('Individual') ?>
+                <?php echo I18N::translate('Individual'); ?>
             </label>
             <div class="col-sm-9 wt-page-options-value">
-                <?=
-                    view('components/select-individual', [
-                        'name'       => 'xref',
-                        'individual' => $individual,
-                        'tree'       => $tree,
-                        'required'   => true,
-                    ])
-                ?>
+                <?php echo view('components/select-individual', [
+                    'name'       => 'xref',
+                    'individual' => $individual,
+                    'tree'       => $tree,
+                    'required'   => true,
+                ]);
+?>
             </div>
         </div>
 
-        <?= view($moduleName . '::modules/descendants-chart/form/generations', ['configuration' => $configuration]) ?>
-        <?= view($moduleName . '::modules/descendants-chart/form/orientation', ['configuration' => $configuration]) ?>
+        <?php echo view($moduleName . '::modules/descendants-chart/form/generations', ['configuration' => $configuration]); ?>
+        <?php echo view($moduleName . '::modules/descendants-chart/form/orientation', ['configuration' => $configuration]); ?>
 
         <div class="collapse" id="showMoreOptions">
-            <?= view($moduleName . '::modules/descendants-chart/form/display', ['configuration' => $configuration, 'moduleName' => $moduleName]) ?>
-            <?= view($moduleName . '::modules/descendants-chart/form/details', ['configuration' => $configuration, 'moduleName' => $moduleName]) ?>
+            <?php echo view($moduleName . '::modules/descendants-chart/form/display', ['configuration' => $configuration, 'moduleName' => $moduleName]); ?>
+            <?php echo view($moduleName . '::modules/descendants-chart/form/details', ['configuration' => $configuration, 'moduleName' => $moduleName]); ?>
         </div>
 
         <div class="row mt-3">
             <div class="col-sm-12 wt-page-options-value text-center">
                 <div class="btn-toolbar justify-content-between">
                     <div class="btn-group btn-group-sm">
-                        <input class="btn btn-primary" type="submit" value="<?= I18N::translate('view') ?>">
+                        <input class="btn btn-primary" type="submit" value="<?php echo I18N::translate('view'); ?>">
                     </div>
 
                     <div class="btn-group btn-group-sm">
@@ -73,8 +72,8 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
                                 data-bs-target="#showMoreOptions"
                                 aria-expanded="false"
                                 aria-controls="showMoreOptions">
-                            <span><?= I18N::translate('Show more options') ?></span>
-                            <span class="d-none"><?= I18N::translate('Hide more options') ?></span>
+                            <span><?php echo I18N::translate('Show more options'); ?></span>
+                            <span class="d-none"><?php echo I18N::translate('Hide more options'); ?></span>
                         </button>
                     </div>
                 </div>
@@ -83,7 +82,7 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
     </form>
 
     <div class="row webtrees-descendants-fullscreen-container">
-        <?= view($moduleName . '::modules/components/buttonbar', ['configuration' => $configuration, 'moduleName' => $moduleName]) ?>
+        <?php echo view($moduleName . '::modules/components/buttonbar', ['configuration' => $configuration, 'moduleName' => $moduleName]); ?>
 
         <div id="descendants-chart-url" class="wt-ajax-load wt-page-content wt-chart wt-chart-descendants mt-0">
             <?php
@@ -92,22 +91,22 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
             try {
                 (new View('icons/spinner'))->getFilenameForView('icons/spinner');
                 echo view('icons/spinner');
-            } catch (\Exception $e) {
+            } catch (Exception) {
                 echo '<span class="wt-icon-spinner"><i class="fa-solid fa-spinner fa-spin fa-3x" aria-hidden="true"></i></span>';
             }
-            ?>
+?>
         </div>
     </div>
 </div>
 
-<?php View::push('styles') ?>
-    <?php foreach ($stylesheets as $stylesheet) : ?>
-        <link rel="stylesheet" href="<?= e($stylesheet) ?>">
-    <?php endforeach ?>
+<?php View::push('styles'); ?>
+    <?php foreach ($stylesheets as $stylesheet) { ?>
+        <link rel="stylesheet" href="<?php echo e($stylesheet); ?>">
+    <?php } ?>
 <?php View::endpush(); ?>
 
 <?php View::push('javascript'); ?>
-<script src="<?= e($javascript) ?>"></script>
+<script src="<?php echo e($javascript); ?>"></script>
 <script>
 
 /**
@@ -182,7 +181,7 @@ const generations         = parseInt(storage.read("generations"));
 const treeLayout          = storage.read("layout");
 const openNewTabOnClick   = storage.read("openNewTabOnClick");
 const showAlternativeName = storage.read("showAlternativeName");
-const ajaxUrl             = getUrl(<?= json_encode($ajaxUrl) ?>, storage.read("generations"));
+const ajaxUrl             = getUrl(<?php echo json_encode($ajaxUrl); ?>, storage.read("generations"));
 
 document.getElementById("descendants-chart-url")
     .setAttribute('data-wt-ajax-url', ajaxUrl);
