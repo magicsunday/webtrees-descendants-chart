@@ -5,11 +5,7 @@
  * LICENSE file distributed with this source code.
  */
 
-import {
-    elbowsPath,
-    LINE_END_TRIM_PX,
-    marriagePath,
-} from "@magicsunday/webtrees-chart-lib";
+import { elbowsPath, LINE_END_TRIM_PX, marriagePath } from "@magicsunday/webtrees-chart-lib";
 
 /**
  * Renders the connection bundles produced by `connection-builder.js`.
@@ -41,7 +37,7 @@ export default class LinkDrawer {
             if (connection.mother) {
                 flatLinks.push({
                     kind: "marriage",
-                    d:    this._marriagePath(connection),
+                    d: this._marriagePath(connection),
                 });
             }
 
@@ -52,7 +48,7 @@ export default class LinkDrawer {
                 // line exactly once.
                 flatLinks.push({
                     kind: "elbow",
-                    d:    this._elbowsPath(connection),
+                    d: this._elbowsPath(connection),
                 });
             }
         }
@@ -61,13 +57,18 @@ export default class LinkDrawer {
             .selectAll("path.link")
             .data(flatLinks)
             .join(
-                (enter) => enter.append("path")
-                    .classed("link", true)
-                    .classed("marriage", (link) => link.kind === "marriage")
-                    .attr("d", (link) => link.d)
-                    .call((selection) => selection.transition()
-                        .duration(this._configuration.duration)
-                        .attr("opacity", 1)),
+                (enter) =>
+                    enter
+                        .append("path")
+                        .classed("link", true)
+                        .classed("marriage", (link) => link.kind === "marriage")
+                        .attr("d", (link) => link.d)
+                        .call((selection) =>
+                            selection
+                                .transition()
+                                .duration(this._configuration.duration)
+                                .attr("opacity", 1),
+                        ),
                 (update) => update.attr("d", (link) => link.d),
                 (exit) => exit.remove(),
             );
@@ -82,9 +83,9 @@ export default class LinkDrawer {
      */
     _marriagePath(connection) {
         const orientation = this._orientation;
-        const isVertical  = orientation.isVertical;
-        const halfBox     = (isVertical ? orientation.boxWidth : orientation.boxHeight) / 2;
-        const stagger     = connection.marriageStagger * orientation.direction;
+        const isVertical = orientation.isVertical;
+        const halfBox = (isVertical ? orientation.boxWidth : orientation.boxHeight) / 2;
+        const stagger = connection.marriageStagger * orientation.direction;
 
         // Cross-axis position of the line. For polygamous additional
         // marriages the stagger pulls the line off the row centre so
@@ -95,10 +96,10 @@ export default class LinkDrawer {
             : connection.father.x + stagger;
 
         return marriagePath({
-            sequence:       [connection.father, ...connection.intermediateBoxes, connection.mother],
+            sequence: [connection.father, ...connection.intermediateBoxes, connection.mother],
             isVertical,
             halfBox,
-            trim:           LINE_END_TRIM_PX,
+            trim: LINE_END_TRIM_PX,
             crossAxisCoord,
         });
     }
@@ -114,36 +115,36 @@ export default class LinkDrawer {
      * - Singleton parent (no mother): drop from the father's box edge.
      */
     _elbowsPath(connection) {
-        const orientation     = this._orientation;
-        const direction       = orientation.direction;
-        const isVertical      = orientation.isVertical;
-        const halfBoxCross    = (isVertical ? orientation.boxHeight : orientation.boxWidth) / 2;
-        const halfOffsetCross = (isVertical ? orientation.yOffset   : orientation.xOffset)  / 2;
+        const orientation = this._orientation;
+        const direction = orientation.direction;
+        const isVertical = orientation.isVertical;
+        const halfBoxCross = (isVertical ? orientation.boxHeight : orientation.boxWidth) / 2;
+        const halfOffsetCross = (isVertical ? orientation.yOffset : orientation.xOffset) / 2;
 
         const dropFromEdge = !connection.mother || connection.intermediateBoxes.length > 0;
-        const dropAnchor   = connection.mother || connection.father;
+        const dropAnchor = connection.mother || connection.father;
 
         let source;
         if (dropFromEdge) {
             source = isVertical
-                ? {x: dropAnchor.x, y: dropAnchor.y + (halfBoxCross * direction)}
-                : {x: dropAnchor.x + (halfBoxCross * direction), y: dropAnchor.y};
+                ? { x: dropAnchor.x, y: dropAnchor.y + halfBoxCross * direction }
+                : { x: dropAnchor.x + halfBoxCross * direction, y: dropAnchor.y };
         } else {
             const stagger = connection.marriageStagger * direction;
             source = isVertical
                 ? {
-                    x: (connection.father.x + connection.mother.x) / 2,
-                    y: (connection.father.y + connection.mother.y) / 2 + stagger,
-                }
+                      x: (connection.father.x + connection.mother.x) / 2,
+                      y: (connection.father.y + connection.mother.y) / 2 + stagger,
+                  }
                 : {
-                    x: (connection.father.x + connection.mother.x) / 2 + stagger,
-                    y: (connection.father.y + connection.mother.y) / 2,
-                };
+                      x: (connection.father.x + connection.mother.x) / 2 + stagger,
+                      y: (connection.father.y + connection.mother.y) / 2,
+                  };
         }
 
         return elbowsPath({
             source,
-            children:        connection.children,
+            children: connection.children,
             isVertical,
             halfBoxCross,
             halfOffsetCross,

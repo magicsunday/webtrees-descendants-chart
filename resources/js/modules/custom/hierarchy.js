@@ -6,8 +6,8 @@
  */
 
 import * as d3 from "../lib/d3.js";
-import {LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET} from "../lib/constants.js";
-import {buildFamilyTree} from "../lib/family-tree.js";
+import { LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET } from "../lib/constants.js";
+import { buildFamilyTree } from "../lib/family-tree.js";
 
 /**
  * This class handles the hierarchical data.

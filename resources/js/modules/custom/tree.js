@@ -8,9 +8,9 @@
 import * as d3 from "../lib/d3.js";
 import NodeDrawer from "../lib/tree/node-drawer.js";
 import LinkDrawer from "../lib/tree/link-drawer.js";
-import {COUSIN_GAP_PX, SIBLING_GAP_PX, SPOUSE_GAP_PX} from "../lib/constants.js";
-import {familyRenderedWidth} from "../lib/family-tree.js";
-import {buildConnections} from "../lib/tree/connection-builder.js";
+import { COUSIN_GAP_PX, SIBLING_GAP_PX, SPOUSE_GAP_PX } from "../lib/constants.js";
+import { familyRenderedWidth } from "../lib/family-tree.js";
+import { buildConnections } from "../lib/tree/connection-builder.js";
 
 /**
  * Lays out one descendants chart. The d3 hierarchy is a tree of
@@ -63,7 +63,7 @@ export default class Tree {
      */
     separation = (left, right) => {
         const baseline = this._stackBox;
-        const widthLeft  = familyRenderedWidth(left.data,  baseline, SPOUSE_GAP_PX);
+        const widthLeft = familyRenderedWidth(left.data, baseline, SPOUSE_GAP_PX);
         const widthRight = familyRenderedWidth(right.data, baseline, SPOUSE_GAP_PX);
 
         let gap;
@@ -79,7 +79,8 @@ export default class Tree {
     };
 
     draw(source) {
-        const tree = d3.tree()
+        const tree = d3
+            .tree()
             .nodeSize([this._stackBox, this._orientation.nodeHeight])
             .separation(this.separation);
 
@@ -91,7 +92,7 @@ export default class Tree {
         const { renderedBoxes, connections } = buildConnections(
             this._hierarchy.root,
             this._orientation,
-            this._orientation.isVertical
+            this._orientation.isVertical,
         );
 
         // Lines first so the boxes overlap any rounding-error stubs.

@@ -5,9 +5,9 @@
  * LICENSE file distributed with this source code.
  */
 
-import {MARRIAGE_STAGGER_PX} from "@magicsunday/webtrees-chart-lib";
-import {SPOUSE_GAP_PX} from "../constants.js";
-import {familyRenderableMembers} from "../family-tree.js";
+import { MARRIAGE_STAGGER_PX } from "@magicsunday/webtrees-chart-lib";
+import { SPOUSE_GAP_PX } from "../constants.js";
+import { familyRenderableMembers } from "../family-tree.js";
 
 /**
  * Walks the d3 hierarchy after layout and produces two flat, position-only
@@ -33,14 +33,20 @@ export function buildConnections(root, orientation, isVerticalLayout) {
 
     const familyNodes = root.descendants().filter(isFamilyNode);
 
-    const {renderedBoxes, realPositions, motherPositions, allBoxes} =
-        collectRenderedBoxes(familyNodes, stackBox, SPOUSE_GAP_PX, isVerticalLayout);
+    const { renderedBoxes, realPositions, motherPositions, allBoxes } = collectRenderedBoxes(
+        familyNodes,
+        stackBox,
+        SPOUSE_GAP_PX,
+        isVerticalLayout,
+    );
 
     const connections = familyNodes
-        .map((node) => buildConnection(node, realPositions, motherPositions, allBoxes, isVerticalLayout))
+        .map((node) =>
+            buildConnection(node, realPositions, motherPositions, allBoxes, isVerticalLayout),
+        )
         .filter((connection) => connection !== null);
 
-    return {renderedBoxes, connections};
+    return { renderedBoxes, connections };
 }
 
 function isFamilyNode(node) {
@@ -57,29 +63,29 @@ function isFamilyNode(node) {
  *     so each polygamous family-node has its own spouse).
  */
 function collectRenderedBoxes(familyNodes, stackBox, spouseGap, isVerticalLayout) {
-    const renderedBoxes   = [];
-    const realPositions   = new Map();
+    const renderedBoxes = [];
+    const realPositions = new Map();
     const motherPositions = new Map();
-    const allBoxes        = [];
+    const allBoxes = [];
 
     for (const node of familyNodes) {
         const members = familyRenderableMembers(node.data);
         if (members.length === 0) continue;
 
         const totalSpan = members.length * stackBox + (members.length - 1) * spouseGap;
-        const start     = -(totalSpan - stackBox) / 2;
+        const start = -(totalSpan - stackBox) / 2;
 
         members.forEach((member, idx) => {
             const offset = start + idx * (stackBox + spouseGap);
-            const boxX   = isVerticalLayout ? node.x + offset : node.x;
-            const boxY   = isVerticalLayout ? node.y : node.y + offset;
-            const pos    = {x: boxX, y: boxY};
+            const boxX = isVerticalLayout ? node.x + offset : node.x;
+            const boxY = isVerticalLayout ? node.y : node.y + offset;
+            const pos = { x: boxX, y: boxY };
 
             renderedBoxes.push({
-                id:   `${node.id}-${idx}`,
-                x:    boxX,
-                y:    boxY,
-                data: {data: member.data, spouse: !member.isReal},
+                id: `${node.id}-${idx}`,
+                x: boxX,
+                y: boxY,
+                data: { data: member.data, spouse: !member.isReal },
             });
             allBoxes.push(pos);
 
@@ -92,7 +98,7 @@ function collectRenderedBoxes(familyNodes, stackBox, spouseGap, isVerticalLayout
         });
     }
 
-    return {renderedBoxes, realPositions, motherPositions, allBoxes};
+    return { renderedBoxes, realPositions, motherPositions, allBoxes };
 }
 
 /**
@@ -107,16 +113,21 @@ function buildConnection(node, realPositions, motherPositions, allBoxes, isVerti
     if (!fatherPos) return null;
 
     const motherPos = motherPositions.get(node.id) || null;
-    const children  = collectChildPositions(node, realPositions);
+    const children = collectChildPositions(node, realPositions);
 
     if (children.length === 0 && !motherPos) return null;
 
     return {
-        father:            fatherPos,
-        mother:            motherPos,
+        father: fatherPos,
+        mother: motherPos,
         children,
-        intermediateBoxes: collectIntermediateBoxes(fatherPos, motherPos, allBoxes, isVerticalLayout),
-        marriageStagger:   marriageStaggerFor(node),
+        intermediateBoxes: collectIntermediateBoxes(
+            fatherPos,
+            motherPos,
+            allBoxes,
+            isVerticalLayout,
+        ),
+        marriageStagger: marriageStaggerFor(node),
     };
 }
 
@@ -128,7 +139,7 @@ function buildConnection(node, realPositions, motherPositions, allBoxes, isVerti
  */
 function collectChildPositions(node, realPositions) {
     const dChildren = Array.isArray(node.children) ? node.children : [];
-    const seen      = new Set();
+    const seen = new Set();
     const positions = [];
 
     for (const child of dChildren) {
@@ -159,8 +170,10 @@ function collectIntermediateBoxes(fatherPos, motherPos, allBoxes, isVerticalLayo
         ? (b) => Math.abs(b.y - fatherPos.y) < 1
         : (b) => Math.abs(b.x - fatherPos.x) < 1;
     const between = isVerticalLayout
-        ? (b) => Math.min(fatherPos.x, motherPos.x) < b.x && b.x < Math.max(fatherPos.x, motherPos.x)
-        : (b) => Math.min(fatherPos.y, motherPos.y) < b.y && b.y < Math.max(fatherPos.y, motherPos.y);
+        ? (b) =>
+              Math.min(fatherPos.x, motherPos.x) < b.x && b.x < Math.max(fatherPos.x, motherPos.x)
+        : (b) =>
+              Math.min(fatherPos.y, motherPos.y) < b.y && b.y < Math.max(fatherPos.y, motherPos.y);
 
     const result = [];
     for (const box of allBoxes) {
@@ -187,8 +200,8 @@ function marriageStaggerFor(node) {
     const realId = node.data?.real?.id;
     if (realId === undefined) return 0;
 
-    const group = node.parent.children.filter((sibling) =>
-        sibling.data?.kind === "family" && sibling.data.real?.id === realId
+    const group = node.parent.children.filter(
+        (sibling) => sibling.data?.kind === "family" && sibling.data.real?.id === realId,
     );
     if (group.length <= 1) return 0;
 

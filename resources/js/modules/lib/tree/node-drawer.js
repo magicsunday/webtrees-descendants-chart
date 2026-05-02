@@ -5,7 +5,7 @@
  * LICENSE file distributed with this source code.
  */
 
-import {SEX_FEMALE, SEX_MALE} from "../constants.js";
+import { SEX_FEMALE, SEX_MALE } from "../constants.js";
 import Name from "./name.js";
 import Date from "./date.js";
 import Image from "../chart/box/image.js";
@@ -48,8 +48,7 @@ export default class NodeDrawer {
      */
     drawNodes(renderedBoxes, source) {
         // Image clip path
-        this._svg
-            .defs
+        this._svg.defs
             .append("clipPath")
             .attr("id", "clip-image")
             .append("rect")
@@ -62,15 +61,15 @@ export default class NodeDrawer {
 
         this._svg.visual
             .selectAll("g.person")
-            .data(renderedBoxes, person => person.id)
+            .data(renderedBoxes, (person) => person.id)
             .join(
-                enter => this.nodeEnter(enter, source),
-                update => this.nodeUpdate(update),
-                exit => this.nodeExit(exit, source),
+                (enter) => this.nodeEnter(enter, source),
+                (update) => this.nodeUpdate(update),
+                (exit) => this.nodeExit(exit, source),
             );
 
         // Stash the old positions for transition
-        this._hierarchy.root.eachBefore(d => {
+        this._hierarchy.root.eachBefore((d) => {
             d.x0 = d.x;
             d.y0 = d.y;
         });
@@ -94,15 +93,16 @@ export default class NodeDrawer {
             })
             .call(
                 // Draw the actual person rectangle with opacity of 0.5
-                g => {
+                (g) => {
                     g.append("rect")
-                        .attr(
-                            "class",
-                            person => (person.data.data.sex === SEX_FEMALE)
+                        .attr("class", (person) =>
+                            person.data.data.sex === SEX_FEMALE
                                 ? "female"
-                                : (person.data.data.sex === SEX_MALE) ? "male" : "unknown",
+                                : person.data.data.sex === SEX_MALE
+                                  ? "male"
+                                  : "unknown",
                         )
-                        .classed("spouse", person => person.data.spouse)
+                        .classed("spouse", (person) => person.data.spouse)
                         .attr("rx", 20)
                         .attr("ry", 20)
                         .attr("x", -(this._orientation.boxWidth / 2))
@@ -111,19 +111,14 @@ export default class NodeDrawer {
                         .attr("height", this._orientation.boxHeight)
                         .attr("fill-opacity", 0.5);
 
-                    g.append("title")
-                        .text(person => person.data.data.name);
+                    g.append("title").text((person) => person.data.data.name);
                 },
             )
             .call(
                 // Draws the node (including image, names and dates)
-                g => this.drawNode(g),
+                (g) => this.drawNode(g),
             )
-            .call(
-                g => g.transition()
-                    .duration(this._configuration.duration)
-                    .attr("opacity", 1),
-            );
+            .call((g) => g.transition().duration(this._configuration.duration).attr("opacity", 1));
     }
 
     /**
@@ -134,15 +129,15 @@ export default class NodeDrawer {
      * @private
      */
     nodeUpdate(update) {
-        update
-            .call(
-                g => g.transition()
-                    .duration(this._configuration.duration)
-                    .attr("opacity", 1)
-                    .attr("transform", (person) => {
-                        return `translate(${person.x},${person.y})`;
-                    }),
-            );
+        update.call((g) =>
+            g
+                .transition()
+                .duration(this._configuration.duration)
+                .attr("opacity", 1)
+                .attr("transform", (person) => {
+                    return `translate(${person.x},${person.y})`;
+                }),
+        );
     }
 
     /**
@@ -154,17 +149,17 @@ export default class NodeDrawer {
      * @private
      */
     nodeExit(exit, source) {
-        exit
-            .call(
-                g => g.transition()
-                    .duration(this._configuration.duration)
-                    .attr("opacity", 0)
-                    .attr("transform", () => {
-                        // Transition exit nodes to the source's position
-                        return `translate(${source.x0 ?? 0},${source.y0 ?? 0})`;
-                    })
-                    .remove(),
-            );
+        exit.call((g) =>
+            g
+                .transition()
+                .duration(this._configuration.duration)
+                .attr("opacity", 0)
+                .attr("transform", () => {
+                    // Transition exit nodes to the source's position
+                    return `translate(${source.x0 ?? 0},${source.y0 ?? 0})`;
+                })
+                .remove(),
+        );
     }
 
     /**
@@ -175,13 +170,14 @@ export default class NodeDrawer {
      * @private
      */
     drawNode(parent) {
-        const enter = parent.selectAll("g.image")
+        const enter = parent
+            .selectAll("g.image")
             .data((d) => {
                 const images = [];
 
                 if (d.data.data.thumbnail) {
                     images.push({
-                        image:      d.data.data.thumbnail,
+                        image: d.data.data.thumbnail,
                         silhouette: d.data.data.silhouette,
                     });
                 }
@@ -190,8 +186,7 @@ export default class NodeDrawer {
             })
             .enter();
 
-        const group = enter.append("g")
-            .attr("class", "image");
+        const group = enter.append("g").attr("class", "image");
 
         // Plain white background behind the (possibly letterboxed)
         // foreground photo so the boundary against the box is uniform.

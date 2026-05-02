@@ -31,7 +31,7 @@ export function buildFamilyTree(coupleData) {
         return families[0];
     }
     return {
-        kind:     "pseudo-root",
+        kind: "pseudo-root",
         children: families,
     };
 }
@@ -45,32 +45,36 @@ function coupleToFamilies(coupleData) {
     const families = Array.isArray(coupleData.memberFamilies) ? coupleData.memberFamilies : [];
 
     if (families.length === 0) {
-        return [{
-            kind:       "family",
-            real,
-            spouse:     null,
-            family:     0,
-            realFirst:  true,
-            children:   [],
-        }];
+        return [
+            {
+                kind: "family",
+                real,
+                spouse: null,
+                family: 0,
+                realFirst: true,
+                children: [],
+            },
+        ];
     }
 
     return families.map((mf, idx) => {
-        const spouse = (mf.spouseIndex !== null && mf.spouseIndex !== undefined
-                && coupleData.members[mf.spouseIndex])
-            ? coupleData.members[mf.spouseIndex]
-            : null;
+        const spouse =
+            mf.spouseIndex !== null &&
+            mf.spouseIndex !== undefined &&
+            coupleData.members[mf.spouseIndex]
+                ? coupleData.members[mf.spouseIndex]
+                : null;
 
         const children = Array.isArray(mf.children)
             ? mf.children.flatMap((child) => coupleToFamilies(child))
             : [];
 
         return {
-            kind:       "family",
+            kind: "family",
             real,
             spouse,
-            family:     mf.family,
-            realFirst:  idx === 0,
+            family: mf.family,
+            realFirst: idx === 0,
             children,
         };
     });
@@ -91,8 +95,8 @@ export function familyRenderedWidth(familyData, boxSize, spouseGap) {
     if (!familyData || familyData.kind !== "family") {
         return 0;
     }
-    const renderedCount = (familyData.realFirst && familyData.real ? 1 : 0)
-        + (familyData.spouse ? 1 : 0);
+    const renderedCount =
+        (familyData.realFirst && familyData.real ? 1 : 0) + (familyData.spouse ? 1 : 0);
     if (renderedCount === 0) {
         return 0;
     }
