@@ -37,11 +37,11 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
         <div class="mt-3">
             <label class="form-label" for="marriedNamesMode"><?php echo I18N::translate('Married names'); ?></label>
             <?php echo view('components/select', [
-        'id'       => 'marriedNamesMode',
-        'name'     => 'marriedNamesMode',
-        'options'  => $configuration->getMarriedNamesModes(),
-        'selected' => $configuration->getMarriedNamesMode(),
-    ]);
+                'id'       => 'marriedNamesMode',
+                'name'     => 'marriedNamesMode',
+                'options'  => $configuration->getMarriedNamesModes(),
+                'selected' => $configuration->getMarriedNamesMode(),
+            ]);
 ?>
             <small class="form-text text-muted form-element-description" style="box-decoration-break: clone;">
                 <?php echo I18N::translate('Whether the married name (from a "MARRIED" or "_MARNM" name entry) is shown — replacing the birth name, appended in brackets after the birth name, or hidden.'); ?>
