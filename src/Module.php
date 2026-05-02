@@ -178,6 +178,7 @@ class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, 
                         'layout'              => $validator->string('layout', Configuration::LAYOUT_LEFTRIGHT),
                         'openNewTabOnClick'   => $validator->boolean('openNewTabOnClick', true),
                         'showAlternativeName' => $validator->boolean('showAlternativeName', true),
+                        'showNicknames'       => $validator->boolean('showNicknames', false),
                     ]
                 )
             );
