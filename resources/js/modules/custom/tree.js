@@ -8,8 +8,9 @@
 import * as d3 from "../lib/d3.js";
 import NodeDrawer from "../lib/tree/node-drawer.js";
 import LinkDrawer from "../lib/tree/link-drawer.js";
-import { COUSIN_GAP_PX, SIBLING_GAP_PX, SPOUSE_GAP_PX } from "../lib/constants.js";
+import { SPOUSE_GAP_PX } from "../lib/constants.js";
 import { familyRenderedWidth } from "../lib/family-tree.js";
+import { pickGap } from "../lib/separation.js";
 import { buildConnections } from "../lib/tree/connection-builder.js";
 
 /**
@@ -59,21 +60,16 @@ export default class Tree {
     /**
      * Variable-width separation. Family-nodes that share the same `real`
      * sit at spouse-gap distance; same-parent siblings get sibling-gap;
-     * cross-parent cousins get cousin-gap.
+     * cross-parent cousins get cousin-gap. Half-siblings (children of
+     * polygamy partners that share one biological parent) are treated as
+     * siblings so the polygamy parent row doesn't get pushed apart by the
+     * cousin-gap propagating up from the children.
      */
     separation = (left, right) => {
         const baseline = this._stackBox;
         const widthLeft = familyRenderedWidth(left.data, baseline, SPOUSE_GAP_PX);
         const widthRight = familyRenderedWidth(right.data, baseline, SPOUSE_GAP_PX);
-
-        let gap;
-        if (sameRealId(left, right)) {
-            gap = SPOUSE_GAP_PX;
-        } else if (left.parent === right.parent) {
-            gap = SIBLING_GAP_PX;
-        } else {
-            gap = COUSIN_GAP_PX;
-        }
+        const gap = pickGap(left, right);
 
         return ((widthLeft + widthRight) / 2 + gap) / baseline;
     };
@@ -116,11 +112,4 @@ export default class Tree {
 
         this.draw(person);
     }
-}
-
-function sameRealId(left, right) {
-    if (!left.data || !right.data) return false;
-    if (left.data.kind !== "family" || right.data.kind !== "family") return false;
-    if (!left.data.real || !right.data.real) return false;
-    return left.data.real.id === right.data.real.id;
 }
