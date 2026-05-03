@@ -49,20 +49,24 @@ Module.php (entry point, registers routes)
   - For local edits to module-base while developing descendants-chart, run `make link-base` (symlinks `.build/vendor/.../webtrees-module-base` → the sibling clone). Reverse with `make unlink-base` or any `composer install/update`.
 
 ### JS (`resources/js/modules/`)
+Flat layout — every file is descendants-specific glue. Reusable base classes (Storage, ChartExport, ChartOverlay, ChartZoom, Orientations, measureText, truncateNames) live in the external [`@magicsunday/webtrees-chart-lib`](https://github.com/magicsunday/webtrees-chart-lib) package, shared with the fan- and pedigree-chart modules. Consumed via Git URL pinned in `package.json` (`github:magicsunday/webtrees-chart-lib#vX.Y.Z`); chart-lib's `prepare` script builds its `dist/` during install, so `npm ci --ignore-scripts` will break the build.
 - **`index.js`** — Exports `DescendantsChart` class (ES module entry point for Rollup).
-- **`custom/`** — Descendants-specific glue: `chart.js` (D3 hierarchy.tree layout, click handling), `update.js` (AJAX update, transitions), `hierarchy.js` (D3 hierarchy), `tree.js` (collapse/expand), `data.js`, `configuration.js`.
-- **`lib/`** — Reusable building blocks scoped to this module: `chart/box/{image,text}` (box rendering), `chart/orientation/{topBottom,bottomTop,leftRight,rightLeft}` (4 orientations + collection picker), `chart/{svg,update,box,orientation-collection}`, `tree/{date,name,node-drawer,link-drawer,elbow/{horizontal,vertical}}` (tree drawing primitives), `common/{dataUrl,dpi}`, `constants.js`.
-- **Reusable base classes** (export, overlay, storage, zoom) live in the external [`@magicsunday/webtrees-chart-lib`](https://github.com/magicsunday/webtrees-chart-lib) package, shared with the fan- and pedigree-chart modules. Consumed via Git URL pinned in `package.json` (`github:magicsunday/webtrees-chart-lib#vX.Y.Z`); chart-lib's `prepare` script builds its `dist/` during install, so `npm ci --ignore-scripts` will break the build.
+- **`page-entry.js` / `page-init.js`** — UMD bundle (`descendants-chart-page.min.js`) loaded by `page.phtml`. Owns localStorage form-state wiring; `initPage()` resolves user options and publishes them under `WebtreesDescendantsChart.chartOptions` for `chart.phtml` getters.
+- **`chart.js`** (D3 hierarchy.tree layout, click handling), **`hierarchy.js`** (D3 hierarchy), **`tree.js`** (collapse/expand + d3.tree separation hook), **`data.js`**, **`configuration.js`**.
+- **`family-tree.js`** (CoupleNode → FamilyNode tree), **`separation.js`** (`pickGap` half-sibling detection — see issue #84).
+- **`chart/`** — `box.js` + `box/{image,text}.js`, `orientation-collection.js`, `svg.js`, `update.js`.
+- **`tree/`** — `date.js` (DateRenderer), `name.js`, `node-drawer.js`, `link-drawer.js`, `connection-builder.js`.
+- **`common/dpi.js`**, **`constants.js`**, **`d3.js`** (re-export facade).
 
 ### Views (`resources/views/`)
-- **`descendants-chart/page.phtml`** — Main page with form. `getUrl()` builds AJAX URL from localStorage values.
-- **`descendants-chart/chart.phtml`** — AJAX response: `<script type="module">` with `import()` to load ES module bundle.
+- **`descendants-chart/page.phtml`** — Form + AJAX container. Loads `descendants-chart-page.min.js` and calls `WebtreesDescendantsChart.initPage({ ajaxUrl })`.
+- **`descendants-chart/chart.phtml`** — AJAX response: `<script type="module">` with `import()` to load ES module bundle. Reads user overrides from `WebtreesDescendantsChart.chartOptions ?? PHP defaults`.
 - **`descendants-chart/form/*.phtml`** — Form partials (generations, layout, orientation, married-names toggle).
 - **`charts/chart.phtml`** — Block template override (home page widget), uses `data-wt-ajax-url` pattern.
 
 ## Key patterns
 - **ES module loading**: `import().then(({ DescendantsChart }) => ...)` in `<script type="module">`, avoiding the `webtrees.load()` race condition.
-- **Storage flow**: `page.phtml` reads localStorage → injects as JS variables → `chart.phtml` getter checks `typeof varName !== "undefined"` before falling back to PHP defaults.
+- **Storage flow**: `page-init.js` reads localStorage → publishes resolved options under `WebtreesDescendantsChart.chartOptions` → `chart.phtml` getter reads `opts.x ?? PHP default`.
 - **Orientation strategy**: chart layout is configurable in 4 directions (top-bottom, bottom-top, left-right, right-left) via the orientation-collection.js + matching `Orientation*` classes (node coordinate transforms + elbow connector geometry).
 - **Married-name modes**: configurable via `marriedNamesMode` (3-value: `off`, `married_only`, `birth_and_married`). `married_only` swaps the primary to a `_MARNM` record matching the spouse's surname (NameProcessor's `useMarriedName` flag). `birth_and_married` keeps the birth-name primary and appends the married surname in brackets, e.g. `Schmidt (Müller)` — appended both to the full-name string and the `lastNames` array so the JS renderer (which locates each `lastNames` entry inside the full string via `indexOf`) shows the bracketed entry. Migrates from the legacy boolean `default_showMarriedNames` preference (true → `married_only`, false → `off`).
 - **Block template**: Overrides core `modules/charts/chart.phtml` — must stay in sync with webtrees core changes (e.g. VanillaJS conversion).
