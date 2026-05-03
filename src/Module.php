@@ -223,7 +223,7 @@ class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, 
                 'tree'          => $tree,
                 'configuration' => $this->configuration,
                 'stylesheets'   => $this->getStylesheets(),
-                'javascript'    => $this->assetUrl('js/descendants-chart-storage.min.js'),
+                'javascript'    => $this->assetUrl('js/descendants-chart-page.min.js'),
             ]
         );
     }

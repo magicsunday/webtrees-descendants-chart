@@ -5,12 +5,8 @@
  * LICENSE file distributed with this source code.
  */
 
-import { pickGap } from "resources/js/modules/lib/separation.js";
-import {
-    COUSIN_GAP_PX,
-    SIBLING_GAP_PX,
-    SPOUSE_GAP_PX,
-} from "resources/js/modules/lib/constants.js";
+import { pickGap } from "resources/js/modules/separation.js";
+import { COUSIN_GAP_PX, SIBLING_GAP_PX, SPOUSE_GAP_PX } from "resources/js/modules/constants.js";
 
 const family = (realId, parent = null) => ({
     parent,

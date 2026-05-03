@@ -58,13 +58,13 @@ Version: <%= pkg.version %>`
         ]
     },
 
-    // descendants-chart-storage.js
+    // descendants-chart-page.js (Storage + page initialisation)
     {
-        input: "resources/js/modules/lib/storage.js",
+        input: "resources/js/modules/page-entry.js",
         output: [
             {
                 name: "WebtreesDescendantsChart",
-                file: "resources/js/descendants-chart-storage.js",
+                file: "resources/js/descendants-chart-page.js",
                 format: "umd"
             }
         ],
@@ -73,11 +73,11 @@ Version: <%= pkg.version %>`
         ]
     },
     {
-        input: "resources/js/modules/lib/storage.js",
+        input: "resources/js/modules/page-entry.js",
         output: [
             {
                 name: "WebtreesDescendantsChart",
-                file: "resources/js/descendants-chart-storage.min.js",
+                file: "resources/js/descendants-chart-page.min.js",
                 format: "umd"
             }
         ],

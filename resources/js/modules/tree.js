@@ -5,13 +5,13 @@
  * LICENSE file distributed with this source code.
  */
 
-import * as d3 from "../lib/d3.js";
-import NodeDrawer from "../lib/tree/node-drawer.js";
-import LinkDrawer from "../lib/tree/link-drawer.js";
-import { SPOUSE_GAP_PX } from "../lib/constants.js";
-import { familyRenderedWidth } from "../lib/family-tree.js";
-import { pickGap } from "../lib/separation.js";
-import { buildConnections } from "../lib/tree/connection-builder.js";
+import * as d3 from "./d3.js";
+import NodeDrawer from "./tree/node-drawer.js";
+import LinkDrawer from "./tree/link-drawer.js";
+import { SPOUSE_GAP_PX } from "./constants.js";
+import { familyRenderedWidth } from "./family-tree.js";
+import { pickGap } from "./separation.js";
+import { buildConnections } from "./tree/connection-builder.js";
 
 /**
  * Lays out one descendants chart. The d3 hierarchy is a tree of
