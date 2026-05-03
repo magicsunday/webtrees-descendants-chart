@@ -100,29 +100,25 @@ export default class NodeDrawer {
             .attr("transform", (person) => {
                 return `translate(${person.x},${person.y})`;
             })
-            .call(
-                // Draw the actual person rectangle with opacity of 0.5
-                (g) => {
-                    g.append("rect")
-                        .attr("class", (person) =>
-                            person.data.data.sex === SEX_FEMALE
-                                ? "female"
-                                : person.data.data.sex === SEX_MALE
-                                  ? "male"
-                                  : "unknown",
-                        )
-                        .classed("spouse", (person) => person.data.spouse)
-                        .attr("rx", 20)
-                        .attr("ry", 20)
-                        .attr("x", -(this._orientation.boxWidth / 2))
-                        .attr("y", -(this._orientation.boxHeight / 2))
-                        .attr("width", this._orientation.boxWidth)
-                        .attr("height", this._orientation.boxHeight)
-                        .attr("fill-opacity", 0.5);
+            .call((g) => {
+                g.append("rect")
+                    .attr("class", (person) =>
+                        person.data.data.sex === SEX_FEMALE
+                            ? "female"
+                            : person.data.data.sex === SEX_MALE
+                              ? "male"
+                              : "unknown",
+                    )
+                    .classed("spouse", (person) => person.data.spouse)
+                    .attr("rx", 20)
+                    .attr("ry", 20)
+                    .attr("x", -(this._orientation.boxWidth / 2))
+                    .attr("y", -(this._orientation.boxHeight / 2))
+                    .attr("width", this._orientation.boxWidth)
+                    .attr("height", this._orientation.boxHeight);
 
-                    g.append("title").text((person) => person.data.data.name);
-                },
-            )
+                g.append("title").text((person) => person.data.data.name);
+            })
             .call(
                 // Draws the node (including image, names and dates)
                 (g) => this.drawNode(g),
