@@ -10,6 +10,11 @@ import { LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET } from "./constants.js";
 import { buildFamilyTree } from "./family-tree.js";
 
 /**
+ * @import { HierarchyNode } from "d3-hierarchy"
+ * @import Configuration from "./configuration.js"
+ */
+
+/**
  * This class handles the hierarchical data.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
@@ -24,6 +29,7 @@ export default class Hierarchy {
      */
     constructor(configuration) {
         this._configuration = configuration;
+        /** @type {HierarchyNode<any>|null} */
         this._root = null;
     }
 
@@ -47,16 +53,17 @@ export default class Hierarchy {
         const familyTree = buildFamilyTree(data);
         this._root = d3.hierarchy(familyTree);
 
-        // Assign a unique ID to each node
+        // Assign a unique ID to each node — the d3 HierarchyNode `id` is
+        // a readonly getter, so we attach our own property under a typed view.
         this._root.descendants().forEach((d, i) => {
-            d.id = i;
+            /** @type {any} */ (d).id = i;
         });
     }
 
     /**
      * Returns the root node of the d3 hierarchy.
      *
-     * @returns {Node}
+     * @returns {HierarchyNode<any>|null}
      *
      * @public
      */

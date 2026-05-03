@@ -10,6 +10,10 @@ import Configuration from "./configuration.js";
 import Chart from "./chart.js";
 
 /**
+ * @import { Selection } from "d3-selection"
+ */
+
+/**
  * The application class.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
@@ -23,18 +27,21 @@ export class DescendantsChart {
      * @param {string} selector The CSS selector of the HTML element used to assign the chart too
      * @param {object} options  A list of options passed from outside to the application
      *
-     * @param {string[]} options.labels
+     * @param {{zoom: string, move: string}} options.labels
      * @param {boolean}  options.rtl
      * @param {number}   options.generations
      * @param {string}   options.treeLayout
      * @param {boolean}  options.openNewTabOnClick
      * @param {boolean}  options.showAlternativeName
+     * @param {string}   options.nameAbbreviation
      * @param {string[]} options.cssFiles
      * @param {Data[]}   options.data
      */
     constructor(selector, options) {
         this._selector = selector;
-        this._parent = d3.select(this._selector);
+        this._parent = /** @type {Selection<HTMLElement, unknown, HTMLElement, unknown>} */ (
+            d3.select(this._selector)
+        );
 
         // Set up configuration
         this._configuration = new Configuration(
@@ -137,13 +144,6 @@ export class DescendantsChart {
      * @private
      */
     exportSVG() {
-        this._chart.svg
-            .export("svg")
-            .svgToImage(
-                this._chart.svg,
-                this._cssFiles,
-                "webtrees-descendants-chart-container",
-                "descendants-chart.svg",
-            );
+        this._chart.svg.export("svg").svgToImage(this._chart.svg, "descendants-chart.svg");
     }
 }

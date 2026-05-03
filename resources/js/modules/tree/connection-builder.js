@@ -10,6 +10,11 @@ import { SPOUSE_GAP_PX } from "../constants.js";
 import { familyRenderableMembers } from "../family-tree.js";
 
 /**
+ * @import { HierarchyNode } from "d3-hierarchy"
+ * @import { Orientation } from "@magicsunday/webtrees-chart-lib"
+ */
+
+/**
  * Walks the d3 hierarchy after layout and produces two flat, position-only
  * payloads:
  *
@@ -22,9 +27,9 @@ import { familyRenderableMembers } from "../family-tree.js";
  * Both lists are pure data — downstream drawers don't need to know
  * anything about the d3-hierarchy or the family-node encoding.
  *
- * @param {Node}        root             d3-hierarchy root after .tree() laid it out
- * @param {Orientation} orientation      The active orientation
- * @param {boolean}     isVerticalLayout True for top-bottom / bottom-top
+ * @param {HierarchyNode<any>} root             d3-hierarchy root after .tree() laid it out
+ * @param {Orientation}        orientation      The active orientation
+ * @param {boolean}            isVerticalLayout True for top-bottom / bottom-top
  *
  * @returns {{renderedBoxes: Array, connections: Array}}
  */

@@ -8,8 +8,15 @@
 import { SEX_FEMALE, SEX_MALE } from "../constants.js";
 import Name from "./name.js";
 import DateRenderer from "./date.js";
-import Image from "../chart/box/image.js";
-import Text from "../chart/box/text.js";
+import ImageBox from "../chart/box/image.js";
+import TextBox from "../chart/box/text.js";
+
+/**
+ * @import { Selection } from "d3-selection"
+ * @import Svg from "../chart/svg.js"
+ * @import Hierarchy from "../hierarchy.js"
+ * @import Configuration from "../configuration.js"
+ */
 
 /**
  * Renders one person box per entry in the renderedBoxes list emitted by
@@ -32,8 +39,8 @@ export default class NodeDrawer {
         this._configuration = configuration;
         this._orientation = this._configuration.orientation;
 
-        this._image = new Image(this._orientation, 20);
-        this._text = new Text(this._orientation, this._image);
+        this._image = new ImageBox(this._orientation, 20);
+        this._text = new TextBox(this._orientation, this._image);
         this._name = new Name(this._svg, this._orientation, this._image, this._text);
         this._date = new DateRenderer(this._svg, this._orientation, this._image, this._text);
     }
@@ -68,8 +75,10 @@ export default class NodeDrawer {
                 (exit) => this.nodeExit(exit, source),
             );
 
-        // Stash the old positions for transition
-        this._hierarchy.root.eachBefore((d) => {
+        // Stash the old positions for transition. d3 HierarchyNode does not
+        // declare x0/y0 — they are descendants-specific scratch props.
+        this._hierarchy.root.eachBefore((node) => {
+            const d = /** @type {any} */ (node);
             d.x0 = d.x;
             d.y0 = d.y;
         });
@@ -78,13 +87,13 @@ export default class NodeDrawer {
     /**
      * Enter transition (new nodes).
      *
-     * @param {Selection}  enter
-     * @param {Individual} source
+     * @param {Selection<any, any, any, any>}  enter
+     * @param {Individual} _source
      *
      * @private
      */
     nodeEnter(enter, _source) {
-        enter
+        return enter
             .append("g")
             .attr("opacity", 0)
             .attr("class", "person")
@@ -124,12 +133,12 @@ export default class NodeDrawer {
     /**
      * Update transition (existing nodes).
      *
-     * @param {Selection} update
+     * @param {Selection<any, any, any, any>} update
      *
      * @private
      */
     nodeUpdate(update) {
-        update.call((g) =>
+        return update.call((g) =>
             g
                 .transition()
                 .duration(this._configuration.duration)
@@ -143,12 +152,13 @@ export default class NodeDrawer {
     /**
      * Exit transition (nodes to be removed).
      *
-     * @param {Selection}  exit
-     * @param {Individual} source
+     * @param {Selection<any, any, any, any>} exit
+     * @param {Individual}                    source
      *
      * @private
      */
     nodeExit(exit, source) {
+        const src = /** @type {any} */ (source);
         exit.call((g) =>
             g
                 .transition()
@@ -156,7 +166,7 @@ export default class NodeDrawer {
                 .attr("opacity", 0)
                 .attr("transform", () => {
                     // Transition exit nodes to the source's position
-                    return `translate(${source.x0 ?? 0},${source.y0 ?? 0})`;
+                    return `translate(${src.x0 ?? 0},${src.y0 ?? 0})`;
                 })
                 .remove(),
         );
@@ -165,7 +175,7 @@ export default class NodeDrawer {
     /**
      * Draws the image and text nodes.
      *
-     * @param {Selection} parent The parent element to which the elements are to be attached
+     * @param {Selection<any, any, any, any>} parent The parent element to which the elements are to be attached
      *
      * @private
      */
