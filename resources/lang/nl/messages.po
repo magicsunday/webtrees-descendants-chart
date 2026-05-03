@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
 "POT-Creation-Date: 2024-12-22 12:28+0100\n"
-"PO-Revision-Date: 2024-12-22 19:53+0100\n"
+"PO-Revision-Date: 2026-05-03 08:26+0200\n"
 "Last-Translator: TheDutchJewel <thedutchjewel@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.9\n"
 "X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: webtrees-descendants-chart/module.php\n"
@@ -18,28 +18,23 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: webtrees-descendants-chart/src/Configuration.php:173
-#: webtrees-descendants-chart/src/Configuration.php:181
+#: webtrees-descendants-chart/src/Configuration.php:173 webtrees-descendants-chart/src/Configuration.php:181
 msgid "left"
 msgstr "links"
 
-#: webtrees-descendants-chart/src/Configuration.php:174
-#: webtrees-descendants-chart/src/Configuration.php:182
+#: webtrees-descendants-chart/src/Configuration.php:174 webtrees-descendants-chart/src/Configuration.php:182
 msgid "right"
 msgstr "rechts"
 
-#: webtrees-descendants-chart/src/Configuration.php:175
-#: webtrees-descendants-chart/src/Configuration.php:183
+#: webtrees-descendants-chart/src/Configuration.php:175 webtrees-descendants-chart/src/Configuration.php:183
 msgid "up"
 msgstr "omhoog"
 
-#: webtrees-descendants-chart/src/Configuration.php:176
-#: webtrees-descendants-chart/src/Configuration.php:184
+#: webtrees-descendants-chart/src/Configuration.php:176 webtrees-descendants-chart/src/Configuration.php:184
 msgid "down"
 msgstr "omlaag"
 
-#: webtrees-descendants-chart/src/Module.php:131
-#: webtrees-descendants-chart/src/Module.php:247
+#: webtrees-descendants-chart/src/Module.php:131 webtrees-descendants-chart/src/Module.php:247
 msgid "Descendants chart"
 msgstr "Afstammelingendiagram"
 
@@ -47,8 +42,7 @@ msgstr "Afstammelingendiagram"
 msgid "An overview of an individual’s descendants."
 msgstr "Een overzicht van de afstammelingen van een persoon."
 
-#: webtrees-descendants-chart/src/Module.php:244
-#: webtrees-descendants-chart/src/Traits/ModuleChartTrait.php:41
+#: webtrees-descendants-chart/src/Module.php:244 webtrees-descendants-chart/src/Traits/ModuleChartTrait.php:41
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Afstammelingen van %s"
@@ -157,41 +151,24 @@ msgid "Birth name with married name in brackets"
 msgstr "Geboortenaam met huwelijksnaam tussen haakjes"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:46
-msgid ""
-"Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
-"shown — replacing the birth name, appended in brackets after the birth name, "
-"or hidden."
-msgstr ""
-"Of de huwelijksnaam (uit een naamsvermelding van het type \"MARRIED\" of "
-"\"_MARNM\") wordt weergegeven — ter vervanging van de geboortenaam, tussen "
-"haakjes achter de geboortenaam, of verborgen."
+msgid "Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is shown — replacing the birth name, appended in brackets after the birth name, or hidden."
+msgstr "Of de huwelijksnaam (uit een naamsvermelding van het type \"MARRIED\" of \"_MARNM\") wordt weergegeven — ter vervanging van de geboortenaam, tussen haakjes achter de geboortenaam, of verborgen."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:53
 msgid "Open individual in new browser window/tab"
 msgstr "Open persoon in nieuw browservenster/tabblad"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:59
-msgid ""
-"Open the current individual's detail page in a new browser window/tab when "
-"it's left-clicked, otherwise the current window/tab is used."
-msgstr ""
-"Open de detailpagina van de huidige persoon in een nieuw browservenster/"
-"tabblad als er met de linkermuisknop op wordt geklikt, anders wordt het "
-"huidige venster/tabblad gebruikt."
+msgid "Open the current individual's detail page in a new browser window/tab when it's left-clicked, otherwise the current window/tab is used."
+msgstr "Open de detailpagina van de huidige persoon in een nieuw browservenster/tabblad als er met de linkermuisknop op wordt geklikt, anders wordt het huidige venster/tabblad gebruikt."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:67
 msgid "Show alternative name of individual"
 msgstr "Toon alternatieve naam van persoon"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:73
-msgid ""
-"Displays a person's alternate name, if available. This simultaneously "
-"enlarges the individuals' respective boxes to create the necessary space for "
-"the display."
-msgstr ""
-"Toont de alternatieve naam van een persoon, indien beschikbaar. Dit vergroot "
-"tegelijkertijd de respectievelijke persoonsvakken om de nodige ruimte voor "
-"de weergave te maken."
+msgid "Displays a person's alternate name, if available. This simultaneously enlarges the individuals' respective boxes to create the necessary space for the display."
+msgstr "Toont de alternatieve naam van een persoon, indien beschikbaar. Dit vergroot tegelijkertijd de respectievelijke persoonsvakken om de nodige ruimte voor de weergave te maken."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
@@ -230,7 +207,7 @@ msgstr "Bepaalt welk naamdeel eerst wordt afgekort wanneer een vak te smal is vo
 
 #: resources/views/modules/fan-chart/form/display.phtml
 msgid "Show nicknames in display names"
-msgstr "Bijnamen in weergavenamen tonen"
+msgstr "Toon bijnamen in weergavenamen"
 
 #: resources/views/modules/fan-chart/form/display.phtml
 msgid "Inserts the GEDCOM NICK value in quotes between the given names and the surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees behaviour for trees that store nicknames in the separate GEDCOM NICK field."
