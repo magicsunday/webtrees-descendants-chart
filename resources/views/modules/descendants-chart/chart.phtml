@@ -28,6 +28,8 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
 <script type="module">
 
 import(<?php echo json_encode($javascript); ?>).then(({ DescendantsChart }) => {
+    const opts = (typeof WebtreesDescendantsChart !== "undefined" && WebtreesDescendantsChart.chartOptions) || {};
+
     new DescendantsChart(
         "#webtrees-descendants-chart-container-<?php echo $id; ?>",
         {
@@ -36,19 +38,19 @@ import(<?php echo json_encode($javascript); ?>).then(({ DescendantsChart }) => {
             cssFiles: <?php echo json_encode($exportStylesheets); ?>,
 
             get generations() {
-                return (typeof generations !== "undefined" && generations !== null) ? generations : <?php echo $configuration->getGenerations(); ?>
+                return opts.generations ?? <?php echo $configuration->getGenerations(); ?>;
             },
 
             get treeLayout() {
-                return (typeof treeLayout !== "undefined" && treeLayout !== null) ? treeLayout : <?php echo json_encode($configuration->getLayout()); ?>;
+                return opts.treeLayout ?? <?php echo json_encode($configuration->getLayout()); ?>;
             },
 
             get openNewTabOnClick() {
-                return (typeof openNewTabOnClick !== "undefined" && openNewTabOnClick !== null) ? openNewTabOnClick : <?php echo json_encode($configuration->getOpenNewTabOnClick()); ?>;
+                return opts.openNewTabOnClick ?? <?php echo json_encode($configuration->getOpenNewTabOnClick()); ?>;
             },
 
             get showAlternativeName() {
-                return (typeof showAlternativeName !== "undefined" && showAlternativeName !== null) ? showAlternativeName : <?php echo json_encode($configuration->getShowAlternativeName()); ?>;
+                return opts.showAlternativeName ?? <?php echo json_encode($configuration->getShowAlternativeName()); ?>;
             },
 
             nameAbbreviation: <?php echo json_encode($chartParams['nameAbbreviation']); ?>,

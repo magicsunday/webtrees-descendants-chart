@@ -54,7 +54,9 @@ function toggleMoreOptions(storage) {
 
 /**
  * Initialises the descendants chart page: restores form values from
- * localStorage, sets up event listeners, builds the initial AJAX URL.
+ * localStorage, sets up event listeners, builds the initial AJAX URL,
+ * and publishes the resolved chart options under the WebtreesDescendantsChart
+ * UMD global so chart.phtml getters can read user overrides.
  *
  * @param {Object} config
  * @param {string} config.ajaxUrl The base AJAX endpoint URL
@@ -74,6 +76,20 @@ export function initPage(config) {
 
     const formElements = document.getElementById("webtrees-descendants-chart-form").elements;
     formElements.namedItem("layout").value = storage.read("layout");
+
+    const generationsRaw = storage.read("generations");
+
+    const chartOptions = {
+        generations: generationsRaw === null ? null : Number.parseInt(generationsRaw, 10),
+        treeLayout: storage.read("layout"),
+        openNewTabOnClick: storage.read("openNewTabOnClick"),
+        showAlternativeName: storage.read("showAlternativeName"),
+        showNicknames: storage.read("showNicknames"),
+    };
+
+    if (typeof window.WebtreesDescendantsChart !== "undefined") {
+        window.WebtreesDescendantsChart.chartOptions = chartOptions;
+    }
 
     const ajaxUrl = getUrl(config.ajaxUrl, storage.read("generations"));
     document.getElementById("descendants-chart-url").setAttribute("data-wt-ajax-url", ajaxUrl);
