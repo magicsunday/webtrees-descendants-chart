@@ -92,12 +92,17 @@ export function initPage(config) {
      * Resolved user options. `null` here means "user has not overridden the
      * server default"; chart.phtml falls back to the PHP-side value via `??`.
      *
+     * Only options that the chart re-evaluates client-side (no form submit)
+     * belong here. hideSpouses / marriedNamesMode / showNicknames are
+     * server-rendered via DataFacade so they are persisted in localStorage
+     * via storage.register() above (to keep the form state across reloads)
+     * but do NOT need to ship in chartOptions.
+     *
      * @type {{
      *   generations: number|null,
      *   treeLayout: string|null,
      *   openNewTabOnClick: boolean|null,
      *   showAlternativeName: boolean|null,
-     *   showNicknames: boolean|null,
      * }}
      */
     const chartOptions = {
@@ -105,7 +110,6 @@ export function initPage(config) {
         treeLayout: storage.readString("layout"),
         openNewTabOnClick: storage.readBool("openNewTabOnClick"),
         showAlternativeName: storage.readBool("showAlternativeName"),
-        showNicknames: storage.readBool("showNicknames"),
     };
 
     // WebtreesDescendantsChart is the UMD global exposed by the chart-page
