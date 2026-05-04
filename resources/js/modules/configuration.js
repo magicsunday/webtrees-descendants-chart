@@ -30,7 +30,6 @@ export default class Configuration {
      * @param {boolean}  showAlternativeName
      * @param {string}   nameAbbreviation One of "GIVEN" or "SURNAME". Resolved server-side from the tree's SURNAME_TRADITION when admin sets it to AUTO.
      * @param {boolean}  rtl
-     * @param {number}   direction
      */
     constructor(
         labels,
@@ -40,7 +39,6 @@ export default class Configuration {
         showAlternativeName = true,
         nameAbbreviation = "GIVEN",
         rtl = false,
-        direction = 1,
     ) {
         // The layout/orientation of the tree
         this._treeLayout = treeLayout;
@@ -71,9 +69,6 @@ export default class Configuration {
 
         this.rtl = rtl;
         this.labels = labels;
-
-        // Direction is either 1 (forward) or -1 (backward)
-        this.direction = direction;
     }
 
     /**

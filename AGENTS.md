@@ -22,6 +22,7 @@ This repository hosts the webtrees descendants chart module — an interactive S
 - Translations: `make lang` (compile .po → .mo). All locale files must have non-empty `msgstr` entries.
 - Keep PHPStan, PHPCS, and CPD clean on affected code; add PHPUnit attribute-based coverage (positive and negative cases) for every class/method introduced or modified.
 - If `node_modules` has permission issues (from node container), clean via: `docker compose run --rm buildbox-root bash -c "rm -rf app/vendor/magicsunday/webtrees-descendants-chart/node_modules"`.
+- **Typecheck scope is intentionally limited to production sources** (`jsconfig.json` includes only `resources/js/modules/**/*.js`). Tests under `resources/js/tests/**` are validated by jest at runtime but skipped by `tsc --noEmit` because the partial mock objects required to isolate units would otherwise produce dozens of structural-incompatibility errors against the real `Configuration` / `Selection` shapes. The strict-typecheck gate applies to shipped code; test scaffolding stays loose.
 
 ## Architecture
 
@@ -44,7 +45,7 @@ Module.php (entry point, registers routes)
 - **Shared classes from [`magicsunday/webtrees-module-base`](https://github.com/magicsunday/webtrees-module-base)** (composer dependency `^1.1`):
   - `Processor/DateProcessor` — date extraction; descendants currently uses the legacy locale-aware methods (`getBirthDate`, `getDeathDate`, `getLifetimeDescription`).
   - `Processor/NameProcessor`, `Processor/ImageProcessor`, `Processor/PlaceProcessor` — name/image/place extraction. NameProcessor's 3-arg constructor `($individual, $spouse, $useMarriedName)` is used here.
-  - `Model/Symbols` — backed enum for genealogical symbols (Birth ★, Death †, MARRIAGE_DATE_UNKNOWN sentinel).
+  - `Model/Symbols` — backed enum for genealogical symbols (Birth ★, Death †, MarriageDateUnknown sentinel).
   - `Module/VersionInformation` — GitHub release-checking with file cache.
   - For local edits to module-base while developing descendants-chart, run `make link-base` (symlinks `.build/vendor/.../webtrees-module-base` → the sibling clone). Reverse with `make unlink-base` or any `composer install/update`.
 
