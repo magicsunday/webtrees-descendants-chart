@@ -64,7 +64,7 @@ class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, 
     /**
      * @var string
      */
-    public const CUSTOM_VERSION = '2.5.2-dev';
+    public const CUSTOM_VERSION = '2.6.0';
 
     /**
      * @var string
