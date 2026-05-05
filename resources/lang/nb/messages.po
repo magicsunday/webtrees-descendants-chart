@@ -86,11 +86,11 @@ msgstr "Tilbakestill"
 
 #: webtrees-descendants-chart/resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
 msgid "Switch between full screen mode and normal view"
-msgstr ""
+msgstr "Bytt mellom fullskjerm og normal visning"
 
 #: webtrees-descendants-chart/resources/views/modules/components/buttonbar/help-button.phtml:17
 msgid "Show help"
-msgstr ""
+msgstr "Vis hjelp"
 
 #: webtrees-descendants-chart/resources/views/modules/components/buttonbar/png-export-button.phtml:18
 msgid "Export as PNG"
@@ -110,15 +110,15 @@ msgstr "Moduler"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:44
 msgid "General"
-msgstr ""
+msgstr "Generelt"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:50
 msgid "Hide the SVG export button"
-msgstr ""
+msgstr "Skjul SVG-eksportknappen"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:60
 msgid "Hide the PNG export button"
-msgstr ""
+msgstr "Skjul PNG-eksportknappen"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:73
 msgid "save"
@@ -161,7 +161,7 @@ msgid ""
 "Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
 "shown — replacing the birth name, appended in brackets after the birth name, "
 "or hidden."
-msgstr ""
+msgstr "Om det gifte navnet (fra en NAME-oppføring av typen \"MARRIED\" eller \"_MARNM\") vises — erstatter fødselsnavnet, settes i parentes etter fødselsnavnet, eller skjules."
 "Om navnet som gift (fra en \"MARRIED\"- eller \"_MARNM\"-navneoppføring) "
 "vises — erstatter fødselsnavnet, legges til i parentes etter fødselsnavnet, "
 "eller skjules."
@@ -233,3 +233,6 @@ msgstr "Vis kallenavn i visningsnavn"
 #: resources/views/modules/fan-chart/form/display.phtml
 msgid "Inserts the GEDCOM NICK value in quotes between the given names and the surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees behaviour for trees that store nicknames in the separate GEDCOM NICK field."
 msgstr "Setter inn GEDCOM NICK-verdien i anførselstegn mellom fornavn og etternavn (f.eks. Martin \"Chalky\" White). Gjenskaper den tidligere webtrees-oppførselen for trær som lagrer kallenavn i det separate GEDCOM NICK-feltet."
+
+msgid "Behavior"
+msgstr "Atferd"

@@ -87,11 +87,11 @@ msgstr "Ponovo centriraj"
 
 #: webtrees-descendants-chart/resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
 msgid "Switch between full screen mode and normal view"
-msgstr ""
+msgstr "Prebacivanje između celog ekrana i običnog prikaza"
 
 #: webtrees-descendants-chart/resources/views/modules/components/buttonbar/help-button.phtml:17
 msgid "Show help"
-msgstr ""
+msgstr "Prikaži pomoć"
 
 #: webtrees-descendants-chart/resources/views/modules/components/buttonbar/png-export-button.phtml:18
 msgid "Export as PNG"
@@ -111,23 +111,23 @@ msgstr ""
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:44
 msgid "General"
-msgstr ""
+msgstr "Opšte"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:50
 msgid "Hide the SVG export button"
-msgstr ""
+msgstr "Sakrij dugme za izvoz SVG"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:60
 msgid "Hide the PNG export button"
-msgstr ""
+msgstr "Sakrij dugme za izvoz PNG"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:73
 msgid "save"
-msgstr ""
+msgstr "snimi"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:78
 msgid "cancel"
-msgstr ""
+msgstr "odustani"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
@@ -162,14 +162,14 @@ msgid ""
 "Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
 "shown — replacing the birth name, appended in brackets after the birth name, "
 "or hidden."
-msgstr ""
+msgstr "Da li se prikazuje udato prezime (iz NAME unosa tipa \"MARRIED\" ili \"_MARNM\") — zamenjuje rođeno ime, dodaje u zagradama posle rođenog imena ili sakriva."
 "Da li se bračno prezime (iz unosa imena tipa \"MARRIED\" ili \"_MARNM\") "
 "prikazuje — zamenjujući rodno ime, dodato u zagradi posle rodnog imena, ili "
 "sakriveno."
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:53
 msgid "Open individual in new browser window/tab"
-msgstr ""
+msgstr "Otvori osobu u novom prozoru/tabu pregledača"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:59
 msgid ""
@@ -179,7 +179,7 @@ msgstr ""
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:67
 msgid "Show alternative name of individual"
-msgstr ""
+msgstr "Prikaži alternativno ime osobe"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:73
 msgid ""
@@ -230,3 +230,6 @@ msgstr "Prikaži nadimke u prikazanim imenima"
 #: resources/views/modules/fan-chart/form/display.phtml
 msgid "Inserts the GEDCOM NICK value in quotes between the given names and the surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees behaviour for trees that store nicknames in the separate GEDCOM NICK field."
 msgstr "Umetne vrednost GEDCOM NICK u navodnicima između ličnih imena i prezimena (npr. Martin \"Chalky\" White). Oponaša staro webtrees ponašanje za stabla koja nadimke čuvaju u zasebnom polju GEDCOM NICK."
+
+msgid "Behavior"
+msgstr "Ponašanje"

@@ -104,7 +104,7 @@ msgstr "Modules"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:44
 msgid "General"
-msgstr ""
+msgstr "Algemeen"
 
 #: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:50
 msgid "Hide the SVG export button"
@@ -212,3 +212,6 @@ msgstr "Toon bijnamen in weergavenamen"
 #: resources/views/modules/fan-chart/form/display.phtml
 msgid "Inserts the GEDCOM NICK value in quotes between the given names and the surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees behaviour for trees that store nicknames in the separate GEDCOM NICK field."
 msgstr "Voegt de GEDCOM NICK-waarde tussen aanhalingstekens in tussen de voornamen en de achternaam (bv. Martin \"Chalky\" White). Bootst het oude webtrees-gedrag na voor stambomen die bijnamen in het afzonderlijke GEDCOM NICK-veld opslaan."
+
+msgid "Behavior"
+msgstr "Gedrag"
