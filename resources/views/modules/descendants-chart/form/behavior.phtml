@@ -18,17 +18,20 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
  */
 ?>
 
-<div class="row">
+<div class="row mt-3">
     <div class="col-form-label col-sm-3 wt-page-options-label">
-        <?php echo I18N::translate('Display'); ?>
+        <?php echo I18N::translate('Behavior'); ?>
     </div>
     <div class="col-sm-9 wt-page-options-value">
         <?php echo view($moduleName . '::modules/components/checkbox', [
-            'name'      => 'hideSpouses',
-            'label'     => I18N::translate('Hide the spouses associated with an individual'),
-            'checked'   => $configuration->getHideSpouses(),
+            'name'      => 'openNewTabOnClick',
+            'label'     => I18N::translate('Open individual in new browser window/tab'),
+            'checked'   => $configuration->getOpenNewTabOnClick(),
             'unchecked' => '0',
         ]);
 ?>
+        <small class="ps-4 form-text text-muted form-element-description" style="box-decoration-break: clone;">
+            <?php echo I18N::translate("Open the current individual's detail page in a new browser window/tab when it's left-clicked, otherwise the current window/tab is used."); ?>
+        </small>
     </div>
 </div>
