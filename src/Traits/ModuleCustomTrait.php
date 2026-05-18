@@ -11,8 +11,7 @@ declare(strict_types=1);
 
 namespace MagicSunday\Webtrees\DescendantsChart\Traits;
 
-use Fisharebest\Localization\Translation;
-use MagicSunday\Webtrees\ModuleBase\Module\VersionInformation;
+use MagicSunday\Webtrees\ModuleBase\Traits\ModuleCustomTrait as BaseModuleCustomTrait;
 
 /**
  * Trait ModuleCustomTrait.
@@ -23,37 +22,5 @@ use MagicSunday\Webtrees\ModuleBase\Module\VersionInformation;
  */
 trait ModuleCustomTrait
 {
-    use \Fisharebest\Webtrees\Module\ModuleCustomTrait;
-
-    public function customModuleAuthorName(): string
-    {
-        return self::CUSTOM_AUTHOR;
-    }
-
-    public function customModuleVersion(): string
-    {
-        return self::CUSTOM_VERSION;
-    }
-
-    public function customModuleLatestVersionUrl(): string
-    {
-        return self::CUSTOM_LATEST_VERSION;
-    }
-
-    public function customModuleLatestVersion(): string
-    {
-        return (new VersionInformation($this))->fetchLatestVersion();
-    }
-
-    public function customModuleSupportUrl(): string
-    {
-        return self::CUSTOM_SUPPORT_URL;
-    }
-
-    public function customTranslations(string $language): array
-    {
-        $languageFile = $this->resourcesFolder() . 'lang/' . $language . '/messages.mo';
-
-        return file_exists($languageFile) ? (new Translation($languageFile))->asArray() : [];
-    }
+    use BaseModuleCustomTrait;
 }
