@@ -292,5 +292,4 @@ class DataFacade
             ]
         );
     }
-
 }
