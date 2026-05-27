@@ -23,6 +23,7 @@ use MagicSunday\Webtrees\ModuleBase\Facade\RouteAwareDataFacadeTrait;
 use MagicSunday\Webtrees\ModuleBase\Processor\DateProcessor;
 use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
 use MagicSunday\Webtrees\ModuleBase\Processor\NameProcessor;
+use MagicSunday\Webtrees\ModuleBase\Support\TextDirection;
 
 /**
  * Facade class to hide complex logic to generate the structure required to display the tree.
@@ -253,13 +254,13 @@ class DataFacade
             ->setUrl($individual->url())
             ->setUpdateUrl($this->getUpdateRoute($individual))
             ->setName($fullNN)
-            ->setIsNameRtl($this->isRtl($fullNN))
+            ->setIsNameRtl(TextDirection::isRtl($fullNN))
             ->setFirstNames($nameProcessor->getFirstNames())
             ->setLastNames($lastNames)
             ->setPreferredName($nameProcessor->getPreferredName())
             ->setNickname($showNicknames ? $nameProcessor->getNickname() : '')
             ->setAlternativeName($alternativeName)
-            ->setIsAltRtl($this->isRtl($alternativeName))
+            ->setIsAltRtl(TextDirection::isRtl($alternativeName))
             ->setThumbnail($imageProcessor->getHighlightImageUrl())
             ->setSilhouette($imageProcessor->getSilhouetteUrl())
             ->setSex($individual->sex())
