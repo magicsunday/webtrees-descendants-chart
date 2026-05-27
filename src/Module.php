@@ -64,7 +64,7 @@ class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, 
     /**
      * @var string
      */
-    public const CUSTOM_VERSION = '2.6.3';
+    public const CUSTOM_VERSION = '2.6.4-dev';
 
     /**
      * Webtrees renders this URL as the "For more information, see …" link inside the
