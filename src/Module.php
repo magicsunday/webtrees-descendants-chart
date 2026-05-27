@@ -29,10 +29,10 @@ use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\View;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
-use MagicSunday\Webtrees\ModuleBase\Traits\ModuleCustomTrait;
 use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleConfigTrait;
 use MagicSunday\Webtrees\ModuleBase\Contract\ModuleAssetUrlInterface;
 use MagicSunday\Webtrees\ModuleBase\Model\NameAbbreviation;
+use MagicSunday\Webtrees\ModuleBase\Traits\ModuleCustomTrait;
 use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -272,10 +272,9 @@ class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, 
     }
 
     /**
-     * @param Individual $individual
-     * @param string     $xref
-     *
-     * @return string
+     * Builds the chart's AJAX endpoint URL forwarding the current form state,
+     * so the partial rebuild reflects the user's selections instead of falling
+     * back to module preference defaults.
      */
     private function getAjaxRoute(Individual $individual, string $xref): string
     {

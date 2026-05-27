@@ -56,7 +56,7 @@ class DataFacade
     }
 
     /**
-     * Creates the JSON couple-tree structure.
+     * Builds the couple-tree JSON shape for the chart subject.
      *
      * The root subject of the chart is wrapped in a single-family pseudo
      * `CoupleNode` so the JSON shape stays uniform: every level is a list of
@@ -198,13 +198,10 @@ class DataFacade
     }
 
     /**
-     * Get the node data required for display the chart.
-     *
-     * @param int             $generation The generation the person belongs to
-     * @param Individual|null $individual The current individual
-     * @param Individual|null $spouse
-     *
-     * @return NodeData
+     * Builds the NodeData DTO populated from the individual's name, date,
+     * and image processors for the given generation slot. When called for a
+     * spouse, $individual carries the spouse and $spouse the original subject
+     * so married-names processing can resolve the partner.
      */
     private function getNodeData(
         int $generation,
@@ -275,12 +272,9 @@ class DataFacade
     }
 
     /**
-     * Get the raw update URL. The "xref" parameter must be the last one as the URL gets appended
-     * with the clicked individual id in order to load the required chart data.
-     *
-     * @param Individual $individual
-     *
-     * @return string
+     * Builds the AJAX update route stamped onto each NodeData, so clicking
+     * a descendant re-centers the chart while preserving generation and
+     * layout selections.
      */
     private function getUpdateRoute(Individual $individual): string
     {
