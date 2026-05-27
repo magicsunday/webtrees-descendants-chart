@@ -48,6 +48,11 @@ class DataFacade
     private string $route;
 
     /**
+     * Monotonic counter that gives every rendered node a unique ID across one request.
+     */
+    private int $nodeIdCounter = 0;
+
+    /**
      * @param ModuleCustomInterface&ModuleAssetUrlInterface $module
      *
      * @return DataFacade
@@ -239,11 +244,8 @@ class DataFacade
         ?Individual $individual = null,
         ?Individual $spouse = null,
     ): NodeData {
-        // Create a unique ID for each individual
-        static $id = 0;
-
         $treeData = new NodeData();
-        $treeData->setId(++$id)
+        $treeData->setId(++$this->nodeIdCounter)
             ->setGeneration($generation);
 
         if (!$individual instanceof Individual) {
