@@ -26,11 +26,17 @@ trait ModuleChartTrait
 {
     use BaseModuleChartTrait;
 
+    /**
+     * Returns the CSS class applied to the descendants-chart menu item.
+     */
     public function chartMenuClass(): string
     {
         return 'menu-chart-descendants';
     }
 
+    /**
+     * Returns the localised chart title shown in the chart box menu and page headings.
+     */
     public function chartTitle(Individual $individual): string
     {
         return I18N::translate('Descendants chart of %s', $individual->fullName());
