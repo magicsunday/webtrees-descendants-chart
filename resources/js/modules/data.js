@@ -74,9 +74,9 @@
  */
 
 /**
- * Renderable box descriptor produced by `connection-builder.js` and passed
- * down to the name/date drawing methods. The double `data.data` reflects
- * the d3-hierarchy wrapping of the FamilyNode plus the person payload.
+ * Renderable box descriptor produced by `connection-builder.js` and passed down
+ * to the name/date drawing methods. The double `data.data` reflects the
+ * d3-hierarchy wrapping of the FamilyNode plus the person payload.
  *
  * @typedef {object} NameElementData
  * @property {{data: Data, spouse: boolean}} data

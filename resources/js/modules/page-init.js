@@ -15,9 +15,9 @@ import {
 
 /**
  * Initialises the descendants chart page: restores form values from
- * localStorage, sets up event listeners, builds the initial AJAX URL,
- * and publishes the resolved chart options under the WebtreesDescendantsChart
- * UMD global so chart.phtml getters can read user overrides.
+ * localStorage, sets up event listeners, builds the initial AJAX URL, and
+ * publishes the resolved chart options under the WebtreesDescendantsChart UMD
+ * global so chart.phtml getters can read user overrides.
  *
  * @param {object} config
  * @param {string} config.ajaxUrl The base AJAX endpoint URL
@@ -49,9 +49,9 @@ export function initPage(config) {
      *
      * Only options that the chart re-evaluates client-side (no form submit)
      * belong here. hideSpouses / marriedNamesMode / showNicknames are
-     * server-rendered via DataFacade so they are persisted in localStorage
-     * via storage.register() above (to keep the form state across reloads)
-     * but do NOT need to ship in chartOptions.
+     * server-rendered via DataFacade so they are persisted in localStorage via
+     * storage.register() above (to keep the form state across reloads) but do
+     * NOT need to ship in chartOptions.
      *
      * @type {{
      *   generations: number|null,

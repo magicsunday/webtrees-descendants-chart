@@ -30,9 +30,9 @@ function sameRealId(left, right) {
 }
 
 /**
- * Two nodes are half-siblings when their parent family-nodes share the
- * same `real` person — i.e. one biological parent had multiple partners
- * and each partner is the head of its own family-node.
+ * Two nodes are half-siblings when their parent family-nodes share the same
+ * `real` person — i.e. one biological parent had multiple partners and each
+ * partner is the head of its own family-node.
  */
 function halfSiblings(left, right) {
     if (!left.parent || !right.parent) return false;

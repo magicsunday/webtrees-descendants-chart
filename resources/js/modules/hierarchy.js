@@ -36,11 +36,10 @@ export default class Hierarchy {
     /**
      * Initialize the hierarchical chart data.
      *
-     * The wire-format CoupleNode is converted to a tree of FamilyNodes —
-     * each (real-person + 0..1 spouse + their children-as-FamilyNodes).
-     * Polygamous individuals contribute multiple FamilyNodes that share
-     * the same `real`. d3.tree() then centres each family-node directly
-     * over its own children.
+     * The wire-format CoupleNode is converted to a tree of FamilyNodes — each
+     * (real-person + 0..1 spouse + their children-as-FamilyNodes). Polygamous
+     * individuals contribute multiple FamilyNodes that share the same `real`.
+     * d3.tree() then centres each family-node directly over its own children.
      *
      * @param {object} data The JSON encoded chart data
      */

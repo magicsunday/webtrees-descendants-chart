@@ -20,8 +20,8 @@ import TextBox from "../chart/box/text.js";
 
 /**
  * Renders one person box per entry in the renderedBoxes list emitted by
- * `connection-builder.js`. Each entry is already pre-positioned and
- * carries the per-person `data` shape the rest of this class expects.
+ * `connection-builder.js`. Each entry is already pre-positioned and carries the
+ * per-person `data` shape the rest of this class expects.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0

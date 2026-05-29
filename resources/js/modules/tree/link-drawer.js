@@ -12,8 +12,8 @@ import { elbowsPath, LINE_END_TRIM_PX, marriagePath } from "@magicsunday/webtree
  *
  * Each bundle is a pure-geometry FamilyConnection descriptor:
  *   { father, mother, children, intermediateBoxes, marriageStagger }
- * The drawer turns those into SVG paths via the axis-agnostic helpers
- * shared with webtrees-pedigree-chart through chart-lib.
+ * The drawer turns those into SVG paths via the axis-agnostic helpers shared
+ * with webtrees-pedigree-chart through chart-lib.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
@@ -27,9 +27,9 @@ export default class LinkDrawer {
     }
 
     /**
-     * Public entry. `connections` is the list returned by
-     * `buildConnections()`. Each entry may emit several SVG paths
-     * (a marriage chain plus one elbow per child).
+     * Public entry. `connections` is the list returned by `buildConnections()`.
+     * Each entry may emit several SVG paths (a marriage chain plus one elbow
+     * per child).
      */
     drawLinks(connections, _source) {
         const flatLinks = [];
@@ -75,11 +75,11 @@ export default class LinkDrawer {
     }
 
     /**
-     * Marriage line as a chain of segments through the inter-box gaps
-     * between father and mother. Adjacent (father, mother) pairs collapse
-     * to a single segment in their shared gap; polygamous continuations
-     * with intermediate boxes between father and mother emit one segment
-     * per gap so the line never crosses an unrelated person's box.
+     * Marriage line as a chain of segments through the inter-box gaps between
+     * father and mother. Adjacent (father, mother) pairs collapse to a single
+     * segment in their shared gap; polygamous continuations with intermediate
+     * boxes between father and mother emit one segment per gap so the line
+     * never crosses an unrelated person's box.
      */
     _marriagePath(connection) {
         const orientation = this._orientation;
@@ -105,9 +105,9 @@ export default class LinkDrawer {
     }
 
     /**
-     * All elbow lines from one parent block to its children, drawn as a
-     * single SVG path via chart-lib's `elbowsPath`. Source placement
-     * depends on the family shape:
+     * All elbow lines from one parent block to its children, drawn as a single
+     * SVG path via chart-lib's `elbowsPath`. Source placement depends on the
+     * family shape:
      * - Direct couple (father + mother adjacent): emerge from the marriage
      *   line at the couple midpoint.
      * - Continuation polygamous marriage (mother behind intermediate

@@ -24,8 +24,8 @@ import { familyRenderableMembers } from "../family-tree.js";
  *   (father/mother box positions, list of child positions, optional
  *   intermediate boxes for polygamous marriage chains, marriage stagger)
  *
- * Both lists are pure data — downstream drawers don't need to know
- * anything about the d3-hierarchy or the family-node encoding.
+ * Both lists are pure data — downstream drawers don't need to know anything
+ * about the d3-hierarchy or the family-node encoding.
  *
  * @param {HierarchyNode<any>} root             d3-hierarchy root after .tree() laid it out
  * @param {Orientation}        orientation      The active orientation
@@ -107,8 +107,8 @@ function collectRenderedBoxes(familyNodes, stackBox, spouseGap, isVerticalLayout
 }
 
 /**
- * Build one FamilyConnection descriptor for the given family-node, or
- * `null` when the node has neither a marriage line nor children to draw.
+ * Build one FamilyConnection descriptor for the given family-node, or `null`
+ * when the node has neither a marriage line nor children to draw.
  */
 function buildConnection(node, realPositions, motherPositions, allBoxes, isVerticalLayout) {
     const realId = node.data.real?.id;
@@ -137,10 +137,10 @@ function buildConnection(node, realPositions, motherPositions, allBoxes, isVerti
 }
 
 /**
- * Children for one family. d3-children may contain multiple family-nodes
- * for the same person (= polygamous child with several spouses) — those
- * represent ONE genealogical child, so dedupe by real.id and target each
- * unique child's rendered real-person box.
+ * Children for one family. d3-children may contain multiple family-nodes for
+ * the same person (= polygamous child with several spouses) — those represent
+ * ONE genealogical child, so dedupe by real.id and target each unique child's
+ * rendered real-person box.
  */
 function collectChildPositions(node, realPositions) {
     const dChildren = Array.isArray(node.children) ? node.children : [];
@@ -163,10 +163,10 @@ function collectChildPositions(node, realPositions) {
 }
 
 /**
- * For polygamous continuation marriages the father and mother sit on the
- * same row but with other people's boxes between them. Find those (by
- * scanning all rendered boxes at the father's row) so the line drawer can
- * chain segments through their inter-box gaps.
+ * For polygamous continuation marriages the father and mother sit on the same
+ * row but with other people's boxes between them. Find those (by scanning all
+ * rendered boxes at the father's row) so the line drawer can chain segments
+ * through their inter-box gaps.
  */
 function collectIntermediateBoxes(fatherPos, motherPos, allBoxes, isVerticalLayout) {
     if (!motherPos) return [];
@@ -195,10 +195,10 @@ function collectIntermediateBoxes(fatherPos, motherPos, allBoxes, isVerticalLayo
 }
 
 /**
- * Cross-axis stagger for the marriage line of a polygamous-group entry.
- * The first marriage of a real-person sits furthest from the row centre,
- * each subsequent marriage pulls one step closer, the last marriage lands
- * on the centre.
+ * Cross-axis stagger for the marriage line of a polygamous-group entry. The
+ * first marriage of a real-person sits furthest from the row centre, each
+ * subsequent marriage pulls one step closer, the last marriage lands on the
+ * centre.
  */
 function marriageStaggerFor(node) {
     if (!node.parent || !Array.isArray(node.parent.children)) return 0;

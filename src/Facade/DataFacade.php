@@ -26,7 +26,8 @@ use MagicSunday\Webtrees\ModuleBase\Processor\NameProcessor;
 use MagicSunday\Webtrees\ModuleBase\Support\TextDirection;
 
 /**
- * Facade class to hide complex logic to generate the structure required to display the tree.
+ * Facade class to hide complex logic to generate the structure required to
+ * display the tree.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
@@ -42,7 +43,8 @@ class DataFacade
     private Configuration $configuration;
 
     /**
-     * Monotonic counter that gives every rendered node a unique ID across one request.
+     * Monotonic counter that gives every rendered node a unique ID across one
+     * request.
      */
     private int $nodeIdCounter = 0;
 
@@ -134,10 +136,10 @@ class DataFacade
     /**
      * Recursively build the couple-tree for a single chart subject.
      *
-     * Returns one `CoupleNode` whose first member is `$individual`. Each of
-     * the individual's spouse-families is recorded in `memberFamilies`,
-     * carrying the matching spouse (also added to `members`) and the recursive
-     * couple nodes for the family's children.
+     * Returns one `CoupleNode` whose first member is `$individual`. Each of the
+     * individual's spouse-families is recorded in `memberFamilies`, carrying
+     * the matching spouse (also added to `members`) and the recursive couple
+     * nodes for the family's children.
      */
     private function buildCoupleStructure(?Individual $individual, int $generation = 1): ?CoupleNode
     {
@@ -199,10 +201,10 @@ class DataFacade
     }
 
     /**
-     * Builds the NodeData DTO populated from the individual's name, date,
-     * and image processors for the given generation slot. When called for a
-     * spouse, $individual carries the spouse and $spouse the original subject
-     * so married-names processing can resolve the partner.
+     * Builds the NodeData DTO populated from the individual's name, date, and
+     * image processors for the given generation slot. When called for a spouse,
+     * $individual carries the spouse and $spouse the original subject so
+     * married-names processing can resolve the partner.
      */
     private function getNodeData(
         int $generation,
@@ -273,9 +275,9 @@ class DataFacade
     }
 
     /**
-     * Builds the AJAX update route stamped onto each NodeData, so clicking
-     * a descendant re-centers the chart while preserving generation and
-     * layout selections.
+     * Builds the AJAX update route stamped onto each NodeData, so clicking a
+     * descendant re-centers the chart while preserving generation and layout
+     * selections.
      */
     private function getUpdateRoute(Individual $individual): string
     {

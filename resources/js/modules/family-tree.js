@@ -9,12 +9,12 @@
  * Convert a CoupleNode payload (as emitted by the PHP DataFacade) into a
  * d3-friendly tree of FamilyNodes.
  *
- * Each FamilyNode represents one (real-person + 0..1 spouse + their
- * direct children-as-FamilyNodes). Polygamous individuals contribute
- * multiple FamilyNodes that share the same `real` reference; only the
- * first such node carries `realFirst: true`, every subsequent one renders
- * just its spouse so the row reads as `[real][spouse_1][spouse_2]…`
- * without duplicating the real-person box.
+ * Each FamilyNode represents one (real-person + 0..1 spouse + their direct
+ * children-as-FamilyNodes). Polygamous individuals contribute multiple
+ * FamilyNodes that share the same `real` reference; only the first such node
+ * carries `realFirst: true`, every subsequent one renders just its spouse so
+ * the row reads as `[real][spouse_1][spouse_2]…` without duplicating the
+ * real-person box.
  *
  * The chart subject's families form the top of the returned structure:
  * - one family ⇒ that FamilyNode is the root,
@@ -81,9 +81,9 @@ function coupleToFamilies(coupleData) {
 }
 
 /**
- * Width of a family-node when rendered, along the spread axis. A family
- * with both real and spouse boxes spans `2 × box + spouseGap`; a
- * spouse-only family or a singleton spans one box.
+ * Width of a family-node when rendered, along the spread axis. A family with
+ * both real and spouse boxes spans `2 × box + spouseGap`; a spouse-only family
+ * or a singleton spans one box.
  *
  * @param {object} familyData
  * @param {number} boxSize
@@ -104,9 +104,9 @@ export function familyRenderedWidth(familyData, boxSize, spouseGap) {
 }
 
 /**
- * Returns an array of `{ data, isReal }` entries describing every person
- * box this family-node should render, ordered left-to-right (vertical
- * layout) or top-to-bottom (horizontal layout).
+ * Returns an array of `{ data, isReal }` entries describing every person box
+ * this family-node should render, ordered left-to-right (vertical layout) or
+ * top-to-bottom (horizontal layout).
  *
  * @param {object} familyData
  *

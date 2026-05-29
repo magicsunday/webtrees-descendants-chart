@@ -14,18 +14,18 @@ import { pickGap } from "./separation.js";
 import { buildConnections } from "./tree/connection-builder.js";
 
 /**
- * Lays out one descendants chart. The d3 hierarchy is a tree of
- * FamilyNodes (see family-tree.js); each node represents one
- * (real-person + 0..1 spouse + their children-as-FamilyNodes).
+ * Lays out one descendants chart. The d3 hierarchy is a tree of FamilyNodes
+ * (see family-tree.js); each node represents one (real-person + 0..1 spouse +
+ * their children-as-FamilyNodes).
  *
- * After d3.tree() lays the family-nodes out, `connection-builder`
- * walks the result and turns it into pure-geometry payloads:
+ * After d3.tree() lays the family-nodes out, `connection-builder` walks the
+ * result and turns it into pure-geometry payloads:
  *   - a flat list of person-box renderables
  *   - a list of FamilyConnection descriptors (father, mother, children,
  *     intermediate-boxes, marriage stagger)
- * The drawers consume those without ever touching the d3 hierarchy
- * themselves, so the line-drawing logic stays generic and independent
- * of where the boxes ended up.
+ * The drawers consume those without ever touching the d3 hierarchy themselves,
+ * so the line-drawing logic stays generic and independent of where the boxes
+ * ended up.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
@@ -58,12 +58,12 @@ export default class Tree {
     }
 
     /**
-     * Variable-width separation. Family-nodes that share the same `real`
-     * sit at spouse-gap distance; same-parent siblings get sibling-gap;
-     * cross-parent cousins get cousin-gap. Half-siblings (children of
-     * polygamy partners that share one biological parent) are treated as
-     * siblings so the polygamy parent row doesn't get pushed apart by the
-     * cousin-gap propagating up from the children.
+     * Variable-width separation. Family-nodes that share the same `real` sit at
+     * spouse-gap distance; same-parent siblings get sibling-gap; cross-parent
+     * cousins get cousin-gap. Half-siblings (children of polygamy partners that
+     * share one biological parent) are treated as siblings so the polygamy
+     * parent row doesn't get pushed apart by the cousin-gap propagating up from
+     * the children.
      */
     separation = (left, right) => {
         const baseline = this._stackBox;

@@ -200,7 +200,8 @@ export default class DateRenderer {
     }
 
     /**
-     * Measures the given text and return its width depending on the used font (including size and weight).
+     * Measures the given text and return its width depending on the used font
+     * (including size and weight).
      *
      * @param {string} text
      * @param {string} fontSize

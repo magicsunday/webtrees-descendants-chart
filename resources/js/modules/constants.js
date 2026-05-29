@@ -42,8 +42,8 @@ export const SEX_FEMALE = "F";
 
 /**
  * Inter-box gaps used by the layout. All link-drawing code derives its
- * positions from these constants so changing any value rebalances the
- * whole tree without breaking marriage/elbow geometry.
+ * positions from these constants so changing any value rebalances the whole
+ * tree without breaking marriage/elbow geometry.
  *
  * @type {number}
  * @const

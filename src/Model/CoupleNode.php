@@ -30,8 +30,8 @@ use JsonSerializable;
  *     }
  *
  * `members[0]` is always the "real" person; later entries are spouses in
- * registration order. `memberFamilies[].spouseIndex` points into `members`
- * (or is `null` when the child branch belongs to the real-person alone, e.g.
+ * registration order. `memberFamilies[].spouseIndex` points into `members` (or
+ * is `null` when the child branch belongs to the real-person alone, e.g.
  * unknown/missing spouse). `children` are the sub-couple nodes for the
  * descendants of that family.
  *
@@ -42,7 +42,8 @@ use JsonSerializable;
 class CoupleNode implements JsonSerializable
 {
     /**
-     * Members of this couple. Index 0 is the real-person, later indices are spouses.
+     * Members of this couple. Index 0 is the real-person, later indices are
+     * spouses.
      *
      * @var NodeData[]
      */
@@ -112,9 +113,9 @@ class CoupleNode implements JsonSerializable
     }
 
     /**
-     * Flatten every family's children into a single list. Used by callers
-     * that need to walk the descendants without caring which family each
-     * child belongs to (for example birthdate sorting when spouses are hidden).
+     * Flatten every family's children into a single list. Used by callers that
+     * need to walk the descendants without caring which family each child
+     * belongs to (for example birthdate sorting when spouses are hidden).
      *
      * @return CoupleNode[]
      */
@@ -132,9 +133,9 @@ class CoupleNode implements JsonSerializable
     }
 
     /**
-     * Replace the family list with the provided one. Used by the
-     * hide-spouses sort pass to write back re-ordered children without
-     * having to mutate the array entries in place.
+     * Replace the family list with the provided one. Used by the hide-spouses
+     * sort pass to write back re-ordered children without having to mutate the
+     * array entries in place.
      *
      * @param array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}> $families
      */

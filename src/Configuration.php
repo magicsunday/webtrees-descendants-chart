@@ -226,12 +226,14 @@ class Configuration
     }
 
     /**
-     * Returns the married-names display mode (one of the MARRIED_NAMES_* constants).
+     * Returns the married-names display mode (one of the MARRIED_NAMES_*
+     * constants).
      *
-     * Reads the `marriedNamesMode` request parameter when present; otherwise falls
-     * back to the `default_marriedNamesMode` module preference; otherwise migrates
-     * from the legacy `default_showMarriedNames` boolean preference (true →
-     * `married_only`, false → `off`). Returns `off` when the value is unrecognised.
+     * Reads the `marriedNamesMode` request parameter when present; otherwise
+     * falls back to the `default_marriedNamesMode` module preference; otherwise
+     * migrates from the legacy `default_showMarriedNames` boolean preference
+     * (true → `married_only`, false → `off`). Returns `off` when the value is
+     * unrecognised.
      *
      * @return string
      */
@@ -272,7 +274,8 @@ class Configuration
     }
 
     /**
-     * Returns whether to open a new browser window/tab on left-click on an individual or not.
+     * Returns whether to open a new browser window/tab on left-click on an
+     * individual or not.
      *
      * @return bool
      */
@@ -296,8 +299,9 @@ class Configuration
 
     /**
      * Returns true when the legacy GEDCOM `2 NICK` value should be displayed in
-     * quotes between the given names and the surname (e.g. `Martin "Chalky" White`).
-     * Default off so existing trees keep the post-2.0 webtrees rendering.
+     * quotes between the given names and the surname (e.g. `Martin "Chalky"
+     * White`). Default off so existing trees keep the post-2.0 webtrees
+     * rendering.
      *
      * @return bool
      */
@@ -389,8 +393,8 @@ class Configuration
     }
 
     /**
-     * Returns the dropdown options for the name-abbreviation strategy in
-     * the admin config form. Keyed by the persisted enum value.
+     * Returns the dropdown options for the name-abbreviation strategy in the
+     * admin config form. Keyed by the persisted enum value.
      *
      * @return array<string, string>
      */
@@ -404,10 +408,10 @@ class Configuration
     }
 
     /**
-     * Returns the name-abbreviation strategy as stored. One of
-     * {@see NameAbbreviation::AUTO}, GIVEN or SURNAME. The chart-render path
-     * resolves AUTO to GIVEN/SURNAME via the tree's SURNAME_TRADITION before
-     * serialising to the JS config — see {@see Module::getChartParameters()}.
+     * Returns the name-abbreviation strategy as stored. One of {@see
+     * NameAbbreviation::AUTO}, GIVEN or SURNAME. The chart-render path resolves
+     * AUTO to GIVEN/SURNAME via the tree's SURNAME_TRADITION before serialising
+     * to the JS config — see {@see Module::getChartParameters()}.
      *
      * @return string
      */

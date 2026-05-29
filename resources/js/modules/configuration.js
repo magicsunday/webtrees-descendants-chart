@@ -117,7 +117,8 @@ export default class Configuration {
     }
 
     /**
-     * Returns TRUE or FALSE depending on whether to open the current individual's details page in a new tab.
+     * Returns TRUE or FALSE depending on whether to open the current
+     * individual's details page in a new tab.
      *
      * @returns {boolean}
      */
