@@ -137,9 +137,11 @@ $loader->addPsr4(
 
 
 ## Update
+To update to the latest version:
+
 - **Manual installation**: From the [latest release](https://github.com/magicsunday/webtrees-descendants-chart/releases/latest) **Assets** section, download `webtrees-descendants-chart.zip` (not "Source code (zip)"), **delete the old `modules_v4/webtrees-descendants-chart` folder first**, and extract the new one. Extracting on top of an existing folder leaves stale files behind that can clash with the new release (a common cause of `Interface … not found` errors after an update).
 - **Composer**: Run `composer update magicsunday/webtrees-descendants-chart --update-no-dev`.
-- **Git**: Run `git pull` inside the `modules_v4/webtrees-descendants-chart` directory.
+- **Git**: Run `git pull` inside the `modules_v4/webtrees-descendants-chart` directory, then re-apply your source step (see [Using Git](#using-git)).
 
 
 ## Configuration
