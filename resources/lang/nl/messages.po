@@ -1,7 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
-"POT-Creation-Date: 2024-12-22 12:28+0100\n"
+"Report-Msgid-Bugs-To: https://github.com/magicsunday/webtrees-descendants-"
+"chart/issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
 "PO-Revision-Date: 2026-05-03 08:26+0200\n"
 "Last-Translator: TheDutchJewel <thedutchjewel@gmail.com>\n"
 "Language-Team: \n"
@@ -18,200 +20,226 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: webtrees-descendants-chart/src/Configuration.php:173 webtrees-descendants-chart/src/Configuration.php:181
-msgid "left"
-msgstr "links"
+#: src/Configuration.php:405
+msgid "Abbreviate given names first"
+msgstr "Voornamen eerst afkorten"
 
-#: webtrees-descendants-chart/src/Configuration.php:174 webtrees-descendants-chart/src/Configuration.php:182
-msgid "right"
-msgstr "rechts"
+#: src/Configuration.php:406
+msgid "Abbreviate surnames first"
+msgstr "Achternamen eerst afkorten"
 
-#: webtrees-descendants-chart/src/Configuration.php:175 webtrees-descendants-chart/src/Configuration.php:183
-msgid "up"
-msgstr "omhoog"
-
-#: webtrees-descendants-chart/src/Configuration.php:176 webtrees-descendants-chart/src/Configuration.php:184
-msgid "down"
-msgstr "omlaag"
-
-#: webtrees-descendants-chart/src/Module.php:131 webtrees-descendants-chart/src/Module.php:247
-msgid "Descendants chart"
-msgstr "Afstammelingendiagram"
-
-#: webtrees-descendants-chart/src/Module.php:141
+#: src/Module.php:142
 msgid "An overview of an individual’s descendants."
 msgstr "Een overzicht van de afstammelingen van een persoon."
 
-#: webtrees-descendants-chart/src/Module.php:244 webtrees-descendants-chart/src/Traits/ModuleChartTrait.php:41
+#: src/Configuration.php:404
+msgid "Automatic (based on tree's surname tradition)"
+msgstr "Automatisch (op basis van de achternaamtraditie van de stamboom)"
+
+#: resources/views/modules/descendants-chart/form/behavior.phtml:23
+msgid "Behavior"
+msgstr "Gedrag"
+
+#: src/Configuration.php:270
+msgid "Birth name only"
+msgstr "Alleen geboortenaam"
+
+#: src/Configuration.php:272
+msgid "Birth name with married name in brackets"
+msgstr "Geboortenaam met huwelijksnaam tussen haakjes"
+
+#: resources/views/modules/descendants-chart/config.phtml:25
+msgid "Control panel"
+msgstr "Controlepaneel"
+
+#: resources/views/modules/descendants-chart/config.phtml:84
+msgid ""
+"Controls which name part shrinks first when a box is too narrow for the full "
+"name. \"Automatic\" uses the tree's surname tradition (Icelandic abbreviates "
+"surnames; everything else abbreviates given names)."
+msgstr ""
+"Bepaalt welk naamdeel eerst wordt afgekort wanneer een vak te smal is voor "
+"de volledige naam. \"Automatisch\" gebruikt de achternaamtraditie van de "
+"stamboom (IJslands kort achternamen af; al het andere kort voornamen af)."
+
+#: src/Module.php:131 src/Module.php:250
+msgid "Descendants chart"
+msgstr "Afstammelingendiagram"
+
+#: src/Module.php:247 src/Traits/ModuleChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Afstammelingen van %s"
 
-#: webtrees-descendants-chart/src/Module.php:260
-msgid "Use Ctrl + scroll to zoom in the view"
-msgstr "Gebruik Ctrl + scroll om in te zoomen op de weergave"
+#: resources/views/modules/descendants-chart/form/details.phtml:23
+msgid "Details"
+msgstr ""
 
-#: webtrees-descendants-chart/src/Module.php:261
+#: resources/views/modules/descendants-chart/form/display.phtml:23
+msgid "Display"
+msgstr ""
+
+#: resources/views/modules/descendants-chart/form/details.phtml:34
+msgid ""
+"Displays a person's alternate name, if available. This simultaneously "
+"enlarges the individuals' respective boxes to create the necessary space for "
+"the display."
+msgstr ""
+"Toont de alternatieve naam van een persoon, indien beschikbaar. Dit vergroot "
+"tegelijkertijd de respectievelijke persoonsvakken om de nodige ruimte voor "
+"de weergave te maken."
+
+#: resources/views/modules/components/buttonbar/png-export-button.phtml:18
+msgid "Export as PNG"
+msgstr "Exporteren als PNG"
+
+#: resources/views/modules/components/buttonbar/svg-export-button.phtml:18
+msgid "Export as SVG"
+msgstr "Exporteren als SVG"
+
+#: resources/views/modules/descendants-chart/config.phtml:50
+msgid "General"
+msgstr "Algemeen"
+
+#: resources/views/modules/descendants-chart/form/generations.phtml:22
+msgid "Generations"
+msgstr "Generaties"
+
+#: resources/views/modules/descendants-chart/page.phtml:77
+msgid "Hide more options"
+msgstr "Minder opties"
+
+#: resources/views/modules/descendants-chart/config.phtml:64
+msgid "Hide the PNG export button"
+msgstr "Verberg de PNG-exportknop"
+
+#: resources/views/modules/descendants-chart/config.phtml:55
+msgid "Hide the SVG export button"
+msgstr "Verberg de SVG-exportknop"
+
+#: resources/views/modules/descendants-chart/form/display.phtml:28
+msgid "Hide the spouses associated with an individual"
+msgstr "Verberg de partners van een persoon"
+
+#: resources/views/modules/descendants-chart/page.phtml:39
+msgid "Individual"
+msgstr "Persoon"
+
+#: resources/views/modules/descendants-chart/form/details.phtml:46
+msgid ""
+"Inserts the GEDCOM NICK value in quotes between the given names and the "
+"surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees "
+"behaviour for trees that store nicknames in the separate GEDCOM NICK field."
+msgstr ""
+"Voegt de GEDCOM NICK-waarde tussen aanhalingstekens in tussen de voornamen "
+"en de achternaam (bv. Martin \"Chalky\" White). Bootst het oude webtrees-"
+"gedrag na voor stambomen die bijnamen in het afzonderlijke GEDCOM NICK-veld "
+"opslaan."
+
+#: src/Configuration.php:271
+msgid "Married name only"
+msgstr "Alleen huwelijksnaam"
+
+#: resources/views/modules/descendants-chart/config.phtml:90
+msgid "Married names"
+msgstr "Huwelijksnamen"
+
+#: resources/views/modules/descendants-chart/config.phtml:25
+msgid "Modules"
+msgstr "Modules"
+
+#: src/Module.php:270
 msgid "Move the view with two fingers"
 msgstr "Verplaats de weergave met twee vingers"
 
-#: webtrees-descendants-chart/src/Traits/ModuleConfigTrait.php:95
+#: resources/views/modules/descendants-chart/config.phtml:73
+msgid "Name abbreviation when space is tight"
+msgstr "Afkorting van naam bij beperkte ruimte"
+
+#: resources/views/modules/descendants-chart/form/behavior.phtml:28
+msgid "Open individual in new browser window/tab"
+msgstr "Open persoon in nieuw browservenster/tabblad"
+
+#: resources/views/modules/descendants-chart/form/behavior.phtml:34
+msgid ""
+"Open the current individual's detail page in a new browser window/tab when "
+"it's left-clicked, otherwise the current window/tab is used."
+msgstr ""
+"Open de detailpagina van de huidige persoon in een nieuw browservenster/"
+"tabblad als er met de linkermuisknop op wordt geklikt, anders wordt het "
+"huidige venster/tabblad gebruikt."
+
+#: resources/views/modules/descendants-chart/form/orientation.phtml:22
+msgid "Orientation"
+msgstr "Oriëntatie"
+
+#: resources/views/modules/components/buttonbar/center-button.phtml:18
+msgid "Re center"
+msgstr "Opnieuw centreren"
+
+#: resources/views/modules/descendants-chart/form/details.phtml:28
+msgid "Show alternative name of individual"
+msgstr "Toon alternatieve naam van persoon"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:17
+msgid "Show help"
+msgstr "Toon help"
+
+#: resources/views/modules/descendants-chart/page.phtml:76
+msgid "Show more options"
+msgstr "Meer opties"
+
+#: resources/views/modules/descendants-chart/form/details.phtml:40
+msgid "Show nicknames in display names"
+msgstr "Toon bijnamen in weergavenamen"
+
+#: resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
+msgid "Switch between full screen mode and normal view"
+msgstr "Schakelen tussen volledig scherm en normale weergave"
+
+#: src/Traits/ModuleConfigTrait.php:103
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
 msgstr "De voorkeuren voor de module \"%s\" zijn bijgewerkt."
 
-#: webtrees-module-base/src/Processor/DateProcessor.php:129
-#, php-format
-msgid "Born: %s"
-msgstr "Geboren: %s"
+#: src/Module.php:269
+msgid "Use Ctrl + scroll to zoom in the view"
+msgstr "Gebruik Ctrl + scroll om in te zoomen op de weergave"
 
-#: webtrees-module-base/src/Processor/DateProcessor.php:133
-#, php-format
-msgid "Died: %s"
-msgstr "Overleden: %s"
+#: resources/views/modules/descendants-chart/config.phtml:101
+msgid ""
+"Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
+"shown — replacing the birth name, appended in brackets after the birth name, "
+"or hidden."
+msgstr ""
+"Of de huwelijksnaam (uit een naamsvermelding van het type \"MARRIED\" of "
+"\"_MARNM\") wordt weergegeven — ter vervanging van de geboortenaam, tussen "
+"haakjes achter de geboortenaam, of verborgen."
 
-#: webtrees-module-base/src/Processor/DateProcessor.php:137
-msgid "Deceased"
-msgstr "Overleden"
-
-#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/center-button.phtml:18
-msgid "Re center"
-msgstr "Opnieuw centreren"
-
-#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
-msgid "Switch between full screen mode and normal view"
-msgstr "Schakelen tussen volledig scherm en normale weergave"
-
-#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/help-button.phtml:17
-msgid "Show help"
-msgstr "Toon help"
-
-#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/png-export-button.phtml:18
-msgid "Export as PNG"
-msgstr "Exporteren als PNG"
-
-#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/svg-export-button.phtml:18
-msgid "Export as SVG"
-msgstr "Exporteren als SVG"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
-msgid "Control panel"
-msgstr "Controlepaneel"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
-msgid "Modules"
-msgstr "Modules"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:44
-msgid "General"
-msgstr "Algemeen"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:50
-msgid "Hide the SVG export button"
-msgstr "Verberg de SVG-exportknop"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:60
-msgid "Hide the PNG export button"
-msgstr "Verberg de PNG-exportknop"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:73
-msgid "save"
-msgstr "opslaan"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:78
+#: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
 msgstr "annuleren"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/generations.phtml:22
-msgid "Generations"
-msgstr "Generaties"
+#: src/Configuration.php:193 src/Configuration.php:201
+msgid "down"
+msgstr "omlaag"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:23
-msgid "Layout"
-msgstr "Indeling"
+#: src/Configuration.php:190 src/Configuration.php:198
+msgid "left"
+msgstr "links"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:29
-msgid "Hide the spouses associated with an individual"
-msgstr "Verberg de partners van een persoon"
+#: src/Configuration.php:191 src/Configuration.php:199
+msgid "right"
+msgstr "rechts"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:36
-msgid "Married names"
-msgstr "Huwelijksnamen"
+#: resources/views/modules/descendants-chart/config.phtml:111
+msgid "save"
+msgstr "opslaan"
 
-#: webtrees-descendants-chart/src/Configuration.php:267
-msgid "Birth name only"
-msgstr "Alleen geboortenaam"
+#: src/Configuration.php:192 src/Configuration.php:200
+msgid "up"
+msgstr "omhoog"
 
-#: webtrees-descendants-chart/src/Configuration.php:268
-msgid "Married name only"
-msgstr "Alleen huwelijksnaam"
-
-#: webtrees-descendants-chart/src/Configuration.php:269
-msgid "Birth name with married name in brackets"
-msgstr "Geboortenaam met huwelijksnaam tussen haakjes"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:46
-msgid "Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is shown — replacing the birth name, appended in brackets after the birth name, or hidden."
-msgstr "Of de huwelijksnaam (uit een naamsvermelding van het type \"MARRIED\" of \"_MARNM\") wordt weergegeven — ter vervanging van de geboortenaam, tussen haakjes achter de geboortenaam, of verborgen."
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:53
-msgid "Open individual in new browser window/tab"
-msgstr "Open persoon in nieuw browservenster/tabblad"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:59
-msgid "Open the current individual's detail page in a new browser window/tab when it's left-clicked, otherwise the current window/tab is used."
-msgstr "Open de detailpagina van de huidige persoon in een nieuw browservenster/tabblad als er met de linkermuisknop op wordt geklikt, anders wordt het huidige venster/tabblad gebruikt."
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:67
-msgid "Show alternative name of individual"
-msgstr "Toon alternatieve naam van persoon"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:73
-msgid "Displays a person's alternate name, if available. This simultaneously enlarges the individuals' respective boxes to create the necessary space for the display."
-msgstr "Toont de alternatieve naam van een persoon, indien beschikbaar. Dit vergroot tegelijkertijd de respectievelijke persoonsvakken om de nodige ruimte voor de weergave te maken."
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/orientation.phtml:22
-msgid "Orientation"
-msgstr "Oriëntatie"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:39
-msgid "Individual"
-msgstr "Persoon"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:64
+#: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
 msgstr "weergeven"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:75
-msgid "Show more options"
-msgstr "Meer opties"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:76
-msgid "Hide more options"
-msgstr "Minder opties"
-
-msgid "Name abbreviation when space is tight"
-msgstr "Afkorting van naam bij beperkte ruimte"
-
-msgid "Automatic (based on tree's surname tradition)"
-msgstr "Automatisch (op basis van de achternaamtraditie van de stamboom)"
-
-msgid "Abbreviate given names first"
-msgstr "Voornamen eerst afkorten"
-
-msgid "Abbreviate surnames first"
-msgstr "Achternamen eerst afkorten"
-
-msgid "Controls which name part shrinks first when a box is too narrow for the full name. \"Automatic\" uses the tree's surname tradition (Icelandic abbreviates surnames; everything else abbreviates given names)."
-msgstr "Bepaalt welk naamdeel eerst wordt afgekort wanneer een vak te smal is voor de volledige naam. \"Automatisch\" gebruikt de achternaamtraditie van de stamboom (IJslands kort achternamen af; al het andere kort voornamen af)."
-
-#: resources/views/modules/fan-chart/form/display.phtml
-msgid "Show nicknames in display names"
-msgstr "Toon bijnamen in weergavenamen"
-
-#: resources/views/modules/fan-chart/form/display.phtml
-msgid "Inserts the GEDCOM NICK value in quotes between the given names and the surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees behaviour for trees that store nicknames in the separate GEDCOM NICK field."
-msgstr "Voegt de GEDCOM NICK-waarde tussen aanhalingstekens in tussen de voornamen en de achternaam (bv. Martin \"Chalky\" White). Bootst het oude webtrees-gedrag na voor stambomen die bijnamen in het afzonderlijke GEDCOM NICK-veld opslaan."
-
-msgid "Behavior"
-msgstr "Gedrag"

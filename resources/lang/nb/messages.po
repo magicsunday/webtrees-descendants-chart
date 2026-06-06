@@ -1,7 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
-"POT-Creation-Date: 2024-12-22 12:28+0100\n"
+"Report-Msgid-Bugs-To: https://github.com/magicsunday/webtrees-descendants-"
+"chart/issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
 "PO-Revision-Date: 2024-12-22 12:55+0100\n"
 "Last-Translator: Rico Sonntag <mail@ricosonntag.de>\n"
 "Language-Team: \n"
@@ -18,171 +20,66 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: webtrees-descendants-chart/src/Configuration.php:173
-#: webtrees-descendants-chart/src/Configuration.php:181
-msgid "left"
-msgstr "venstre"
+#: src/Configuration.php:405
+msgid "Abbreviate given names first"
+msgstr "Forkort fornavn først"
 
-#: webtrees-descendants-chart/src/Configuration.php:174
-#: webtrees-descendants-chart/src/Configuration.php:182
-msgid "right"
-msgstr "høyre"
+#: src/Configuration.php:406
+msgid "Abbreviate surnames first"
+msgstr "Forkort etternavn først"
 
-#: webtrees-descendants-chart/src/Configuration.php:175
-#: webtrees-descendants-chart/src/Configuration.php:183
-msgid "up"
-msgstr "opp"
-
-#: webtrees-descendants-chart/src/Configuration.php:176
-#: webtrees-descendants-chart/src/Configuration.php:184
-msgid "down"
-msgstr "ned"
-
-#: webtrees-descendants-chart/src/Module.php:131
-#: webtrees-descendants-chart/src/Module.php:247
-msgid "Descendants chart"
-msgstr "Etterkommerdiagram"
-
-#: webtrees-descendants-chart/src/Module.php:141
+#: src/Module.php:142
 msgid "An overview of an individual’s descendants."
 msgstr "Et diagram over en persons etterkommere."
 
-#: webtrees-descendants-chart/src/Module.php:244
-#: webtrees-descendants-chart/src/Traits/ModuleChartTrait.php:41
+#: src/Configuration.php:404
+msgid "Automatic (based on tree's surname tradition)"
+msgstr "Automatisk (basert på treets etternavnstradisjon)"
+
+#: resources/views/modules/descendants-chart/form/behavior.phtml:23
+msgid "Behavior"
+msgstr "Atferd"
+
+#: src/Configuration.php:270
+msgid "Birth name only"
+msgstr "Bare fødselsnavn"
+
+#: src/Configuration.php:272
+msgid "Birth name with married name in brackets"
+msgstr "Fødselsnavn med navn som gift i parentes"
+
+#: resources/views/modules/descendants-chart/config.phtml:25
+msgid "Control panel"
+msgstr "Kontrollpanel"
+
+#: resources/views/modules/descendants-chart/config.phtml:84
+msgid ""
+"Controls which name part shrinks first when a box is too narrow for the full "
+"name. \"Automatic\" uses the tree's surname tradition (Icelandic abbreviates "
+"surnames; everything else abbreviates given names)."
+msgstr ""
+"Styrer hvilken navnedel som forkortes først når en boks er for smal for hele "
+"navnet. «Automatisk» bruker treets etternavnstradisjon (islandsk forkorter "
+"etternavn; alt annet forkorter fornavn)."
+
+#: src/Module.php:131 src/Module.php:250
+msgid "Descendants chart"
+msgstr "Etterkommerdiagram"
+
+#: src/Module.php:247 src/Traits/ModuleChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Etterkommerdiagram for %s"
 
-#: webtrees-descendants-chart/src/Module.php:260
-msgid "Use Ctrl + scroll to zoom in the view"
-msgstr "Bruk Ctrl + scroll for zoom"
-
-#: webtrees-descendants-chart/src/Module.php:261
-msgid "Move the view with two fingers"
-msgstr "Bruk to fingre for å flytte utsnitt"
-
-#: webtrees-descendants-chart/src/Traits/ModuleConfigTrait.php:95
-#, php-format
-msgid "The preferences for the module “%s” have been updated."
-msgstr "Innstillingene for modulen “%s” har blitt oppdatert."
-
-#: webtrees-module-base/src/Processor/DateProcessor.php:129
-#, php-format
-msgid "Born: %s"
-msgstr "Født: %s"
-
-#: webtrees-module-base/src/Processor/DateProcessor.php:133
-#, php-format
-msgid "Died: %s"
-msgstr "Død: %s"
-
-#: webtrees-module-base/src/Processor/DateProcessor.php:137
-msgid "Deceased"
-msgstr "Død"
-
-#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/center-button.phtml:18
-msgid "Re center"
-msgstr "Tilbakestill"
-
-#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
-msgid "Switch between full screen mode and normal view"
-msgstr "Bytt mellom fullskjerm og normal visning"
-
-#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/help-button.phtml:17
-msgid "Show help"
-msgstr "Vis hjelp"
-
-#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/png-export-button.phtml:18
-msgid "Export as PNG"
-msgstr "Eksporter som PNG"
-
-#: webtrees-descendants-chart/resources/views/modules/components/buttonbar/svg-export-button.phtml:18
-msgid "Export as SVG"
-msgstr "Eksporter som SVG"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
-msgid "Control panel"
-msgstr "Kontrollpanel"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:25
-msgid "Modules"
-msgstr "Moduler"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:44
-msgid "General"
-msgstr "Generelt"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:50
-msgid "Hide the SVG export button"
-msgstr "Skjul SVG-eksportknappen"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:60
-msgid "Hide the PNG export button"
-msgstr "Skjul PNG-eksportknappen"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:73
-msgid "save"
-msgstr "lagre"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/config.phtml:78
-msgid "cancel"
-msgstr "avbryt"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/generations.phtml:22
-msgid "Generations"
-msgstr "Generasjoner"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:23
-msgid "Layout"
-msgstr "Utseende"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:29
-msgid "Hide the spouses associated with an individual"
-msgstr "Skjul etterkommeres ektefeller"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:36
-msgid "Married names"
-msgstr "Navn som gift"
-
-#: webtrees-descendants-chart/src/Configuration.php:267
-msgid "Birth name only"
-msgstr "Bare fødselsnavn"
-
-#: webtrees-descendants-chart/src/Configuration.php:268
-msgid "Married name only"
-msgstr "Bare navn som gift"
-
-#: webtrees-descendants-chart/src/Configuration.php:269
-msgid "Birth name with married name in brackets"
-msgstr "Fødselsnavn med navn som gift i parentes"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:46
-msgid ""
-"Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
-"shown — replacing the birth name, appended in brackets after the birth name, "
-"or hidden."
-msgstr "Om det gifte navnet (fra en NAME-oppføring av typen \"MARRIED\" eller \"_MARNM\") vises — erstatter fødselsnavnet, settes i parentes etter fødselsnavnet, eller skjules."
-"Om navnet som gift (fra en \"MARRIED\"- eller \"_MARNM\"-navneoppføring) "
-"vises — erstatter fødselsnavnet, legges til i parentes etter fødselsnavnet, "
-"eller skjules."
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:53
-msgid "Open individual in new browser window/tab"
-msgstr "Åpne person i nytt vindu/fane"
-
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:59
-msgid ""
-"Open the current individual's detail page in a new browser window/tab when "
-"it's left-clicked, otherwise the current window/tab is used."
+#: resources/views/modules/descendants-chart/form/details.phtml:23
+msgid "Details"
 msgstr ""
-"Åpner gjeldende persons faktaside i nytt vindu/fane ved venstreklikk. Om "
-"ikke, åpnes siden i samme vindu/fane."
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:67
-msgid "Show alternative name of individual"
-msgstr "Vis alternativt navn på person"
+#: resources/views/modules/descendants-chart/form/display.phtml:23
+msgid "Display"
+msgstr ""
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/layout.phtml:73
+#: resources/views/modules/descendants-chart/form/details.phtml:34
 msgid ""
 "Displays a person's alternate name, if available. This simultaneously "
 "enlarges the individuals' respective boxes to create the necessary space for "
@@ -191,48 +88,157 @@ msgstr ""
 "Viser alternative navn på personer, om dette er tilgjengelig. Dette vil "
 "samtidig utvide personbokser for å gi plass til visningen."
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/form/orientation.phtml:22
-msgid "Orientation"
-msgstr "Orientering"
+#: resources/views/modules/components/buttonbar/png-export-button.phtml:18
+msgid "Export as PNG"
+msgstr "Eksporter som PNG"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:39
-msgid "Individual"
-msgstr "Person"
+#: resources/views/modules/components/buttonbar/svg-export-button.phtml:18
+msgid "Export as SVG"
+msgstr "Eksporter som SVG"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:64
-msgid "view"
-msgstr "vis"
+#: resources/views/modules/descendants-chart/config.phtml:50
+msgid "General"
+msgstr "Generelt"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:75
-msgid "Show more options"
-msgstr "Vis flere valg"
+#: resources/views/modules/descendants-chart/form/generations.phtml:22
+msgid "Generations"
+msgstr "Generasjoner"
 
-#: webtrees-descendants-chart/resources/views/modules/descendants-chart/page.phtml:76
+#: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Hide more options"
 msgstr "Skjul flere valg"
 
+#: resources/views/modules/descendants-chart/config.phtml:64
+msgid "Hide the PNG export button"
+msgstr "Skjul PNG-eksportknappen"
+
+#: resources/views/modules/descendants-chart/config.phtml:55
+msgid "Hide the SVG export button"
+msgstr "Skjul SVG-eksportknappen"
+
+#: resources/views/modules/descendants-chart/form/display.phtml:28
+msgid "Hide the spouses associated with an individual"
+msgstr "Skjul etterkommeres ektefeller"
+
+#: resources/views/modules/descendants-chart/page.phtml:39
+msgid "Individual"
+msgstr "Person"
+
+#: resources/views/modules/descendants-chart/form/details.phtml:46
+msgid ""
+"Inserts the GEDCOM NICK value in quotes between the given names and the "
+"surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees "
+"behaviour for trees that store nicknames in the separate GEDCOM NICK field."
+msgstr ""
+"Setter inn GEDCOM NICK-verdien i anførselstegn mellom fornavn og etternavn "
+"(f.eks. Martin \"Chalky\" White). Gjenskaper den tidligere webtrees-"
+"oppførselen for trær som lagrer kallenavn i det separate GEDCOM NICK-feltet."
+
+#: src/Configuration.php:271
+msgid "Married name only"
+msgstr "Bare navn som gift"
+
+#: resources/views/modules/descendants-chart/config.phtml:90
+msgid "Married names"
+msgstr "Navn som gift"
+
+#: resources/views/modules/descendants-chart/config.phtml:25
+msgid "Modules"
+msgstr "Moduler"
+
+#: src/Module.php:270
+msgid "Move the view with two fingers"
+msgstr "Bruk to fingre for å flytte utsnitt"
+
+#: resources/views/modules/descendants-chart/config.phtml:73
 msgid "Name abbreviation when space is tight"
 msgstr "Navneforkortelse når plassen er trang"
 
-msgid "Automatic (based on tree's surname tradition)"
-msgstr "Automatisk (basert på treets etternavnstradisjon)"
+#: resources/views/modules/descendants-chart/form/behavior.phtml:28
+msgid "Open individual in new browser window/tab"
+msgstr "Åpne person i nytt vindu/fane"
 
-msgid "Abbreviate given names first"
-msgstr "Forkort fornavn først"
+#: resources/views/modules/descendants-chart/form/behavior.phtml:34
+msgid ""
+"Open the current individual's detail page in a new browser window/tab when "
+"it's left-clicked, otherwise the current window/tab is used."
+msgstr ""
+"Åpner gjeldende persons faktaside i nytt vindu/fane ved venstreklikk. Om "
+"ikke, åpnes siden i samme vindu/fane."
 
-msgid "Abbreviate surnames first"
-msgstr "Forkort etternavn først"
+#: resources/views/modules/descendants-chart/form/orientation.phtml:22
+msgid "Orientation"
+msgstr "Orientering"
 
-msgid "Controls which name part shrinks first when a box is too narrow for the full name. \"Automatic\" uses the tree's surname tradition (Icelandic abbreviates surnames; everything else abbreviates given names)."
-msgstr "Styrer hvilken navnedel som forkortes først når en boks er for smal for hele navnet. «Automatisk» bruker treets etternavnstradisjon (islandsk forkorter etternavn; alt annet forkorter fornavn)."
+#: resources/views/modules/components/buttonbar/center-button.phtml:18
+msgid "Re center"
+msgstr "Tilbakestill"
 
-#: resources/views/modules/fan-chart/form/display.phtml
+#: resources/views/modules/descendants-chart/form/details.phtml:28
+msgid "Show alternative name of individual"
+msgstr "Vis alternativt navn på person"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:17
+msgid "Show help"
+msgstr "Vis hjelp"
+
+#: resources/views/modules/descendants-chart/page.phtml:76
+msgid "Show more options"
+msgstr "Vis flere valg"
+
+#: resources/views/modules/descendants-chart/form/details.phtml:40
 msgid "Show nicknames in display names"
 msgstr "Vis kallenavn i visningsnavn"
 
-#: resources/views/modules/fan-chart/form/display.phtml
-msgid "Inserts the GEDCOM NICK value in quotes between the given names and the surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees behaviour for trees that store nicknames in the separate GEDCOM NICK field."
-msgstr "Setter inn GEDCOM NICK-verdien i anførselstegn mellom fornavn og etternavn (f.eks. Martin \"Chalky\" White). Gjenskaper den tidligere webtrees-oppførselen for trær som lagrer kallenavn i det separate GEDCOM NICK-feltet."
+#: resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
+msgid "Switch between full screen mode and normal view"
+msgstr "Bytt mellom fullskjerm og normal visning"
 
-msgid "Behavior"
-msgstr "Atferd"
+#: src/Traits/ModuleConfigTrait.php:103
+#, php-format
+msgid "The preferences for the module “%s” have been updated."
+msgstr "Innstillingene for modulen “%s” har blitt oppdatert."
+
+#: src/Module.php:269
+msgid "Use Ctrl + scroll to zoom in the view"
+msgstr "Bruk Ctrl + scroll for zoom"
+
+#: resources/views/modules/descendants-chart/config.phtml:101
+msgid ""
+"Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
+"shown — replacing the birth name, appended in brackets after the birth name, "
+"or hidden."
+msgstr ""
+"Om det gifte navnet (fra en NAME-oppføring av typen \"MARRIED\" eller "
+"\"_MARNM\") vises — erstatter fødselsnavnet, settes i parentes etter "
+"fødselsnavnet, eller skjules.Om navnet som gift (fra en \"MARRIED\"- eller "
+"\"_MARNM\"-navneoppføring) vises — erstatter fødselsnavnet, legges til i "
+"parentes etter fødselsnavnet, eller skjules."
+
+#: resources/views/modules/descendants-chart/config.phtml:116
+msgid "cancel"
+msgstr "avbryt"
+
+#: src/Configuration.php:193 src/Configuration.php:201
+msgid "down"
+msgstr "ned"
+
+#: src/Configuration.php:190 src/Configuration.php:198
+msgid "left"
+msgstr "venstre"
+
+#: src/Configuration.php:191 src/Configuration.php:199
+msgid "right"
+msgstr "høyre"
+
+#: resources/views/modules/descendants-chart/config.phtml:111
+msgid "save"
+msgstr "lagre"
+
+#: src/Configuration.php:192 src/Configuration.php:200
+msgid "up"
+msgstr "opp"
+
+#: resources/views/modules/descendants-chart/page.phtml:65
+msgid "view"
+msgstr "vis"
