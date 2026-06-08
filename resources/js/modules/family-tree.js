@@ -92,7 +92,7 @@ function coupleToFamilies(coupleData) {
  * @returns {number}
  */
 export function familyRenderedWidth(familyData, boxSize, spouseGap) {
-    if (!familyData || familyData.kind !== "family") {
+    if (familyData?.kind !== "family") {
         return 0;
     }
     const renderedCount =
@@ -113,7 +113,7 @@ export function familyRenderedWidth(familyData, boxSize, spouseGap) {
  * @returns {Array<{data: object, isReal: boolean}>}
  */
 export function familyRenderableMembers(familyData) {
-    if (!familyData || familyData.kind !== "family") {
+    if (familyData?.kind !== "family") {
         return [];
     }
     const list = [];
