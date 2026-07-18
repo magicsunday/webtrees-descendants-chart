@@ -436,4 +436,27 @@ class Configuration
             ? $value
             : NameAbbreviation::AUTO;
     }
+
+    /**
+     * Returns the settings that have to travel with the re-centering URL.
+     *
+     * The update route rebuilds the node data server-side, so every setting the
+     * data facade reads while building it must be forwarded — otherwise
+     * clicking a person to re-center silently resets that setting to the module
+     * preference default. Settings the browser applies on its own (name
+     * abbreviation, alternative names) live in the client-side chart options and
+     * are deliberately not listed here.
+     *
+     * @return array<string, int|string>
+     */
+    public function getRouteToggleParams(): array
+    {
+        return [
+            'generations'      => $this->getGenerations(),
+            'layout'           => $this->getLayout(),
+            'hideSpouses'      => $this->getHideSpouses() ? '1' : '0',
+            'marriedNamesMode' => $this->getMarriedNamesMode(),
+            'showNicknames'    => $this->getShowNicknames() ? '1' : '0',
+        ];
+    }
 }

@@ -179,4 +179,35 @@ final class ConfigurationTest extends TestCase
 
         self::assertSame(Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED, $configuration->getMarriedNamesMode());
     }
+
+    /**
+     * The re-centering URL is rebuilt from these parameters. Every setting the
+     * data facade reads while building node data has to appear here, otherwise
+     * clicking a person silently resets it to the module preference default.
+     */
+    #[Test]
+    public function routeToggleParamsCarryEverySettingTheFacadeReads(): void
+    {
+        $configuration = $this->buildConfiguration(
+            [
+                'generations'      => '5',
+                'layout'           => Configuration::LAYOUT_TOPBOTTOM,
+                'hideSpouses'      => '1',
+                'marriedNamesMode' => Configuration::MARRIED_NAMES_ONLY,
+                'showNicknames'    => '1',
+            ],
+            []
+        );
+
+        self::assertSame(
+            [
+                'generations'      => 5,
+                'layout'           => Configuration::LAYOUT_TOPBOTTOM,
+                'hideSpouses'      => '1',
+                'marriedNamesMode' => Configuration::MARRIED_NAMES_ONLY,
+                'showNicknames'    => '1',
+            ],
+            $configuration->getRouteToggleParams()
+        );
+    }
 }
