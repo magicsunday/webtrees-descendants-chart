@@ -181,12 +181,13 @@ final class ConfigurationTest extends TestCase
     }
 
     /**
-     * The re-centering URL is rebuilt from these parameters. Every setting the
-     * data facade reads while building node data has to appear here, otherwise
-     * clicking a person silently resets it to the module preference default.
+     * The enabled polarity. The boolean settings have to leave as the strings
+     * `'1'`/`'0'`, because `Validator::boolean()` compares strictly — an int
+     * would match neither branch and fall back to the preference default, which
+     * is the very regression this list prevents.
      */
     #[Test]
-    public function routeToggleParamsCarryEverySettingTheFacadeReads(): void
+    public function routeParamsCarryTheEnabledDisplaySettings(): void
     {
         $configuration = $this->buildConfiguration(
             [
@@ -205,6 +206,68 @@ final class ConfigurationTest extends TestCase
                 'layout'           => Configuration::LAYOUT_TOPBOTTOM,
                 'hideSpouses'      => '1',
                 'marriedNamesMode' => Configuration::MARRIED_NAMES_ONLY,
+                'showNicknames'    => '1',
+            ],
+            $configuration->getRouteToggleParams()
+        );
+    }
+
+    /**
+     * The disabled polarity, which the enabled case cannot discriminate: with
+     * both toggles on, a raw passthrough of the query parameters would produce
+     * the same result as the intended mapping.
+     */
+    #[Test]
+    public function routeParamsCarryTheDisabledDisplaySettings(): void
+    {
+        $configuration = $this->buildConfiguration(
+            [
+                'generations'      => '3',
+                'layout'           => Configuration::LAYOUT_LEFTRIGHT,
+                'hideSpouses'      => '0',
+                'marriedNamesMode' => Configuration::MARRIED_NAMES_OFF,
+                'showNicknames'    => '0',
+            ],
+            []
+        );
+
+        self::assertSame(
+            [
+                'generations'      => 3,
+                'layout'           => Configuration::LAYOUT_LEFTRIGHT,
+                'hideSpouses'      => '0',
+                'marriedNamesMode' => Configuration::MARRIED_NAMES_OFF,
+                'showNicknames'    => '0',
+            ],
+            $configuration->getRouteToggleParams()
+        );
+    }
+
+    /**
+     * The scenario the forwarding exists for: without any request parameter the
+     * effective value is the module preference, and that resolved value — not an
+     * echo of the URL — is what has to travel on.
+     */
+    #[Test]
+    public function routeParamsResolveFromModulePreferencesWhenTheRequestIsEmpty(): void
+    {
+        $configuration = $this->buildConfiguration(
+            [],
+            [
+                'default_generations'      => '7',
+                'default_layout'           => Configuration::LAYOUT_RIGHTLEFT,
+                'default_hideSpouses'      => '1',
+                'default_marriedNamesMode' => Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED,
+                'default_showNicknames'    => '1',
+            ]
+        );
+
+        self::assertSame(
+            [
+                'generations'      => 7,
+                'layout'           => Configuration::LAYOUT_RIGHTLEFT,
+                'hideSpouses'      => '1',
+                'marriedNamesMode' => Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED,
                 'showNicknames'    => '1',
             ],
             $configuration->getRouteToggleParams()
