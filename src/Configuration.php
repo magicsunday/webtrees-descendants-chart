@@ -95,6 +95,13 @@ class Configuration
     ];
 
     /**
+     * The memoised route parameters, resolved on first use.
+     *
+     * @var array{generations: int, layout: string, hideSpouses: string, marriedNamesMode: string, showNicknames: string}|null
+     */
+    private ?array $routeToggleParams = null;
+
+    /**
      * Configuration constructor.
      *
      * @param ServerRequestInterface $request
@@ -447,11 +454,17 @@ class Configuration
      * abbreviation, alternative names) live in the client-side chart options and
      * are deliberately not listed here.
      *
-     * @return array<string, int|string>
+     * Memoised because the update route is built once per node, while
+     * AbstractModule::getPreference() issues a database query on every call —
+     * resolving five settings per node would put the query count in linear
+     * proportion to the tree size. The configuration is constructed per request,
+     * so the resolved values cannot go stale within its lifetime.
+     *
+     * @return array{generations: int, layout: string, hideSpouses: string, marriedNamesMode: string, showNicknames: string}
      */
     public function getRouteToggleParams(): array
     {
-        return [
+        return $this->routeToggleParams ??= [
             'generations'      => $this->getGenerations(),
             'layout'           => $this->getLayout(),
             'hideSpouses'      => $this->getHideSpouses() ? '1' : '0',
