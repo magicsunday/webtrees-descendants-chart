@@ -21,9 +21,9 @@
  * - many families ⇒ a `pseudo-root` node holds them as children. Pseudo-roots
  *   are layout-only; the renderer skips them.
  *
- * @param {object} coupleData
+ * @param {CoupleNode} coupleData The wire-format couple tree emitted by the PHP DataFacade
  *
- * @returns {object}
+ * @returns {FamilyTreeNode}
  */
 export function buildFamilyTree(coupleData) {
     const families = coupleToFamilies(coupleData);
@@ -36,6 +36,13 @@ export function buildFamilyTree(coupleData) {
     };
 }
 
+/**
+ * Converts one wire-format couple node into the family-nodes it contributes.
+ *
+ * @param {CoupleNode} coupleData The couple node to convert
+ *
+ * @returns {FamilyNode[]}
+ */
 function coupleToFamilies(coupleData) {
     if (!coupleData || !Array.isArray(coupleData.members) || coupleData.members.length === 0) {
         return [];
@@ -85,9 +92,9 @@ function coupleToFamilies(coupleData) {
  * both real and spouse boxes spans `2 × box + spouseGap`; a spouse-only family
  * or a singleton spans one box.
  *
- * @param {object} familyData
- * @param {number} boxSize
- * @param {number} spouseGap
+ * @param {FamilyTreeNode} familyData The family-tree node to measure
+ * @param {number}         boxSize    The box extent along the spread axis
+ * @param {number}         spouseGap  The gap between the real-person and spouse box
  *
  * @returns {number}
  */
@@ -108,9 +115,9 @@ export function familyRenderedWidth(familyData, boxSize, spouseGap) {
  * this family-node should render, ordered left-to-right (vertical layout) or
  * top-to-bottom (horizontal layout).
  *
- * @param {object} familyData
+ * @param {FamilyTreeNode} familyData The family-tree node to render
  *
- * @returns {Array<{data: object, isReal: boolean}>}
+ * @returns {Array<{data: Data, isReal: boolean}>}
  */
 export function familyRenderableMembers(familyData) {
     if (familyData?.kind !== "family") {

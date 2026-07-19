@@ -31,7 +31,7 @@ import { familyRenderableMembers } from "../family-tree.js";
  * @param {Orientation}        orientation      The active orientation
  * @param {boolean}            isVerticalLayout True for top-bottom / bottom-top
  *
- * @returns {{renderedBoxes: Array, connections: Array}}
+ * @returns {{renderedBoxes: RenderedBox[], connections: Array}}
  */
 export function buildConnections(root, orientation, isVerticalLayout) {
     const stackBox = isVerticalLayout ? orientation.boxWidth : orientation.boxHeight;
