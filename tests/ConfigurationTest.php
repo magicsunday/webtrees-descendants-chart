@@ -191,22 +191,26 @@ final class ConfigurationTest extends TestCase
     {
         $configuration = $this->buildConfiguration(
             [
-                'generations'      => '5',
-                'layout'           => Configuration::LAYOUT_TOPBOTTOM,
-                'hideSpouses'      => '1',
-                'marriedNamesMode' => Configuration::MARRIED_NAMES_ONLY,
-                'showNicknames'    => '1',
+                'generations'         => '5',
+                'layout'              => Configuration::LAYOUT_TOPBOTTOM,
+                'hideSpouses'         => '1',
+                'marriedNamesMode'    => Configuration::MARRIED_NAMES_ONLY,
+                'showNicknames'       => '1',
+                'openNewTabOnClick'   => '1',
+                'showAlternativeName' => '1',
             ],
             []
         );
 
         self::assertSame(
             [
-                'generations'      => 5,
-                'layout'           => Configuration::LAYOUT_TOPBOTTOM,
-                'hideSpouses'      => '1',
-                'marriedNamesMode' => Configuration::MARRIED_NAMES_ONLY,
-                'showNicknames'    => '1',
+                'generations'         => 5,
+                'layout'              => Configuration::LAYOUT_TOPBOTTOM,
+                'hideSpouses'         => '1',
+                'marriedNamesMode'    => Configuration::MARRIED_NAMES_ONLY,
+                'showNicknames'       => '1',
+                'openNewTabOnClick'   => '1',
+                'showAlternativeName' => '1',
             ],
             $configuration->getRouteToggleParams()
         );
@@ -222,22 +226,26 @@ final class ConfigurationTest extends TestCase
     {
         $configuration = $this->buildConfiguration(
             [
-                'generations'      => '3',
-                'layout'           => Configuration::LAYOUT_LEFTRIGHT,
-                'hideSpouses'      => '0',
-                'marriedNamesMode' => Configuration::MARRIED_NAMES_OFF,
-                'showNicknames'    => '0',
+                'generations'         => '3',
+                'layout'              => Configuration::LAYOUT_LEFTRIGHT,
+                'hideSpouses'         => '0',
+                'marriedNamesMode'    => Configuration::MARRIED_NAMES_OFF,
+                'showNicknames'       => '0',
+                'openNewTabOnClick'   => '0',
+                'showAlternativeName' => '0',
             ],
             []
         );
 
         self::assertSame(
             [
-                'generations'      => 3,
-                'layout'           => Configuration::LAYOUT_LEFTRIGHT,
-                'hideSpouses'      => '0',
-                'marriedNamesMode' => Configuration::MARRIED_NAMES_OFF,
-                'showNicknames'    => '0',
+                'generations'         => 3,
+                'layout'              => Configuration::LAYOUT_LEFTRIGHT,
+                'hideSpouses'         => '0',
+                'marriedNamesMode'    => Configuration::MARRIED_NAMES_OFF,
+                'showNicknames'       => '0',
+                'openNewTabOnClick'   => '0',
+                'showAlternativeName' => '0',
             ],
             $configuration->getRouteToggleParams()
         );
@@ -254,21 +262,25 @@ final class ConfigurationTest extends TestCase
         $configuration = $this->buildConfiguration(
             [],
             [
-                'default_generations'      => '7',
-                'default_layout'           => Configuration::LAYOUT_RIGHTLEFT,
-                'default_hideSpouses'      => '1',
-                'default_marriedNamesMode' => Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED,
-                'default_showNicknames'    => '1',
+                'default_generations'         => '7',
+                'default_layout'              => Configuration::LAYOUT_RIGHTLEFT,
+                'default_hideSpouses'         => '1',
+                'default_marriedNamesMode'    => Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED,
+                'default_showNicknames'       => '1',
+                'default_openNewTabOnClick'   => '0',
+                'default_showAlternativeName' => '1',
             ]
         );
 
         self::assertSame(
             [
-                'generations'      => 7,
-                'layout'           => Configuration::LAYOUT_RIGHTLEFT,
-                'hideSpouses'      => '1',
-                'marriedNamesMode' => Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED,
-                'showNicknames'    => '1',
+                'generations'         => 7,
+                'layout'              => Configuration::LAYOUT_RIGHTLEFT,
+                'hideSpouses'         => '1',
+                'marriedNamesMode'    => Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED,
+                'showNicknames'       => '1',
+                'openNewTabOnClick'   => '0',
+                'showAlternativeName' => '1',
             ],
             $configuration->getRouteToggleParams()
         );

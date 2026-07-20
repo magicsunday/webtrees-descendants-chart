@@ -128,6 +128,16 @@ class Configuration
     private ?bool $showNicknames = null;
 
     /**
+     * Whether a click opens a new tab.
+     */
+    private ?bool $openNewTabOnClick = null;
+
+    /**
+     * Whether the alternative name is shown.
+     */
+    private ?bool $showAlternativeName = null;
+
+    /**
      * Configuration constructor.
      *
      * @param ServerRequestInterface $request
@@ -333,13 +343,17 @@ class Configuration
      */
     public function getOpenNewTabOnClick(): bool
     {
+        if ($this->openNewTabOnClick !== null) {
+            return $this->openNewTabOnClick;
+        }
+
         if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
             $validator = Validator::parsedBody($this->request);
         } else {
             $validator = Validator::queryParams($this->request);
         }
 
-        return $validator
+        return $this->openNewTabOnClick = $validator
             ->boolean(
                 'openNewTabOnClick',
                 (bool) $this->module->getPreference(
@@ -386,13 +400,17 @@ class Configuration
      */
     public function getShowAlternativeName(): bool
     {
+        if ($this->showAlternativeName !== null) {
+            return $this->showAlternativeName;
+        }
+
         if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
             $validator = Validator::parsedBody($this->request);
         } else {
             $validator = Validator::queryParams($this->request);
         }
 
-        return $validator
+        return $this->showAlternativeName = $validator
             ->boolean(
                 'showAlternativeName',
                 (bool) $this->module->getPreference(
@@ -509,16 +527,18 @@ class Configuration
      * proportion to the tree size. The configuration is constructed per request,
      * so the resolved values cannot go stale within its lifetime.
      *
-     * @return array{generations: int, layout: string, hideSpouses: string, marriedNamesMode: string, showNicknames: string}
+     * @return array{generations: int, layout: string, hideSpouses: string, marriedNamesMode: string, showNicknames: string, openNewTabOnClick: string, showAlternativeName: string}
      */
     public function getRouteToggleParams(): array
     {
         return [
-            'generations'      => $this->getGenerations(),
-            'layout'           => $this->getLayout(),
-            'hideSpouses'      => $this->getHideSpouses() ? '1' : '0',
-            'marriedNamesMode' => $this->getMarriedNamesMode(),
-            'showNicknames'    => $this->getShowNicknames() ? '1' : '0',
+            'generations'         => $this->getGenerations(),
+            'layout'              => $this->getLayout(),
+            'hideSpouses'         => $this->getHideSpouses() ? '1' : '0',
+            'marriedNamesMode'    => $this->getMarriedNamesMode(),
+            'showNicknames'       => $this->getShowNicknames() ? '1' : '0',
+            'openNewTabOnClick'   => $this->getOpenNewTabOnClick() ? '1' : '0',
+            'showAlternativeName' => $this->getShowAlternativeName() ? '1' : '0',
         ];
     }
 }
