@@ -95,6 +95,24 @@ class Configuration
     ];
 
     /**
+     * Memoised preference lookups, each resolved on first use.
+     *
+     * Every one of these getters is called once per node while the tree is
+     * built, and AbstractModule::getPreference() runs a `module_setting` query
+     * on each call without a cache of its own — so without memoisation the
+     * query count grows with the size of the chart.
+     */
+    private ?int $generations = null;
+
+    private ?string $layout = null;
+
+    private ?bool $hideSpouses = null;
+
+    private ?string $marriedNamesMode = null;
+
+    private ?bool $showNicknames = null;
+
+    /**
      * The memoised route parameters, resolved on first use.
      *
      * @var array{generations: int, layout: string, hideSpouses: string, marriedNamesMode: string, showNicknames: string}|null
@@ -129,7 +147,7 @@ class Configuration
             $validator = Validator::queryParams($this->request);
         }
 
-        return $validator
+        return $this->generations ??= $validator
             ->isBetween(self::MIN_GENERATIONS, self::MAX_GENERATIONS)
             ->integer(
                 'generations',
@@ -169,7 +187,7 @@ class Configuration
             $validator = Validator::queryParams($this->request);
         }
 
-        return $validator
+        return $this->layout ??= $validator
             ->isInArray([
                 self::LAYOUT_BOTTOMTOP,
                 self::LAYOUT_LEFTRIGHT,
@@ -222,7 +240,7 @@ class Configuration
             $validator = Validator::queryParams($this->request);
         }
 
-        return $validator
+        return $this->hideSpouses ??= $validator
             ->boolean(
                 'hideSpouses',
                 (bool) $this->module->getPreference(
@@ -246,6 +264,13 @@ class Configuration
      */
     public function getMarriedNamesMode(): string
     {
+        // Returns before touching the preferences on purpose. The two
+        // getPreference() calls below each run a query, and memoising only the
+        // final return would not spare them — they are evaluated first.
+        if ($this->marriedNamesMode !== null) {
+            return $this->marriedNamesMode;
+        }
+
         if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
             $validator = Validator::parsedBody($this->request);
         } else {
@@ -260,7 +285,7 @@ class Configuration
 
         $mode = $validator->string('marriedNamesMode', $default);
 
-        return in_array($mode, self::MARRIED_NAMES_MODES, true)
+        return $this->marriedNamesMode = in_array($mode, self::MARRIED_NAMES_MODES, true)
             ? $mode
             : self::MARRIED_NAMES_OFF;
     }
@@ -320,7 +345,7 @@ class Configuration
             $validator = Validator::queryParams($this->request);
         }
 
-        return $validator
+        return $this->showNicknames ??= $validator
             ->boolean(
                 'showNicknames',
                 (bool) $this->module->getPreference(

@@ -273,4 +273,36 @@ final class ConfigurationTest extends TestCase
             $configuration->getRouteToggleParams()
         );
     }
+
+    #[Test]
+    public function readsEachPreferenceAtMostOncePerRequest(): void
+    {
+        $configuration = $this->buildConfiguration([], []);
+
+        // Every getter here is called once per node while the tree is built, and
+        // AbstractModule::getPreference() runs a `module_setting` query on every
+        // call — it holds no cache of its own. Without memoisation the query
+        // count therefore grows with the size of the chart. Ten rounds stand in
+        // for ten nodes: unmemoised that is 40+ queries, memoised it is at most
+        // one per distinct preference.
+        DB::connection()->flushQueryLog();
+        DB::connection()->enableQueryLog();
+
+        for ($i = 0; $i < 10; ++$i) {
+            $configuration->getGenerations();
+            $configuration->getLayout();
+            $configuration->getHideSpouses();
+            $configuration->getMarriedNamesMode();
+            $configuration->getShowNicknames();
+        }
+
+        $queries = DB::connection()->getQueryLog();
+        DB::connection()->disableQueryLog();
+
+        self::assertLessThanOrEqual(
+            6,
+            count($queries),
+            'preference lookups are not memoised — the query count scales with the number of nodes'
+        );
+    }
 }
