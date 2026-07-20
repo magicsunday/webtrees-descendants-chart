@@ -276,17 +276,14 @@ class DataFacade
 
     /**
      * Builds the AJAX update route stamped onto each NodeData, so clicking a
-     * descendant re-centers the chart while preserving generation and layout
-     * selections.
+     * descendant re-centers the chart while preserving every display setting
+     * the node data depends on.
      */
     private function getUpdateRoute(Individual $individual): string
     {
         return $this->chartUrl(
             $individual,
-            [
-                'generations' => $this->configuration->getGenerations(),
-                'layout'      => $this->configuration->getLayout(),
-            ]
+            $this->configuration->getRouteToggleParams()
         );
     }
 }

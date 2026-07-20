@@ -94,6 +94,49 @@ class Configuration
         self::MARRIED_NAMES_BIRTH_AND_MARRIED,
     ];
 
+    // The seven getters below are each called once per node while the tree is
+    // built. AbstractModule::getPreference() runs a `module_setting` query on
+    // every call and holds no cache, and Validator::__construct() re-scans all
+    // request parameters for valid UTF-8, so both costs would scale with the
+    // size of the chart. Each getter therefore returns its memoised value
+    // before doing either — an assignment at the return site would be too
+    // late, because the validator is built above it.
+
+    /**
+     * The resolved number of generations to display, or null until first resolved.
+     */
+    private ?int $generations = null;
+
+    /**
+     * The resolved tree layout, or null until first resolved.
+     */
+    private ?string $layout = null;
+
+    /**
+     * Whether spouses are hidden, or null until first resolved.
+     */
+    private ?bool $hideSpouses = null;
+
+    /**
+     * The resolved married-names display mode, or null until first resolved.
+     */
+    private ?string $marriedNamesMode = null;
+
+    /**
+     * Whether nicknames are shown, or null until first resolved.
+     */
+    private ?bool $showNicknames = null;
+
+    /**
+     * Whether a click opens a new tab, or null until first resolved.
+     */
+    private ?bool $openNewTabOnClick = null;
+
+    /**
+     * Whether the alternative name is shown, or null until first resolved.
+     */
+    private ?bool $showAlternativeName = null;
+
     /**
      * Configuration constructor.
      *
@@ -110,19 +153,35 @@ class Configuration
     }
 
     /**
+     * Returns the validator for whichever side of the request carries the
+     * parameters.
+     *
+     * Not memoised: every caller is a getter that returns its own memoised value
+     * before reaching this, so it runs at most once per setting per request.
+     */
+    private function requestValidator(): Validator
+    {
+        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
+            return Validator::parsedBody($this->request);
+        }
+
+        return Validator::queryParams($this->request);
+    }
+
+    /**
      * Returns the number of generations to display.
      *
      * @return int
      */
     public function getGenerations(): int
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
+        if ($this->generations !== null) {
+            return $this->generations;
         }
 
-        return $validator
+        $validator = $this->requestValidator();
+
+        return $this->generations = $validator
             ->isBetween(self::MIN_GENERATIONS, self::MAX_GENERATIONS)
             ->integer(
                 'generations',
@@ -156,13 +215,13 @@ class Configuration
      */
     public function getLayout(): string
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
+        if ($this->layout !== null) {
+            return $this->layout;
         }
 
-        return $validator
+        $validator = $this->requestValidator();
+
+        return $this->layout = $validator
             ->isInArray([
                 self::LAYOUT_BOTTOMTOP,
                 self::LAYOUT_LEFTRIGHT,
@@ -209,13 +268,13 @@ class Configuration
      */
     public function getHideSpouses(): bool
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
+        if ($this->hideSpouses !== null) {
+            return $this->hideSpouses;
         }
 
-        return $validator
+        $validator = $this->requestValidator();
+
+        return $this->hideSpouses = $validator
             ->boolean(
                 'hideSpouses',
                 (bool) $this->module->getPreference(
@@ -239,11 +298,12 @@ class Configuration
      */
     public function getMarriedNamesMode(): string
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
+        // This getter resolves TWO preferences, the legacy one included.
+        if ($this->marriedNamesMode !== null) {
+            return $this->marriedNamesMode;
         }
+
+        $validator = $this->requestValidator();
 
         $legacyDefault = ((bool) $this->module->getPreference('default_showMarriedNames', '0'))
             ? self::MARRIED_NAMES_ONLY
@@ -253,9 +313,11 @@ class Configuration
 
         $mode = $validator->string('marriedNamesMode', $default);
 
-        return in_array($mode, self::MARRIED_NAMES_MODES, true)
+        $this->marriedNamesMode = in_array($mode, self::MARRIED_NAMES_MODES, true)
             ? $mode
             : self::MARRIED_NAMES_OFF;
+
+        return $this->marriedNamesMode;
     }
 
     /**
@@ -281,13 +343,13 @@ class Configuration
      */
     public function getOpenNewTabOnClick(): bool
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
+        if ($this->openNewTabOnClick !== null) {
+            return $this->openNewTabOnClick;
         }
 
-        return $validator
+        $validator = $this->requestValidator();
+
+        return $this->openNewTabOnClick = $validator
             ->boolean(
                 'openNewTabOnClick',
                 (bool) $this->module->getPreference(
@@ -307,13 +369,13 @@ class Configuration
      */
     public function getShowNicknames(): bool
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
+        if ($this->showNicknames !== null) {
+            return $this->showNicknames;
         }
 
-        return $validator
+        $validator = $this->requestValidator();
+
+        return $this->showNicknames = $validator
             ->boolean(
                 'showNicknames',
                 (bool) $this->module->getPreference(
@@ -330,13 +392,13 @@ class Configuration
      */
     public function getShowAlternativeName(): bool
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
+        if ($this->showAlternativeName !== null) {
+            return $this->showAlternativeName;
         }
 
-        return $validator
+        $validator = $this->requestValidator();
+
+        return $this->showAlternativeName = $validator
             ->boolean(
                 'showAlternativeName',
                 (bool) $this->module->getPreference(
@@ -353,11 +415,7 @@ class Configuration
      */
     public function getHideSvgExport(): bool
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         return $validator
             ->boolean(
@@ -376,11 +434,7 @@ class Configuration
      */
     public function getHidePngExport(): bool
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         return $validator
             ->boolean(
@@ -417,11 +471,7 @@ class Configuration
      */
     public function getNameAbbreviation(): string
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         $value = $validator
             ->string(
@@ -435,5 +485,39 @@ class Configuration
         return in_array($value, NameAbbreviation::CHOICES, true)
             ? $value
             : NameAbbreviation::AUTO;
+    }
+
+    /**
+     * Returns the settings that have to travel with the re-centering URL.
+     *
+     * Clicking a person navigates to the page route afresh, so every setting the
+     * re-centered page has to restore must travel in the URL — otherwise that
+     * setting silently falls back to the module preference default. The list is
+     * therefore the user-settable form fields, not just what the data facade
+     * reads: `openNewTabOnClick` and `showAlternativeName` are resolved by the
+     * view rather than the facade and still have to be forwarded.
+     *
+     * `nameAbbreviation` is deliberately absent — it is an admin preference with
+     * no form field, so it resolves identically on the re-centered page.
+     *
+     * Cheap to call per node even though it resolves seven settings: each getter
+     * memoises its value, and AbstractModule::getPreference() would otherwise
+     * issue a database query on every call, putting the query count in linear
+     * proportion to the tree size. The configuration is constructed per request,
+     * so the resolved values cannot go stale within its lifetime.
+     *
+     * @return array{generations: int, layout: string, hideSpouses: string, marriedNamesMode: string, showNicknames: string, openNewTabOnClick: string, showAlternativeName: string}
+     */
+    public function getRouteToggleParams(): array
+    {
+        return [
+            'generations'         => $this->getGenerations(),
+            'layout'              => $this->getLayout(),
+            'hideSpouses'         => $this->getHideSpouses() ? '1' : '0',
+            'marriedNamesMode'    => $this->getMarriedNamesMode(),
+            'showNicknames'       => $this->getShowNicknames() ? '1' : '0',
+            'openNewTabOnClick'   => $this->getOpenNewTabOnClick() ? '1' : '0',
+            'showAlternativeName' => $this->getShowAlternativeName() ? '1' : '0',
+        ];
     }
 }

@@ -26,9 +26,12 @@ use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 
 /**
- * Verifies the married-names display mode resolution: explicit request value,
- * fallback to the new module preference, migration from the legacy
- * `default_showMarriedNames` boolean, and rejection of invalid values.
+ * Verifies how Configuration resolves request parameters and module
+ * preferences: the married-names display mode (explicit request value, the new
+ * preference, migration from the legacy `default_showMarriedNames` boolean,
+ * rejection of invalid values), the settings forwarded on the re-centering
+ * route, and the per-request memoisation that keeps the preference query count
+ * independent of the tree size.
  *
  * Uses an in-memory SQLite DB because AbstractModule::getPreference() is final
  * and cannot be stubbed; the real implementation reads from the
@@ -178,5 +181,188 @@ final class ConfigurationTest extends TestCase
         );
 
         self::assertSame(Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED, $configuration->getMarriedNamesMode());
+    }
+
+    /**
+     * The enabled polarity. The boolean settings have to leave as the strings
+     * `'1'`/`'0'`, because `Validator::boolean()` compares strictly — an int
+     * would match neither branch and fall back to the preference default, which
+     * is the very regression this list prevents.
+     */
+    #[Test]
+    public function routeParamsCarryTheEnabledDisplaySettings(): void
+    {
+        $configuration = $this->buildConfiguration(
+            [
+                'generations'         => '5',
+                'layout'              => Configuration::LAYOUT_TOPBOTTOM,
+                'hideSpouses'         => '1',
+                'marriedNamesMode'    => Configuration::MARRIED_NAMES_ONLY,
+                'showNicknames'       => '1',
+                'openNewTabOnClick'   => '1',
+                'showAlternativeName' => '1',
+            ],
+            []
+        );
+
+        self::assertSame(
+            [
+                'generations'         => 5,
+                'layout'              => Configuration::LAYOUT_TOPBOTTOM,
+                'hideSpouses'         => '1',
+                'marriedNamesMode'    => Configuration::MARRIED_NAMES_ONLY,
+                'showNicknames'       => '1',
+                'openNewTabOnClick'   => '1',
+                'showAlternativeName' => '1',
+            ],
+            $configuration->getRouteToggleParams()
+        );
+    }
+
+    /**
+     * The disabled polarity. `openNewTabOnClick` defaults to on
+     * (`default_openNewTabOnClick` is '1'), so an implementation that ignored the
+     * request parameter and resolved from the preference alone would emit '1'
+     * here — this case is what forces the request value to win, and pins the
+     * bool-to-string mapping in the other direction.
+     *
+     * It does not discriminate a raw passthrough of the query parameters: those
+     * are '0' and so is the expectation. Passthrough is caught by `generations`
+     * (string in, int out) and by the empty-request case.
+     */
+    #[Test]
+    public function routeParamsCarryTheDisabledDisplaySettings(): void
+    {
+        $configuration = $this->buildConfiguration(
+            [
+                'generations'         => '3',
+                'layout'              => Configuration::LAYOUT_LEFTRIGHT,
+                'hideSpouses'         => '0',
+                'marriedNamesMode'    => Configuration::MARRIED_NAMES_OFF,
+                'showNicknames'       => '0',
+                'openNewTabOnClick'   => '0',
+                'showAlternativeName' => '0',
+            ],
+            []
+        );
+
+        self::assertSame(
+            [
+                'generations'         => 3,
+                'layout'              => Configuration::LAYOUT_LEFTRIGHT,
+                'hideSpouses'         => '0',
+                'marriedNamesMode'    => Configuration::MARRIED_NAMES_OFF,
+                'showNicknames'       => '0',
+                'openNewTabOnClick'   => '0',
+                'showAlternativeName' => '0',
+            ],
+            $configuration->getRouteToggleParams()
+        );
+    }
+
+    /**
+     * The scenario the forwarding exists for: without any request parameter the
+     * effective value is the module preference, and that resolved value — not an
+     * echo of the URL — is what has to travel on.
+     */
+    #[Test]
+    public function routeParamsResolveFromModulePreferencesWhenTheRequestIsEmpty(): void
+    {
+        $configuration = $this->buildConfiguration(
+            [],
+            [
+                'default_generations'         => '7',
+                'default_layout'              => Configuration::LAYOUT_RIGHTLEFT,
+                'default_hideSpouses'         => '1',
+                'default_marriedNamesMode'    => Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED,
+                'default_showNicknames'       => '1',
+                'default_openNewTabOnClick'   => '0',
+                'default_showAlternativeName' => '1',
+            ]
+        );
+
+        self::assertSame(
+            [
+                'generations'         => 7,
+                'layout'              => Configuration::LAYOUT_RIGHTLEFT,
+                'hideSpouses'         => '1',
+                'marriedNamesMode'    => Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED,
+                'showNicknames'       => '1',
+                'openNewTabOnClick'   => '0',
+                'showAlternativeName' => '1',
+            ],
+            $configuration->getRouteToggleParams()
+        );
+    }
+
+    /**
+     * Pins the per-request query cost: however often the getters are called
+     * while the tree is built, each preference is read at most once.
+     */
+    #[Test]
+    public function readsEachPreferenceOnceHoweverOftenTheGettersAreCalled(): void
+    {
+        // Compares one round against ten rather than asserting a fixed number.
+        // A fixed bound would encode today's preference count — getMarriedNamesMode()
+        // reads two, so it is six — and would fail on an unrelated future addition
+        // while blaming memoisation. It would also pass vacuously if the getters
+        // stopped querying at all. Constant cost is the property that matters.
+        $oneRound  = $this->countPreferenceQueries(1);
+        $tenRounds = $this->countPreferenceQueries(10);
+
+        self::assertGreaterThan(0, $oneRound, 'the first round must actually read the preferences');
+        self::assertSame(
+            $oneRound,
+            $tenRounds,
+            'preference lookups are not memoised — the query cost scales with the number of nodes'
+        );
+    }
+
+    /**
+     * Runs all seven per-node getters $rounds times against a FRESH configuration and
+     * returns how many `module_setting` queries that produced. The instance has
+     * to be fresh per measurement — reusing one would leave it memoised from the
+     * previous round and report zero.
+     */
+    private function countPreferenceQueries(int $rounds): int
+    {
+        $configuration = $this->buildConfiguration([], []);
+        $connection    = DB::connection();
+        $connection->flushQueryLog();
+        $connection->enableQueryLog();
+
+        try {
+            for ($i = 0; $i < $rounds; ++$i) {
+                $configuration->getGenerations();
+                $configuration->getLayout();
+                $configuration->getHideSpouses();
+                $configuration->getMarriedNamesMode();
+                $configuration->getShowNicknames();
+                $configuration->getOpenNewTabOnClick();
+                $configuration->getShowAlternativeName();
+            }
+
+            // Counts only the preference reads the assertion talks about, so an
+            // unrelated query inside the window cannot change the verdict.
+            return count(array_filter($connection->getQueryLog(), $this->isPreferenceQuery(...)));
+        } finally {
+            $connection->disableQueryLog();
+            $connection->flushQueryLog();
+        }
+    }
+
+    /**
+     * Whether a query-log entry is a preference read.
+     *
+     * Declared as a named method with the log entry's shape rather than an
+     * inline closure: without the shape Rector wants a `(string)` cast on the
+     * query and PHPStan rejects that same cast as useless, so the two gates
+     * contradict each other.
+     *
+     * @param array{query: string, bindings: array<mixed>, time: float|null} $entry
+     */
+    private function isPreferenceQuery(array $entry): bool
+    {
+        return str_contains($entry['query'], 'module_setting');
     }
 }
