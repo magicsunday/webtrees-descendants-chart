@@ -310,7 +310,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /**
-     * Runs the per-node getters $rounds times against a FRESH configuration and
+     * Runs all seven per-node getters $rounds times against a FRESH configuration and
      * returns how many `module_setting` queries that produced. The instance has
      * to be fresh per measurement — reusing one would leave it memoised from the
      * previous round and report zero.
@@ -329,6 +329,8 @@ final class ConfigurationTest extends TestCase
                 $configuration->getHideSpouses();
                 $configuration->getMarriedNamesMode();
                 $configuration->getShowNicknames();
+                $configuration->getOpenNewTabOnClick();
+                $configuration->getShowAlternativeName();
             }
 
             // Counts only the preference reads the assertion talks about, so an

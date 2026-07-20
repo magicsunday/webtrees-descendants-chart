@@ -94,7 +94,7 @@ class Configuration
         self::MARRIED_NAMES_BIRTH_AND_MARRIED,
     ];
 
-    // The five getters below are each called once per node while the tree is
+    // The seven getters below are each called once per node while the tree is
     // built. AbstractModule::getPreference() runs a `module_setting` query on
     // every call and holds no cache, and Validator::__construct() re-scans all
     // request parameters for valid UTF-8, so both costs would scale with the
@@ -103,37 +103,37 @@ class Configuration
     // late, because the validator is built above it.
 
     /**
-     * The resolved number of generations to display.
+     * The resolved number of generations to display, or null until first resolved.
      */
     private ?int $generations = null;
 
     /**
-     * The resolved tree layout.
+     * The resolved tree layout, or null until first resolved.
      */
     private ?string $layout = null;
 
     /**
-     * Whether spouses are hidden.
+     * Whether spouses are hidden, or null until first resolved.
      */
     private ?bool $hideSpouses = null;
 
     /**
-     * The resolved married-names display mode.
+     * The resolved married-names display mode, or null until first resolved.
      */
     private ?string $marriedNamesMode = null;
 
     /**
-     * Whether nicknames are shown.
+     * Whether nicknames are shown, or null until first resolved.
      */
     private ?bool $showNicknames = null;
 
     /**
-     * Whether a click opens a new tab.
+     * Whether a click opens a new tab, or null until first resolved.
      */
     private ?bool $openNewTabOnClick = null;
 
     /**
-     * Whether the alternative name is shown.
+     * Whether the alternative name is shown, or null until first resolved.
      */
     private ?bool $showAlternativeName = null;
 
@@ -294,9 +294,7 @@ class Configuration
      */
     public function getMarriedNamesMode(): string
     {
-        // Returns before touching the preferences on purpose. The two
-        // getPreference() calls below each run a query, and memoising only the
-        // final return would not spare them — they are evaluated first.
+        // This getter resolves TWO preferences, the legacy one included.
         if ($this->marriedNamesMode !== null) {
             return $this->marriedNamesMode;
         }
@@ -514,16 +512,19 @@ class Configuration
     /**
      * Returns the settings that have to travel with the re-centering URL.
      *
-     * The update route rebuilds the node data server-side, so every setting the
-     * data facade reads while building it must be forwarded — otherwise
-     * clicking a person to re-center silently resets that setting to the module
-     * preference default. Settings the browser applies on its own (name
-     * abbreviation, alternative names) live in the client-side chart options and
-     * are deliberately not listed here.
+     * Clicking a person navigates to the page route afresh, so every setting the
+     * re-centered page has to restore must travel in the URL — otherwise that
+     * setting silently falls back to the module preference default. The list is
+     * therefore the user-settable form fields, not just what the data facade
+     * reads: `openNewTabOnClick` and `showAlternativeName` are resolved by the
+     * view rather than the facade and still have to be forwarded.
      *
-     * Memoised because the update route is built once per node, while
-     * AbstractModule::getPreference() issues a database query on every call —
-     * resolving five settings per node would put the query count in linear
+     * `nameAbbreviation` is deliberately absent — it is an admin preference with
+     * no form field, so it resolves identically on the re-centered page.
+     *
+     * Cheap to call per node even though it resolves seven settings: each getter
+     * memoises its value, and AbstractModule::getPreference() would otherwise
+     * issue a database query on every call, putting the query count in linear
      * proportion to the tree size. The configuration is constructed per request,
      * so the resolved values cannot go stale within its lifetime.
      *
