@@ -274,35 +274,72 @@ final class ConfigurationTest extends TestCase
         );
     }
 
+    /**
+     * Pins the per-request query cost: however often the getters are called
+     * while the tree is built, each preference is read at most once.
+     */
     #[Test]
-    public function readsEachPreferenceAtMostOncePerRequest(): void
+    public function readsEachPreferenceOnceHoweverOftenTheGettersAreCalled(): void
+    {
+        // Compares one round against ten rather than asserting a fixed number.
+        // A fixed bound would encode today's preference count — getMarriedNamesMode()
+        // reads two, so it is six — and would fail on an unrelated future addition
+        // while blaming memoisation. It would also pass vacuously if the getters
+        // stopped querying at all. Constant cost is the property that matters.
+        $oneRound  = $this->countPreferenceQueries(1);
+        $tenRounds = $this->countPreferenceQueries(10);
+
+        self::assertGreaterThan(0, $oneRound, 'the first round must actually read the preferences');
+        self::assertSame(
+            $oneRound,
+            $tenRounds,
+            'preference lookups are not memoised — the query cost scales with the number of nodes'
+        );
+    }
+
+    /**
+     * Runs the per-node getters $rounds times against a FRESH configuration and
+     * returns how many `module_setting` queries that produced. The instance has
+     * to be fresh per measurement — reusing one would leave it memoised from the
+     * previous round and report zero.
+     */
+    private function countPreferenceQueries(int $rounds): int
     {
         $configuration = $this->buildConfiguration([], []);
+        $connection    = DB::connection();
+        $connection->flushQueryLog();
+        $connection->enableQueryLog();
 
-        // Every getter here is called once per node while the tree is built, and
-        // AbstractModule::getPreference() runs a `module_setting` query on every
-        // call — it holds no cache of its own. Without memoisation the query
-        // count therefore grows with the size of the chart. Ten rounds stand in
-        // for ten nodes: unmemoised that is 40+ queries, memoised it is at most
-        // one per distinct preference.
-        DB::connection()->flushQueryLog();
-        DB::connection()->enableQueryLog();
+        try {
+            for ($i = 0; $i < $rounds; ++$i) {
+                $configuration->getGenerations();
+                $configuration->getLayout();
+                $configuration->getHideSpouses();
+                $configuration->getMarriedNamesMode();
+                $configuration->getShowNicknames();
+            }
 
-        for ($i = 0; $i < 10; ++$i) {
-            $configuration->getGenerations();
-            $configuration->getLayout();
-            $configuration->getHideSpouses();
-            $configuration->getMarriedNamesMode();
-            $configuration->getShowNicknames();
+            // Counts only the preference reads the assertion talks about, so an
+            // unrelated query inside the window cannot change the verdict.
+            return count(array_filter($connection->getQueryLog(), $this->isPreferenceQuery(...)));
+        } finally {
+            $connection->disableQueryLog();
+            $connection->flushQueryLog();
         }
+    }
 
-        $queries = DB::connection()->getQueryLog();
-        DB::connection()->disableQueryLog();
-
-        self::assertLessThanOrEqual(
-            6,
-            count($queries),
-            'preference lookups are not memoised — the query count scales with the number of nodes'
-        );
+    /**
+     * Whether a query-log entry is a preference read.
+     *
+     * Declared as a named method with the log entry's shape rather than an
+     * inline closure: without the shape Rector wants a `(string)` cast on the
+     * query and PHPStan rejects that same cast as useless, so the two gates
+     * contradict each other.
+     *
+     * @param array{query: string, bindings: array<mixed>, time: float|null} $entry
+     */
+    private function isPreferenceQuery(array $entry): bool
+    {
+        return str_contains($entry['query'], 'module_setting');
     }
 }

@@ -94,30 +94,38 @@ class Configuration
         self::MARRIED_NAMES_BIRTH_AND_MARRIED,
     ];
 
+    // The five getters below are each called once per node while the tree is
+    // built. AbstractModule::getPreference() runs a `module_setting` query on
+    // every call and holds no cache, and Validator::__construct() re-scans all
+    // request parameters for valid UTF-8, so both costs would scale with the
+    // size of the chart. Each getter therefore returns its memoised value
+    // before doing either — an assignment at the return site would be too
+    // late, because the validator is built above it.
+
     /**
-     * Memoised preference lookups, each resolved on first use.
-     *
-     * Every one of these getters is called once per node while the tree is
-     * built, and AbstractModule::getPreference() runs a `module_setting` query
-     * on each call without a cache of its own — so without memoisation the
-     * query count grows with the size of the chart.
+     * The resolved number of generations to display.
      */
     private ?int $generations = null;
 
+    /**
+     * The resolved tree layout.
+     */
     private ?string $layout = null;
 
+    /**
+     * Whether spouses are hidden.
+     */
     private ?bool $hideSpouses = null;
 
+    /**
+     * The resolved married-names display mode.
+     */
     private ?string $marriedNamesMode = null;
 
-    private ?bool $showNicknames = null;
-
     /**
-     * The memoised route parameters, resolved on first use.
-     *
-     * @var array{generations: int, layout: string, hideSpouses: string, marriedNamesMode: string, showNicknames: string}|null
+     * Whether nicknames are shown.
      */
-    private ?array $routeToggleParams = null;
+    private ?bool $showNicknames = null;
 
     /**
      * Configuration constructor.
@@ -141,13 +149,17 @@ class Configuration
      */
     public function getGenerations(): int
     {
+        if ($this->generations !== null) {
+            return $this->generations;
+        }
+
         if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
             $validator = Validator::parsedBody($this->request);
         } else {
             $validator = Validator::queryParams($this->request);
         }
 
-        return $this->generations ??= $validator
+        return $this->generations = $validator
             ->isBetween(self::MIN_GENERATIONS, self::MAX_GENERATIONS)
             ->integer(
                 'generations',
@@ -181,13 +193,17 @@ class Configuration
      */
     public function getLayout(): string
     {
+        if ($this->layout !== null) {
+            return $this->layout;
+        }
+
         if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
             $validator = Validator::parsedBody($this->request);
         } else {
             $validator = Validator::queryParams($this->request);
         }
 
-        return $this->layout ??= $validator
+        return $this->layout = $validator
             ->isInArray([
                 self::LAYOUT_BOTTOMTOP,
                 self::LAYOUT_LEFTRIGHT,
@@ -234,13 +250,17 @@ class Configuration
      */
     public function getHideSpouses(): bool
     {
+        if ($this->hideSpouses !== null) {
+            return $this->hideSpouses;
+        }
+
         if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
             $validator = Validator::parsedBody($this->request);
         } else {
             $validator = Validator::queryParams($this->request);
         }
 
-        return $this->hideSpouses ??= $validator
+        return $this->hideSpouses = $validator
             ->boolean(
                 'hideSpouses',
                 (bool) $this->module->getPreference(
@@ -339,13 +359,17 @@ class Configuration
      */
     public function getShowNicknames(): bool
     {
+        if ($this->showNicknames !== null) {
+            return $this->showNicknames;
+        }
+
         if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
             $validator = Validator::parsedBody($this->request);
         } else {
             $validator = Validator::queryParams($this->request);
         }
 
-        return $this->showNicknames ??= $validator
+        return $this->showNicknames = $validator
             ->boolean(
                 'showNicknames',
                 (bool) $this->module->getPreference(
@@ -489,7 +513,7 @@ class Configuration
      */
     public function getRouteToggleParams(): array
     {
-        return $this->routeToggleParams ??= [
+        return [
             'generations'      => $this->getGenerations(),
             'layout'           => $this->getLayout(),
             'hideSpouses'      => $this->getHideSpouses() ? '1' : '0',
