@@ -313,9 +313,11 @@ class Configuration
 
         $mode = $validator->string('marriedNamesMode', $default);
 
-        return $this->marriedNamesMode = in_array($mode, self::MARRIED_NAMES_MODES, true)
+        $this->marriedNamesMode = in_array($mode, self::MARRIED_NAMES_MODES, true)
             ? $mode
             : self::MARRIED_NAMES_OFF;
+
+        return $this->marriedNamesMode;
     }
 
     /**
