@@ -23,11 +23,11 @@ msgstr ""
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 "X-Loco-Parser: loco_parse_po\n"
 
-#: src/Configuration.php:477
+#: src/Configuration.php:479
 msgid "Abbreviate given names first"
 msgstr "Najprej skrajšaj osebna imena"
 
-#: src/Configuration.php:478
+#: src/Configuration.php:480
 msgid "Abbreviate surnames first"
 msgstr "Najprej skrajšaj priimke"
 
@@ -35,7 +35,7 @@ msgstr "Najprej skrajšaj priimke"
 msgid "An overview of an individual’s descendants."
 msgstr "Pregled potomcev osebe."
 
-#: src/Configuration.php:476
+#: src/Configuration.php:478
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Samodejno (glede na drevesno tradicijo priimkov)"
 
@@ -43,11 +43,11 @@ msgstr "Samodejno (glede na drevesno tradicijo priimkov)"
 msgid "Behavior"
 msgstr "Vedenje"
 
-#: src/Configuration.php:330
+#: src/Configuration.php:332
 msgid "Birth name only"
 msgstr "Samo rojstno ime"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:334
 msgid "Birth name with married name in brackets"
 msgstr "Rojstno ime s poročnim priimkom v oklepaju"
 
@@ -137,7 +137,7 @@ msgstr ""
 "Martin \"Chalky\" White). Posnema staro vedenje webtrees za drevesa, ki "
 "vzdevke shranjujejo v ločenem polju GEDCOM NICK."
 
-#: src/Configuration.php:331
+#: src/Configuration.php:333
 msgid "Married name only"
 msgstr "Samo poročni priimek"
 

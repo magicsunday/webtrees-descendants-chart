@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:477
+#: src/Configuration.php:479
 msgid "Abbreviate given names first"
 msgstr "Сокращать сначала имена"
 
-#: src/Configuration.php:478
+#: src/Configuration.php:480
 msgid "Abbreviate surnames first"
 msgstr "Сокращать сначала фамилии"
 
@@ -32,7 +32,7 @@ msgstr "Сокращать сначала фамилии"
 msgid "An overview of an individual’s descendants."
 msgstr "Диаграмма потомков в виде дерева."
 
-#: src/Configuration.php:476
+#: src/Configuration.php:478
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Автоматически (по традиции фамилий дерева)"
 
@@ -40,11 +40,11 @@ msgstr "Автоматически (по традиции фамилий дер�
 msgid "Behavior"
 msgstr "Поведение"
 
-#: src/Configuration.php:330
+#: src/Configuration.php:332
 msgid "Birth name only"
 msgstr "Только имя при рождении"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:334
 msgid "Birth name with married name in brackets"
 msgstr "Имя при рождении с фамилией в браке в скобках"
 
@@ -132,7 +132,7 @@ msgstr ""
 "(например, Martin \"Chalky\" White). Повторяет прежнее поведение webtrees "
 "для деревьев, в которых прозвища хранятся в отдельном поле GEDCOM NICK."
 
-#: src/Configuration.php:331
+#: src/Configuration.php:333
 msgid "Married name only"
 msgstr "Только фамилия в браке"
 

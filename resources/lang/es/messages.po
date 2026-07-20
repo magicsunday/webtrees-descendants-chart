@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:477
+#: src/Configuration.php:479
 msgid "Abbreviate given names first"
 msgstr "Abreviar primero los nombres de pila"
 
-#: src/Configuration.php:478
+#: src/Configuration.php:480
 msgid "Abbreviate surnames first"
 msgstr "Abreviar primero los apellidos"
 
@@ -32,7 +32,7 @@ msgstr "Abreviar primero los apellidos"
 msgid "An overview of an individual’s descendants."
 msgstr "Vista individual de descendientes."
 
-#: src/Configuration.php:476
+#: src/Configuration.php:478
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automático (según la tradición de apellidos del árbol)"
 
@@ -40,11 +40,11 @@ msgstr "Automático (según la tradición de apellidos del árbol)"
 msgid "Behavior"
 msgstr "Comportamiento"
 
-#: src/Configuration.php:330
+#: src/Configuration.php:332
 msgid "Birth name only"
 msgstr "Solo nombre de nacimiento"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:334
 msgid "Birth name with married name in brackets"
 msgstr "Nombre de nacimiento con nombre de casada entre paréntesis"
 
@@ -134,7 +134,7 @@ msgstr ""
 "webtrees para árboles que guardan los apodos en el campo GEDCOM NICK "
 "separado."
 
-#: src/Configuration.php:331
+#: src/Configuration.php:333
 msgid "Married name only"
 msgstr "Solo nombre de casada"
 
