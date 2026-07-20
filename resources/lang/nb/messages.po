@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:479
+#: src/Configuration.php:459
 msgid "Abbreviate given names first"
 msgstr "Forkort fornavn først"
 
-#: src/Configuration.php:480
+#: src/Configuration.php:460
 msgid "Abbreviate surnames first"
 msgstr "Forkort etternavn først"
 
@@ -32,7 +32,7 @@ msgstr "Forkort etternavn først"
 msgid "An overview of an individual’s descendants."
 msgstr "Et diagram over en persons etterkommere."
 
-#: src/Configuration.php:478
+#: src/Configuration.php:458
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automatisk (basert på treets etternavnstradisjon)"
 
@@ -219,15 +219,15 @@ msgstr ""
 msgid "cancel"
 msgstr "avbryt"
 
-#: src/Configuration.php:244 src/Configuration.php:252
+#: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
 msgstr "ned"
 
-#: src/Configuration.php:241 src/Configuration.php:249
+#: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
 msgstr "venstre"
 
-#: src/Configuration.php:242 src/Configuration.php:250
+#: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
 msgstr "høyre"
 
@@ -235,7 +235,7 @@ msgstr "høyre"
 msgid "save"
 msgstr "lagre"
 
-#: src/Configuration.php:243 src/Configuration.php:251
+#: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
 msgstr "opp"
 

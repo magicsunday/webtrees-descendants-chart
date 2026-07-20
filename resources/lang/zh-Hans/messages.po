@@ -18,11 +18,11 @@ msgstr ""
 "X-Poedit-SearchPath-0: src\n"
 "X-Poedit-SearchPath-1: resources/views\n"
 
-#: src/Configuration.php:479
+#: src/Configuration.php:459
 msgid "Abbreviate given names first"
 msgstr "优先缩写名字"
 
-#: src/Configuration.php:480
+#: src/Configuration.php:460
 msgid "Abbreviate surnames first"
 msgstr "优先缩写姓氏"
 
@@ -30,7 +30,7 @@ msgstr "优先缩写姓氏"
 msgid "An overview of an individual’s descendants."
 msgstr "个人后代的概览图"
 
-#: src/Configuration.php:478
+#: src/Configuration.php:458
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "自动（根据族谱的姓氏传统）"
 
@@ -214,15 +214,15 @@ msgstr ""
 msgid "cancel"
 msgstr "取消"
 
-#: src/Configuration.php:244 src/Configuration.php:252
+#: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
 msgstr "子孙在下"
 
-#: src/Configuration.php:241 src/Configuration.php:249
+#: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
 msgstr "子孙在左"
 
-#: src/Configuration.php:242 src/Configuration.php:250
+#: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
 msgstr "子孙在右"
 
@@ -230,7 +230,7 @@ msgstr "子孙在右"
 msgid "save"
 msgstr "保存"
 
-#: src/Configuration.php:243 src/Configuration.php:251
+#: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
 msgstr "子孙在上"
 

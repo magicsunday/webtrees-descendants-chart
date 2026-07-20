@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:479
+#: src/Configuration.php:459
 msgid "Abbreviate given names first"
 msgstr "Zuerst Vornamen abkürzen"
 
-#: src/Configuration.php:480
+#: src/Configuration.php:460
 msgid "Abbreviate surnames first"
 msgstr "Zuerst Nachnamen abkürzen"
 
@@ -32,7 +32,7 @@ msgstr "Zuerst Nachnamen abkürzen"
 msgid "An overview of an individual’s descendants."
 msgstr "Ein Überblick über die Nachkommen einer Person."
 
-#: src/Configuration.php:478
+#: src/Configuration.php:458
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automatisch (basierend auf der Nachnamen-Tradition des Stammbaums)"
 
@@ -222,15 +222,15 @@ msgstr ""
 msgid "cancel"
 msgstr "Abbrechen"
 
-#: src/Configuration.php:244 src/Configuration.php:252
+#: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
 msgstr "Unten"
 
-#: src/Configuration.php:241 src/Configuration.php:249
+#: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
 msgstr "Links"
 
-#: src/Configuration.php:242 src/Configuration.php:250
+#: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
 msgstr "Rechts"
 
@@ -238,7 +238,7 @@ msgstr "Rechts"
 msgid "save"
 msgstr "Speichern"
 
-#: src/Configuration.php:243 src/Configuration.php:251
+#: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
 msgstr "Oben"
 

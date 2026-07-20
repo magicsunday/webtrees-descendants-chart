@@ -23,11 +23,11 @@ msgstr ""
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 "X-Loco-Parser: loco_parse_po\n"
 
-#: src/Configuration.php:479
+#: src/Configuration.php:459
 msgid "Abbreviate given names first"
 msgstr "Najprej skrajšaj osebna imena"
 
-#: src/Configuration.php:480
+#: src/Configuration.php:460
 msgid "Abbreviate surnames first"
 msgstr "Najprej skrajšaj priimke"
 
@@ -35,7 +35,7 @@ msgstr "Najprej skrajšaj priimke"
 msgid "An overview of an individual’s descendants."
 msgstr "Pregled potomcev osebe."
 
-#: src/Configuration.php:478
+#: src/Configuration.php:458
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Samodejno (glede na drevesno tradicijo priimkov)"
 
@@ -222,15 +222,15 @@ msgstr ""
 msgid "cancel"
 msgstr "Prekliči"
 
-#: src/Configuration.php:244 src/Configuration.php:252
+#: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
 msgstr "Dol"
 
-#: src/Configuration.php:241 src/Configuration.php:249
+#: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
 msgstr "Levo"
 
-#: src/Configuration.php:242 src/Configuration.php:250
+#: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
 msgstr "Desno"
 
@@ -238,7 +238,7 @@ msgstr "Desno"
 msgid "save"
 msgstr "Shrani"
 
-#: src/Configuration.php:243 src/Configuration.php:251
+#: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
 msgstr "Gor"
 

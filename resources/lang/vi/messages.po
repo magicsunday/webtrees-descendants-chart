@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:479
+#: src/Configuration.php:459
 msgid "Abbreviate given names first"
 msgstr "Viết tắt tên gọi trước"
 
-#: src/Configuration.php:480
+#: src/Configuration.php:460
 msgid "Abbreviate surnames first"
 msgstr "Viết tắt họ trước"
 
@@ -32,7 +32,7 @@ msgstr "Viết tắt họ trước"
 msgid "An overview of an individual’s descendants."
 msgstr "Tổng quan về con cháu của một cá nhân."
 
-#: src/Configuration.php:478
+#: src/Configuration.php:458
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Tự động (dựa trên truyền thống họ của cây phả hệ)"
 
@@ -215,15 +215,15 @@ msgstr ""
 msgid "cancel"
 msgstr "Hủy bỏ"
 
-#: src/Configuration.php:244 src/Configuration.php:252
+#: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
 msgstr "Từ trên xuống"
 
-#: src/Configuration.php:241 src/Configuration.php:249
+#: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
 msgstr "Từ trái sang phải"
 
-#: src/Configuration.php:242 src/Configuration.php:250
+#: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
 msgstr "Từ phải sang trái"
 
@@ -231,7 +231,7 @@ msgstr "Từ phải sang trái"
 msgid "save"
 msgstr "lưu"
 
-#: src/Configuration.php:243 src/Configuration.php:251
+#: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
 msgstr "Từ dưới lên"
 
