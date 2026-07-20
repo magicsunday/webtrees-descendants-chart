@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:479
+#: src/Configuration.php:477
 msgid "Abbreviate given names first"
 msgstr "Nejprve zkrátit křestní jména"
 
-#: src/Configuration.php:480
+#: src/Configuration.php:478
 msgid "Abbreviate surnames first"
 msgstr "Nejprve zkrátit příjmení"
 
@@ -32,7 +32,7 @@ msgstr "Nejprve zkrátit příjmení"
 msgid "An overview of an individual’s descendants."
 msgstr "Přehled potomků osoby."
 
-#: src/Configuration.php:478
+#: src/Configuration.php:476
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automaticky (podle tradice příjmení stromu)"
 
@@ -40,11 +40,11 @@ msgstr "Automaticky (podle tradice příjmení stromu)"
 msgid "Behavior"
 msgstr "Chování"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:330
 msgid "Birth name only"
 msgstr "Pouze rodné jméno"
 
-#: src/Configuration.php:334
+#: src/Configuration.php:332
 msgid "Birth name with married name in brackets"
 msgstr "Rodné jméno se jménem po sňatku v závorkách"
 
@@ -132,7 +132,7 @@ msgstr ""
 "Martin \"Chalky\" White). Napodobuje původní chování webtrees pro stromy, "
 "které přezdívky ukládají do samostatného pole GEDCOM NICK."
 
-#: src/Configuration.php:333
+#: src/Configuration.php:331
 msgid "Married name only"
 msgstr "Pouze jméno po sňatku"
 

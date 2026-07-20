@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:479
+#: src/Configuration.php:477
 msgid "Abbreviate given names first"
 msgstr "Viết tắt tên gọi trước"
 
-#: src/Configuration.php:480
+#: src/Configuration.php:478
 msgid "Abbreviate surnames first"
 msgstr "Viết tắt họ trước"
 
@@ -32,7 +32,7 @@ msgstr "Viết tắt họ trước"
 msgid "An overview of an individual’s descendants."
 msgstr "Tổng quan về con cháu của một cá nhân."
 
-#: src/Configuration.php:478
+#: src/Configuration.php:476
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Tự động (dựa trên truyền thống họ của cây phả hệ)"
 
@@ -40,11 +40,11 @@ msgstr "Tự động (dựa trên truyền thống họ của cây phả hệ)"
 msgid "Behavior"
 msgstr "Hành vi"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:330
 msgid "Birth name only"
 msgstr "Chỉ tên khai sinh"
 
-#: src/Configuration.php:334
+#: src/Configuration.php:332
 msgid "Birth name with married name in brackets"
 msgstr "Tên khai sinh kèm tên sau khi kết hôn trong ngoặc"
 
@@ -132,7 +132,7 @@ msgstr ""
 "Martin \"Chalky\" White). Tái hiện hành vi webtrees cũ cho cây gia phả lưu "
 "biệt danh trong trường GEDCOM NICK riêng."
 
-#: src/Configuration.php:333
+#: src/Configuration.php:331
 msgid "Married name only"
 msgstr "Chỉ tên sau khi kết hôn"
 

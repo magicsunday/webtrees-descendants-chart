@@ -18,11 +18,11 @@ msgstr ""
 "X-Poedit-SearchPath-0: src\n"
 "X-Poedit-SearchPath-1: resources/views\n"
 
-#: src/Configuration.php:479
+#: src/Configuration.php:477
 msgid "Abbreviate given names first"
 msgstr "优先缩写名字"
 
-#: src/Configuration.php:480
+#: src/Configuration.php:478
 msgid "Abbreviate surnames first"
 msgstr "优先缩写姓氏"
 
@@ -30,7 +30,7 @@ msgstr "优先缩写姓氏"
 msgid "An overview of an individual’s descendants."
 msgstr "个人后代的概览图"
 
-#: src/Configuration.php:478
+#: src/Configuration.php:476
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "自动（根据族谱的姓氏传统）"
 
@@ -38,11 +38,11 @@ msgstr "自动（根据族谱的姓氏传统）"
 msgid "Behavior"
 msgstr "行为"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:330
 msgid "Birth name only"
 msgstr "仅出生姓名"
 
-#: src/Configuration.php:334
+#: src/Configuration.php:332
 msgid "Birth name with married name in brackets"
 msgstr "出生姓名后附婚后姓名（括号内）"
 
@@ -130,7 +130,7 @@ msgstr ""
 "White）。模拟旧版 webtrees 的行为，适用于在单独的 GEDCOM NICK 字段中保存昵称"
 "的家谱。"
 
-#: src/Configuration.php:333
+#: src/Configuration.php:331
 msgid "Married name only"
 msgstr "仅婚后姓名"
 

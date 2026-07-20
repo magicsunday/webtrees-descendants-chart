@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:479
+#: src/Configuration.php:477
 msgid "Abbreviate given names first"
 msgstr "Forkort fornavne først"
 
-#: src/Configuration.php:480
+#: src/Configuration.php:478
 msgid "Abbreviate surnames first"
 msgstr "Forkort efternavne først"
 
@@ -32,7 +32,7 @@ msgstr "Forkort efternavne først"
 msgid "An overview of an individual’s descendants."
 msgstr "En oversigt over en persons efterkommere."
 
-#: src/Configuration.php:478
+#: src/Configuration.php:476
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automatisk (baseret på træets efternavnstradition)"
 
@@ -40,11 +40,11 @@ msgstr "Automatisk (baseret på træets efternavnstradition)"
 msgid "Behavior"
 msgstr "Adfærd"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:330
 msgid "Birth name only"
 msgstr "Kun fødselsnavn"
 
-#: src/Configuration.php:334
+#: src/Configuration.php:332
 msgid "Birth name with married name in brackets"
 msgstr "Fødselsnavn med gifteenavn i parentes"
 
@@ -132,7 +132,7 @@ msgstr ""
 "(f.eks. Martin \"Chalky\" White). Efterligner den tidligere webtrees-adfærd "
 "for træer, der gemmer kælenavne i det separate GEDCOM NICK-felt."
 
-#: src/Configuration.php:333
+#: src/Configuration.php:331
 msgid "Married name only"
 msgstr "Kun gifteenavn"
 
