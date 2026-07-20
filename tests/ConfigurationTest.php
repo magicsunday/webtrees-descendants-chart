@@ -26,9 +26,12 @@ use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 
 /**
- * Verifies the married-names display mode resolution: explicit request value,
- * fallback to the new module preference, migration from the legacy
- * `default_showMarriedNames` boolean, and rejection of invalid values.
+ * Verifies how Configuration resolves request parameters and module
+ * preferences: the married-names display mode (explicit request value, the new
+ * preference, migration from the legacy `default_showMarriedNames` boolean,
+ * rejection of invalid values), the settings forwarded on the re-centering
+ * route, and the per-request memoisation that keeps the preference query count
+ * independent of the tree size.
  *
  * Uses an in-memory SQLite DB because AbstractModule::getPreference() is final
  * and cannot be stubbed; the real implementation reads from the
@@ -217,9 +220,15 @@ final class ConfigurationTest extends TestCase
     }
 
     /**
-     * The disabled polarity, which the enabled case cannot discriminate: with
-     * both toggles on, a raw passthrough of the query parameters would produce
-     * the same result as the intended mapping.
+     * The disabled polarity. `openNewTabOnClick` defaults to on
+     * (`default_openNewTabOnClick` is '1'), so an implementation that ignored the
+     * request parameter and resolved from the preference alone would emit '1'
+     * here — this case is what forces the request value to win, and pins the
+     * bool-to-string mapping in the other direction.
+     *
+     * It does not discriminate a raw passthrough of the query parameters: those
+     * are '0' and so is the expectation. Passthrough is caught by `generations`
+     * (string in, int out) and by the empty-request case.
      */
     #[Test]
     public function routeParamsCarryTheDisabledDisplaySettings(): void
