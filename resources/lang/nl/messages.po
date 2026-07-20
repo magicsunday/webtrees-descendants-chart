@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:412
+#: src/Configuration.php:437
 msgid "Abbreviate given names first"
 msgstr "Voornamen eerst afkorten"
 
-#: src/Configuration.php:413
+#: src/Configuration.php:438
 msgid "Abbreviate surnames first"
 msgstr "Achternamen eerst afkorten"
 
@@ -32,7 +32,7 @@ msgstr "Achternamen eerst afkorten"
 msgid "An overview of an individual’s descendants."
 msgstr "Een overzicht van de afstammelingen van een persoon."
 
-#: src/Configuration.php:411
+#: src/Configuration.php:436
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automatisch (op basis van de achternaamtraditie van de stamboom)"
 
@@ -40,11 +40,11 @@ msgstr "Automatisch (op basis van de achternaamtraditie van de stamboom)"
 msgid "Behavior"
 msgstr "Gedrag"
 
-#: src/Configuration.php:277
+#: src/Configuration.php:302
 msgid "Birth name only"
 msgstr "Alleen geboortenaam"
 
-#: src/Configuration.php:279
+#: src/Configuration.php:304
 msgid "Birth name with married name in brackets"
 msgstr "Geboortenaam met huwelijksnaam tussen haakjes"
 
@@ -136,7 +136,7 @@ msgstr ""
 "gedrag na voor stambomen die bijnamen in het afzonderlijke GEDCOM NICK-veld "
 "opslaan."
 
-#: src/Configuration.php:278
+#: src/Configuration.php:303
 msgid "Married name only"
 msgstr "Alleen huwelijksnaam"
 
@@ -220,15 +220,15 @@ msgstr ""
 msgid "cancel"
 msgstr "annuleren"
 
-#: src/Configuration.php:200 src/Configuration.php:208
+#: src/Configuration.php:218 src/Configuration.php:226
 msgid "down"
 msgstr "omlaag"
 
-#: src/Configuration.php:197 src/Configuration.php:205
+#: src/Configuration.php:215 src/Configuration.php:223
 msgid "left"
 msgstr "links"
 
-#: src/Configuration.php:198 src/Configuration.php:206
+#: src/Configuration.php:216 src/Configuration.php:224
 msgid "right"
 msgstr "rechts"
 
@@ -236,7 +236,7 @@ msgstr "rechts"
 msgid "save"
 msgstr "opslaan"
 
-#: src/Configuration.php:199 src/Configuration.php:207
+#: src/Configuration.php:217 src/Configuration.php:225
 msgid "up"
 msgstr "omhoog"
 

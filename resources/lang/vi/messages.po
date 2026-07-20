@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:412
+#: src/Configuration.php:437
 msgid "Abbreviate given names first"
 msgstr "Viết tắt tên gọi trước"
 
-#: src/Configuration.php:413
+#: src/Configuration.php:438
 msgid "Abbreviate surnames first"
 msgstr "Viết tắt họ trước"
 
@@ -32,7 +32,7 @@ msgstr "Viết tắt họ trước"
 msgid "An overview of an individual’s descendants."
 msgstr "Tổng quan về con cháu của một cá nhân."
 
-#: src/Configuration.php:411
+#: src/Configuration.php:436
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Tự động (dựa trên truyền thống họ của cây phả hệ)"
 
@@ -40,11 +40,11 @@ msgstr "Tự động (dựa trên truyền thống họ của cây phả hệ)"
 msgid "Behavior"
 msgstr "Hành vi"
 
-#: src/Configuration.php:277
+#: src/Configuration.php:302
 msgid "Birth name only"
 msgstr "Chỉ tên khai sinh"
 
-#: src/Configuration.php:279
+#: src/Configuration.php:304
 msgid "Birth name with married name in brackets"
 msgstr "Tên khai sinh kèm tên sau khi kết hôn trong ngoặc"
 
@@ -132,7 +132,7 @@ msgstr ""
 "Martin \"Chalky\" White). Tái hiện hành vi webtrees cũ cho cây gia phả lưu "
 "biệt danh trong trường GEDCOM NICK riêng."
 
-#: src/Configuration.php:278
+#: src/Configuration.php:303
 msgid "Married name only"
 msgstr "Chỉ tên sau khi kết hôn"
 
@@ -215,15 +215,15 @@ msgstr ""
 msgid "cancel"
 msgstr "Hủy bỏ"
 
-#: src/Configuration.php:200 src/Configuration.php:208
+#: src/Configuration.php:218 src/Configuration.php:226
 msgid "down"
 msgstr "Từ trên xuống"
 
-#: src/Configuration.php:197 src/Configuration.php:205
+#: src/Configuration.php:215 src/Configuration.php:223
 msgid "left"
 msgstr "Từ trái sang phải"
 
-#: src/Configuration.php:198 src/Configuration.php:206
+#: src/Configuration.php:216 src/Configuration.php:224
 msgid "right"
 msgstr "Từ phải sang trái"
 
@@ -231,7 +231,7 @@ msgstr "Từ phải sang trái"
 msgid "save"
 msgstr "lưu"
 
-#: src/Configuration.php:199 src/Configuration.php:207
+#: src/Configuration.php:217 src/Configuration.php:225
 msgid "up"
 msgstr "Từ dưới lên"
 

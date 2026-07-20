@@ -21,11 +21,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:412
+#: src/Configuration.php:437
 msgid "Abbreviate given names first"
 msgstr "Спершу скорочувати імена"
 
-#: src/Configuration.php:413
+#: src/Configuration.php:438
 msgid "Abbreviate surnames first"
 msgstr "Спершу скорочувати прізвища"
 
@@ -33,7 +33,7 @@ msgstr "Спершу скорочувати прізвища"
 msgid "An overview of an individual’s descendants."
 msgstr "Огляд нащадків персони у вигляді дерева."
 
-#: src/Configuration.php:411
+#: src/Configuration.php:436
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Автоматично (за традицією прізвищ дерева)"
 
@@ -41,11 +41,11 @@ msgstr "Автоматично (за традицією прізвищ дере�
 msgid "Behavior"
 msgstr "Поведінка"
 
-#: src/Configuration.php:277
+#: src/Configuration.php:302
 msgid "Birth name only"
 msgstr "Лише ім'я при народженні"
 
-#: src/Configuration.php:279
+#: src/Configuration.php:304
 msgid "Birth name with married name in brackets"
 msgstr "Ім'я при народженні з прізвищем у шлюбі в дужках"
 
@@ -133,7 +133,7 @@ msgstr ""
 "Martin \"Chalky\" White). Повторює попередню поведінку webtrees для дерев, "
 "які зберігають прізвиська в окремому полі GEDCOM NICK."
 
-#: src/Configuration.php:278
+#: src/Configuration.php:303
 msgid "Married name only"
 msgstr "Лише прізвище у шлюбі"
 
@@ -216,15 +216,15 @@ msgstr ""
 msgid "cancel"
 msgstr "скасувати"
 
-#: src/Configuration.php:200 src/Configuration.php:208
+#: src/Configuration.php:218 src/Configuration.php:226
 msgid "down"
 msgstr "вниз"
 
-#: src/Configuration.php:197 src/Configuration.php:205
+#: src/Configuration.php:215 src/Configuration.php:223
 msgid "left"
 msgstr "ліворуч"
 
-#: src/Configuration.php:198 src/Configuration.php:206
+#: src/Configuration.php:216 src/Configuration.php:224
 msgid "right"
 msgstr "праворуч"
 
@@ -232,7 +232,7 @@ msgstr "праворуч"
 msgid "save"
 msgstr "зберегти"
 
-#: src/Configuration.php:199 src/Configuration.php:207
+#: src/Configuration.php:217 src/Configuration.php:225
 msgid "up"
 msgstr "вгору"
 
