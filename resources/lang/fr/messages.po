@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:461
+#: src/Configuration.php:479
 msgid "Abbreviate given names first"
 msgstr "Abréger d'abord les prénoms"
 
-#: src/Configuration.php:462
+#: src/Configuration.php:480
 msgid "Abbreviate surnames first"
 msgstr "Abréger d'abord les noms de famille"
 
@@ -32,7 +32,7 @@ msgstr "Abréger d'abord les noms de famille"
 msgid "An overview of an individual’s descendants."
 msgstr "Un aperçu des descendants d’un individu."
 
-#: src/Configuration.php:460
+#: src/Configuration.php:478
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automatique (selon la tradition des noms de famille de l'arbre)"
 
@@ -40,11 +40,11 @@ msgstr "Automatique (selon la tradition des noms de famille de l'arbre)"
 msgid "Behavior"
 msgstr "Comportement"
 
-#: src/Configuration.php:322
+#: src/Configuration.php:332
 msgid "Birth name only"
 msgstr "Nom de naissance uniquement"
 
-#: src/Configuration.php:324
+#: src/Configuration.php:334
 msgid "Birth name with married name in brackets"
 msgstr "Nom de naissance avec nom d'épouse entre parenthèses"
 
@@ -134,7 +134,7 @@ msgstr ""
 "de webtrees pour les arbres qui stockent les surnoms dans le champ GEDCOM "
 "NICK séparé."
 
-#: src/Configuration.php:323
+#: src/Configuration.php:333
 msgid "Married name only"
 msgstr "Nom d'épouse uniquement"
 
@@ -218,15 +218,15 @@ msgstr ""
 msgid "cancel"
 msgstr "annuler"
 
-#: src/Configuration.php:234 src/Configuration.php:242
+#: src/Configuration.php:244 src/Configuration.php:252
 msgid "down"
 msgstr "bas"
 
-#: src/Configuration.php:231 src/Configuration.php:239
+#: src/Configuration.php:241 src/Configuration.php:249
 msgid "left"
 msgstr "gauche"
 
-#: src/Configuration.php:232 src/Configuration.php:240
+#: src/Configuration.php:242 src/Configuration.php:250
 msgid "right"
 msgstr "droite"
 
@@ -234,7 +234,7 @@ msgstr "droite"
 msgid "save"
 msgstr "enregistrer"
 
-#: src/Configuration.php:233 src/Configuration.php:241
+#: src/Configuration.php:243 src/Configuration.php:251
 msgid "up"
 msgstr "haut"
 

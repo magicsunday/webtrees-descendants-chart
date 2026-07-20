@@ -21,11 +21,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:461
+#: src/Configuration.php:479
 msgid "Abbreviate given names first"
 msgstr "Prvo skrati lična imena"
 
-#: src/Configuration.php:462
+#: src/Configuration.php:480
 msgid "Abbreviate surnames first"
 msgstr "Prvo skrati prezimena"
 
@@ -33,7 +33,7 @@ msgstr "Prvo skrati prezimena"
 msgid "An overview of an individual’s descendants."
 msgstr "Pregled potomaka pojedinca."
 
-#: src/Configuration.php:460
+#: src/Configuration.php:478
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automatski (na osnovu tradicije prezimena stabla)"
 
@@ -41,11 +41,11 @@ msgstr "Automatski (na osnovu tradicije prezimena stabla)"
 msgid "Behavior"
 msgstr "Ponašanje"
 
-#: src/Configuration.php:322
+#: src/Configuration.php:332
 msgid "Birth name only"
 msgstr "Samo rodno ime"
 
-#: src/Configuration.php:324
+#: src/Configuration.php:334
 msgid "Birth name with married name in brackets"
 msgstr "Rodno ime sa bračnim prezimenom u zagradi"
 
@@ -133,7 +133,7 @@ msgstr ""
 "(npr. Martin \"Chalky\" White). Oponaša staro webtrees ponašanje za stabla "
 "koja nadimke čuvaju u zasebnom polju GEDCOM NICK."
 
-#: src/Configuration.php:323
+#: src/Configuration.php:333
 msgid "Married name only"
 msgstr "Samo bračno prezime"
 
@@ -216,15 +216,15 @@ msgstr ""
 msgid "cancel"
 msgstr "odustani"
 
-#: src/Configuration.php:234 src/Configuration.php:242
+#: src/Configuration.php:244 src/Configuration.php:252
 msgid "down"
 msgstr "dole"
 
-#: src/Configuration.php:231 src/Configuration.php:239
+#: src/Configuration.php:241 src/Configuration.php:249
 msgid "left"
 msgstr "levo"
 
-#: src/Configuration.php:232 src/Configuration.php:240
+#: src/Configuration.php:242 src/Configuration.php:250
 msgid "right"
 msgstr "desno"
 
@@ -232,7 +232,7 @@ msgstr "desno"
 msgid "save"
 msgstr "snimi"
 
-#: src/Configuration.php:233 src/Configuration.php:241
+#: src/Configuration.php:243 src/Configuration.php:251
 msgid "up"
 msgstr "gore"
 
