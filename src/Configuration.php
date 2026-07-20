@@ -153,6 +153,22 @@ class Configuration
     }
 
     /**
+     * Returns the validator for whichever side of the request carries the
+     * parameters.
+     *
+     * Not memoised: every caller is a getter that returns its own memoised value
+     * before reaching this, so it runs at most once per setting per request.
+     */
+    private function requestValidator(): Validator
+    {
+        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
+            return Validator::parsedBody($this->request);
+        }
+
+        return Validator::queryParams($this->request);
+    }
+
+    /**
      * Returns the number of generations to display.
      *
      * @return int
@@ -163,11 +179,7 @@ class Configuration
             return $this->generations;
         }
 
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         return $this->generations = $validator
             ->isBetween(self::MIN_GENERATIONS, self::MAX_GENERATIONS)
@@ -207,11 +219,7 @@ class Configuration
             return $this->layout;
         }
 
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         return $this->layout = $validator
             ->isInArray([
@@ -264,11 +272,7 @@ class Configuration
             return $this->hideSpouses;
         }
 
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         return $this->hideSpouses = $validator
             ->boolean(
@@ -299,11 +303,7 @@ class Configuration
             return $this->marriedNamesMode;
         }
 
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         $legacyDefault = ((bool) $this->module->getPreference('default_showMarriedNames', '0'))
             ? self::MARRIED_NAMES_ONLY
@@ -347,11 +347,7 @@ class Configuration
             return $this->openNewTabOnClick;
         }
 
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         return $this->openNewTabOnClick = $validator
             ->boolean(
@@ -377,11 +373,7 @@ class Configuration
             return $this->showNicknames;
         }
 
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         return $this->showNicknames = $validator
             ->boolean(
@@ -404,11 +396,7 @@ class Configuration
             return $this->showAlternativeName;
         }
 
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         return $this->showAlternativeName = $validator
             ->boolean(
@@ -427,11 +415,7 @@ class Configuration
      */
     public function getHideSvgExport(): bool
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         return $validator
             ->boolean(
@@ -450,11 +434,7 @@ class Configuration
      */
     public function getHidePngExport(): bool
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         return $validator
             ->boolean(
@@ -491,11 +471,7 @@ class Configuration
      */
     public function getNameAbbreviation(): string
     {
-        if ($this->request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($this->request);
-        } else {
-            $validator = Validator::queryParams($this->request);
-        }
+        $validator = $this->requestValidator();
 
         $value = $validator
             ->string(
