@@ -41,7 +41,7 @@ export default class Hierarchy {
      * individuals contribute multiple FamilyNodes that share the same `real`.
      * d3.tree() then centres each family-node directly over its own children.
      *
-     * @param {object} data The JSON encoded chart data
+     * @param {CoupleNode} data The JSON encoded chart data
      */
     init(data) {
         // Adjust box height if we are going to display the alternative names

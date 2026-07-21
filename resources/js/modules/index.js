@@ -28,14 +28,14 @@ export class DescendantsChart {
      * @param {object} options  A list of options passed from outside to the application
      *
      * @param {{zoom: string, move: string}} options.labels
-     * @param {boolean}  options.rtl
-     * @param {number}   options.generations
-     * @param {string}   options.treeLayout
-     * @param {boolean}  options.openNewTabOnClick
-     * @param {boolean}  options.showAlternativeName
-     * @param {string}   options.nameAbbreviation
-     * @param {string[]} options.cssFiles
-     * @param {Data[]}   options.data
+     * @param {boolean}    options.rtl
+     * @param {number}     options.generations
+     * @param {string}     options.treeLayout
+     * @param {boolean}    options.openNewTabOnClick
+     * @param {boolean}    options.showAlternativeName
+     * @param {string}     options.nameAbbreviation
+     * @param {string[]}   options.cssFiles
+     * @param {CoupleNode} options.data
      */
     constructor(selector, options) {
         this._selector = selector;
@@ -122,7 +122,7 @@ export class DescendantsChart {
     /**
      * Draws the chart.
      *
-     * @param {object} data The JSON encoded chart data
+     * @param {CoupleNode} data The JSON encoded chart data
      */
     draw(data) {
         this._chart.data = data;

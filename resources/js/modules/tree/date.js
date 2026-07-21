@@ -153,9 +153,9 @@ export default class DateRenderer {
     /**
      * Truncates a date value.
      *
-     * @param {object} object         The D3 object containing the text value
-     * @param {string} date           The date value to truncate
-     * @param {number} availableWidth The total available width the text could take
+     * @param {Selection<any, any, any, any>} object         The D3 element containing the text value
+     * @param {string}                        date           The date value to truncate
+     * @param {number}                        availableWidth The total available width the text could take
      *
      * @returns {string}
      *
@@ -185,8 +185,10 @@ export default class DateRenderer {
     }
 
     /**
+     * Returns the X-coordinate of a date row, shifted by the image width when
+     * a highlight image is displayed.
      *
-     * @param {object} d
+     * @param {DateElementData} d The date row descriptor
      *
      * @returns {number}
      *
@@ -203,9 +205,9 @@ export default class DateRenderer {
      * Measures the given text and return its width depending on the used font
      * (including size and weight).
      *
-     * @param {string} text
-     * @param {string} fontSize
-     * @param {number} fontWeight
+     * @param {string}        text
+     * @param {string}        fontSize
+     * @param {string|number} fontWeight
      *
      * @returns {number}
      *

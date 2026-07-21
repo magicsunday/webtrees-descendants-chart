@@ -354,9 +354,9 @@ export default class Name {
     /**
      * Creates the data array for the names.
      *
-     * @param {object}             parent
-     * @param {LabelElementData[]} names
-     * @param {number}             availableWidth
+     * @param {Selection<any, any, any, any>} parent
+     * @param {LabelElementData[]}            names
+     * @param {number}                        availableWidth
      *
      * @returns {LabelElementData[]}
      *
@@ -412,8 +412,10 @@ export default class Name {
     }
 
     /**
+     * Returns the X-coordinate of a name element, shifted by the image width
+     * when a highlight image is displayed.
      *
-     * @param {object} d
+     * @param {NameElementData} d The name element descriptor
      *
      * @returns {number}
      *
@@ -430,9 +432,9 @@ export default class Name {
      * Measures the given text and return its width depending on the used font
      * (including size and weight).
      *
-     * @param {string} text
-     * @param {string} fontSize
-     * @param {number} fontWeight
+     * @param {string}        text
+     * @param {string}        fontSize
+     * @param {string|number} fontWeight
      *
      * @returns {number}
      *

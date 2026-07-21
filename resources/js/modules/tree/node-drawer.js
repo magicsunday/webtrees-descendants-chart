@@ -12,6 +12,7 @@ import ImageBox from "../chart/box/image.js";
 import TextBox from "../chart/box/text.js";
 
 /**
+ * @import { HierarchyNode } from "d3-hierarchy"
  * @import { Selection } from "d3-selection"
  * @import Svg from "../chart/svg.js"
  * @import Hierarchy from "../hierarchy.js"
@@ -48,8 +49,8 @@ export default class NodeDrawer {
     /**
      * Draw the person boxes.
      *
-     * @param {Array} renderedBoxes Pre-positioned box descriptors from connection-builder
-     * @param {object} source       The root object
+     * @param {RenderedBox[]}                 renderedBoxes Pre-positioned box descriptors from connection-builder
+     * @param {HierarchyNode<FamilyTreeNode>} source        The node the enter/exit transitions originate from
      *
      * @public
      */
@@ -87,8 +88,8 @@ export default class NodeDrawer {
     /**
      * Enter transition (new nodes).
      *
-     * @param {Selection<any, any, any, any>}  enter
-     * @param {Individual} _source
+     * @param {Selection<any, any, any, any>} enter
+     * @param {HierarchyNode<FamilyTreeNode>} _source
      *
      * @private
      */
@@ -149,7 +150,7 @@ export default class NodeDrawer {
      * Exit transition (nodes to be removed).
      *
      * @param {Selection<any, any, any, any>} exit
-     * @param {Individual}                    source
+     * @param {HierarchyNode<FamilyTreeNode>} source
      *
      * @private
      */
