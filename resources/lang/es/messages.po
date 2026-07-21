@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:405
+#: src/Configuration.php:459
 msgid "Abbreviate given names first"
 msgstr "Abreviar primero los nombres de pila"
 
-#: src/Configuration.php:406
+#: src/Configuration.php:460
 msgid "Abbreviate surnames first"
 msgstr "Abreviar primero los apellidos"
 
@@ -32,7 +32,7 @@ msgstr "Abreviar primero los apellidos"
 msgid "An overview of an individual’s descendants."
 msgstr "Vista individual de descendientes."
 
-#: src/Configuration.php:404
+#: src/Configuration.php:458
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automático (según la tradición de apellidos del árbol)"
 
@@ -40,11 +40,11 @@ msgstr "Automático (según la tradición de apellidos del árbol)"
 msgid "Behavior"
 msgstr "Comportamiento"
 
-#: src/Configuration.php:270
+#: src/Configuration.php:332
 msgid "Birth name only"
 msgstr "Solo nombre de nacimiento"
 
-#: src/Configuration.php:272
+#: src/Configuration.php:334
 msgid "Birth name with married name in brackets"
 msgstr "Nombre de nacimiento con nombre de casada entre paréntesis"
 
@@ -134,7 +134,7 @@ msgstr ""
 "webtrees para árboles que guardan los apodos en el campo GEDCOM NICK "
 "separado."
 
-#: src/Configuration.php:271
+#: src/Configuration.php:333
 msgid "Married name only"
 msgstr "Solo nombre de casada"
 
@@ -218,15 +218,15 @@ msgstr ""
 msgid "cancel"
 msgstr "Cancelar"
 
-#: src/Configuration.php:193 src/Configuration.php:201
+#: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
 msgstr "abajo"
 
-#: src/Configuration.php:190 src/Configuration.php:198
+#: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
 msgstr "izquierda"
 
-#: src/Configuration.php:191 src/Configuration.php:199
+#: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
 msgstr "derecha"
 
@@ -234,7 +234,7 @@ msgstr "derecha"
 msgid "save"
 msgstr "guardar"
 
-#: src/Configuration.php:192 src/Configuration.php:200
+#: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
 msgstr "arriba"
 

@@ -20,11 +20,11 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:405
+#: src/Configuration.php:459
 msgid "Abbreviate given names first"
 msgstr "Forkort fornavne først"
 
-#: src/Configuration.php:406
+#: src/Configuration.php:460
 msgid "Abbreviate surnames first"
 msgstr "Forkort efternavne først"
 
@@ -32,7 +32,7 @@ msgstr "Forkort efternavne først"
 msgid "An overview of an individual’s descendants."
 msgstr "En oversigt over en persons efterkommere."
 
-#: src/Configuration.php:404
+#: src/Configuration.php:458
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automatisk (baseret på træets efternavnstradition)"
 
@@ -40,11 +40,11 @@ msgstr "Automatisk (baseret på træets efternavnstradition)"
 msgid "Behavior"
 msgstr "Adfærd"
 
-#: src/Configuration.php:270
+#: src/Configuration.php:332
 msgid "Birth name only"
 msgstr "Kun fødselsnavn"
 
-#: src/Configuration.php:272
+#: src/Configuration.php:334
 msgid "Birth name with married name in brackets"
 msgstr "Fødselsnavn med gifteenavn i parentes"
 
@@ -132,7 +132,7 @@ msgstr ""
 "(f.eks. Martin \"Chalky\" White). Efterligner den tidligere webtrees-adfærd "
 "for træer, der gemmer kælenavne i det separate GEDCOM NICK-felt."
 
-#: src/Configuration.php:271
+#: src/Configuration.php:333
 msgid "Married name only"
 msgstr "Kun gifteenavn"
 
@@ -215,15 +215,15 @@ msgstr ""
 msgid "cancel"
 msgstr "fortryd"
 
-#: src/Configuration.php:193 src/Configuration.php:201
+#: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
 msgstr "ned"
 
-#: src/Configuration.php:190 src/Configuration.php:198
+#: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
 msgstr "venstre"
 
-#: src/Configuration.php:191 src/Configuration.php:199
+#: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
 msgstr "højre"
 
@@ -231,7 +231,7 @@ msgstr "højre"
 msgid "save"
 msgstr "gem"
 
-#: src/Configuration.php:192 src/Configuration.php:200
+#: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
 msgstr "op"
 
