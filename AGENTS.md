@@ -118,33 +118,9 @@ Pipeline (`make release X.Y.Z`):
 
 ## PR/commit checklist
 - `composer ci:test` must pass before every commit.
-- A subject starting with `GH-` must match `^GH-\d+: [A-ZÄÖÜ]`; every other subject
-  must match `^[A-ZÄÖÜ]` — a capitalised imperative either way. The patterns check
-  only the leading capital; two starts are banned whatever their case:
-  **conventional-commit prefixes** (`feat:`, `Fix:`, `chore:` …) and path-like starts
-  (`src/Module.php: …`, `Src/Module.php: …`).
-    - The two patterns are deliberately kept separate: `^(GH-\d+: )?[A-ZÄÖÜ]` (wrong)
-      stops enforcing the capital *after* the prefix, because the optional group can
-      be skipped and the `G` of `GH-` then satisfies `[A-ZÄÖÜ]` on its own —
-      `GH-12: fix typo` would pass. Keying on the subject rather than on the branch
-      also keeps this check decidable for commits already on `main`, where the issue
-      branch no longer exists.
-    - The same two patterns apply to the **pull-request title**, which under
-      squash-merge is the subject that reaches `main`.
-    - The normative definition lives in
-      `magicsunday/.github/.github/workflows/commit-convention.yml@main`, which
-      self-tests a decision table before applying it. No workflow here calls that
-      gate, so the rule in this repository is documentation only; wherever it is
-      wired, the workflow is authoritative and this text is what gets fixed.
-- Branches for an issue are named exactly `GH-<N>`, where `<N>` is the issue number.
-  The `GH-<N>: ` prefix marks work that belongs to the issue — a commit on that
-  branch whose concern is something else (a drive-by lint fix, a catalogue resync)
-  keeps its own unprefixed subject, which is what the history actually does. Merge
-  and revert commits keep the subject git generates. Not every git-written subject
-  is exempt, though: `fixup!` and `squash!` start lowercase and violate the rule, so
-  autosquash them before opening the PR.
-- The PR body closes the issue with a `Closes #<N>` keyword. The `GH-<N>: ` subject
-  prefix is not a GitHub link and closes nothing.
+- Commit subjects — and the pull-request title — are governed by the shared `commit-convention` gate; the normative rule and its full rationale live in `magicsunday/.github/.github/workflows/commit-convention.yml@main`, which self-tests a decision table before applying it. In short: a `GH-`-prefixed subject must match `^GH-\d+: [A-Z]`, every other subject `^[A-Z]` — a capitalised English imperative — and conventional-commit prefixes (`feat:`, `Fix:`, …) as well as path-like starts (`src/…: …`) are rejected whatever their case. It runs on every pull request via `.github/workflows/commit-lint.yml`, advisory until `commit-convention / Commit convention` is a required context in branch protection.
+- Branches for an issue are named exactly `GH-<N>`; the `GH-<N>: ` prefix marks work that belongs to that issue, so a drive-by fix on the branch keeps its own unprefixed subject.
+- The pull-request body closes the issue with `Closes #<N>` — the `GH-<N>: ` subject prefix is not a GitHub link and closes nothing.
 - Never add a `Co-Authored-By:` trailer or any other AI attribution.
 - Keep PRs small and focused (~≤300 net LOC) with atomic commits.
 - Ensure coverage ≥90% on touched PHP paths.
