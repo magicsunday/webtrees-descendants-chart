@@ -28,8 +28,8 @@ use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\View;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
-use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleChartTrait;
-use MagicSunday\Webtrees\DescendantsChart\Traits\ModuleConfigTrait;
+use MagicSunday\Webtrees\DescendantsChart\Module\ChartTrait;
+use MagicSunday\Webtrees\DescendantsChart\Module\ConfigTrait;
 use MagicSunday\Webtrees\ModuleBase\Contract\ModuleAssetUrlInterface;
 use MagicSunday\Webtrees\ModuleBase\Model\NameAbbreviation;
 use MagicSunday\Webtrees\ModuleBase\Traits\ModuleCustomTrait;
@@ -47,8 +47,8 @@ use Psr\Http\Message\ServerRequestInterface;
 class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, ModuleCustomInterface, ModuleConfigInterface
 {
     use ModuleCustomTrait;
-    use ModuleChartTrait;
-    use ModuleConfigTrait;
+    use ChartTrait;
+    use ConfigTrait;
 
     public const ROUTE_DEFAULT = 'webtrees-descendants-chart';
 

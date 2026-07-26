@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace MagicSunday\Webtrees\DescendantsChart\Traits;
+namespace MagicSunday\Webtrees\DescendantsChart\Module;
 
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Individual;
@@ -22,7 +22,7 @@ use MagicSunday\Webtrees\ModuleBase\Traits\ModuleChartTrait as BaseModuleChartTr
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
-trait ModuleChartTrait
+trait ChartTrait
 {
     use BaseModuleChartTrait;
 
