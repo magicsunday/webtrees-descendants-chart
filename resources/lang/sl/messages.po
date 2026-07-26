@@ -69,7 +69,7 @@ msgstr ""
 msgid "Descendants chart"
 msgstr "Diagram potomcev"
 
-#: src/Module.php:247 src/Traits/ModuleChartTrait.php:43
+#: src/Module.php:247 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Diagram potomcev osebe %s"
@@ -197,7 +197,7 @@ msgstr "Prikaži vzdevke v prikaznih imenih"
 msgid "Switch between full screen mode and normal view"
 msgstr "Preklopi med celozaslonskim in običajnim načinom"
 
-#: src/Traits/ModuleConfigTrait.php:103
+#: src/Module/ConfigTrait.php:104
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
 msgstr "Nastavitve modula “%s” so posodobljene."

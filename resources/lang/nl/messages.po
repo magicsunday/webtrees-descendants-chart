@@ -66,7 +66,7 @@ msgstr ""
 msgid "Descendants chart"
 msgstr "Afstammelingendiagram"
 
-#: src/Module.php:247 src/Traits/ModuleChartTrait.php:43
+#: src/Module.php:247 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Afstammelingen van %s"
@@ -197,7 +197,7 @@ msgstr "Toon bijnamen in weergavenamen"
 msgid "Switch between full screen mode and normal view"
 msgstr "Schakelen tussen volledig scherm en normale weergave"
 
-#: src/Traits/ModuleConfigTrait.php:103
+#: src/Module/ConfigTrait.php:104
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
 msgstr "De voorkeuren voor de module \"%s\" zijn bijgewerkt."

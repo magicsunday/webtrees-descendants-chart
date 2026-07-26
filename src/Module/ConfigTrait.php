@@ -9,24 +9,25 @@
 
 declare(strict_types=1);
 
-namespace MagicSunday\Webtrees\DescendantsChart\Traits;
+namespace MagicSunday\Webtrees\DescendantsChart\Module;
 
 use Fisharebest\Webtrees\FlashMessages;
 use Fisharebest\Webtrees\I18N;
+use Fisharebest\Webtrees\Module\ModuleConfigTrait;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Trait ModuleConfigTrait.
+ * Trait ConfigTrait.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
-trait ModuleConfigTrait
+trait ConfigTrait
 {
-    use \Fisharebest\Webtrees\Module\ModuleConfigTrait;
+    use ModuleConfigTrait;
 
     /**
      * @param ServerRequestInterface $request
