@@ -16,7 +16,7 @@ use Fisharebest\Webtrees\Individual;
 use MagicSunday\Webtrees\ModuleBase\Traits\ModuleChartTrait as BaseModuleChartTrait;
 
 /**
- * Trait ModuleChartTrait.
+ * Trait ChartTrait.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
