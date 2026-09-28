@@ -10,8 +10,20 @@ import { SPOUSE_GAP_PX } from "../constants.js";
 import { familyRenderableMembers } from "../family-tree.js";
 
 /**
- * @import { HierarchyNode } from "d3-hierarchy"
+ * @import { HierarchyPointNode } from "d3-hierarchy"
  * @import { Orientation } from "@magicsunday/webtrees-chart-lib"
+ */
+
+/**
+ * A laid-out node of the d3 hierarchy built from the family tree.
+ *
+ * @typedef {HierarchyPointNode<FamilyTreeNode>} TreePointNode
+ */
+
+/**
+ * A laid-out node whose payload is a renderable family-node.
+ *
+ * @typedef {TreePointNode & {data: FamilyNode}} FamilyPointNode
  */
 
 /**
@@ -27,11 +39,11 @@ import { familyRenderableMembers } from "../family-tree.js";
  * Both lists are pure data — downstream drawers don't need to know anything
  * about the d3-hierarchy or the family-node encoding.
  *
- * @param {HierarchyNode<any>} root             d3-hierarchy root after .tree() laid it out
- * @param {Orientation}        orientation      The active orientation
- * @param {boolean}            isVerticalLayout True for top-bottom / bottom-top
+ * @param {TreePointNode} root             d3-hierarchy root after .tree() laid it out
+ * @param {Orientation}   orientation      The active orientation
+ * @param {boolean}       isVerticalLayout True for top-bottom / bottom-top
  *
- * @returns {{renderedBoxes: RenderedBox[], connections: Array}}
+ * @returns {{renderedBoxes: RenderedBox[], connections: FamilyConnection[]}}
  */
 export function buildConnections(root, orientation, isVerticalLayout) {
     const stackBox = isVerticalLayout ? orientation.boxWidth : orientation.boxHeight;
@@ -49,11 +61,25 @@ export function buildConnections(root, orientation, isVerticalLayout) {
         .map((node) =>
             buildConnection(node, realPositions, motherPositions, allBoxes, isVerticalLayout),
         )
-        .filter((connection) => connection !== null);
+        .filter(
+            /**
+             * @param {FamilyConnection|null} connection
+             *
+             * @returns {connection is FamilyConnection}
+             */
+            (connection) => connection !== null,
+        );
 
     return { renderedBoxes, connections };
 }
 
+/**
+ * Whether the given laid-out node carries a renderable family-node.
+ *
+ * @param {TreePointNode} node The laid-out node to test
+ *
+ * @returns {node is FamilyPointNode}
+ */
 function isFamilyNode(node) {
     return node.data && node.data.kind === "family";
 }
@@ -66,11 +92,22 @@ function isFamilyNode(node) {
  *     shared box),
  *   - the position of the spouse box (keyed by the d3-hierarchy node id,
  *     so each polygamous family-node has its own spouse).
+ *
+ * @param {FamilyPointNode[]} familyNodes      The laid-out family-nodes
+ * @param {number}            stackBox         The box extent along the spread axis
+ * @param {number}            spouseGap        The gap between the real-person and spouse box
+ * @param {boolean}           isVerticalLayout True for top-bottom / bottom-top
+ *
+ * @returns {{renderedBoxes: RenderedBox[], realPositions: Map<number, BoxPosition>, motherPositions: Map<string|undefined, BoxPosition>, allBoxes: BoxPosition[]}}
  */
 function collectRenderedBoxes(familyNodes, stackBox, spouseGap, isVerticalLayout) {
+    /** @type {RenderedBox[]} */
     const renderedBoxes = [];
+    /** @type {Map<number, BoxPosition>} */
     const realPositions = new Map();
+    /** @type {Map<string|undefined, BoxPosition>} */
     const motherPositions = new Map();
+    /** @type {BoxPosition[]} */
     const allBoxes = [];
 
     for (const node of familyNodes) {
@@ -109,6 +146,14 @@ function collectRenderedBoxes(familyNodes, stackBox, spouseGap, isVerticalLayout
 /**
  * Build one FamilyConnection descriptor for the given family-node, or `null`
  * when the node has neither a marriage line nor children to draw.
+ *
+ * @param {FamilyPointNode}                      node             The family-node to connect
+ * @param {Map<number, BoxPosition>}             realPositions    The real-person boxes by person id
+ * @param {Map<string|undefined, BoxPosition>}   motherPositions  The spouse boxes by hierarchy node id
+ * @param {BoxPosition[]}                        allBoxes         Every rendered box
+ * @param {boolean}                              isVerticalLayout True for top-bottom / bottom-top
+ *
+ * @returns {FamilyConnection|null}
  */
 function buildConnection(node, realPositions, motherPositions, allBoxes, isVerticalLayout) {
     const realId = node.data.real?.id;
@@ -141,10 +186,17 @@ function buildConnection(node, realPositions, motherPositions, allBoxes, isVerti
  * the same person (= polygamous child with several spouses) — those represent
  * ONE genealogical child, so dedupe by real.id and target each unique child's
  * rendered real-person box.
+ *
+ * @param {FamilyPointNode}          node          The family-node whose children to collect
+ * @param {Map<number, BoxPosition>} realPositions The real-person boxes by person id
+ *
+ * @returns {BoxPosition[]}
  */
 function collectChildPositions(node, realPositions) {
     const dChildren = Array.isArray(node.children) ? node.children : [];
+    /** @type {Set<number>} */
     const seen = new Set();
+    /** @type {BoxPosition[]} */
     const positions = [];
 
     for (const child of dChildren) {
@@ -167,19 +219,29 @@ function collectChildPositions(node, realPositions) {
  * row but with other people's boxes between them. Find those (by scanning all
  * rendered boxes at the father's row) so the line drawer can chain segments
  * through their inter-box gaps.
+ *
+ * @param {BoxPosition}      fatherPos        The real-person box
+ * @param {BoxPosition|null} motherPos        The spouse box, or `null` without a spouse
+ * @param {BoxPosition[]}    allBoxes         Every rendered box
+ * @param {boolean}          isVerticalLayout True for top-bottom / bottom-top
+ *
+ * @returns {BoxPosition[]}
  */
 function collectIntermediateBoxes(fatherPos, motherPos, allBoxes, isVerticalLayout) {
     if (!motherPos) return [];
 
+    /** @type {(box: BoxPosition) => boolean} */
     const onSameRow = isVerticalLayout
         ? (b) => Math.abs(b.y - fatherPos.y) < 1
         : (b) => Math.abs(b.x - fatherPos.x) < 1;
+    /** @type {(box: BoxPosition) => boolean} */
     const between = isVerticalLayout
         ? (b) =>
               Math.min(fatherPos.x, motherPos.x) < b.x && b.x < Math.max(fatherPos.x, motherPos.x)
         : (b) =>
               Math.min(fatherPos.y, motherPos.y) < b.y && b.y < Math.max(fatherPos.y, motherPos.y);
 
+    /** @type {BoxPosition[]} */
     const result = [];
     for (const box of allBoxes) {
         if (box === fatherPos || box === motherPos) continue;
@@ -199,6 +261,10 @@ function collectIntermediateBoxes(fatherPos, motherPos, allBoxes, isVerticalLayo
  * first marriage of a real-person sits furthest from the row centre, each
  * subsequent marriage pulls one step closer, the last marriage lands on the
  * centre.
+ *
+ * @param {FamilyPointNode} node The family-node whose marriage line to stagger
+ *
+ * @returns {number}
  */
 function marriageStaggerFor(node) {
     if (!node.parent || !Array.isArray(node.parent.children)) return 0;

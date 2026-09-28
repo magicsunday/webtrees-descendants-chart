@@ -60,13 +60,18 @@ export default class Hierarchy {
     }
 
     /**
-     * Returns the root node of the d3 hierarchy.
+     * Returns the root node of the d3 hierarchy. Only available once init()
+     * has run.
      *
-     * @returns {HierarchyNode<any>|null}
+     * @returns {HierarchyNode<any>}
      *
      * @public
      */
     get root() {
+        if (this._root === null) {
+            throw new Error("Hierarchy.root is not available before init() has been called");
+        }
+
         return this._root;
     }
 }

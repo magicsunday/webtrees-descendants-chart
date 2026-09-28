@@ -8,12 +8,21 @@
 import { COUSIN_GAP_PX, SIBLING_GAP_PX, SPOUSE_GAP_PX } from "./constants.js";
 
 /**
+ * @import { HierarchyPointNode } from "d3-hierarchy"
+ */
+
+/**
  * Pick the gap constant that should be enforced between two adjacent
  * family-nodes during d3-tree layout.
  *
  * - same `real` → spouse-gap (polygamy chain entries of the same person)
  * - same parent OR half-siblings across polygamy → sibling-gap
  * - anything else → cousin-gap
+ *
+ * @param {HierarchyPointNode<FamilyTreeNode>} left  The left-hand family-node
+ * @param {HierarchyPointNode<FamilyTreeNode>} right The right-hand family-node
+ *
+ * @returns {number}
  */
 export function pickGap(left, right) {
     if (sameRealId(left, right)) return SPOUSE_GAP_PX;
@@ -22,6 +31,14 @@ export function pickGap(left, right) {
     return COUSIN_GAP_PX;
 }
 
+/**
+ * Whether both family-nodes belong to the same real person.
+ *
+ * @param {HierarchyPointNode<FamilyTreeNode>} left  The left-hand family-node
+ * @param {HierarchyPointNode<FamilyTreeNode>} right The right-hand family-node
+ *
+ * @returns {boolean}
+ */
 function sameRealId(left, right) {
     if (!left.data || !right.data) return false;
     if (left.data.kind !== "family" || right.data.kind !== "family") return false;
@@ -33,6 +50,11 @@ function sameRealId(left, right) {
  * Two nodes are half-siblings when their parent family-nodes share the same
  * `real` person — i.e. one biological parent had multiple partners and each
  * partner is the head of its own family-node.
+ *
+ * @param {HierarchyPointNode<FamilyTreeNode>} left  The left-hand family-node
+ * @param {HierarchyPointNode<FamilyTreeNode>} right The right-hand family-node
+ *
+ * @returns {boolean}
  */
 function halfSiblings(left, right) {
     if (!left.parent || !right.parent) return false;
