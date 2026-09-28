@@ -250,10 +250,6 @@ export default class Name {
     createNamesData(datum) {
         /** @type {Record<number, LabelElementData[]>} */
         const names = {};
-        /** @var {LabelElementData[]} firstnames */
-        const _firstnames = {};
-        /** @var {LabelElementData[]} lastnames */
-        const _lastnames = {};
         let minPosFirstnames = Number.MAX_SAFE_INTEGER;
         let minPosLastnames = Number.MAX_SAFE_INTEGER;
 
