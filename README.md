@@ -205,3 +205,23 @@ composer ci:test:php:phpstan
 composer ci:test:php:lint
 composer ci:test:php:rector
 ```
+
+### JavaScript tooling
+Biome and TypeScript use the shared configuration of
+[magicsunday/coding-standard](https://github.com/magicsunday/coding-standard), pulled in as the
+npm devDependency `@magicsunday/coding-standard` (an exact git tag pin):
+
+- `biome.json` extends `@magicsunday/coding-standard/biome/base.json` and only adds the files to check.
+- `tsconfig.json` extends `@magicsunday/coding-standard/tsconfig/base` (strict type checking of the
+  JSDoc-annotated sources under `resources/js/modules/`) and only adds the module/target/lib settings.
+
+`@biomejs/biome` and `typescript` stay devDependencies of this module, within the peer ranges the
+shared package declares. `composer ci:test:php:templates` verifies that both files keep extending
+the shared configs.
+
+```shell
+npm run lint
+npm run format:check
+npm run typecheck
+npm test
+```
