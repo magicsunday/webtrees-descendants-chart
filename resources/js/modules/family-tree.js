@@ -27,7 +27,7 @@
  */
 export function buildFamilyTree(coupleData) {
     const families = coupleToFamilies(coupleData);
-    if (families.length === 1) {
+    if (families.length === 1 && families[0] !== undefined) {
         return families[0];
     }
     return {
@@ -49,6 +49,10 @@ function coupleToFamilies(coupleData) {
     }
 
     const real = coupleData.members[0];
+    if (real === undefined) {
+        return [];
+    }
+
     const families = Array.isArray(coupleData.memberFamilies) ? coupleData.memberFamilies : [];
 
     if (families.length === 0) {
@@ -65,12 +69,11 @@ function coupleToFamilies(coupleData) {
     }
 
     return families.map((mf, idx) => {
-        const spouse =
-            mf.spouseIndex !== null &&
-            mf.spouseIndex !== undefined &&
-            coupleData.members[mf.spouseIndex]
+        const candidate =
+            mf.spouseIndex !== null && mf.spouseIndex !== undefined
                 ? coupleData.members[mf.spouseIndex]
-                : null;
+                : undefined;
+        const spouse = candidate || null;
 
         const children = Array.isArray(mf.children)
             ? mf.children.flatMap((child) => coupleToFamilies(child))

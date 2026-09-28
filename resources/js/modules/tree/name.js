@@ -148,10 +148,7 @@ export default class Name {
                     const [first, ...last] = this.createNamesData(datum);
 
                     // Merge the firstname and lastname groups, as we display the whole name in one line
-                    const combined = [].concat(
-                        first,
-                        typeof last[0] === "undefined" ? [] : last[0],
-                    );
+                    const combined = [...(first ?? []), ...(last[0] ?? [])];
 
                     return this.truncateNamesData(text, combined, this.getAvailableWidth(datum));
                 });
@@ -251,7 +248,7 @@ export default class Name {
      * @private
      */
     createNamesData(datum) {
-        /** @var {LabelElementData[][]} names */
+        /** @type {Record<number, LabelElementData[]>} */
         const names = {};
         /** @var {LabelElementData[]} firstnames */
         const _firstnames = {};
@@ -261,26 +258,24 @@ export default class Name {
         let minPosLastnames = Number.MAX_SAFE_INTEGER;
 
         let firstnameOffset = 0;
+        /** @type {Map<number, LabelElementData>} */
         const firstnameMap = new Map();
 
         // Iterate over the individual name components and determine their position in the overall
         // name and insert the component at the corresponding position in the result object.
-        for (const i in datum.data.data.firstNames) {
-            const pos = datum.data.data.name.indexOf(
-                datum.data.data.firstNames[i],
-                firstnameOffset,
-            );
+        for (const firstName of datum.data.data.firstNames) {
+            const pos = datum.data.data.name.indexOf(firstName, firstnameOffset);
 
             if (pos !== -1) {
-                firstnameOffset = pos + datum.data.data.firstNames[i].length;
+                firstnameOffset = pos + firstName.length;
 
                 if (pos < minPosFirstnames) {
                     minPosFirstnames = pos;
                 }
 
                 firstnameMap.set(pos, {
-                    label: datum.data.data.firstNames[i],
-                    isPreferred: datum.data.data.firstNames[i] === datum.data.data.preferredName,
+                    label: firstName,
+                    isPreferred: firstName === datum.data.data.preferredName,
                     isLastName: false,
                     isNameRtl: datum.data.data.isNameRtl,
                 });
@@ -312,9 +307,10 @@ export default class Name {
         names[minPosFirstnames] = [...firstnameMap].map(([, value]) => value);
 
         let lastnameOffset = 0;
+        /** @type {Map<number, LabelElementData>} */
         const lastnameMap = new Map();
 
-        for (const i in datum.data.data.lastNames) {
+        for (const lastName of datum.data.data.lastNames) {
             let pos;
 
             // Check if last name already exists in first names list, in case first name equals last name.
@@ -322,10 +318,10 @@ export default class Name {
             // the absolute position past the matched substring — accumulating with `+=` over-shoots and
             // skips later occurrences (visible with names like "Anna Anna Anna Schmidt").
             do {
-                pos = datum.data.data.name.indexOf(datum.data.data.lastNames[i], lastnameOffset);
+                pos = datum.data.data.name.indexOf(lastName, lastnameOffset);
 
                 if (pos !== -1 && firstnameMap.has(pos)) {
-                    lastnameOffset = pos + datum.data.data.lastNames[i].length;
+                    lastnameOffset = pos + lastName.length;
                 }
             } while (pos !== -1 && firstnameMap.has(pos));
 
@@ -337,7 +333,7 @@ export default class Name {
                 }
 
                 lastnameMap.set(pos, {
-                    label: datum.data.data.lastNames[i],
+                    label: lastName,
                     isPreferred: false,
                     isLastName: true,
                     isNameRtl: datum.data.data.isNameRtl,
@@ -393,7 +389,7 @@ export default class Name {
     createAlternativeNamesData(datum) {
         const words = datum.data.data.alternativeName.split(/\s+/);
 
-        /** @var {LabelElementData[]} names */
+        /** @type {LabelElementData[]} */
         let names = [];
 
         // Append the alternative names

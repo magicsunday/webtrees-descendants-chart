@@ -145,4 +145,25 @@
  * @property {boolean} isPreferred
  * @property {boolean} isLastName
  * @property {boolean} isNameRtl
+ * @property {boolean} [isNickname]
+ */
+
+/**
+ * The centre of one rendered person box.
+ *
+ * @typedef {object} BoxPosition
+ * @property {number} x The X-coordinate of the box centre
+ * @property {number} y The Y-coordinate of the box centre
+ */
+
+/**
+ * The geometric inputs the line drawer needs for one family, produced by
+ * `connection-builder.js` and consumed by `tree/link-drawer.js`.
+ *
+ * @typedef {object} FamilyConnection
+ * @property {BoxPosition}      father            The real-person box
+ * @property {BoxPosition|null} mother            The spouse box, or `null` without a spouse
+ * @property {BoxPosition[]}    children          The real-person boxes of the children
+ * @property {BoxPosition[]}    intermediateBoxes The boxes between father and mother on their row
+ * @property {number}           marriageStagger   The cross-axis offset of the marriage line
  */

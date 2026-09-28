@@ -8,6 +8,21 @@
 import { elbowsPath, LINE_END_TRIM_PX, marriagePath } from "@magicsunday/webtrees-chart-lib";
 
 /**
+ * @import { HierarchyNode } from "d3-hierarchy"
+ * @import { Selection } from "d3-selection"
+ * @import Svg from "../chart/svg.js"
+ * @import Configuration from "../configuration.js"
+ */
+
+/**
+ * One SVG path emitted for a connection bundle.
+ *
+ * @typedef {object} FlatLink
+ * @property {"marriage"|"elbow"} kind The kind of line the path draws
+ * @property {string}             d    The SVG path data
+ */
+
+/**
  * Renders the connection bundles produced by `connection-builder.js`.
  *
  * Each bundle is a pure-geometry FamilyConnection descriptor:
@@ -20,6 +35,10 @@ import { elbowsPath, LINE_END_TRIM_PX, marriagePath } from "@magicsunday/webtree
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
 export default class LinkDrawer {
+    /**
+     * @param {Svg}           svg
+     * @param {Configuration} configuration The configuration
+     */
     constructor(svg, configuration) {
         this._svg = svg;
         this._configuration = configuration;
@@ -30,14 +49,18 @@ export default class LinkDrawer {
      * Public entry. `connections` is the list returned by `buildConnections()`.
      * Each entry may emit several SVG paths (a marriage chain plus one elbow
      * per child).
+     *
+     * @param {FamilyConnection[]}            connections The connection bundles to draw
+     * @param {HierarchyNode<FamilyTreeNode>} _source     The node the transitions originate from
      */
     drawLinks(connections, _source) {
+        /** @type {FlatLink[]} */
         const flatLinks = [];
         for (const connection of connections) {
             if (connection.mother) {
                 flatLinks.push({
                     kind: "marriage",
-                    d: this._marriagePath(connection),
+                    d: this._marriagePath(connection, connection.mother),
                 });
             }
 
@@ -57,6 +80,7 @@ export default class LinkDrawer {
             .selectAll("path.link")
             .data(flatLinks)
             .join(
+                /** @param {Selection<any, FlatLink, any, any>} enter */
                 (enter) =>
                     enter
                         .append("path")
@@ -69,7 +93,9 @@ export default class LinkDrawer {
                                 .duration(this._configuration.duration)
                                 .attr("opacity", 1),
                         ),
+                /** @param {Selection<any, FlatLink, any, any>} update */
                 (update) => update.attr("d", (link) => link.d),
+                /** @param {Selection<any, FlatLink, any, any>} exit */
                 (exit) => exit.remove(),
             );
     }
@@ -80,8 +106,15 @@ export default class LinkDrawer {
      * segment in their shared gap; polygamous continuations with intermediate
      * boxes between father and mother emit one segment per gap so the line
      * never crosses an unrelated person's box.
+     *
+     * @param {FamilyConnection} connection The connection bundle to draw
+     * @param {BoxPosition}      mother     The spouse box the marriage line ends at
+     *
+     * @return {string}
+     *
+     * @private
      */
-    _marriagePath(connection) {
+    _marriagePath(connection, mother) {
         const orientation = this._orientation;
         const isVertical = orientation.isVertical;
         const halfBox = (isVertical ? orientation.boxWidth : orientation.boxHeight) / 2;
@@ -96,7 +129,7 @@ export default class LinkDrawer {
             : connection.father.x + stagger;
 
         return marriagePath({
-            sequence: [connection.father, ...connection.intermediateBoxes, connection.mother],
+            sequence: [connection.father, ...connection.intermediateBoxes, mother],
             isVertical,
             halfBox,
             trim: LINE_END_TRIM_PX,
@@ -113,6 +146,12 @@ export default class LinkDrawer {
      * - Continuation polygamous marriage (mother behind intermediate
      *   boxes): drop from the mother's box edge towards the children.
      * - Singleton parent (no mother): drop from the father's box edge.
+     *
+     * @param {FamilyConnection} connection The connection bundle to draw
+     *
+     * @return {string}
+     *
+     * @private
      */
     _elbowsPath(connection) {
         const orientation = this._orientation;
@@ -121,8 +160,9 @@ export default class LinkDrawer {
         const halfBoxCross = (isVertical ? orientation.boxHeight : orientation.boxWidth) / 2;
         const halfOffsetCross = (isVertical ? orientation.yOffset : orientation.xOffset) / 2;
 
-        const dropFromEdge = !connection.mother || connection.intermediateBoxes.length > 0;
-        const dropAnchor = connection.mother || connection.father;
+        const mother = connection.mother;
+        const dropFromEdge = !mother || connection.intermediateBoxes.length > 0;
+        const dropAnchor = mother || connection.father;
 
         let source;
         if (dropFromEdge) {
@@ -133,12 +173,12 @@ export default class LinkDrawer {
             const stagger = connection.marriageStagger * direction;
             source = isVertical
                 ? {
-                      x: (connection.father.x + connection.mother.x) / 2,
-                      y: (connection.father.y + connection.mother.y) / 2 + stagger,
+                      x: (connection.father.x + mother.x) / 2,
+                      y: (connection.father.y + mother.y) / 2 + stagger,
                   }
                 : {
-                      x: (connection.father.x + connection.mother.x) / 2 + stagger,
-                      y: (connection.father.y + connection.mother.y) / 2,
+                      x: (connection.father.x + mother.x) / 2 + stagger,
+                      y: (connection.father.y + mother.y) / 2,
                   };
         }
 
