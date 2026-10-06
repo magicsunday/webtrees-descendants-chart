@@ -31,7 +31,6 @@ use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Module\ChartTrait;
 use MagicSunday\Webtrees\DescendantsChart\Module\ConfigTrait;
 use MagicSunday\Webtrees\ModuleBase\Contract\ModuleAssetUrlInterface;
-use MagicSunday\Webtrees\ModuleBase\Model\NameAbbreviation;
 use MagicSunday\Webtrees\ModuleBase\Traits\ModuleCustomTrait;
 use Override;
 use Psr\Http\Message\ResponseInterface;
@@ -261,10 +260,9 @@ class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, 
     {
         return [
             'rtl'              => I18N::direction() === 'rtl',
-            'nameAbbreviation' => NameAbbreviation::resolve(
-                $this->configuration->getNameAbbreviation(),
-                $tree->getPreference('SURNAME_TRADITION')
-            ),
+            'nameAbbreviation' => $this->configuration->getNameAbbreviation()
+                ->resolve($tree->getPreference('SURNAME_TRADITION'))
+                ->value,
             'labels' => [
                 'zoom' => I18N::translate('Use Ctrl + scroll to zoom in the view'),
                 'move' => I18N::translate('Move the view with two fingers'),
