@@ -101,7 +101,7 @@ msgstr "Opciones generales"
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
-msgstr "Generaciones"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Hide more options"
@@ -166,7 +166,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
-msgstr "Orientación"
+msgstr ""
 
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
@@ -216,28 +216,28 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
-msgstr "abajo"
+msgstr ""
 
 #: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
-msgstr "izquierda"
+msgstr ""
 
 #: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
-msgstr "derecha"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
-msgstr "guardar"
+msgstr ""
 
 #: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
-msgstr "arriba"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr "ver"
+msgstr ""

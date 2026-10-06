@@ -96,7 +96,7 @@ msgstr "Xuất định dạng SVG"
 
 #: resources/views/modules/descendants-chart/config.phtml:50
 msgid "General"
-msgstr "Tổng quát"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
@@ -120,7 +120,7 @@ msgstr "Ẩn vợ/chồng liên kết với cá nhân"
 
 #: resources/views/modules/descendants-chart/page.phtml:39
 msgid "Individual"
-msgstr "Cá nhân"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""
@@ -229,7 +229,7 @@ msgstr "Từ phải sang trái"
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
-msgstr "lưu"
+msgstr ""
 
 #: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"

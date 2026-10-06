@@ -48,7 +48,7 @@ msgstr "出生姓名后附婚后姓名（括号内）"
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
-msgstr "控制面板"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:84
 msgid ""
@@ -94,7 +94,7 @@ msgstr "导出为SVG"
 
 #: resources/views/modules/descendants-chart/config.phtml:50
 msgid "General"
-msgstr "常规"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
@@ -140,7 +140,7 @@ msgstr "婚后姓名"
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
-msgstr "模块"
+msgstr ""
 
 #: src/Module.php:268
 msgid "Move the view with two fingers"
@@ -164,7 +164,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
-msgstr "方向"
+msgstr ""
 
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
@@ -212,7 +212,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
-msgstr "取消"
+msgstr ""
 
 #: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
@@ -228,7 +228,7 @@ msgstr "子孙在右"
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
-msgstr "保存"
+msgstr ""
 
 #: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
@@ -236,4 +236,4 @@ msgstr "子孙在上"
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr "查看"
+msgstr ""

@@ -96,11 +96,11 @@ msgstr "Exportera som SVG"
 
 #: resources/views/modules/descendants-chart/config.phtml:50
 msgid "General"
-msgstr "Allmän"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
-msgstr "Generationer"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Hide more options"
@@ -164,7 +164,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
-msgstr "Orientering"
+msgstr ""
 
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
@@ -213,28 +213,28 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
-msgstr "avbryt"
+msgstr ""
 
 #: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
-msgstr "ner"
+msgstr ""
 
 #: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
-msgstr "vänster"
+msgstr ""
 
 #: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
-msgstr "höger"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
-msgstr "spara"
+msgstr ""
 
 #: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
-msgstr "upp"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr "visa"
+msgstr ""

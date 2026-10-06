@@ -97,11 +97,11 @@ msgstr "Exporter en SVG"
 
 #: resources/views/modules/descendants-chart/config.phtml:50
 msgid "General"
-msgstr "Général"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
-msgstr "Générations"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Hide more options"
@@ -121,7 +121,7 @@ msgstr "Masquer les conjoints associés à une personne"
 
 #: resources/views/modules/descendants-chart/page.phtml:39
 msgid "Individual"
-msgstr "Individu"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""
@@ -166,7 +166,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
-msgstr "Orientation"
+msgstr ""
 
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
@@ -216,7 +216,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
-msgstr "annuler"
+msgstr ""
 
 #: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
@@ -232,7 +232,7 @@ msgstr "droite"
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
-msgstr "enregistrer"
+msgstr ""
 
 #: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
