@@ -28,7 +28,7 @@ msgstr "Forkort fornavne først"
 msgid "Abbreviate surnames first"
 msgstr "Forkort efternavne først"
 
-#: src/Module.php:142
+#: src/Module.php:141
 msgid "An overview of an individual’s descendants."
 msgstr "En oversigt over en persons efterkommere."
 
@@ -62,11 +62,11 @@ msgstr ""
 "fulde navn. „Automatisk“ bruger træets efternavnstradition (islandsk "
 "forkorter efternavne; alle andre forkorter fornavne)."
 
-#: src/Module.php:131 src/Module.php:250
+#: src/Module.php:130 src/Module.php:249
 msgid "Descendants chart"
 msgstr "Efterkommere"
 
-#: src/Module.php:247 src/Module/ChartTrait.php:43
+#: src/Module.php:246 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Graf over efterkommere af %s"
@@ -144,7 +144,7 @@ msgstr "Gifteenavne"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:270
+#: src/Module.php:268
 msgid "Move the view with two fingers"
 msgstr "Flyt visningen med to fingre"
 
@@ -195,7 +195,7 @@ msgstr "Skift mellem fuldskærms- og normal visning"
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:269
+#: src/Module.php:267
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Brug Ctrl + scroll for at zoome i visningen"
 

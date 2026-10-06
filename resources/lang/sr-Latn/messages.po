@@ -29,7 +29,7 @@ msgstr "Prvo skrati lična imena"
 msgid "Abbreviate surnames first"
 msgstr "Prvo skrati prezimena"
 
-#: src/Module.php:142
+#: src/Module.php:141
 msgid "An overview of an individual’s descendants."
 msgstr "Pregled potomaka pojedinca."
 
@@ -63,11 +63,11 @@ msgstr ""
 "ime. „Automatski“ koristi tradiciju prezimena stabla (islandska tradicija "
 "skraćuje prezimena; sve ostale skraćuju lična imena)."
 
-#: src/Module.php:131 src/Module.php:250
+#: src/Module.php:130 src/Module.php:249
 msgid "Descendants chart"
 msgstr "Grafikon potomaka"
 
-#: src/Module.php:247 src/Module/ChartTrait.php:43
+#: src/Module.php:246 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Grafikon potomaka osobe %s"
@@ -145,7 +145,7 @@ msgstr "Bračna prezimena"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:270
+#: src/Module.php:268
 msgid "Move the view with two fingers"
 msgstr "Pomeraj prikaz sa dva prsta"
 
@@ -196,7 +196,7 @@ msgstr "Prebacivanje između celog ekrana i običnog prikaza"
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:269
+#: src/Module.php:267
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Koristi CTRL + skrol da bi zumirao prikaz"
 
