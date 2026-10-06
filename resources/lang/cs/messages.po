@@ -28,7 +28,7 @@ msgstr "Nejprve zkrátit křestní jména"
 msgid "Abbreviate surnames first"
 msgstr "Nejprve zkrátit příjmení"
 
-#: src/Module.php:142
+#: src/Module.php:141
 msgid "An overview of an individual’s descendants."
 msgstr "Přehled potomků osoby."
 
@@ -62,11 +62,11 @@ msgstr ""
 "celé jméno. \"Automaticky\" používá tradici příjmení stromu (islandská "
 "tradice zkracuje příjmení; všechny ostatní zkracují křestní jména)."
 
-#: src/Module.php:131 src/Module.php:250
+#: src/Module.php:130 src/Module.php:249
 msgid "Descendants chart"
 msgstr "Diagram potomků"
 
-#: src/Module.php:247 src/Module/ChartTrait.php:43
+#: src/Module.php:246 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Diagram potomků osoby %s"
@@ -144,7 +144,7 @@ msgstr "Jména po sňatku"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:270
+#: src/Module.php:268
 msgid "Move the view with two fingers"
 msgstr "Přemístit pohled dvěma prsty"
 
@@ -195,7 +195,7 @@ msgstr "Přepnout mezi celou obrazovkou a normálním zobrazením"
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:269
+#: src/Module.php:267
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Pomocí Ctrl + kolečko zvětšit pohled"
 

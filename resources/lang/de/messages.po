@@ -28,7 +28,7 @@ msgstr "Zuerst Vornamen abkürzen"
 msgid "Abbreviate surnames first"
 msgstr "Zuerst Nachnamen abkürzen"
 
-#: src/Module.php:142
+#: src/Module.php:141
 msgid "An overview of an individual’s descendants."
 msgstr "Ein Überblick über die Nachkommen einer Person."
 
@@ -62,11 +62,11 @@ msgstr ""
 "den vollen Namen ist. „Automatisch“ verwendet die Nachnamen-Tradition des "
 "Stammbaums (Isländisch kürzt Nachnamen; alles andere kürzt Vornamen)."
 
-#: src/Module.php:131 src/Module.php:250
+#: src/Module.php:130 src/Module.php:249
 msgid "Descendants chart"
 msgstr "Nachkommentafel"
 
-#: src/Module.php:247 src/Module/ChartTrait.php:43
+#: src/Module.php:246 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Nachkommentafel von %s"
@@ -148,7 +148,7 @@ msgstr "Ehenamen"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:270
+#: src/Module.php:268
 msgid "Move the view with two fingers"
 msgstr "Verschieben der Ansicht mit zwei Fingern"
 
@@ -202,7 +202,7 @@ msgstr "Zwischen Vollbildmodus und normaler Ansicht umschalten"
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:269
+#: src/Module.php:267
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Verwende Strg+Scrollen zum Zoomen der Ansicht"
 

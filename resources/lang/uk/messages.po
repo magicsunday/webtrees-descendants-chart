@@ -29,7 +29,7 @@ msgstr "Спершу скорочувати імена"
 msgid "Abbreviate surnames first"
 msgstr "Спершу скорочувати прізвища"
 
-#: src/Module.php:142
+#: src/Module.php:141
 msgid "An overview of an individual’s descendants."
 msgstr "Огляд нащадків персони у вигляді дерева."
 
@@ -63,11 +63,11 @@ msgstr ""
 "для повного імені. «Автоматично» використовує традицію прізвищ дерева "
 "(ісландська скорочує прізвища; усі інші скорочують імена)."
 
-#: src/Module.php:131 src/Module.php:250
+#: src/Module.php:130 src/Module.php:249
 msgid "Descendants chart"
 msgstr "Нащадки"
 
-#: src/Module.php:247 src/Module/ChartTrait.php:43
+#: src/Module.php:246 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Нащадки для %s"
@@ -145,7 +145,7 @@ msgstr "Прізвища у шлюбі"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:270
+#: src/Module.php:268
 msgid "Move the view with two fingers"
 msgstr "Переміщуйте зображення двома пальцями"
 
@@ -196,7 +196,7 @@ msgstr "Перемикання між повноекранним і звичай
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:269
+#: src/Module.php:267
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Використовуйте Ctrl + коліщатко миші до збільшення зображення"
 

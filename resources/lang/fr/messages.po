@@ -28,7 +28,7 @@ msgstr "Abréger d'abord les prénoms"
 msgid "Abbreviate surnames first"
 msgstr "Abréger d'abord les noms de famille"
 
-#: src/Module.php:142
+#: src/Module.php:141
 msgid "An overview of an individual’s descendants."
 msgstr "Un aperçu des descendants d’un individu."
 
@@ -63,11 +63,11 @@ msgstr ""
 "noms de famille de l'arbre (islandais abrège les noms de famille ; le reste "
 "abrège les prénoms)."
 
-#: src/Module.php:131 src/Module.php:250
+#: src/Module.php:130 src/Module.php:249
 msgid "Descendants chart"
 msgstr "Arbre de descendance"
 
-#: src/Module.php:247 src/Module/ChartTrait.php:43
+#: src/Module.php:246 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Arbre de descendance de %s"
@@ -146,7 +146,7 @@ msgstr "Noms d'épouse"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:270
+#: src/Module.php:268
 msgid "Move the view with two fingers"
 msgstr "Déplacez la vue avec deux doigts"
 
@@ -197,7 +197,7 @@ msgstr "Basculer entre le plein écran et la vue normale"
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:269
+#: src/Module.php:267
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Utilisez Ctrl + molette pour zoomer dans la vue"
 

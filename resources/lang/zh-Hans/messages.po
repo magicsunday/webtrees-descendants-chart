@@ -26,7 +26,7 @@ msgstr "优先缩写名字"
 msgid "Abbreviate surnames first"
 msgstr "优先缩写姓氏"
 
-#: src/Module.php:142
+#: src/Module.php:141
 msgid "An overview of an individual’s descendants."
 msgstr "个人后代的概览图"
 
@@ -59,11 +59,11 @@ msgstr ""
 "控制当方框对完整姓名而言过窄时，先缩写哪个名字部分。“自动”使用族谱的姓氏传统"
 "（冰岛语缩写姓氏；其他所有传统缩写名字）。"
 
-#: src/Module.php:131 src/Module.php:250
+#: src/Module.php:130 src/Module.php:249
 msgid "Descendants chart"
 msgstr "后代图"
 
-#: src/Module.php:247 src/Module/ChartTrait.php:43
+#: src/Module.php:246 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "%s的后代图"
@@ -142,7 +142,7 @@ msgstr "婚后姓名"
 msgid "Modules"
 msgstr "模块"
 
-#: src/Module.php:270
+#: src/Module.php:268
 msgid "Move the view with two fingers"
 msgstr "用两根手指拖动视图"
 
@@ -195,7 +195,7 @@ msgstr "切换全屏模式和普通视图"
 msgid "The preferences for the module “%s” have been updated."
 msgstr "模块 “%s” 的设置已更新。"
 
-#: src/Module.php:269
+#: src/Module.php:267
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "按住Ctrl和鼠标滚轮放大查看"
 

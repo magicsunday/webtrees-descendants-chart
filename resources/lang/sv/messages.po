@@ -28,7 +28,7 @@ msgstr "Förkorta förnamn först"
 msgid "Abbreviate surnames first"
 msgstr "Förkorta efternamn först"
 
-#: src/Module.php:142
+#: src/Module.php:141
 msgid "An overview of an individual’s descendants."
 msgstr "En översikt över en persons ättlingar."
 
@@ -62,11 +62,11 @@ msgstr ""
 "fullständiga namnet. \"Automatiskt\" använder trädets efternamnstradition "
 "(isländska förkortar efternamn; allt annat förkortar förnamn)."
 
-#: src/Module.php:131 src/Module.php:250
+#: src/Module.php:130 src/Module.php:249
 msgid "Descendants chart"
 msgstr "Ättlingar"
 
-#: src/Module.php:247 src/Module/ChartTrait.php:43
+#: src/Module.php:246 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Ättlingar till %s"
@@ -144,7 +144,7 @@ msgstr "Giftasnamn"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:270
+#: src/Module.php:268
 msgid "Move the view with two fingers"
 msgstr "Flytta vyn med två fingrar"
 
@@ -195,7 +195,7 @@ msgstr "Växla mellan helskärm och normal vy"
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:269
+#: src/Module.php:267
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Använd CTRL-scroll för att zooma i vyn"
 

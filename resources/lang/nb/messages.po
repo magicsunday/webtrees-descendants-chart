@@ -28,7 +28,7 @@ msgstr "Forkort fornavn først"
 msgid "Abbreviate surnames first"
 msgstr "Forkort etternavn først"
 
-#: src/Module.php:142
+#: src/Module.php:141
 msgid "An overview of an individual’s descendants."
 msgstr "Et diagram over en persons etterkommere."
 
@@ -62,11 +62,11 @@ msgstr ""
 "navnet. «Automatisk» bruker treets etternavnstradisjon (islandsk forkorter "
 "etternavn; alt annet forkorter fornavn)."
 
-#: src/Module.php:131 src/Module.php:250
+#: src/Module.php:130 src/Module.php:249
 msgid "Descendants chart"
 msgstr "Etterkommerdiagram"
 
-#: src/Module.php:247 src/Module/ChartTrait.php:43
+#: src/Module.php:246 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Etterkommerdiagram for %s"
@@ -146,7 +146,7 @@ msgstr "Navn som gift"
 msgid "Modules"
 msgstr "Moduler"
 
-#: src/Module.php:270
+#: src/Module.php:268
 msgid "Move the view with two fingers"
 msgstr "Bruk to fingre for å flytte utsnitt"
 
@@ -199,7 +199,7 @@ msgstr "Bytt mellom fullskjerm og normal visning"
 msgid "The preferences for the module “%s” have been updated."
 msgstr "Innstillingene for modulen “%s” har blitt oppdatert."
 
-#: src/Module.php:269
+#: src/Module.php:267
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Bruk Ctrl + scroll for zoom"
 
