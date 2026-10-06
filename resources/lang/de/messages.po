@@ -103,7 +103,7 @@ msgstr "Allgemein"
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
-msgstr "Generationen"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Hide more options"
@@ -123,7 +123,7 @@ msgstr "Ausblenden der mit einer Person verbundenen Ehepartner"
 
 #: resources/views/modules/descendants-chart/page.phtml:39
 msgid "Individual"
-msgstr "Person"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""
@@ -220,7 +220,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
-msgstr "Abbrechen"
+msgstr ""
 
 #: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
@@ -236,7 +236,7 @@ msgstr "Rechts"
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
-msgstr "Speichern"
+msgstr ""
 
 #: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
