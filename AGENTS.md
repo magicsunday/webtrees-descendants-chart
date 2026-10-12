@@ -47,7 +47,7 @@ Module.php (entry point, registers routes)
 - **Configuration.php** — Reads form parameters from request (POST/GET) with user preference fallback.
 - **Facade/DataFacade.php** — Builds hierarchical Node tree, recursing through spouse families to the configured generation depth. Passes `$spouse` and the married-names mode (`off` / `married_only` / `birth_and_married`) into NameProcessor; in `birth_and_married` mode it also calls `getMarriedSurnames()` and appends the bracketed suffix to `name` + `lastNames`.
 - **Model/Node, NodeData** — Tree node with JSON serialization for D3.
-- **Shared classes from [`magicsunday/webtrees-module-base`](https://github.com/magicsunday/webtrees-module-base)** (composer dependency `^3.2`):
+- **Shared classes from [`magicsunday/webtrees-module-base`](https://github.com/magicsunday/webtrees-module-base)** (composer dependency `^3.3`):
   - `Processor/DateProcessor` — date extraction; descendants currently uses the legacy locale-aware methods (`getBirthDate`, `getDeathDate`, `getLifetimeDescription`).
   - `Processor/NameProcessor`, `Processor/ImageProcessor`, `Processor/PlaceProcessor` — name/image/place extraction. NameProcessor's 3-arg constructor `($individual, $spouse, $useMarriedName)` is used here.
   - `Model/Symbols` — backed enum for genealogical symbols (Birth ★, Death †, MarriageDateUnknown sentinel).
