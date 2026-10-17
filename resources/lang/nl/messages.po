@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/magicsunday/webtrees-descendants-"
 "chart/issues\n"
 "POT-Creation-Date: 1970-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-05-03 08:26+0200\n"
+"PO-Revision-Date: 2026-10-06 18:38+0200\n"
 "Last-Translator: TheDutchJewel <thedutchjewel@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -50,7 +50,7 @@ msgstr "Geboortenaam met huwelijksnaam tussen haakjes"
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
-msgstr ""
+msgstr "Configuratiescherm"
 
 #: resources/views/modules/descendants-chart/config.phtml:84
 msgid ""
@@ -73,11 +73,11 @@ msgstr "Afstammelingen van %s"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:23
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
 msgid "Display"
-msgstr ""
+msgstr "Weergave"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:34
 msgid ""
@@ -99,11 +99,11 @@ msgstr "Exporteren als SVG"
 
 #: resources/views/modules/descendants-chart/config.phtml:50
 msgid "General"
-msgstr ""
+msgstr "Algemeen"
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
-msgstr ""
+msgstr "Generaties"
 
 #: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Hide more options"
@@ -123,7 +123,7 @@ msgstr "Verberg de partners van een persoon"
 
 #: resources/views/modules/descendants-chart/page.phtml:39
 msgid "Individual"
-msgstr ""
+msgstr "Persoon"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""
@@ -146,7 +146,7 @@ msgstr "Huwelijksnamen"
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
-msgstr ""
+msgstr "Modules"
 
 #: src/Module.php:268
 msgid "Move the view with two fingers"
@@ -171,7 +171,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
-msgstr ""
+msgstr "Oriëntatie"
 
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
@@ -218,27 +218,27 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
-msgstr ""
+msgstr "annuleren"
 
 #: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
-msgstr ""
+msgstr "omlaag"
 
 #: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
-msgstr ""
+msgstr "links"
 
 #: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
-msgstr ""
+msgstr "rechts"
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
-msgstr ""
+msgstr "opslaan"
 
 #: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
-msgstr ""
+msgstr "omhoog"
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
