@@ -5,13 +5,13 @@
  * LICENSE file distributed with this source code.
  */
 
-import { MARRIAGE_STAGGER_PX } from "@magicsunday/webtrees-chart-lib";
+import { MARRIAGE_STAGGER_PX } from "@magicsunday/webtrees-chart-lib/infra";
 import { SPOUSE_GAP_PX } from "../constants.js";
 import { familyRenderableMembers } from "../family-tree.js";
 
 /**
  * @import { HierarchyPointNode } from "d3-hierarchy"
- * @import { Orientation } from "@magicsunday/webtrees-chart-lib"
+ * @import { Orientation } from "@magicsunday/webtrees-chart-lib/infra"
  */
 
 /**
