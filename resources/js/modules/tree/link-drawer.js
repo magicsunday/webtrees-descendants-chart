@@ -5,7 +5,7 @@
  * LICENSE file distributed with this source code.
  */
 
-import { elbowsPath, LINE_END_TRIM_PX, marriagePath } from "@magicsunday/webtrees-chart-lib";
+import { elbowsPath, LINE_END_TRIM_PX, marriagePath } from "@magicsunday/webtrees-chart-lib/infra";
 
 /**
  * @import { HierarchyNode } from "d3-hierarchy"
