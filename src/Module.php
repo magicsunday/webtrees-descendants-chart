@@ -167,23 +167,19 @@ class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, 
         $user = Validator::attributes($request)->user();
         $ajax = Validator::queryParams($request)->boolean('ajax', false);
 
+        $this->configuration = new Configuration($request, $this);
+
         // Convert POST requests into GET requests for pretty URLs.
         // This also updates the name above the form, which won't get updated if only a POST request is used
         if ($request->getMethod() === RequestMethodInterface::METHOD_POST) {
-            $validator = Validator::parsedBody($request);
-
             return redirect(
                 route(
                     self::ROUTE_DEFAULT,
                     [
-                        'tree'                => $tree->name(),
-                        'xref'                => $validator->string('xref', ''),
-                        'generations'         => $validator->integer('generations', 4),
-                        'hideSpouses'         => $validator->boolean('hideSpouses', false),
-                        'layout'              => $validator->string('layout', Configuration::LAYOUT_LEFTRIGHT),
-                        'openNewTabOnClick'   => $validator->boolean('openNewTabOnClick', true),
-                        'showAlternativeName' => $validator->boolean('showAlternativeName', true),
-                        'showNicknames'       => $validator->boolean('showNicknames', false),
+                        'tree' => $tree->name(),
+                        // The xref identifies the individual, not a chart setting
+                        'xref' => Validator::parsedBody($request)->string('xref', ''),
+                        ...$this->configuration->getRouteToggleParams(),
                     ]
                 )
             );
@@ -193,8 +189,6 @@ class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, 
 
         $individual = Registry::individualFactory()->make($xref, $tree);
         $individual = Auth::checkIndividualAccess($individual, false, true);
-
-        $this->configuration = new Configuration($request, $this);
 
         if ($ajax) {
             $this->layout = $this->name() . '::layouts/ajax';
@@ -279,19 +273,13 @@ class Module extends DescendancyChartModule implements ModuleAssetUrlInterface, 
     {
         // Forward every parameter the user can change on the form so the AJAX
         // request rebuilding the chart partial sees the current selection
-        // instead of falling back to module preference defaults — `showNicknames`
-        // and `showAlternativeName` change rendered names in DataFacade.
+        // instead of falling back to module preference defaults.
         return $this->chartUrl(
             $individual,
             [
-                'ajax'                => true,
-                'generations'         => $this->configuration->getGenerations(),
-                'hideSpouses'         => $this->configuration->getHideSpouses(),
-                'openNewTabOnClick'   => $this->configuration->getOpenNewTabOnClick(),
-                'showAlternativeName' => $this->configuration->getShowAlternativeName(),
-                'showNicknames'       => $this->configuration->getShowNicknames(),
-                'layout'              => $this->configuration->getLayout(),
-                'xref'                => $xref,
+                'ajax' => true,
+                'xref' => $xref,
+                ...$this->configuration->getRouteToggleParams(),
             ]
         );
     }

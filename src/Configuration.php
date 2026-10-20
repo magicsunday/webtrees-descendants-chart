@@ -487,7 +487,11 @@ class Configuration
     }
 
     /**
-     * Returns the settings that have to travel with the re-centering URL.
+     * Returns the settings that have to travel with every URL the chart
+     * navigates to: the re-centering link of each node, the redirect that turns
+     * a form POST into a GET and the URL of the AJAX rebuild. All three read this
+     * one list, so a setting cannot reach two of them and be missing from the
+     * third.
      *
      * Clicking a person navigates to the page route afresh, so every setting the
      * re-centered page has to restore must travel in the URL — otherwise that

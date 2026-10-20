@@ -13,17 +13,12 @@ namespace MagicSunday\Webtrees\DescendantsChart\Test;
 
 use Fig\Http\Message\RequestMethodInterface;
 use Fisharebest\Webtrees\DB;
-use Fisharebest\Webtrees\Module\AbstractModule;
-use Fisharebest\Webtrees\Services\ChartService;
 use GuzzleHttp\Psr7\ServerRequest;
-use Illuminate\Database\Schema\Blueprint;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
-use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
-use MagicSunday\Webtrees\DescendantsChart\Module;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use ReflectionProperty;
 
 /**
  * Verifies how Configuration resolves request parameters and module
@@ -40,57 +35,7 @@ use ReflectionProperty;
 #[CoversClass(Configuration::class)]
 final class ConfigurationTest extends TestCase
 {
-    /**
-     * Boots an in-memory SQLite + minimal `module_setting` schema once per
-     * process; subsequent calls just truncate the table and re-seed.
-     *
-     * @param array<string, string> $preferences
-     */
-    private function createModuleWithPreferences(array $preferences): Module
-    {
-        static $initialised = false;
-
-        if ($initialised === false) {
-            $database = new DB();
-            $database->addConnection([
-                'driver'   => 'sqlite',
-                'database' => ':memory:',
-            ]);
-            $database->setAsGlobal();
-            $database->bootEloquent();
-            DB::connection()->getSchemaBuilder()->create('module_setting', static function (Blueprint $table): void {
-                $table->string('module_name');
-                $table->string('setting_name');
-                $table->string('setting_value');
-            });
-
-            $initialised = true;
-        }
-
-        DB::table('module_setting')->delete();
-
-        if ($preferences !== []) {
-            DB::table('module_setting')->insert(
-                array_map(
-                    static fn (string $name, string $value): array => [
-                        'module_name'   => 'webtrees-descendants-chart',
-                        'setting_name'  => $name,
-                        'setting_value' => $value,
-                    ],
-                    array_keys($preferences),
-                    array_values($preferences),
-                )
-            );
-        }
-
-        $chartService = self::createStub(ChartService::class);
-        $module       = new Module($chartService, new DataFacade());
-
-        $reflection = new ReflectionProperty(AbstractModule::class, 'name');
-        $reflection->setValue($module, 'webtrees-descendants-chart');
-
-        return $module;
-    }
+    use ModuleSettingsFixture;
 
     /**
      * @param array<string, string> $queryParams
