@@ -8,7 +8,6 @@
 import { elbowsPath, LINE_END_TRIM_PX, marriagePath } from "@magicsunday/webtrees-chart-lib/infra";
 
 /**
- * @import { HierarchyNode } from "d3-hierarchy"
  * @import { Selection } from "d3-selection"
  * @import Svg from "../chart/svg.js"
  * @import Configuration from "../configuration.js"
@@ -50,10 +49,9 @@ export default class LinkDrawer {
      * Each entry may emit several SVG paths (a marriage chain plus one elbow
      * per child).
      *
-     * @param {FamilyConnection[]}            connections The connection bundles to draw
-     * @param {HierarchyNode<FamilyTreeNode>} _source     The node the transitions originate from
+     * @param {FamilyConnection[]} connections The connection bundles to draw
      */
-    drawLinks(connections, _source) {
+    drawLinks(connections) {
         /** @type {FlatLink[]} */
         const flatLinks = [];
         for (const connection of connections) {

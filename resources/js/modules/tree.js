@@ -119,7 +119,7 @@ export default class Tree {
         );
 
         // Lines first so the boxes overlap any rounding-error stubs.
-        this._linkDrawer.drawLinks(connections, source);
+        this._linkDrawer.drawLinks(connections);
         this._nodeDrawer.drawNodes(renderedBoxes, source);
     }
 
