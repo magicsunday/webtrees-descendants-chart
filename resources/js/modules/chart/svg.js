@@ -53,7 +53,7 @@ export default class Svg {
     /**
      * Returns the SVG definition instance.
      *
-     * @returns {Defs}
+     * @return {Defs}
      */
     get defs() {
         return this._defs;
@@ -62,7 +62,7 @@ export default class Svg {
     /**
      * Returns the SVG zoom instance. Only available once initEvents() has run.
      *
-     * @returns {Zoom}
+     * @return {Zoom}
      */
     get zoom() {
         if (this._zoom === null) {
@@ -76,7 +76,7 @@ export default class Svg {
      * Returns the inner <g> visual group selection. Only available once
      * initEvents() has run.
      *
-     * @returns {Selection<SVGGElement, unknown, HTMLElement, unknown>}
+     * @return {Selection<SVGGElement, unknown, HTMLElement, unknown>}
      */
     get visual() {
         if (this._visual === null) {
@@ -162,14 +162,14 @@ export default class Svg {
      *
      * @param {string} type The export file type (either "png" or "svg")
      *
-     * @returns {PngChartExport|SvgChartExport}
+     * @return {PngChartExport|SvgChartExport}
      */
     export(type) {
         return createChartExport(type);
     }
 
     /**
-     * @returns {SVGSVGElement|null}
+     * @return {SVGSVGElement|null}
      */
     node() {
         return /** @type {SVGSVGElement|null} */ (this._element.node());
@@ -178,7 +178,7 @@ export default class Svg {
     /**
      * @param {string} select
      *
-     * @returns {Selection<SVGElement, unknown, SVGSVGElement, unknown>}
+     * @return {Selection<SVGElement, unknown, SVGSVGElement, unknown>}
      */
     selectAll(select) {
         return /** @type {any} */ (this._element.selectAll(select));
@@ -188,7 +188,7 @@ export default class Svg {
      * @param {string} name
      * @param {string} [value]
      *
-     * @returns {any}
+     * @return {any}
      */
     style(name, value) {
         return value === undefined ? this._element.style(name) : this._element.style(name, value);
@@ -198,14 +198,14 @@ export default class Svg {
      * @param {string} name
      * @param {any}    [value]
      *
-     * @returns {any}
+     * @return {any}
      */
     attr(name, value) {
         return value === undefined ? this._element.attr(name) : this._element.attr(name, value);
     }
 
     /**
-     * @returns {Transition<SVGSVGElement, unknown, HTMLElement, unknown>}
+     * @return {Transition<SVGSVGElement, unknown, HTMLElement, unknown>}
      */
     transition() {
         return this._element.transition();

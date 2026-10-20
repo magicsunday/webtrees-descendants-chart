@@ -137,7 +137,7 @@ export default class DateRenderer extends TextRenderer {
      * @param {string}                        date           The date value to truncate
      * @param {number}                        availableWidth The total available width the text could take
      *
-     * @returns {string}
+     * @return {string}
      *
      * @private
      */

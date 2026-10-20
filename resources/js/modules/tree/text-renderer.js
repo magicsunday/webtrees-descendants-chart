@@ -44,7 +44,7 @@ export default class TextRenderer {
      *
      * @param {{withImage?: boolean}} d The element descriptor
      *
-     * @returns {number}
+     * @return {number}
      *
      * @protected
      */
@@ -63,7 +63,7 @@ export default class TextRenderer {
      * @param {string}        fontSize
      * @param {string|number} fontWeight
      *
-     * @returns {number}
+     * @return {number}
      *
      * @protected
      */

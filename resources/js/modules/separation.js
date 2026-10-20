@@ -22,7 +22,7 @@ import { COUSIN_GAP_PX, SIBLING_GAP_PX, SPOUSE_GAP_PX } from "./constants.js";
  * @param {HierarchyPointNode<FamilyTreeNode>} left  The left-hand family-node
  * @param {HierarchyPointNode<FamilyTreeNode>} right The right-hand family-node
  *
- * @returns {number}
+ * @return {number}
  */
 export function pickGap(left, right) {
     if (sameRealId(left, right)) return SPOUSE_GAP_PX;
@@ -37,7 +37,7 @@ export function pickGap(left, right) {
  * @param {HierarchyPointNode<FamilyTreeNode>} left  The left-hand family-node
  * @param {HierarchyPointNode<FamilyTreeNode>} right The right-hand family-node
  *
- * @returns {boolean}
+ * @return {boolean}
  */
 function sameRealId(left, right) {
     if (!left.data || !right.data) return false;
@@ -54,7 +54,7 @@ function sameRealId(left, right) {
  * @param {HierarchyPointNode<FamilyTreeNode>} left  The left-hand family-node
  * @param {HierarchyPointNode<FamilyTreeNode>} right The right-hand family-node
  *
- * @returns {boolean}
+ * @return {boolean}
  */
 function halfSiblings(left, right) {
     if (!left.parent || !right.parent) return false;

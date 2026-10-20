@@ -64,7 +64,7 @@ export default class Configuration {
     /**
      * Returns the number of generations to display.
      *
-     * @returns {number}
+     * @return {number}
      */
     get generations() {
         return this._generations;
@@ -82,7 +82,7 @@ export default class Configuration {
     /**
      * Returns the tree layout.
      *
-     * @returns {string}
+     * @return {string}
      */
     get treeLayout() {
         return this._treeLayout;
@@ -100,7 +100,7 @@ export default class Configuration {
     /**
      * Returns the current orientation.
      *
-     * @returns {Orientation}
+     * @return {Orientation}
      */
     get orientation() {
         const orientation = this._orientations.get()[this.treeLayout];
@@ -116,7 +116,7 @@ export default class Configuration {
      * Returns TRUE or FALSE depending on whether to open the current
      * individual's details page in a new tab.
      *
-     * @returns {boolean}
+     * @return {boolean}
      */
     get openNewTabOnClick() {
         return this._openNewTabOnClick;
@@ -125,7 +125,7 @@ export default class Configuration {
     /**
      * Returns whether to show or hide the alternative name.
      *
-     * @returns {boolean}
+     * @return {boolean}
      */
     get showAlternativeName() {
         return this._showAlternativeName;
@@ -136,7 +136,7 @@ export default class Configuration {
      * The server resolves the tree-pref value (which can also be "AUTO") into
      * one of these two before serialising — the JS layer never sees AUTO.
      *
-     * @returns {string}
+     * @return {string}
      */
     get nameAbbreviation() {
         return this._nameAbbreviation;

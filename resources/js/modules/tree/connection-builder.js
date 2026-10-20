@@ -43,7 +43,7 @@ import { familyRenderableMembers } from "../family-tree.js";
  * @param {Orientation}   orientation      The active orientation
  * @param {boolean}       isVerticalLayout True for top-bottom / bottom-top
  *
- * @returns {{renderedBoxes: RenderedBox[], connections: FamilyConnection[]}}
+ * @return {{renderedBoxes: RenderedBox[], connections: FamilyConnection[]}}
  */
 export function buildConnections(root, orientation, isVerticalLayout) {
     const stackBox = isVerticalLayout ? orientation.boxWidth : orientation.boxHeight;
@@ -65,7 +65,7 @@ export function buildConnections(root, orientation, isVerticalLayout) {
             /**
              * @param {FamilyConnection|null} connection
              *
-             * @returns {connection is FamilyConnection}
+             * @return {connection is FamilyConnection}
              */
             (connection) => connection !== null,
         );
@@ -78,7 +78,7 @@ export function buildConnections(root, orientation, isVerticalLayout) {
  *
  * @param {TreePointNode} node The laid-out node to test
  *
- * @returns {node is FamilyPointNode}
+ * @return {node is FamilyPointNode}
  */
 function isFamilyNode(node) {
     return node.data && node.data.kind === "family";
@@ -98,7 +98,7 @@ function isFamilyNode(node) {
  * @param {number}            spouseGap        The gap between the real-person and spouse box
  * @param {boolean}           isVerticalLayout True for top-bottom / bottom-top
  *
- * @returns {{renderedBoxes: RenderedBox[], realPositions: Map<number, BoxPosition>, motherPositions: Map<string|undefined, BoxPosition>, allBoxes: BoxPosition[]}}
+ * @return {{renderedBoxes: RenderedBox[], realPositions: Map<number, BoxPosition>, motherPositions: Map<string|undefined, BoxPosition>, allBoxes: BoxPosition[]}}
  */
 function collectRenderedBoxes(familyNodes, stackBox, spouseGap, isVerticalLayout) {
     /** @type {RenderedBox[]} */
@@ -153,7 +153,7 @@ function collectRenderedBoxes(familyNodes, stackBox, spouseGap, isVerticalLayout
  * @param {BoxPosition[]}                        allBoxes         Every rendered box
  * @param {boolean}                              isVerticalLayout True for top-bottom / bottom-top
  *
- * @returns {FamilyConnection|null}
+ * @return {FamilyConnection|null}
  */
 function buildConnection(node, realPositions, motherPositions, allBoxes, isVerticalLayout) {
     const realId = node.data.real?.id;
@@ -190,7 +190,7 @@ function buildConnection(node, realPositions, motherPositions, allBoxes, isVerti
  * @param {FamilyPointNode}          node          The family-node whose children to collect
  * @param {Map<number, BoxPosition>} realPositions The real-person boxes by person id
  *
- * @returns {BoxPosition[]}
+ * @return {BoxPosition[]}
  */
 function collectChildPositions(node, realPositions) {
     const dChildren = Array.isArray(node.children) ? node.children : [];
@@ -225,7 +225,7 @@ function collectChildPositions(node, realPositions) {
  * @param {BoxPosition[]}    allBoxes         Every rendered box
  * @param {boolean}          isVerticalLayout True for top-bottom / bottom-top
  *
- * @returns {BoxPosition[]}
+ * @return {BoxPosition[]}
  */
 function collectIntermediateBoxes(fatherPos, motherPos, allBoxes, isVerticalLayout) {
     if (!motherPos) return [];
@@ -264,7 +264,7 @@ function collectIntermediateBoxes(fatherPos, motherPos, allBoxes, isVerticalLayo
  *
  * @param {FamilyPointNode} node The family-node whose marriage line to stagger
  *
- * @returns {number}
+ * @return {number}
  */
 function marriageStaggerFor(node) {
     if (!node.parent || !Array.isArray(node.parent.children)) return 0;
