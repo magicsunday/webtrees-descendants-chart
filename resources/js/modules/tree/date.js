@@ -56,7 +56,6 @@ export default class DateRenderer {
                 .data((d) => [
                     {
                         label: d.data.data.timespan,
-                        withImage: true,
                     },
                 ])
                 .enter();

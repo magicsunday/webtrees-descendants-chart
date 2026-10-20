@@ -99,8 +99,6 @@ export default class Svg {
             .attr("text-rendering", "optimizeLegibility")
             .attr("text-anchor", "middle")
             .attr("xmlns:xlink", "https://www.w3.org/1999/xlink");
-
-        // new Filter(this._defs.get());
     }
 
     /**

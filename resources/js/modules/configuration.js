@@ -51,18 +51,8 @@ export default class Configuration {
         //
         this.duration = 750;
 
-        //
-        this.padding = 15;
-
         // Default number of generations to display
         this._generations = generations;
-
-        // Left/Right padding of a text (used with truncation)
-        this.textPadding = 8;
-
-        // // Default font size, color and scaling
-        this._fontSize = 14;
-        this.fontColor = "rgb(0, 0, 0)";
 
         // Duration of update animation if clicked on a person
         // this.updateDuration = 1250;
