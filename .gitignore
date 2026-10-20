@@ -14,7 +14,6 @@ node_modules/
 
 # Custom
 resources/js/descendants-chart-*.js
-resources/js/descendants-chart-storage.js
 # Allow minified file
 !resources/js/descendants-chart-*.min.js
 webtrees-descendants-chart.zip
