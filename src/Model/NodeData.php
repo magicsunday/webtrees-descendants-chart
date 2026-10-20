@@ -132,14 +132,6 @@ class NodeData implements JsonSerializable
     protected ?Individual $individual = null;
 
     /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
      * @param int $id
      *
      * @return NodeData
@@ -197,14 +189,6 @@ class NodeData implements JsonSerializable
         $this->generation = $generation;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
     }
 
     /**

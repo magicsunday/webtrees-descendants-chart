@@ -113,26 +113,6 @@ class CoupleNode implements JsonSerializable
     }
 
     /**
-     * Flatten every family's children into a single list. Used by callers that
-     * need to walk the descendants without caring which family each child
-     * belongs to (for example birthdate sorting when spouses are hidden).
-     *
-     * @return CoupleNode[]
-     */
-    public function getAllChildren(): array
-    {
-        $all = [];
-
-        foreach ($this->memberFamilies as $family) {
-            foreach ($family['children'] as $child) {
-                $all[] = $child;
-            }
-        }
-
-        return $all;
-    }
-
-    /**
      * Replace the family list with the provided one. Used by the hide-spouses
      * sort pass to write back re-ordered children without having to mutate the
      * array entries in place.
