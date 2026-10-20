@@ -62,11 +62,11 @@ msgstr ""
 "de volledige naam. \"Automatisch\" gebruikt de achternaamtraditie van de "
 "stamboom (IJslands kort achternamen af; al het andere kort voornamen af)."
 
-#: src/Module.php:130 src/Module.php:249
+#: src/Module.php:130 src/Module.php:243
 msgid "Descendants chart"
 msgstr "Afstammelingendiagram"
 
-#: src/Module.php:246 src/Module/ChartTrait.php:43
+#: src/Module.php:240 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Afstammelingen van %s"
@@ -148,7 +148,7 @@ msgstr "Huwelijksnamen"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:268
+#: src/Module.php:262
 msgid "Move the view with two fingers"
 msgstr "Verplaats de weergave met twee vingers"
 
@@ -202,7 +202,7 @@ msgstr "Schakelen tussen volledig scherm en normale weergave"
 msgid "The preferences for the module “%s” have been updated."
 msgstr "De voorkeuren voor de module \"%s\" zijn bijgewerkt."
 
-#: src/Module.php:267
+#: src/Module.php:261
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Gebruik Ctrl + scroll om in te zoomen op de weergave"
 

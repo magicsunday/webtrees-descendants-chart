@@ -62,11 +62,11 @@ msgstr ""
 "fullständiga namnet. \"Automatiskt\" använder trädets efternamnstradition "
 "(isländska förkortar efternamn; allt annat förkortar förnamn)."
 
-#: src/Module.php:130 src/Module.php:249
+#: src/Module.php:130 src/Module.php:243
 msgid "Descendants chart"
 msgstr "Ättlingar"
 
-#: src/Module.php:246 src/Module/ChartTrait.php:43
+#: src/Module.php:240 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Ättlingar till %s"
@@ -144,7 +144,7 @@ msgstr "Giftasnamn"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:268
+#: src/Module.php:262
 msgid "Move the view with two fingers"
 msgstr "Flytta vyn med två fingrar"
 
@@ -195,7 +195,7 @@ msgstr "Växla mellan helskärm och normal vy"
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:267
+#: src/Module.php:261
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Använd CTRL-scroll för att zooma i vyn"
 

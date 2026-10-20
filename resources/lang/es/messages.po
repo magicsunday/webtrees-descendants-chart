@@ -63,11 +63,11 @@ msgstr ""
 "tradición de apellidos del árbol (islandés abrevia apellidos; el resto "
 "abrevia nombres de pila)."
 
-#: src/Module.php:130 src/Module.php:249
+#: src/Module.php:130 src/Module.php:243
 msgid "Descendants chart"
 msgstr "Árbol de descendientes"
 
-#: src/Module.php:246 src/Module/ChartTrait.php:43
+#: src/Module.php:240 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Árbol de descendientes de %s"
@@ -146,7 +146,7 @@ msgstr "Nombres de casada"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:268
+#: src/Module.php:262
 msgid "Move the view with two fingers"
 msgstr "Mueve la vista con dos dedos"
 
@@ -197,7 +197,7 @@ msgstr "Cambiar entre pantalla completa y vista normal"
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:267
+#: src/Module.php:261
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Use Ctrl + scroll para acercar la vista"
 

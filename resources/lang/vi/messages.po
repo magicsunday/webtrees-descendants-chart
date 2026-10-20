@@ -62,11 +62,11 @@ msgstr ""
 "tên đầy đủ. \"Tự động\" sử dụng truyền thống họ của cây phả hệ (Iceland viết "
 "tắt họ; còn lại viết tắt tên gọi)."
 
-#: src/Module.php:130 src/Module.php:249
+#: src/Module.php:130 src/Module.php:243
 msgid "Descendants chart"
 msgstr "Biểu đồ con cháu"
 
-#: src/Module.php:246 src/Module/ChartTrait.php:43
+#: src/Module.php:240 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Biểu đồ con cháu của %s"
@@ -144,7 +144,7 @@ msgstr "Tên sau khi kết hôn"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:268
+#: src/Module.php:262
 msgid "Move the view with two fingers"
 msgstr "Di chuyển tầm nhìn bằng hai ngón tay"
 
@@ -195,7 +195,7 @@ msgstr "Chuyển giữa toàn màn hình và xem bình thường"
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:267
+#: src/Module.php:261
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Sử dụng Ctrl + cuộn để phóng to chế độ xem"
 

@@ -62,11 +62,11 @@ msgstr ""
 "name. \"Automatic\" uses the tree's surname tradition (Icelandic abbreviates "
 "surnames; everything else abbreviates given names)."
 
-#: src/Module.php:130 src/Module.php:249
+#: src/Module.php:130 src/Module.php:243
 msgid "Descendants chart"
 msgstr "Descendants chart"
 
-#: src/Module.php:246 src/Module/ChartTrait.php:43
+#: src/Module.php:240 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Descendants chart of %s"
@@ -144,7 +144,7 @@ msgstr "Married names"
 msgid "Modules"
 msgstr "Modules"
 
-#: src/Module.php:268
+#: src/Module.php:262
 msgid "Move the view with two fingers"
 msgstr "Move the view with two fingers"
 
@@ -195,7 +195,7 @@ msgstr "Switch between full screen mode and normal view"
 msgid "The preferences for the module “%s” have been updated."
 msgstr "The preferences for the module “%s” have been updated."
 
-#: src/Module.php:267
+#: src/Module.php:261
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Use Ctrl + scroll to zoom in the view"
 

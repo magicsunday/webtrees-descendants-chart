@@ -62,11 +62,11 @@ msgstr ""
 "fyrir fullt nafn. „Sjálfvirkt“ notar eftirnafnshefð trésins (íslensk hefð "
 "styttir eftirnöfn; aðrar stytta eiginnöfn)."
 
-#: src/Module.php:130 src/Module.php:249
+#: src/Module.php:130 src/Module.php:243
 msgid "Descendants chart"
 msgstr "Afkomendagraf"
 
-#: src/Module.php:246 src/Module/ChartTrait.php:43
+#: src/Module.php:240 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Afkomendagraf fyrir %s"
@@ -146,7 +146,7 @@ msgstr "Giftingarnöfn"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:268
+#: src/Module.php:262
 msgid "Move the view with two fingers"
 msgstr "Færðu yfirlitið með tveimur fingrum"
 
@@ -199,7 +199,7 @@ msgstr "Skiptu á milli fullsskjás og venjulegs skjás"
 msgid "The preferences for the module “%s” have been updated."
 msgstr "Kjörstillingar fyrir eininguna “%s“ hafa verið uppfærðar."
 
-#: src/Module.php:267
+#: src/Module.php:261
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Notaðu Ctrl + skruna til að þysja í ættartrénu"
 
