@@ -63,7 +63,7 @@ export default class Hierarchy {
      * Returns the root node of the d3 hierarchy. Only available once init()
      * has run.
      *
-     * @returns {HierarchyNode<any>}
+     * @return {HierarchyNode<any>}
      *
      * @public
      */

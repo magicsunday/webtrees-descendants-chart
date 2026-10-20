@@ -23,7 +23,7 @@
  *
  * @param {CoupleNode} coupleData The wire-format couple tree emitted by the PHP DataFacade
  *
- * @returns {FamilyTreeNode}
+ * @return {FamilyTreeNode}
  */
 export function buildFamilyTree(coupleData) {
     const families = coupleToFamilies(coupleData);
@@ -41,7 +41,7 @@ export function buildFamilyTree(coupleData) {
  *
  * @param {CoupleNode} coupleData The couple node to convert
  *
- * @returns {FamilyNode[]}
+ * @return {FamilyNode[]}
  */
 function coupleToFamilies(coupleData) {
     if (!coupleData || !Array.isArray(coupleData.members) || coupleData.members.length === 0) {
@@ -99,7 +99,7 @@ function coupleToFamilies(coupleData) {
  * @param {number}         boxSize    The box extent along the spread axis
  * @param {number}         spouseGap  The gap between the real-person and spouse box
  *
- * @returns {number}
+ * @return {number}
  */
 export function familyRenderedWidth(familyData, boxSize, spouseGap) {
     if (familyData?.kind !== "family") {
@@ -120,7 +120,7 @@ export function familyRenderedWidth(familyData, boxSize, spouseGap) {
  *
  * @param {FamilyTreeNode} familyData The family-tree node to render
  *
- * @returns {Array<{data: Data, isReal: boolean}>}
+ * @return {Array<{data: Data, isReal: boolean}>}
  */
 export function familyRenderableMembers(familyData) {
     if (familyData?.kind !== "family") {

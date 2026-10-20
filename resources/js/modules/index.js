@@ -66,7 +66,7 @@ export class DescendantsChart {
     /**
      * Returns the configuration object.
      *
-     * @returns {Configuration}
+     * @return {Configuration}
      */
     get configuration() {
         return this._configuration;

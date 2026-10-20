@@ -177,7 +177,7 @@ export default class Name extends TextRenderer {
      *
      * @param {NameElementData} datum
      *
-     * @returns {number}
+     * @return {number}
      *
      * @private
      */
@@ -225,7 +225,7 @@ export default class Name extends TextRenderer {
      *
      * @param {NameElementData} datum
      *
-     * @returns {LabelElementData[][]}
+     * @return {LabelElementData[][]}
      *
      * @private
      */
@@ -332,7 +332,7 @@ export default class Name extends TextRenderer {
      * @param {LabelElementData[]}            names
      * @param {number}                        availableWidth
      *
-     * @returns {LabelElementData[]}
+     * @return {LabelElementData[]}
      *
      * @private
      */
@@ -360,7 +360,7 @@ export default class Name extends TextRenderer {
      *
      * @param {NameElementData} datum
      *
-     * @returns {LabelElementData[]}
+     * @return {LabelElementData[]}
      *
      * @private
      */
