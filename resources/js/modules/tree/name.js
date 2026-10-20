@@ -77,7 +77,7 @@ export default class Name {
                         .attr("class", "wt-chart-box-name")
                         .attr("direction", (datum) => (datum.isRtl ? "rtl" : "ltr"))
                         .attr("text-anchor", "middle")
-                        .attr("alignment-baseline", "central")
+                        .attr("dominant-baseline", "central")
                         .attr("y", that._text.y - 5 + index * 20);
 
                     that.addNameElements(
@@ -98,7 +98,7 @@ export default class Name {
                             .attr("class", "wt-chart-box-name")
                             .attr("direction", (datum) => (datum.isAltRtl ? "rtl" : "ltr"))
                             .attr("text-anchor", "middle")
-                            .attr("alignment-baseline", "central")
+                            .attr("dominant-baseline", "central")
                             .attr("y", this._text.y + 40);
 
                         this.addNameElements(text, (datum) =>
