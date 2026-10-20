@@ -69,7 +69,7 @@ Flat layout — every file is descendants-specific glue. Reusable base classes (
 - **`chart.js`** (D3 hierarchy.tree layout, click handling), **`hierarchy.js`** (D3 hierarchy), **`tree.js`** (collapse/expand + d3.tree separation hook), **`configuration.js`**.
 - **`family-tree.js`** (CoupleNode → FamilyNode tree), **`separation.js`** (`pickGap` half-sibling detection — see issue #84).
 - **`chart/`** — `box/{image,text}.js`, `orientation-collection.js`, `svg.js`.
-- **`tree/`** — `date.js` (DateRenderer), `name.js`, `node-drawer.js`, `link-drawer.js`, `connection-builder.js`.
+- **`tree/`** — `text-renderer.js` (shared base of the name and date renderers), `date.js` (DateRenderer), `name.js`, `node-drawer.js`, `link-drawer.js`, `connection-builder.js`.
 - **`constants.js`**, **`d3.js`** (re-export facade).
 
 ### Views (`resources/views/`)
