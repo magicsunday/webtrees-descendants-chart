@@ -127,13 +127,13 @@
 
 /**
  * One date row bound to a `text.date` element by `tree/date.js`. Vertical
- * layouts render a single lifetime row (`label` + `withImage`); horizontal
- * layouts render a birth and/or death row that additionally carries the marker
- * icon and the corresponding flag.
+ * layouts render a single lifetime row that carries only the `label`.
+ * Horizontal layouts render a birth and/or death row that additionally carries
+ * `withImage`, the marker icon and the corresponding flag.
  *
  * @typedef {object} DateElementData
  * @property {string}  label     The formatted date text
- * @property {boolean} withImage Whether a highlight image takes up part of the box width
+ * @property {boolean} [withImage] Whether a highlight image takes up part of the box width, horizontal layouts only
  * @property {string}  [icon]    The birth (★) or death (†) marker, horizontal layouts only
  * @property {boolean} [birth]   Whether this row holds the birthdate
  * @property {boolean} [death]   Whether this row holds the death date
