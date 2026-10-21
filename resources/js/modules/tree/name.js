@@ -14,6 +14,14 @@ import TextRenderer from "./text-renderer.js";
  */
 
 /**
+ * The kinds of name segments that belong to the first names of a person. Every other kind
+ * belongs to the last names.
+ *
+ * @type {string[]}
+ */
+const FIRST_NAME_KINDS = ["given", "nickname"];
+
+/**
  * The class handles the creation of the tree.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
@@ -69,29 +77,9 @@ export default class Name extends TextRenderer {
                 });
             });
 
-            // Add alternative name if present
-            if (this._svg._configuration.showAlternativeName) {
-                enter
-                    .filter((datum) => datum.data.data.alternativeName !== "")
-                    .call((g) => {
-                        const text = g
-                            .append("text")
-                            .classed("wt-chart-box-name-alt", true)
-                            .attr("class", "wt-chart-box-name")
-                            .attr("direction", (datum) => (datum.isAltRtl ? "rtl" : "ltr"))
-                            .attr("text-anchor", "middle")
-                            .attr("dominant-baseline", "central")
-                            .attr("y", this._text.y + 40);
-
-                        this.addNameElements(text, (datum) =>
-                            this.truncateNamesData(
-                                text,
-                                this.createAlternativeNamesData(datum),
-                                this.getAvailableWidth(datum),
-                            ),
-                        );
-                    });
-            }
+            this.appendAlternativeName(enter, this._text.y + 40, (text) =>
+                text.attr("text-anchor", "middle").attr("dominant-baseline", "central"),
+            );
 
             // Left/Right and Right/Left
         } else {
@@ -112,64 +100,82 @@ export default class Name extends TextRenderer {
                     .append("text")
                     .attr("class", "wt-chart-box-name")
                     .attr("direction", (datum) => (datum.isRtl ? "rtl" : "ltr"))
-                    .attr("text-anchor", (datum) => {
-                        if (datum.isRtl && this._orientation.isDocumentRtl) {
-                            return "start";
-                        }
-
-                        if (datum.isRtl || this._orientation.isDocumentRtl) {
-                            return "end";
-                        }
-
-                        return "start";
-                    })
+                    .attr("text-anchor", (datum) => this.getTextAnchor(datum.isRtl))
                     .attr("x", (datum) => this.textX(datum))
                     .attr("y", this._text.y - 10);
 
                 this.addNameElements(text, (datum) => {
-                    const [first, ...last] = this.createNamesData(datum);
-
-                    // Merge the firstname and lastname groups, as we display the whole name in one line
-                    const combined = [...(first ?? []), ...(last[0] ?? [])];
+                    // Merge the given name and surname groups, as we display the whole name in one line
+                    const combined = this.createNamesData(datum).flat();
 
                     return this.truncateNamesData(text, combined, this.getAvailableWidth(datum));
                 });
             });
 
-            // Add alternative name if present
-            if (this._svg._configuration.showAlternativeName) {
-                enter
-                    .filter((datum) => datum.data.data.alternativeName !== "")
-                    .call((g) => {
-                        const text = g
-                            .append("text")
-                            .classed("wt-chart-box-name-alt", true)
-                            .attr("class", "wt-chart-box-name")
-                            .attr("direction", (datum) => (datum.isAltRtl ? "rtl" : "ltr"))
-                            .attr("text-anchor", (datum) => {
-                                if (datum.isAltRtl && this._orientation.isDocumentRtl) {
-                                    return "start";
-                                }
-
-                                if (datum.isAltRtl || this._orientation.isDocumentRtl) {
-                                    return "end";
-                                }
-
-                                return "start";
-                            })
-                            .attr("x", (datum) => this.textX(datum))
-                            .attr("y", this._text.y + 8);
-
-                        this.addNameElements(text, (datum) =>
-                            this.truncateNamesData(
-                                text,
-                                this.createAlternativeNamesData(datum),
-                                this.getAvailableWidth(datum),
-                            ),
-                        );
-                    });
-            }
+            this.appendAlternativeName(enter, this._text.y + 8, (text) =>
+                text
+                    .attr("text-anchor", (datum) => this.getTextAnchor(datum.isAltRtl))
+                    .attr("x", (datum) => this.textX(datum)),
+            );
         }
+    }
+
+    /**
+     * Adds the alternative name below the name of every person that has one, when the
+     * chart is configured to show it.
+     *
+     * @param {Selection<any, any, any, any>}                    enter    The entering name element descriptors
+     * @param {number}                                           y        The y position of the alternative name text
+     * @param {(text: Selection<any, any, any, any>) => void}    position Sets the layout dependent attributes that place the text
+     *
+     * @private
+     */
+    appendAlternativeName(enter, y, position) {
+        if (!this._svg._configuration.showAlternativeName) {
+            return;
+        }
+
+        enter
+            .filter((datum) => datum.data.data.alternativeName !== "")
+            .call((g) => {
+                const text = g
+                    .append("text")
+                    .attr("class", "wt-chart-box-name")
+                    .attr("direction", (datum) => (datum.isAltRtl ? "rtl" : "ltr"))
+                    .attr("y", y);
+
+                position(text);
+
+                this.addNameElements(text, (datum) =>
+                    this.truncateNamesData(
+                        text,
+                        this.createAlternativeNamesData(datum),
+                        this.getAvailableWidth(datum),
+                    ),
+                );
+            });
+    }
+
+    /**
+     * Returns the text anchor of a horizontally laid out name. The text of a right-to-left
+     * name grows towards the start of the line, which a right-to-left document mirrors again.
+     *
+     * @param {boolean} isRtl Whether the text is written right to left
+     *
+     * @return {string}
+     *
+     * @private
+     */
+    getTextAnchor(isRtl) {
+        if (isRtl && this._orientation.isDocumentRtl) {
+            return "start";
+        }
+
+        if (isRtl || this._orientation.isDocumentRtl) {
+            return "end";
+        }
+
+        return "start";
     }
 
     /**
@@ -221,7 +227,9 @@ export default class Name extends TextRenderer {
     }
 
     /**
-     * Creates the data array for the names in top/bottom layout.
+     * Creates the label groups of the name from its ordered name segments. A run of given
+     * name and nickname segments forms the group of the first names, a run of surname and
+     * married surname segments the group of the last names.
      *
      * @param {NameElementData} datum
      *
@@ -230,99 +238,34 @@ export default class Name extends TextRenderer {
      * @private
      */
     createNamesData(datum) {
-        /** @type {Record<number, LabelElementData[]>} */
-        const names = {};
-        let minPosFirstnames = Number.MAX_SAFE_INTEGER;
-        let minPosLastnames = Number.MAX_SAFE_INTEGER;
+        const { nameSegments, isNameRtl } = datum.data.data;
 
-        let firstnameOffset = 0;
-        /** @type {Map<number, LabelElementData>} */
-        const firstnameMap = new Map();
+        /** @type {LabelElementData[][]} */
+        const groups = [];
+        /** @type {LabelElementData[] | null} */
+        let group = null;
+        let isLastNameGroup = false;
 
-        // Iterate over the individual name components and determine their position in the overall
-        // name and insert the component at the corresponding position in the result object.
-        for (const firstName of datum.data.data.firstNames) {
-            const pos = datum.data.data.name.indexOf(firstName, firstnameOffset);
+        for (const segment of nameSegments) {
+            const isLastName = !FIRST_NAME_KINDS.includes(segment.kind);
 
-            if (pos !== -1) {
-                firstnameOffset = pos + firstName.length;
-
-                if (pos < minPosFirstnames) {
-                    minPosFirstnames = pos;
-                }
-
-                firstnameMap.set(pos, {
-                    label: firstName,
-                    isPreferred: firstName === datum.data.data.preferredName,
-                    isLastName: false,
-                    isNameRtl: datum.data.data.isNameRtl,
-                });
+            // A change between first names and last names starts the next group
+            if (group === null || isLastName !== isLastNameGroup) {
+                group = [];
+                groups.push(group);
+                isLastNameGroup = isLastName;
             }
+
+            group.push({
+                label: segment.label,
+                isPreferred: segment.isPreferred,
+                isLastName: isLastName,
+                isNickname: segment.kind === "nickname",
+                isNameRtl: isNameRtl,
+            });
         }
 
-        // Insert the optional nickname (e.g. "Chalky") into the first-names
-        // group when getShowNicknames is enabled and the GEDCOM has a NICK.
-        // Adding it to the firstname map keeps it inside the same slot as the
-        // given names; position-keyed iteration places it after the given names
-        // before the surname slot starts.
-        const nickname = datum.data.data.nickname;
-
-        if (nickname && nickname !== "") {
-            const nickQuoted = `"${nickname}"`;
-            const nickPos = datum.data.data.name.indexOf(nickQuoted);
-
-            if (nickPos !== -1) {
-                firstnameMap.set(nickPos, {
-                    label: nickQuoted,
-                    isPreferred: false,
-                    isLastName: false,
-                    isNickname: true,
-                    isNameRtl: datum.data.data.isNameRtl,
-                });
-            }
-        }
-
-        names[minPosFirstnames] = [...firstnameMap].map(([, value]) => value);
-
-        let lastnameOffset = 0;
-        /** @type {Map<number, LabelElementData>} */
-        const lastnameMap = new Map();
-
-        for (const lastName of datum.data.data.lastNames) {
-            let pos;
-
-            // Check if last name already exists in first names list, in case first name equals last name.
-            // `pos` is the absolute index from String.indexOf, so the offset for the next search must be
-            // the absolute position past the matched substring — accumulating with `+=` over-shoots and
-            // skips later occurrences (visible with names like "Anna Anna Anna Schmidt").
-            do {
-                pos = datum.data.data.name.indexOf(lastName, lastnameOffset);
-
-                if (pos !== -1 && firstnameMap.has(pos)) {
-                    lastnameOffset = pos + lastName.length;
-                }
-            } while (pos !== -1 && firstnameMap.has(pos));
-
-            if (pos !== -1) {
-                lastnameOffset = pos;
-
-                if (pos < minPosLastnames) {
-                    minPosLastnames = pos;
-                }
-
-                lastnameMap.set(pos, {
-                    label: lastName,
-                    isPreferred: false,
-                    isLastName: true,
-                    isNameRtl: datum.data.data.isNameRtl,
-                });
-            }
-        }
-
-        names[minPosLastnames] = [...lastnameMap].map(([, value]) => value);
-
-        // Extract the values (keys don't matter anymore)
-        return Object.values(names);
+        return groups;
     }
 
     /**
@@ -377,6 +320,7 @@ export default class Name extends TextRenderer {
                     label: word,
                     isPreferred: false,
                     isLastName: false,
+                    isNickname: false,
                     isNameRtl: datum.data.data.isAltRtl,
                 };
             }),

@@ -20,6 +20,8 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\DescendantsChart\Model\NodeData;
 use MagicSunday\Webtrees\ModuleBase\Facade\RouteAwareDataFacadeTrait;
+use MagicSunday\Webtrees\ModuleBase\Model\NameSegment;
+use MagicSunday\Webtrees\ModuleBase\Model\NameSegmentKind;
 use MagicSunday\Webtrees\ModuleBase\Processor\DateProcessor;
 use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
 use MagicSunday\Webtrees\ModuleBase\Processor\NameProcessor;
@@ -235,20 +237,19 @@ final class DataFacade
             ? $nameProcessor->getFullNameWithNickname()
             : $nameProcessor->getFullName();
         $alternativeName = $nameProcessor->getAlternateName($individual);
-        $lastNames       = $nameProcessor->getLastNames();
 
-        // For "birth + married" mode, append the married surname (in brackets)
-        // both to the full-name string and the lastNames array. The JS renderer
-        // locates each lastName entry inside the full-name string via indexOf,
-        // so the bracketed entry must literally appear in both.
-        if ($marriedNamesMode === Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED) {
-            $marriedSurnames = $nameProcessor->getMarriedSurnames($spouse);
+        // In "birth + married" mode the married surname closes the segment list,
+        // in brackets, and the flat name carries the same bracketed text.
+        $nameSegments = $nameProcessor->getNameSegments(
+            $showNicknames,
+            $marriedNamesMode === Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED,
+            $spouse
+        );
 
-            if ($marriedSurnames !== []) {
-                $marriedSuffix = '(' . implode(' ', $marriedSurnames) . ')';
-                $fullNN .= ' ' . $marriedSuffix;
-                $lastNames[] = $marriedSuffix;
-            }
+        $marriedSegment = end($nameSegments);
+
+        if (($marriedSegment instanceof NameSegment) && ($marriedSegment->kind === NameSegmentKind::Married)) {
+            $fullNN .= ' ' . $marriedSegment->label;
         }
 
         $treeData
@@ -257,10 +258,7 @@ final class DataFacade
             ->setUpdateUrl($this->getUpdateRoute($individual))
             ->setName($fullNN)
             ->setIsNameRtl(TextDirection::isRtl($fullNN))
-            ->setFirstNames($nameProcessor->getFirstNames())
-            ->setLastNames($lastNames)
-            ->setPreferredName($nameProcessor->getPreferredName())
-            ->setNickname($showNicknames ? $nameProcessor->getNickname() : '')
+            ->setNameSegments($nameSegments)
             ->setAlternativeName($alternativeName)
             ->setIsAltRtl(TextDirection::isRtl($alternativeName))
             ->setThumbnail($imageProcessor->getHighlightImageUrl())

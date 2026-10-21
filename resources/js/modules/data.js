@@ -14,13 +14,24 @@
  */
 
 /**
+ * One drawable part of a person's name, as emitted by the PHP name processor. The kind is
+ * `given` for a given name or a particle in the given name area, `nickname` for the quoted
+ * nickname, `surname` for a surname part and `married` for the bracketed married surname.
+ *
+ * @typedef {object} NameSegment
+ * @property {string}                                 label       The text to draw
+ * @property {"given"|"nickname"|"surname"|"married"} kind        The role of the segment inside the name
+ * @property {boolean}                                isPreferred Whether webtrees marks the token as the preferred given name
+ */
+
+/**
  * The plain person data emitted by the PHP DataFacade.
  *
  * Mirrors `NodeData::jsonSerialize()` one-to-one: every key is always present.
  * A placeholder node (a couple slot with no known individual) is built from a
  * default-constructed `NodeData`, so it carries the same keys with their PHP
- * type defaults — `xref`, `name`, `birth`, … as empty strings, `firstNames` and
- * `lastNames` as empty arrays, `sex` as `"U"`. Consumers therefore detect a
+ * type defaults — `xref`, `name`, `birth`, … as empty strings, `nameSegments` as
+ * an empty array, `sex` as `"U"`. Consumers therefore detect a
  * placeholder by an empty `xref`, never by a missing property.
  *
  * @typedef {object} Data
@@ -36,10 +47,7 @@
  * @property {string}   thumbnail       The URL of the thumbnail image
  * @property {string}   silhouette      The URL of the sex-specific silhouette used as onerror fallback
  * @property {string}   name            The full name of the individual
- * @property {string}   preferredName   The preferred first name
- * @property {string[]} firstNames      The list of first names
- * @property {string[]} lastNames       The list of last names
- * @property {string}   nickname        Quoted nickname inserted between given names and surname (empty when not enabled)
+ * @property {NameSegment[]} nameSegments The drawable parts of the name in display order
  * @property {string}   alternativeName The alternative name of the individual
  * @property {boolean}  isNameRtl       Whether the primary name should render right-to-left
  * @property {boolean}  isAltRtl        Whether the alternative name should render right-to-left
@@ -144,8 +152,8 @@
  * @property {string}  label
  * @property {boolean} isPreferred
  * @property {boolean} isLastName
+ * @property {boolean} isNickname
  * @property {boolean} isNameRtl
- * @property {boolean} [isNickname]
  */
 
 /**
