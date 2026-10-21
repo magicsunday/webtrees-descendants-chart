@@ -152,6 +152,7 @@
  * @property {string}  label
  * @property {boolean} isPreferred
  * @property {boolean} isLastName
+ * @property {boolean} isNickname
  * @property {boolean} isNameRtl
  */
 

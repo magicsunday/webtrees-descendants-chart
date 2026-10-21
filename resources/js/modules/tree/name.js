@@ -260,6 +260,7 @@ export default class Name extends TextRenderer {
                 label: segment.label,
                 isPreferred: segment.isPreferred,
                 isLastName: isLastName,
+                isNickname: segment.kind === "nickname",
                 isNameRtl: isNameRtl,
             });
         }
@@ -319,6 +320,7 @@ export default class Name extends TextRenderer {
                     label: word,
                     isPreferred: false,
                     isLastName: false,
+                    isNickname: false,
                     isNameRtl: datum.data.data.isAltRtl,
                 };
             }),
