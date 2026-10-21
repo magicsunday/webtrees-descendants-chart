@@ -26,7 +26,7 @@ use ReflectionProperty;
  * implementation reads from the `module_setting` table, so the tests that need
  * preferences boot a minimal SQLite schema for it.
  */
-trait ModuleSettingsFixture
+trait ModuleSettingsFixtureTrait
 {
     /**
      * Boots an in-memory SQLite + minimal `module_setting` schema once per

@@ -15,7 +15,7 @@ use Fig\Http\Message\RequestMethodInterface;
 use Fisharebest\Webtrees\DB;
 use GuzzleHttp\Psr7\ServerRequest;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
-use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixture;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -35,7 +35,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Configuration::class)]
 final class ConfigurationTest extends TestCase
 {
-    use ModuleSettingsFixture;
+    use ModuleSettingsFixtureTrait;
 
     /**
      * @param array<string, string> $queryParams

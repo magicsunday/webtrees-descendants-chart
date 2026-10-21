@@ -29,7 +29,7 @@ use GuzzleHttp\Psr7\ServerRequest;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Module;
-use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixture;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -42,7 +42,7 @@ use ReflectionProperty;
 #[CoversClass(Module::class)]
 final class ModuleTest extends TestCase
 {
-    use ModuleSettingsFixture;
+    use ModuleSettingsFixtureTrait;
 
     /**
      * Ensures trait-provided helpers return expected metadata and URLs.
@@ -118,6 +118,8 @@ final class ModuleTest extends TestCase
             self::assertSame((string) $value, $query[$name]);
         }
 
+        self::assertArrayHasKey('xref', $query);
+        self::assertArrayHasKey('tree', $query);
         self::assertSame('I1', $query['xref']);
         self::assertSame('main', $query['tree']);
     }
