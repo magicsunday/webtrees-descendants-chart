@@ -45,9 +45,9 @@ class CoupleNode implements JsonSerializable
      * Members of this couple. Index 0 is the real-person, later indices are
      * spouses.
      *
-     * @var NodeData[]
+     * @var non-empty-list<NodeData>
      */
-    protected array $members = [];
+    protected array $members;
 
     /**
      * Per-family child branches. Each entry references the spouse from
@@ -64,7 +64,7 @@ class CoupleNode implements JsonSerializable
      */
     public function __construct(NodeData $realPerson)
     {
-        $this->members[] = $realPerson;
+        $this->members = [$realPerson];
     }
 
     /**
@@ -97,7 +97,7 @@ class CoupleNode implements JsonSerializable
     }
 
     /**
-     * @return NodeData[]
+     * @return non-empty-list<NodeData>
      */
     public function getMembers(): array
     {
@@ -127,7 +127,7 @@ class CoupleNode implements JsonSerializable
     }
 
     /**
-     * @return array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>}
+     * @return array{members: non-empty-list<NodeData>, memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>}
      */
     public function jsonSerialize(): array
     {
