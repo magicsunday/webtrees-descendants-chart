@@ -20,19 +20,19 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:459
+#: src/Configuration.php:451
 msgid "Abbreviate given names first"
 msgstr "Nejprve zkrátit křestní jména"
 
-#: src/Configuration.php:460
+#: src/Configuration.php:452
 msgid "Abbreviate surnames first"
 msgstr "Nejprve zkrátit příjmení"
 
-#: src/Module.php:141
+#: src/Module.php:130
 msgid "An overview of an individual’s descendants."
 msgstr "Přehled potomků osoby."
 
-#: src/Configuration.php:458
+#: src/Configuration.php:450
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automaticky (podle tradice příjmení stromu)"
 
@@ -40,11 +40,11 @@ msgstr "Automaticky (podle tradice příjmení stromu)"
 msgid "Behavior"
 msgstr "Chování"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:324
 msgid "Birth name only"
 msgstr "Pouze rodné jméno"
 
-#: src/Configuration.php:334
+#: src/Configuration.php:326
 msgid "Birth name with married name in brackets"
 msgstr "Rodné jméno se jménem po sňatku v závorkách"
 
@@ -62,11 +62,11 @@ msgstr ""
 "celé jméno. \"Automaticky\" používá tradici příjmení stromu (islandská "
 "tradice zkracuje příjmení; všechny ostatní zkracují křestní jména)."
 
-#: src/Module.php:130 src/Module.php:243
+#: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
 msgstr "Diagram potomků"
 
-#: src/Module.php:240 src/Module/ChartTrait.php:43
+#: src/Module.php:229 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Diagram potomků osoby %s"
@@ -132,7 +132,7 @@ msgstr ""
 "Martin \"Chalky\" White). Napodobuje původní chování webtrees pro stromy, "
 "které přezdívky ukládají do samostatného pole GEDCOM NICK."
 
-#: src/Configuration.php:333
+#: src/Configuration.php:325
 msgid "Married name only"
 msgstr "Pouze jméno po sňatku"
 
@@ -144,7 +144,7 @@ msgstr "Jména po sňatku"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:262
+#: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "Přemístit pohled dvěma prsty"
 
@@ -195,7 +195,7 @@ msgstr "Přepnout mezi celou obrazovkou a normálním zobrazením"
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:261
+#: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Pomocí Ctrl + kolečko zvětšit pohled"
 
@@ -215,15 +215,15 @@ msgstr ""
 msgid "cancel"
 msgstr ""
 
-#: src/Configuration.php:252 src/Configuration.php:260
+#: src/Configuration.php:244 src/Configuration.php:252
 msgid "down"
 msgstr ""
 
-#: src/Configuration.php:249 src/Configuration.php:257
+#: src/Configuration.php:241 src/Configuration.php:249
 msgid "left"
 msgstr ""
 
-#: src/Configuration.php:250 src/Configuration.php:258
+#: src/Configuration.php:242 src/Configuration.php:250
 msgid "right"
 msgstr ""
 
@@ -231,7 +231,7 @@ msgstr ""
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:251 src/Configuration.php:259
+#: src/Configuration.php:243 src/Configuration.php:251
 msgid "up"
 msgstr ""
 

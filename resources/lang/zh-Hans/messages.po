@@ -18,19 +18,19 @@ msgstr ""
 "X-Poedit-SearchPath-0: src\n"
 "X-Poedit-SearchPath-1: resources/views\n"
 
-#: src/Configuration.php:459
+#: src/Configuration.php:451
 msgid "Abbreviate given names first"
 msgstr "优先缩写名字"
 
-#: src/Configuration.php:460
+#: src/Configuration.php:452
 msgid "Abbreviate surnames first"
 msgstr "优先缩写姓氏"
 
-#: src/Module.php:141
+#: src/Module.php:130
 msgid "An overview of an individual’s descendants."
 msgstr "个人后代的概览图"
 
-#: src/Configuration.php:458
+#: src/Configuration.php:450
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "自动（根据族谱的姓氏传统）"
 
@@ -38,11 +38,11 @@ msgstr "自动（根据族谱的姓氏传统）"
 msgid "Behavior"
 msgstr "行为"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:324
 msgid "Birth name only"
 msgstr "仅出生姓名"
 
-#: src/Configuration.php:334
+#: src/Configuration.php:326
 msgid "Birth name with married name in brackets"
 msgstr "出生姓名后附婚后姓名（括号内）"
 
@@ -59,11 +59,11 @@ msgstr ""
 "控制当方框对完整姓名而言过窄时，先缩写哪个名字部分。“自动”使用族谱的姓氏传统"
 "（冰岛语缩写姓氏；其他所有传统缩写名字）。"
 
-#: src/Module.php:130 src/Module.php:243
+#: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
 msgstr "后代图"
 
-#: src/Module.php:240 src/Module/ChartTrait.php:43
+#: src/Module.php:229 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "%s的后代图"
@@ -130,7 +130,7 @@ msgstr ""
 "White）。模拟旧版 webtrees 的行为，适用于在单独的 GEDCOM NICK 字段中保存昵称"
 "的家谱。"
 
-#: src/Configuration.php:333
+#: src/Configuration.php:325
 msgid "Married name only"
 msgstr "仅婚后姓名"
 
@@ -142,7 +142,7 @@ msgstr "婚后姓名"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:262
+#: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "用两根手指拖动视图"
 
@@ -195,7 +195,7 @@ msgstr "切换全屏模式和普通视图"
 msgid "The preferences for the module “%s” have been updated."
 msgstr "模块 “%s” 的设置已更新。"
 
-#: src/Module.php:261
+#: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "按住Ctrl和鼠标滚轮放大查看"
 
@@ -214,15 +214,15 @@ msgstr ""
 msgid "cancel"
 msgstr ""
 
-#: src/Configuration.php:252 src/Configuration.php:260
+#: src/Configuration.php:244 src/Configuration.php:252
 msgid "down"
 msgstr "子孙在下"
 
-#: src/Configuration.php:249 src/Configuration.php:257
+#: src/Configuration.php:241 src/Configuration.php:249
 msgid "left"
 msgstr "子孙在左"
 
-#: src/Configuration.php:250 src/Configuration.php:258
+#: src/Configuration.php:242 src/Configuration.php:250
 msgid "right"
 msgstr "子孙在右"
 
@@ -230,7 +230,7 @@ msgstr "子孙在右"
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:251 src/Configuration.php:259
+#: src/Configuration.php:243 src/Configuration.php:251
 msgid "up"
 msgstr "子孙在上"
 

@@ -21,19 +21,19 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:459
+#: src/Configuration.php:451
 msgid "Abbreviate given names first"
 msgstr "Спершу скорочувати імена"
 
-#: src/Configuration.php:460
+#: src/Configuration.php:452
 msgid "Abbreviate surnames first"
 msgstr "Спершу скорочувати прізвища"
 
-#: src/Module.php:141
+#: src/Module.php:130
 msgid "An overview of an individual’s descendants."
 msgstr "Огляд нащадків персони у вигляді дерева."
 
-#: src/Configuration.php:458
+#: src/Configuration.php:450
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Автоматично (за традицією прізвищ дерева)"
 
@@ -41,11 +41,11 @@ msgstr "Автоматично (за традицією прізвищ дере�
 msgid "Behavior"
 msgstr "Поведінка"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:324
 msgid "Birth name only"
 msgstr "Лише ім'я при народженні"
 
-#: src/Configuration.php:334
+#: src/Configuration.php:326
 msgid "Birth name with married name in brackets"
 msgstr "Ім'я при народженні з прізвищем у шлюбі в дужках"
 
@@ -63,11 +63,11 @@ msgstr ""
 "для повного імені. «Автоматично» використовує традицію прізвищ дерева "
 "(ісландська скорочує прізвища; усі інші скорочують імена)."
 
-#: src/Module.php:130 src/Module.php:243
+#: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
 msgstr "Нащадки"
 
-#: src/Module.php:240 src/Module/ChartTrait.php:43
+#: src/Module.php:229 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Нащадки для %s"
@@ -133,7 +133,7 @@ msgstr ""
 "Martin \"Chalky\" White). Повторює попередню поведінку webtrees для дерев, "
 "які зберігають прізвиська в окремому полі GEDCOM NICK."
 
-#: src/Configuration.php:333
+#: src/Configuration.php:325
 msgid "Married name only"
 msgstr "Лише прізвище у шлюбі"
 
@@ -145,7 +145,7 @@ msgstr "Прізвища у шлюбі"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:262
+#: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "Переміщуйте зображення двома пальцями"
 
@@ -196,7 +196,7 @@ msgstr "Перемикання між повноекранним і звичай
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:261
+#: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Використовуйте Ctrl + коліщатко миші до збільшення зображення"
 
@@ -216,15 +216,15 @@ msgstr ""
 msgid "cancel"
 msgstr ""
 
-#: src/Configuration.php:252 src/Configuration.php:260
+#: src/Configuration.php:244 src/Configuration.php:252
 msgid "down"
 msgstr ""
 
-#: src/Configuration.php:249 src/Configuration.php:257
+#: src/Configuration.php:241 src/Configuration.php:249
 msgid "left"
 msgstr ""
 
-#: src/Configuration.php:250 src/Configuration.php:258
+#: src/Configuration.php:242 src/Configuration.php:250
 msgid "right"
 msgstr ""
 
@@ -232,7 +232,7 @@ msgstr ""
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:251 src/Configuration.php:259
+#: src/Configuration.php:243 src/Configuration.php:251
 msgid "up"
 msgstr ""
 
