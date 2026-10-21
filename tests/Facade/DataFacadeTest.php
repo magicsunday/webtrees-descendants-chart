@@ -46,6 +46,7 @@ use ReflectionProperty;
 
 use function array_keys;
 use function array_map;
+use function array_values;
 use function http_build_query;
 
 /**
@@ -333,6 +334,152 @@ final class DataFacadeTest extends TestCase
     }
 
     /**
+     * The chart subject is the first generation, every node gets its own
+     * positive ID, and a person beyond the configured generation depth is left out.
+     */
+    #[Test]
+    public function treeStopsAtTheConfiguredGenerationDepth(): void
+    {
+        $grandchild = $this->createPerson('I3', 'M', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+        $child      = $this->createPerson('I2', 'M', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+        $root       = $this->createPerson('I1', 'M', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+
+        $child->method('spouseFamilies')->willReturn(new Collection([$this->createFamily(null, [$grandchild])]));
+        $root->method('spouseFamilies')->willReturn(new Collection([$this->createFamily(null, [$child])]));
+
+        $structure = $this->buildStructure($root, ['generations' => '2']);
+
+        self::assertSame(1, $this->valueOf($this->memberAt($structure['members'], 0), 'generation'));
+        self::assertSame(1, $this->valueOf($this->memberAt($structure['members'], 0), 'id'));
+
+        $childCouple = $this->childrenOfFamily($structure, 0)[0] ?? null;
+
+        self::assertInstanceOf(CoupleNode::class, $childCouple);
+
+        $childData = $this->memberAt($childCouple->getMembers(), 0);
+
+        self::assertSame('I2', $this->valueOf($childData, 'xref'));
+        self::assertSame(2, $this->valueOf($childData, 'generation'));
+        self::assertSame(2, $this->valueOf($childData, 'id'));
+        self::assertSame([], $this->childrenOfFamily(['members' => $childCouple->getMembers(), 'memberFamilies' => $childCouple->getMemberFamilies()], 0));
+    }
+
+    /**
+     * A family with a known partner stores the partner next to the person and
+     * attaches the children of the family to that partner.
+     */
+    #[Test]
+    public function familyWithAPartnerListsThePartnerAndTheChildren(): void
+    {
+        $partner = $this->createPerson('I2', 'F', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+        $first   = $this->createPerson('I3', 'M', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+        $second  = $this->createPerson('I4', 'F', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+        $root    = $this->createPerson('I1', 'M', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+
+        $root->method('spouseFamilies')->willReturn(new Collection([$this->createFamily($partner, [$first, $second])]));
+
+        $structure = $this->buildStructure($root, ['generations' => '2']);
+
+        self::assertCount(2, $structure['members']);
+        self::assertSame('I2', $this->valueOf($this->memberAt($structure['members'], 1), 'xref'));
+        self::assertCount(1, $structure['memberFamilies']);
+        self::assertSame(1, $this->spouseIndexOf($structure, 0));
+        self::assertSame(['I3', 'I4'], $this->childXrefs($structure, 0));
+    }
+
+    /**
+     * A single family without a recorded partner keeps the children directly
+     * under the person and adds no empty partner.
+     */
+    #[Test]
+    public function singleFamilyWithoutAPartnerAddsNoPartnerSlot(): void
+    {
+        $child = $this->createPerson('I2', 'M', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+        $root  = $this->createPerson('I1', 'M', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+
+        $root->method('spouseFamilies')->willReturn(new Collection([$this->createFamily(null, [$child])]));
+
+        $structure = $this->buildStructure($root, ['generations' => '2']);
+
+        self::assertCount(1, $structure['members']);
+        self::assertCount(1, $structure['memberFamilies']);
+        self::assertNull($this->spouseIndexOf($structure, 0));
+        self::assertSame(['I2'], $this->childXrefs($structure, 0));
+    }
+
+    /**
+     * With several families each one gets a partner slot, also when the partner
+     * of a family is not recorded.
+     */
+    #[Test]
+    public function severalFamiliesWithoutPartnersEachGetAPartnerSlot(): void
+    {
+        $firstChild  = $this->createPerson('I2', 'M', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+        $secondChild = $this->createPerson('I3', 'M', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+        $root        = $this->createPerson('I1', 'M', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+
+        $root->method('spouseFamilies')->willReturn(
+            new Collection([
+                $this->createFamily(null, [$firstChild]),
+                $this->createFamily(null, [$secondChild]),
+            ])
+        );
+
+        $structure = $this->buildStructure($root, ['generations' => '2']);
+
+        self::assertCount(3, $structure['members']);
+        self::assertSame(1, $this->spouseIndexOf($structure, 0));
+        self::assertSame(2, $this->spouseIndexOf($structure, 1));
+        self::assertSame(['I2'], $this->childXrefs($structure, 0));
+        self::assertSame(['I3'], $this->childXrefs($structure, 1));
+    }
+
+    /**
+     * Without spouses the children of all families are merged into one list,
+     * ordered by their birth date.
+     */
+    #[Test]
+    public function hiddenSpousesMergeTheChildrenAndOrderThemByBirthDate(): void
+    {
+        $name  = [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')];
+        $young = $this->createPerson('I2', 'M', $name, '', 0, '1 JAN 1950');
+        $old   = $this->createPerson('I3', 'M', $name, '', 0, '1 JAN 1900');
+        $mid   = $this->createPerson('I4', 'M', $name, '', 0, '1 JAN 1925');
+        $root  = $this->createPerson('I1', 'M', $name);
+
+        $partner = $this->createPerson('I5', 'F', $name);
+
+        $root->method('spouseFamilies')->willReturn(
+            new Collection([
+                $this->createFamily($partner, [$young, $old]),
+                $this->createFamily(null, [$mid]),
+            ])
+        );
+
+        $structure = $this->buildStructure($root, ['generations' => '2', 'hideSpouses' => '1']);
+
+        self::assertCount(1, $structure['members']);
+        self::assertCount(1, $structure['memberFamilies']);
+        self::assertSame(0, $this->familyIndexOf($structure, 0));
+        self::assertNull($this->spouseIndexOf($structure, 0));
+        self::assertSame(['I3', 'I4', 'I2'], $this->childXrefs($structure, 0));
+    }
+
+    /**
+     * A person without any family has no family entry when the spouses are
+     * hidden either.
+     */
+    #[Test]
+    public function personWithoutFamiliesHasNoFamilyEntries(): void
+    {
+        $root = $this->createPerson('I1', 'M', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]);
+        $root->method('spouseFamilies')->willReturn(new Collection());
+
+        self::assertSame([], $this->buildStructure($root, ['generations' => '2', 'hideSpouses' => '1'])['memberFamilies']);
+        self::assertSame([], $this->buildStructure($root, ['generations' => '2', 'hideSpouses' => '0'])['memberFamilies']);
+    }
+
+    /**
      * Builds the chart of the person, with an optional partner, and returns the
      * node data of the members of the first couple.
      *
@@ -346,9 +493,6 @@ final class DataFacadeTest extends TestCase
         ?Individual $partner = null,
         bool $showNicknames = false,
     ): array {
-        $module = self::createStubForIntersectionOfInterfaces([ModuleCustomInterface::class, ModuleAssetUrlInterface::class]);
-        $module->method('name')->willReturn('webtrees-descendants-chart');
-
         $family = self::createStub(Family::class);
         $family->method('children')->willReturn(new Collection());
         $family->method('spouse')->willReturn($partner);
@@ -357,11 +501,30 @@ final class DataFacadeTest extends TestCase
             ($partner instanceof Individual) ? new Collection([$family]) : new Collection()
         );
 
-        $request = (new ServerRequest('GET', '/'))->withQueryParams([
-            'generations'      => '2',
-            'marriedNamesMode' => $marriedNamesMode,
-            'showNicknames'    => $showNicknames ? '1' : '0',
-        ]);
+        return $this->buildStructure(
+            $person,
+            [
+                'generations'      => '2',
+                'marriedNamesMode' => $marriedNamesMode,
+                'showNicknames'    => $showNicknames ? '1' : '0',
+            ],
+        )['members'];
+    }
+
+    /**
+     * Builds the chart of the person from the request parameters and returns its
+     * first couple, the way the facade serialises it for the browser.
+     *
+     * @param array<string, string> $query The request parameters of the chart
+     *
+     * @return array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>}
+     */
+    private function buildStructure(Individual&Stub $person, array $query): array
+    {
+        $module = self::createStubForIntersectionOfInterfaces([ModuleCustomInterface::class, ModuleAssetUrlInterface::class]);
+        $module->method('name')->willReturn('webtrees-descendants-chart');
+
+        $request = (new ServerRequest('GET', '/'))->withQueryParams($query);
 
         $facade = (new DataFacade())
             ->setConfiguration(new Configuration($request, $this->createModuleWithPreferences([])))
@@ -372,7 +535,7 @@ final class DataFacadeTest extends TestCase
 
         self::assertIsArray($structure);
 
-        return $structure['members'];
+        return $structure;
     }
 
     /**
@@ -431,6 +594,73 @@ final class DataFacadeTest extends TestCase
     }
 
     /**
+     * Creates a family stub with an optional partner and the given children.
+     *
+     * @param Individual[] $children
+     */
+    private function createFamily(?Individual $partner, array $children): Family
+    {
+        $family = self::createStub(Family::class);
+        $family->method('children')->willReturn(new Collection($children));
+        $family->method('spouse')->willReturn($partner);
+
+        return $family;
+    }
+
+    /**
+     * Returns the child couples of the family entry at the given position.
+     *
+     * @param array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>} $structure
+     *
+     * @return CoupleNode[]
+     */
+    private function childrenOfFamily(array $structure, int $position): array
+    {
+        self::assertArrayHasKey($position, $structure['memberFamilies']);
+
+        return $structure['memberFamilies'][$position]['children'];
+    }
+
+    /**
+     * Returns the index of the partner of the family entry at the given position.
+     *
+     * @param array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>} $structure
+     */
+    private function spouseIndexOf(array $structure, int $position): ?int
+    {
+        self::assertArrayHasKey($position, $structure['memberFamilies']);
+
+        return $structure['memberFamilies'][$position]['spouseIndex'];
+    }
+
+    /**
+     * Returns the family index of the family entry at the given position.
+     *
+     * @param array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>} $structure
+     */
+    private function familyIndexOf(array $structure, int $position): int
+    {
+        self::assertArrayHasKey($position, $structure['memberFamilies']);
+
+        return $structure['memberFamilies'][$position]['family'];
+    }
+
+    /**
+     * Returns the XREFs of the children of the family entry at the given position.
+     *
+     * @param array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>} $structure
+     *
+     * @return list<bool|int|string>
+     */
+    private function childXrefs(array $structure, int $position): array
+    {
+        return array_values(array_map(
+            fn (CoupleNode $couple): bool|int|string => $this->valueOf($this->memberAt($couple->getMembers(), 0), 'xref'),
+            $this->childrenOfFamily($structure, $position),
+        ));
+    }
+
+    /**
      * Creates a woman with a birth name and a married name record.
      *
      * @return Individual&Stub
@@ -475,10 +705,11 @@ final class DataFacadeTest extends TestCase
      * @param list<array<string, string>> $names         The name records of the person
      * @param string                      $nickname      The GEDCOM nickname of the primary name
      * @param int                         $secondaryName The index of the alternative name record
+     * @param string                      $birth         The GEDCOM birth date of the person
      *
      * @return Individual&Stub
      */
-    private function createPerson(string $xref, string $sex, array $names, string $nickname = '', int $secondaryName = 0): Individual
+    private function createPerson(string $xref, string $sex, array $names, string $nickname = '', int $secondaryName = 0, string $birth = ''): Individual
     {
         $tree = self::createStub(Tree::class);
         $tree->method('name')->willReturn('main');
@@ -499,7 +730,8 @@ final class DataFacadeTest extends TestCase
         $person->method('getAllNames')->willReturn($names);
         $person->method('getPrimaryName')->willReturn(0);
         $person->method('getSecondaryName')->willReturn($secondaryName);
-        $person->method('getBirthDate')->willReturn(new Date(''));
+        $person->method('getBirthDate')->willReturn(new Date($birth));
+        $person->method('getEstimatedBirthDate')->willReturn(new Date($birth));
         $person->method('getDeathDate')->willReturn(new Date(''));
         $person->method('tree')->willReturn($tree);
         $person->method('facts')->willReturn(new Collection([$nameFact]));
