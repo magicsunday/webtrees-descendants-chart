@@ -21,19 +21,19 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:459
+#: src/Configuration.php:451
 msgid "Abbreviate given names first"
 msgstr "Сокращать сначала имена"
 
-#: src/Configuration.php:460
+#: src/Configuration.php:452
 msgid "Abbreviate surnames first"
 msgstr "Сокращать сначала фамилии"
 
-#: src/Module.php:141
+#: src/Module.php:130
 msgid "An overview of an individual’s descendants."
 msgstr "Диаграмма потомков в виде дерева."
 
-#: src/Configuration.php:458
+#: src/Configuration.php:450
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Автоматически (по традиции фамилий дерева)"
 
@@ -41,11 +41,11 @@ msgstr "Автоматически (по традиции фамилий дер�
 msgid "Behavior"
 msgstr "Поведение"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:324
 msgid "Birth name only"
 msgstr "Только имя при рождении"
 
-#: src/Configuration.php:334
+#: src/Configuration.php:326
 msgid "Birth name with married name in brackets"
 msgstr "Имя при рождении с фамилией в браке в скобках"
 
@@ -63,11 +63,11 @@ msgstr ""
 "для полного имени. «Автоматически» использует традицию фамилий дерева "
 "(исландская традиция сокращает фамилии; все остальные сокращают имена)."
 
-#: src/Module.php:130 src/Module.php:243
+#: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
 msgstr "Потомки (новое)"
 
-#: src/Module.php:240 src/Module/ChartTrait.php:43
+#: src/Module.php:229 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Диаграмма потомков у %s"
@@ -133,7 +133,7 @@ msgstr ""
 "(например, Martin \"Chalky\" White). Повторяет прежнее поведение webtrees "
 "для деревьев, в которых прозвища хранятся в отдельном поле GEDCOM NICK."
 
-#: src/Configuration.php:333
+#: src/Configuration.php:325
 msgid "Married name only"
 msgstr "Только фамилия в браке"
 
@@ -145,7 +145,7 @@ msgstr "Фамилии в браке"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:262
+#: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "Измените вид двумя пальцами"
 
@@ -196,7 +196,7 @@ msgstr "Переключение между полноэкранным и обы
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:261
+#: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Используйте Ctrl + scroll, чтобы  увеличить"
 
@@ -216,15 +216,15 @@ msgstr ""
 msgid "cancel"
 msgstr ""
 
-#: src/Configuration.php:252 src/Configuration.php:260
+#: src/Configuration.php:244 src/Configuration.php:252
 msgid "down"
 msgstr ""
 
-#: src/Configuration.php:249 src/Configuration.php:257
+#: src/Configuration.php:241 src/Configuration.php:249
 msgid "left"
 msgstr "влево"
 
-#: src/Configuration.php:250 src/Configuration.php:258
+#: src/Configuration.php:242 src/Configuration.php:250
 msgid "right"
 msgstr "вправо"
 
@@ -232,7 +232,7 @@ msgstr "вправо"
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:251 src/Configuration.php:259
+#: src/Configuration.php:243 src/Configuration.php:251
 msgid "up"
 msgstr ""
 

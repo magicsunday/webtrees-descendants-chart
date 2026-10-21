@@ -20,19 +20,19 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:459
+#: src/Configuration.php:451
 msgid "Abbreviate given names first"
 msgstr "Abreviar primero los nombres de pila"
 
-#: src/Configuration.php:460
+#: src/Configuration.php:452
 msgid "Abbreviate surnames first"
 msgstr "Abreviar primero los apellidos"
 
-#: src/Module.php:141
+#: src/Module.php:130
 msgid "An overview of an individual’s descendants."
 msgstr "Vista individual de descendientes."
 
-#: src/Configuration.php:458
+#: src/Configuration.php:450
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automático (según la tradición de apellidos del árbol)"
 
@@ -40,11 +40,11 @@ msgstr "Automático (según la tradición de apellidos del árbol)"
 msgid "Behavior"
 msgstr "Comportamiento"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:324
 msgid "Birth name only"
 msgstr "Solo nombre de nacimiento"
 
-#: src/Configuration.php:334
+#: src/Configuration.php:326
 msgid "Birth name with married name in brackets"
 msgstr "Nombre de nacimiento con nombre de casada entre paréntesis"
 
@@ -63,11 +63,11 @@ msgstr ""
 "tradición de apellidos del árbol (islandés abrevia apellidos; el resto "
 "abrevia nombres de pila)."
 
-#: src/Module.php:130 src/Module.php:243
+#: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
 msgstr "Árbol de descendientes"
 
-#: src/Module.php:240 src/Module/ChartTrait.php:43
+#: src/Module.php:229 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Árbol de descendientes de %s"
@@ -134,7 +134,7 @@ msgstr ""
 "webtrees para árboles que guardan los apodos en el campo GEDCOM NICK "
 "separado."
 
-#: src/Configuration.php:333
+#: src/Configuration.php:325
 msgid "Married name only"
 msgstr "Solo nombre de casada"
 
@@ -146,7 +146,7 @@ msgstr "Nombres de casada"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:262
+#: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "Mueve la vista con dos dedos"
 
@@ -197,7 +197,7 @@ msgstr "Cambiar entre pantalla completa y vista normal"
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:261
+#: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Use Ctrl + scroll para acercar la vista"
 
@@ -218,15 +218,15 @@ msgstr ""
 msgid "cancel"
 msgstr ""
 
-#: src/Configuration.php:252 src/Configuration.php:260
+#: src/Configuration.php:244 src/Configuration.php:252
 msgid "down"
 msgstr ""
 
-#: src/Configuration.php:249 src/Configuration.php:257
+#: src/Configuration.php:241 src/Configuration.php:249
 msgid "left"
 msgstr ""
 
-#: src/Configuration.php:250 src/Configuration.php:258
+#: src/Configuration.php:242 src/Configuration.php:250
 msgid "right"
 msgstr ""
 
@@ -234,7 +234,7 @@ msgstr ""
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:251 src/Configuration.php:259
+#: src/Configuration.php:243 src/Configuration.php:251
 msgid "up"
 msgstr ""
 

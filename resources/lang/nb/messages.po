@@ -20,19 +20,19 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:459
+#: src/Configuration.php:451
 msgid "Abbreviate given names first"
 msgstr "Forkort fornavn først"
 
-#: src/Configuration.php:460
+#: src/Configuration.php:452
 msgid "Abbreviate surnames first"
 msgstr "Forkort etternavn først"
 
-#: src/Module.php:141
+#: src/Module.php:130
 msgid "An overview of an individual’s descendants."
 msgstr "Et diagram over en persons etterkommere."
 
-#: src/Configuration.php:458
+#: src/Configuration.php:450
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automatisk (basert på treets etternavnstradisjon)"
 
@@ -40,11 +40,11 @@ msgstr "Automatisk (basert på treets etternavnstradisjon)"
 msgid "Behavior"
 msgstr "Atferd"
 
-#: src/Configuration.php:332
+#: src/Configuration.php:324
 msgid "Birth name only"
 msgstr "Bare fødselsnavn"
 
-#: src/Configuration.php:334
+#: src/Configuration.php:326
 msgid "Birth name with married name in brackets"
 msgstr "Fødselsnavn med navn som gift i parentes"
 
@@ -62,11 +62,11 @@ msgstr ""
 "navnet. «Automatisk» bruker treets etternavnstradisjon (islandsk forkorter "
 "etternavn; alt annet forkorter fornavn)."
 
-#: src/Module.php:130 src/Module.php:243
+#: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
 msgstr "Etterkommerdiagram"
 
-#: src/Module.php:240 src/Module/ChartTrait.php:43
+#: src/Module.php:229 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Etterkommerdiagram for %s"
@@ -134,7 +134,7 @@ msgstr ""
 "(f.eks. Martin \"Chalky\" White). Gjenskaper den tidligere webtrees-"
 "oppførselen for trær som lagrer kallenavn i det separate GEDCOM NICK-feltet."
 
-#: src/Configuration.php:333
+#: src/Configuration.php:325
 msgid "Married name only"
 msgstr "Bare navn som gift"
 
@@ -146,7 +146,7 @@ msgstr "Navn som gift"
 msgid "Modules"
 msgstr ""
 
-#: src/Module.php:262
+#: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "Bruk to fingre for å flytte utsnitt"
 
@@ -199,7 +199,7 @@ msgstr "Bytt mellom fullskjerm og normal visning"
 msgid "The preferences for the module “%s” have been updated."
 msgstr "Innstillingene for modulen “%s” har blitt oppdatert."
 
-#: src/Module.php:261
+#: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Bruk Ctrl + scroll for zoom"
 
@@ -219,15 +219,15 @@ msgstr ""
 msgid "cancel"
 msgstr "avbryt"
 
-#: src/Configuration.php:252 src/Configuration.php:260
+#: src/Configuration.php:244 src/Configuration.php:252
 msgid "down"
 msgstr ""
 
-#: src/Configuration.php:249 src/Configuration.php:257
+#: src/Configuration.php:241 src/Configuration.php:249
 msgid "left"
 msgstr ""
 
-#: src/Configuration.php:250 src/Configuration.php:258
+#: src/Configuration.php:242 src/Configuration.php:250
 msgid "right"
 msgstr ""
 
@@ -235,7 +235,7 @@ msgstr ""
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:251 src/Configuration.php:259
+#: src/Configuration.php:243 src/Configuration.php:251
 msgid "up"
 msgstr ""
 

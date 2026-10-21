@@ -39,7 +39,7 @@ use JsonSerializable;
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
-class CoupleNode implements JsonSerializable
+final class CoupleNode implements JsonSerializable
 {
     /**
      * Members of this couple. Index 0 is the real-person, later indices are
@@ -47,7 +47,7 @@ class CoupleNode implements JsonSerializable
      *
      * @var non-empty-list<NodeData>
      */
-    protected array $members;
+    private array $members;
 
     /**
      * Per-family child branches. Each entry references the spouse from
@@ -55,7 +55,7 @@ class CoupleNode implements JsonSerializable
      *
      * @var array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>
      */
-    protected array $memberFamilies = [];
+    private array $memberFamilies = [];
 
     /**
      * Constructor.
