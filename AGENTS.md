@@ -56,11 +56,12 @@ Module.php (entry point, registers routes)
 ### PHP (`src/`)
 - **Module.php** — Entry point, extends webtrees DescendantsChartModule, registers chart route.
 - **Configuration.php** — Reads form parameters from request (POST/GET) with user preference fallback.
-- **Facade/DataFacade.php** — Builds hierarchical Node tree, recursing through spouse families to the configured generation depth. Passes `$spouse` and the married-names mode (`off` / `married_only` / `birth_and_married`) into NameProcessor; in `birth_and_married` mode it also calls `getMarriedSurnames()` and appends the bracketed suffix to `name` + `lastNames`.
-- **Model/Node, NodeData** — Tree node with JSON serialization for D3.
+- **Facade/DataFacade.php** — Builds hierarchical Node tree, recursing through spouse families to the configured generation depth. Passes `$spouse` and the married-names mode (`off` / `married_only` / `birth_and_married`) into NameProcessor and stores the result of `getNameSegments()` in the node data. In `birth_and_married` mode the segment list ends with the bracketed married surname, and the flat `name`, which the box tooltip reads, ends with the same text.
+- **Model/Node, NodeData** — Tree node with JSON serialization for D3. `NodeData` carries the name as `nameSegments`, a list of the `NameSegment` objects of module-base in display order, and serialises to the same shape as the node data of module-base.
 - **Shared classes from [`magicsunday/webtrees-module-base`](https://github.com/magicsunday/webtrees-module-base)** (composer dependency `^3.4`):
   - `Processor/DateProcessor` — date extraction; descendants currently uses the legacy locale-aware methods (`getBirthDate`, `getDeathDate`, `getLifetimeDescription`).
-  - `Processor/NameProcessor`, `Processor/ImageProcessor`, `Processor/PlaceProcessor` — name/image/place extraction. NameProcessor's 3-arg constructor `($individual, $spouse, $useMarriedName)` is used here.
+  - `Processor/NameProcessor`, `Processor/ImageProcessor`, `Processor/PlaceProcessor` — name/image/place extraction. NameProcessor's 3-arg constructor `($individual, $spouse, $useMarriedName)` and its `getNameSegments()` are used here.
+  - `Model/NameSegment`, `Model/NameSegmentKind` — one drawable part of a name and its role (`given`, `surname`, `nickname`, `married`).
   - `Model/Symbols` — backed enum for genealogical symbols (Birth ★, Death †, MarriageDateUnknown sentinel).
   - `Module/VersionInformation` — GitHub release-checking with file cache.
   - For local edits to module-base while developing descendants-chart, run `make link-base` (symlinks `.build/vendor/.../webtrees-module-base` → the sibling clone). Reverse with `make unlink-base` or any `composer install/update`.
@@ -72,7 +73,7 @@ Flat layout — every file is descendants-specific glue. Reusable base classes (
 - **`chart.js`** (D3 hierarchy.tree layout, click handling), **`hierarchy.js`** (D3 hierarchy), **`tree.js`** (collapse/expand + d3.tree separation hook), **`configuration.js`**.
 - **`family-tree.js`** (CoupleNode → FamilyNode tree), **`separation.js`** (`pickGap` half-sibling detection — see issue #84).
 - **`chart/`** — `box/{image,text}.js`, `orientation-collection.js`, `svg.js`.
-- **`tree/`** — `text-renderer.js` (shared base of the name and date renderers), `date.js` (DateRenderer), `name.js`, `node-drawer.js`, `link-drawer.js`, `connection-builder.js`.
+- **`tree/`** — `text-renderer.js` (shared base of the name and date renderers), `date.js` (DateRenderer), `name.js` (draws the name from the ordered `nameSegments`), `node-drawer.js`, `link-drawer.js`, `connection-builder.js`.
 - **`constants.js`**, **`d3.js`** (re-export facade).
 
 ### Views (`resources/views/`)
@@ -85,7 +86,7 @@ Flat layout — every file is descendants-specific glue. Reusable base classes (
 - **ES module loading**: `import().then(({ DescendantsChart }) => ...)` in `<script type="module">`, avoiding the `webtrees.load()` race condition.
 - **Storage flow**: `page-init.js` reads localStorage → publishes resolved options under `WebtreesDescendantsChart.chartOptions` → `chart.phtml` getter reads `opts.x ?? PHP default`.
 - **Orientation strategy**: chart layout is configurable in 4 directions (top-bottom, bottom-top, left-right, right-left) via the orientation-collection.js + matching `Orientation*` classes (node coordinate transforms + elbow connector geometry).
-- **Married-name modes**: configurable via `marriedNamesMode` (3-value: `off`, `married_only`, `birth_and_married`). `married_only` swaps the primary to a `_MARNM` record matching the spouse's surname (NameProcessor's `useMarriedName` flag). `birth_and_married` keeps the birth-name primary and appends the married surname in brackets, e.g. `Schmidt (Müller)` — appended both to the full-name string and the `lastNames` array so the JS renderer (which locates each `lastNames` entry inside the full string via `indexOf`) shows the bracketed entry. Migrates from the legacy boolean `default_showMarriedNames` preference (true → `married_only`, false → `off`).
+- **Married-name modes**: configurable via `marriedNamesMode` (3-value: `off`, `married_only`, `birth_and_married`). `married_only` swaps the primary to a `_MARNM` record matching the spouse's surname (NameProcessor's `useMarriedName` flag). `birth_and_married` keeps the birth-name primary and appends the married surname in brackets, e.g. `Schmidt (Müller)`. The bracketed text is the last name segment, of kind `married`, and it also ends the flat `name`, which the box tooltip reads. Migrates from the legacy boolean `default_showMarriedNames` preference (true → `married_only`, false → `off`).
 - **Block template**: Overrides core `modules/charts/chart.phtml` — must stay in sync with webtrees core changes (e.g. VanillaJS conversion).
 
 ## Release process

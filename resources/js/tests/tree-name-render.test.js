@@ -23,6 +23,15 @@ const TEXT_BOX = { x: -30, y: 10, width: 100 };
 const IMAGE_BOX = { width: 60 };
 
 /**
+ * The name segments of the wire format, in display order.
+ */
+const given = (label) => ({ label, kind: "given", isPreferred: false });
+const preferred = (label) => ({ label, kind: "given", isPreferred: true });
+const nickname = (label) => ({ label: `"${label}"`, kind: "nickname", isPreferred: false });
+const surname = (label) => ({ label, kind: "surname", isPreferred: false });
+const married = (label) => ({ label, kind: "married", isPreferred: false });
+
+/**
  * The wire data of one person, with every key present like the PHP node data emits it.
  *
  * @param {object} overrides
@@ -31,12 +40,8 @@ const IMAGE_BOX = { width: 60 };
  */
 function person(overrides) {
     return {
-        name: "",
         isNameRtl: false,
-        firstNames: [],
-        lastNames: [],
-        preferredName: "",
-        nickname: "",
+        nameSegments: [],
         alternativeName: "",
         isAltRtl: false,
         thumbnail: "",
@@ -80,6 +85,7 @@ function render(data, { vertical = true, documentRtl = false, showAlternativeNam
         y: text.getAttribute("y"),
         x: text.getAttribute("x"),
         direction: text.getAttribute("direction"),
+        baseline: text.getAttribute("dominant-baseline"),
         anchor: text.getAttribute("text-anchor"),
         tspans: [...text.querySelectorAll("tspan")].map(
             (tspan) =>
@@ -101,45 +107,27 @@ function render(data, { vertical = true, documentRtl = false, showAlternativeNam
 const lines = (texts) => texts.map((text) => text.tspans);
 
 const ANNA_MARIA = person({
-    name: "Anna Maria Schmidt",
-    firstNames: ["Anna", "Maria"],
-    lastNames: ["Schmidt"],
-    preferredName: "Maria",
+    nameSegments: [given("Anna"), preferred("Maria"), surname("Schmidt")],
 });
 
 const PARTICLE = person({
-    name: "Hans von Berg",
-    firstNames: ["Hans", "von"],
-    lastNames: ["Berg"],
-    preferredName: "Hans",
+    nameSegments: [preferred("Hans"), given("von"), surname("Berg")],
 });
 
 const NICKNAME = person({
-    name: 'Martin "Chalky" White',
-    firstNames: ["Martin"],
-    lastNames: ["White"],
-    nickname: "Chalky",
+    nameSegments: [given("Martin"), nickname("Chalky"), surname("White")],
 });
 
 const MARRIED = person({
-    name: "Anna Schmidt (Müller)",
-    firstNames: ["Anna"],
-    lastNames: ["Schmidt", "(Müller)"],
-    preferredName: "Anna",
+    nameSegments: [preferred("Anna"), surname("Schmidt"), married("(Müller)")],
 });
 
 const REPEATED = person({
-    name: "Anna Anna Anna Schmidt",
-    firstNames: ["Anna", "Anna", "Anna"],
-    lastNames: ["Schmidt"],
-    preferredName: "Anna",
+    nameSegments: [preferred("Anna"), preferred("Anna"), preferred("Anna"), surname("Schmidt")],
 });
 
 const SAME_FIRST_AND_LAST = person({
-    name: "Maria Maria",
-    firstNames: ["Maria"],
-    lastNames: ["Maria"],
-    preferredName: "Maria",
+    nameSegments: [preferred("Maria"), surname("Maria")],
 });
 
 describe("Name.appendName in a vertical layout", () => {
@@ -154,6 +142,7 @@ describe("Name.appendName in a vertical layout", () => {
         expect(texts.map((text) => text.y)).toEqual(["5", "25"]);
         expect(texts.map((text) => text.class)).toEqual(["wt-chart-box-name", "wt-chart-box-name"]);
         expect(texts.map((text) => text.anchor)).toEqual(["middle", "middle"]);
+        expect(texts.map((text) => text.baseline)).toEqual(["central", "central"]);
         expect(texts.map((text) => text.direction)).toEqual(["ltr", "ltr"]);
     });
 
@@ -181,14 +170,14 @@ describe("Name.appendName in a vertical layout", () => {
     });
 
     it("draws only the surname line first when there is no given name", () => {
-        const texts = render(person({ name: "Schmidt", lastNames: ["Schmidt"] }));
+        const texts = render(person({ nameSegments: [surname("Schmidt")] }));
 
         expect(lines(texts).filter((line) => line.length > 0)).toEqual([["Schmidt[last]"]]);
         expect(lines(texts)[0]).toEqual(["Schmidt[last]"]);
     });
 
     it("draws only the given names when there is no surname", () => {
-        const texts = render(person({ name: "Anna", firstNames: ["Anna"] }));
+        const texts = render(person({ nameSegments: [given("Anna")] }));
 
         expect(lines(texts).filter((line) => line.length > 0)).toEqual([["Anna"]]);
         expect(lines(texts)[0]).toEqual(["Anna"]);
@@ -210,10 +199,8 @@ describe("Name.appendName in a vertical layout", () => {
     it("mirrors the spacing and the direction for a right-to-left name", () => {
         const texts = render(
             person({
-                name: "דוד אברהם כהן",
                 isNameRtl: true,
-                firstNames: ["דוד", "אברהם"],
-                lastNames: ["כהן"],
+                nameSegments: [given("דוד"), given("אברהם"), surname("כהן")],
             }),
         );
 
@@ -241,6 +228,7 @@ describe("Name.appendName in a vertical layout", () => {
         expect(texts[2]?.y).toBe("50");
         expect(texts[2]?.class).toBe("wt-chart-box-name");
         expect(texts[2]?.anchor).toBe("middle");
+        expect(texts[2]?.baseline).toBe("central");
         expect(texts[2]?.dx).toEqual([null, "0.25em", "0.25em"]);
     });
 
@@ -282,6 +270,7 @@ describe("Name.appendName in a horizontal layout", () => {
         expect(lines(texts)).toEqual([["Anna", "Maria[u]", "Schmidt[last]"]]);
         expect(texts[0]?.y).toBe("0");
         expect(texts[0]?.class).toBe("wt-chart-box-name");
+        expect(texts[0]?.baseline).toBeNull();
         expect(texts[0]?.dx).toEqual([null, "0.25em", "0.25em"]);
     });
 
@@ -309,13 +298,13 @@ describe("Name.appendName in a horizontal layout", () => {
     it("draws a name with a single kind of part", () => {
         expect(
             lines(
-                render(person({ name: "Schmidt", lastNames: ["Schmidt"] }), {
+                render(person({ nameSegments: [surname("Schmidt")] }), {
                     vertical: false,
                 }),
             ),
         ).toEqual([["Schmidt[last]"]]);
         expect(
-            lines(render(person({ name: "Anna", firstNames: ["Anna"] }), { vertical: false })),
+            lines(render(person({ nameSegments: [given("Anna")] }), { vertical: false })),
         ).toEqual([["Anna"]]);
         expect(lines(render(person({}), { vertical: false }))).toEqual([[]]);
     });
@@ -341,10 +330,8 @@ describe("Name.appendName in a horizontal layout", () => {
 
     it("anchors a right-to-left name at the end and mirrors a right-to-left document", () => {
         const rtlName = person({
-            name: "דוד כהן",
             isNameRtl: true,
-            firstNames: ["דוד"],
-            lastNames: ["כהן"],
+            nameSegments: [given("דוד"), surname("כהן")],
         });
 
         expect(render(rtlName, { vertical: false })[0]?.anchor).toBe("end");
@@ -368,6 +355,7 @@ describe("Name.appendName in a horizontal layout", () => {
         expect(texts[1]?.y).toBe("18");
         expect(texts[1]?.class).toBe("wt-chart-box-name");
         expect(texts[1]?.anchor).toBe("start");
+        expect(texts[1]?.baseline).toBeNull();
         expect(texts[1]?.x).toBe("-30");
     });
 
@@ -380,5 +368,70 @@ describe("Name.appendName in a horizontal layout", () => {
         expect(texts[1]?.anchor).toBe("end");
         expect(texts[1]?.direction).toBe("rtl");
         expect(texts[0]?.anchor).toBe("start");
+    });
+});
+
+describe("Name.createNamesData", () => {
+    /**
+     * Describes the groups of a person as the kind of each label, marking the last name group
+     * labels with a trailing "!" and the preferred ones with a leading "*".
+     *
+     * @param {object[]} nameSegments
+     *
+     * @return {string[][]}
+     */
+    function groupsOf(nameSegments) {
+        const name = Object.create(Name.prototype);
+
+        return name
+            .createNamesData({ data: { data: person({ nameSegments }) } })
+            .map((group) =>
+                group.map(
+                    (label) =>
+                        (label.isPreferred ? "*" : "") +
+                        label.label +
+                        (label.isLastName ? "!" : ""),
+                ),
+            );
+    }
+
+    it("groups a run of given names and nicknames, and a run of surnames and married surnames", () => {
+        expect(
+            groupsOf([
+                given("José"),
+                preferred("Antonio"),
+                nickname("Toni"),
+                surname("Gómez"),
+                surname("Iglesias"),
+                married("(Müller)"),
+            ]),
+        ).toEqual([
+            ["José", "*Antonio", '"Toni"'],
+            ["Gómez!", "Iglesias!", "(Müller)!"],
+        ]);
+    });
+
+    it("keeps the display order when a nickname follows the surnames", () => {
+        expect(groupsOf([surname("Anonymous"), nickname("Jonny")])).toEqual([
+            ["Anonymous!"],
+            ['"Jonny"'],
+        ]);
+    });
+
+    it("creates no group for a part the name does not have", () => {
+        expect(groupsOf([given("Madonna")])).toEqual([["Madonna"]]);
+        expect(groupsOf([surname("Anonymous")])).toEqual([["Anonymous!"]]);
+        expect(groupsOf([])).toEqual([]);
+    });
+
+    it("carries the direction of the name on every label", () => {
+        const name = Object.create(Name.prototype);
+        const groups = name.createNamesData({
+            data: {
+                data: person({ isNameRtl: true, nameSegments: [given("דוד"), surname("כהן")] }),
+            },
+        });
+
+        expect(groups.flat().map((label) => label.isNameRtl)).toEqual([true, true]);
     });
 });
