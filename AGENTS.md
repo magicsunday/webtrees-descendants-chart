@@ -57,12 +57,11 @@ Module.php (entry point, registers routes)
 - **Module.php** — Entry point, extends webtrees DescendantsChartModule, registers chart route.
 - **Configuration.php** — Reads form parameters from request (POST/GET) with user preference fallback.
 - **Facade/DataFacade.php** — Builds hierarchical Node tree, recursing through spouse families to the configured generation depth. Passes `$spouse` and the married-names mode (`off` / `married_only` / `birth_and_married`) into NameProcessor and stores the result of `getNameSegments()` in the node data. In `birth_and_married` mode the segment list ends with the bracketed married surname, and the flat `name`, which the box tooltip reads, ends with the same text.
-- **Model/Node, NodeData** — Tree node with JSON serialization for D3. `NodeData` carries the name as `nameSegments`, a list of the `NameSegment` objects of module-base in display order, and serialises to the same shape as the node data of module-base.
+- **Model/CoupleNode, NodeData** — Tree node with JSON serialization for D3. `NodeData` carries the name as `nameSegments`, a list of the `NameSegment` objects of module-base in display order, and serialises to the same shape as the node data of module-base.
 - **Shared classes from [`magicsunday/webtrees-module-base`](https://github.com/magicsunday/webtrees-module-base)** (composer dependency `^3.4`):
   - `Processor/DateProcessor` — date extraction; descendants currently uses the legacy locale-aware methods (`getBirthDate`, `getDeathDate`, `getLifetimeDescription`).
-  - `Processor/NameProcessor`, `Processor/ImageProcessor`, `Processor/PlaceProcessor` — name/image/place extraction. NameProcessor's 3-arg constructor `($individual, $spouse, $useMarriedName)` and its `getNameSegments()` are used here.
+  - `Processor/NameProcessor`, `Processor/ImageProcessor` — name/image extraction. NameProcessor's 3-arg constructor `($individual, $spouse, $useMarriedName)` and its `getNameSegments()` are used here.
   - `Model/NameSegment`, `Model/NameSegmentKind` — one drawable part of a name and its role (`given`, `surname`, `nickname`, `married`).
-  - `Model/Symbols` — backed enum for genealogical symbols (Birth ★, Death †, MarriageDateUnknown sentinel).
   - `Module/VersionInformation` — GitHub release-checking with file cache.
   - For local edits to module-base while developing descendants-chart, run `make link-base` (symlinks `.build/vendor/.../webtrees-module-base` → the sibling clone). Reverse with `make unlink-base` or any `composer install/update`.
 
