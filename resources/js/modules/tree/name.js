@@ -77,29 +77,9 @@ export default class Name extends TextRenderer {
                 });
             });
 
-            // Add alternative name if present
-            if (this._svg._configuration.showAlternativeName) {
-                enter
-                    .filter((datum) => datum.data.data.alternativeName !== "")
-                    .call((g) => {
-                        const text = g
-                            .append("text")
-                            .classed("wt-chart-box-name-alt", true)
-                            .attr("class", "wt-chart-box-name")
-                            .attr("direction", (datum) => (datum.isAltRtl ? "rtl" : "ltr"))
-                            .attr("text-anchor", "middle")
-                            .attr("dominant-baseline", "central")
-                            .attr("y", this._text.y + 40);
-
-                        this.addNameElements(text, (datum) =>
-                            this.truncateNamesData(
-                                text,
-                                this.createAlternativeNamesData(datum),
-                                this.getAvailableWidth(datum),
-                            ),
-                        );
-                    });
-            }
+            this.appendAlternativeName(enter, this._text.y + 40, (text) =>
+                text.attr("text-anchor", "middle").attr("dominant-baseline", "central"),
+            );
 
             // Left/Right and Right/Left
         } else {
@@ -120,17 +100,7 @@ export default class Name extends TextRenderer {
                     .append("text")
                     .attr("class", "wt-chart-box-name")
                     .attr("direction", (datum) => (datum.isRtl ? "rtl" : "ltr"))
-                    .attr("text-anchor", (datum) => {
-                        if (datum.isRtl && this._orientation.isDocumentRtl) {
-                            return "start";
-                        }
-
-                        if (datum.isRtl || this._orientation.isDocumentRtl) {
-                            return "end";
-                        }
-
-                        return "start";
-                    })
+                    .attr("text-anchor", (datum) => this.getTextAnchor(datum.isRtl))
                     .attr("x", (datum) => this.textX(datum))
                     .attr("y", this._text.y - 10);
 
@@ -142,40 +112,70 @@ export default class Name extends TextRenderer {
                 });
             });
 
-            // Add alternative name if present
-            if (this._svg._configuration.showAlternativeName) {
-                enter
-                    .filter((datum) => datum.data.data.alternativeName !== "")
-                    .call((g) => {
-                        const text = g
-                            .append("text")
-                            .classed("wt-chart-box-name-alt", true)
-                            .attr("class", "wt-chart-box-name")
-                            .attr("direction", (datum) => (datum.isAltRtl ? "rtl" : "ltr"))
-                            .attr("text-anchor", (datum) => {
-                                if (datum.isAltRtl && this._orientation.isDocumentRtl) {
-                                    return "start";
-                                }
-
-                                if (datum.isAltRtl || this._orientation.isDocumentRtl) {
-                                    return "end";
-                                }
-
-                                return "start";
-                            })
-                            .attr("x", (datum) => this.textX(datum))
-                            .attr("y", this._text.y + 8);
-
-                        this.addNameElements(text, (datum) =>
-                            this.truncateNamesData(
-                                text,
-                                this.createAlternativeNamesData(datum),
-                                this.getAvailableWidth(datum),
-                            ),
-                        );
-                    });
-            }
+            this.appendAlternativeName(enter, this._text.y + 8, (text) =>
+                text
+                    .attr("text-anchor", (datum) => this.getTextAnchor(datum.isAltRtl))
+                    .attr("x", (datum) => this.textX(datum)),
+            );
         }
+    }
+
+    /**
+     * Adds the alternative name below the name of every person that has one, when the
+     * chart is configured to show it.
+     *
+     * @param {Selection<any, any, any, any>}                    enter    The entering name element descriptors
+     * @param {number}                                           y        The y position of the alternative name text
+     * @param {(text: Selection<any, any, any, any>) => void}    position Sets the layout dependent attributes that place the text
+     *
+     * @private
+     */
+    appendAlternativeName(enter, y, position) {
+        if (!this._svg._configuration.showAlternativeName) {
+            return;
+        }
+
+        enter
+            .filter((datum) => datum.data.data.alternativeName !== "")
+            .call((g) => {
+                const text = g
+                    .append("text")
+                    .attr("class", "wt-chart-box-name")
+                    .attr("direction", (datum) => (datum.isAltRtl ? "rtl" : "ltr"))
+                    .attr("y", y);
+
+                position(text);
+
+                this.addNameElements(text, (datum) =>
+                    this.truncateNamesData(
+                        text,
+                        this.createAlternativeNamesData(datum),
+                        this.getAvailableWidth(datum),
+                    ),
+                );
+            });
+    }
+
+    /**
+     * Returns the text anchor of a horizontally laid out name. The text of a right-to-left
+     * name grows towards the start of the line, which a right-to-left document mirrors again.
+     *
+     * @param {boolean} isRtl Whether the text is written right to left
+     *
+     * @return {string}
+     *
+     * @private
+     */
+    getTextAnchor(isRtl) {
+        if (isRtl && this._orientation.isDocumentRtl) {
+            return "start";
+        }
+
+        if (isRtl || this._orientation.isDocumentRtl) {
+            return "end";
+        }
+
+        return "start";
     }
 
     /**
