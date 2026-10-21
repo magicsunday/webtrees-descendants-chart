@@ -17,7 +17,6 @@ use MagicSunday\Webtrees\ModuleBase\Model\NameSegment;
 use MagicSunday\Webtrees\ModuleBase\Model\NameSegmentKind;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 use function json_encode;
@@ -35,8 +34,6 @@ use const JSON_THROW_ON_ERROR;
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
 #[CoversClass(NodeData::class)]
-#[UsesClass(NameSegment::class)]
-#[UsesClass(NameSegmentKind::class)]
 final class NodeDataTest extends TestCase
 {
     /**
