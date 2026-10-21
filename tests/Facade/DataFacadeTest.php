@@ -762,7 +762,7 @@ final class DataFacadeTest extends TestCase
             {
             }
 
-            public function get(string $id): mixed
+            public function get(string $id): RouteFactoryInterface
             {
                 return $this->routeFactory;
             }
