@@ -12,15 +12,21 @@ declare(strict_types=1);
 namespace MagicSunday\Webtrees\DescendantsChart\Test;
 
 use Fig\Http\Message\RequestMethodInterface;
+use Fisharebest\Localization\Locale;
+use Fisharebest\Localization\Translator;
 use Fisharebest\Webtrees\DB;
+use Fisharebest\Webtrees\I18N;
 use GuzzleHttp\Psr7\ServerRequest;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
+use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Module;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 
 /**
  * Verifies how Configuration resolves request parameters and module
@@ -36,6 +42,7 @@ use PHPUnit\Framework\TestCase;
  */
 #[CoversClass(Configuration::class)]
 #[UsesClass(Module::class)]
+#[UsesClass(DescendantLine::class)]
 final class ConfigurationTest extends TestCase
 {
     use ModuleSettingsFixtureTrait;
@@ -50,6 +57,96 @@ final class ConfigurationTest extends TestCase
             ->withQueryParams($queryParams);
 
         return new Configuration($request, $this->createModuleWithPreferences($preferences));
+    }
+
+    /**
+     * The descendant line is read from the request parameter.
+     */
+    #[Test]
+    #[DataProvider('descendantLineProvider')]
+    public function descendantLineFromRequestParameter(string $value, DescendantLine $expected): void
+    {
+        $configuration = $this->buildConfiguration(['descendantLine' => $value], []);
+
+        self::assertSame($expected, $configuration->getDescendantLine());
+    }
+
+    /**
+     * @return iterable<string, array{string, DescendantLine}>
+     */
+    public static function descendantLineProvider(): iterable
+    {
+        yield 'all' => ['all', DescendantLine::All];
+
+        yield 'paternal' => ['paternal', DescendantLine::Paternal];
+
+        yield 'maternal' => ['maternal', DescendantLine::Maternal];
+    }
+
+    /**
+     * Without a request parameter the line shows every descendant.
+     */
+    #[Test]
+    public function descendantLineDefaultsToAll(): void
+    {
+        self::assertSame(DescendantLine::All, $this->buildConfiguration([], [])->getDescendantLine());
+    }
+
+    /**
+     * Without a request parameter the module preference decides.
+     */
+    #[Test]
+    public function descendantLineFallsBackToTheModulePreference(): void
+    {
+        $configuration = $this->buildConfiguration([], ['default_descendantLine' => 'maternal']);
+
+        self::assertSame(DescendantLine::Maternal, $configuration->getDescendantLine());
+    }
+
+    /**
+     * An unknown request value neither reaches the filter nor overrides the
+     * preference with garbage: the preference value is used.
+     */
+    #[Test]
+    public function unknownDescendantLineRequestValueUsesThePreference(): void
+    {
+        $configuration = $this->buildConfiguration(
+            ['descendantLine' => 'sideways'],
+            ['default_descendantLine' => 'paternal']
+        );
+
+        self::assertSame(DescendantLine::Paternal, $configuration->getDescendantLine());
+    }
+
+    /**
+     * An unknown value in both places falls back to showing every descendant.
+     */
+    #[Test]
+    public function unknownDescendantLineEverywhereFallsBackToAll(): void
+    {
+        $configuration = $this->buildConfiguration(
+            ['descendantLine' => 'sideways'],
+            ['default_descendantLine' => 'upwards']
+        );
+
+        self::assertSame(DescendantLine::All, $configuration->getDescendantLine());
+    }
+
+    /**
+     * The form lists the three lines by their stored value.
+     */
+    #[Test]
+    public function descendantLinesListTheThreeValues(): void
+    {
+        $locale = Locale::create('en');
+
+        (new ReflectionProperty(I18N::class, 'locale'))->setValue(null, $locale);
+        (new ReflectionProperty(I18N::class, 'translator'))->setValue(null, new Translator([], $locale->pluralRule()));
+
+        self::assertSame(
+            ['all', 'paternal', 'maternal'],
+            array_keys($this->buildConfiguration([], [])->getDescendantLines())
+        );
     }
 
     #[Test]
@@ -145,6 +242,7 @@ final class ConfigurationTest extends TestCase
                 'generations'         => '5',
                 'layout'              => Configuration::LAYOUT_TOPBOTTOM,
                 'hideSpouses'         => '1',
+                'descendantLine'      => 'paternal',
                 'marriedNamesMode'    => Configuration::MARRIED_NAMES_ONLY,
                 'showNicknames'       => '1',
                 'openNewTabOnClick'   => '1',
@@ -158,6 +256,7 @@ final class ConfigurationTest extends TestCase
                 'generations'         => 5,
                 'layout'              => Configuration::LAYOUT_TOPBOTTOM,
                 'hideSpouses'         => '1',
+                'descendantLine'      => 'paternal',
                 'showNicknames'       => '1',
                 'openNewTabOnClick'   => '1',
                 'showAlternativeName' => '1',
@@ -185,6 +284,7 @@ final class ConfigurationTest extends TestCase
                 'generations'         => '3',
                 'layout'              => Configuration::LAYOUT_LEFTRIGHT,
                 'hideSpouses'         => '0',
+                'descendantLine'      => 'all',
                 'marriedNamesMode'    => Configuration::MARRIED_NAMES_OFF,
                 'showNicknames'       => '0',
                 'openNewTabOnClick'   => '0',
@@ -198,6 +298,7 @@ final class ConfigurationTest extends TestCase
                 'generations'         => 3,
                 'layout'              => Configuration::LAYOUT_LEFTRIGHT,
                 'hideSpouses'         => '0',
+                'descendantLine'      => 'all',
                 'showNicknames'       => '0',
                 'openNewTabOnClick'   => '0',
                 'showAlternativeName' => '0',
@@ -220,6 +321,7 @@ final class ConfigurationTest extends TestCase
                 'default_generations'         => '7',
                 'default_layout'              => Configuration::LAYOUT_RIGHTLEFT,
                 'default_hideSpouses'         => '1',
+                'default_descendantLine'      => 'maternal',
                 'default_marriedNamesMode'    => Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED,
                 'default_showNicknames'       => '1',
                 'default_openNewTabOnClick'   => '0',
@@ -232,6 +334,7 @@ final class ConfigurationTest extends TestCase
                 'generations'         => 7,
                 'layout'              => Configuration::LAYOUT_RIGHTLEFT,
                 'hideSpouses'         => '1',
+                'descendantLine'      => 'maternal',
                 'showNicknames'       => '1',
                 'openNewTabOnClick'   => '0',
                 'showAlternativeName' => '1',
@@ -262,6 +365,7 @@ final class ConfigurationTest extends TestCase
                 'generations',
                 'layout',
                 'hideSpouses',
+                'descendantLine',
                 'showNicknames',
                 'openNewTabOnClick',
                 'showAlternativeName',
@@ -294,7 +398,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /**
-     * Runs all seven per-node getters $rounds times against a FRESH configuration and
+     * Runs all per-node getters $rounds times against a FRESH configuration and
      * returns how many `module_setting` queries that produced. The instance has
      * to be fresh per measurement — reusing one would leave it memoised from the
      * previous round and report zero.
@@ -311,6 +415,7 @@ final class ConfigurationTest extends TestCase
                 $configuration->getGenerations();
                 $configuration->getLayout();
                 $configuration->getHideSpouses();
+                $configuration->getDescendantLine();
                 $configuration->getMarriedNamesMode();
                 $configuration->getShowNicknames();
                 $configuration->getOpenNewTabOnClick();

@@ -96,6 +96,7 @@ final class ModuleTest extends TestCase
                 'generations'         => '3',
                 'layout'              => 'down',
                 'hideSpouses'         => '1',
+                'descendantLine'      => 'maternal',
                 'marriedNamesMode'    => 'married_only',
                 'showNicknames'       => '1',
                 'openNewTabOnClick'   => '0',
