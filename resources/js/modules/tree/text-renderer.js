@@ -9,9 +9,7 @@ import { measureText } from "@magicsunday/webtrees-chart-lib/infra";
 
 /**
  * @import { Orientation } from "@magicsunday/webtrees-chart-lib/infra"
- * @import Svg from "../chart/svg.js"
- * @import ImageBox from "../chart/box/image.js"
- * @import TextBox from "../chart/box/text.js"
+ * @import { ImageBox, LinkedTreeSvg as Svg, TextBox } from "@magicsunday/webtrees-chart-lib/linked-tree"
  */
 
 /**

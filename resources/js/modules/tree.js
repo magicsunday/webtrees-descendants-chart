@@ -15,7 +15,7 @@ import { buildConnections } from "./tree/connection-builder.js";
 
 /**
  * @import { HierarchyNode, HierarchyPointNode, TreeLayout } from "d3-hierarchy"
- * @import Svg from "./chart/svg.js"
+ * @import { LinkedTreeSvg as Svg } from "@magicsunday/webtrees-chart-lib/linked-tree"
  * @import Hierarchy from "./hierarchy.js"
  * @import Configuration from "./configuration.js"
  */

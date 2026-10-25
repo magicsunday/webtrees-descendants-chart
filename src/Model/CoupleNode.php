@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace MagicSunday\Webtrees\DescendantsChart\Model;
 
 use JsonSerializable;
+use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
 
 /**
  * One d3-hierarchy node in the descendants tree, representing an individual
