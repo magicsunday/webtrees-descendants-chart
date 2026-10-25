@@ -492,10 +492,12 @@ final class Configuration
      * reads: `openNewTabOnClick` and `showAlternativeName` are resolved by the
      * view rather than the facade and still have to be forwarded.
      *
-     * An admin preference with no form field is deliberately absent, because it
-     * resolves identically on the re-centered page. That holds for
-     * `nameAbbreviation` and `marriedNamesMode`, which only the module
-     * configuration page sets.
+     * An admin preference with no form field is deliberately absent, because the
+     * re-centered page resolves it from the module preference again. That holds
+     * for `nameAbbreviation` and `marriedNamesMode`, which only the module
+     * configuration page sets. A value that a hand-typed request parameter
+     * supplies is read for that one request and is not carried over to the
+     * re-centered page.
      *
      * Cheap to call per node even though it resolves several settings: each getter
      * memoises its value, and AbstractModule::getPreference() would otherwise
