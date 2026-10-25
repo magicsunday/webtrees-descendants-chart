@@ -134,7 +134,7 @@
  */
 
 /**
- * One date row bound to a `text.date` element by `tree/date.js`. Vertical
+ * One date row bound to a `text.date` element by the linked-tree `DateRenderer`. Vertical
  * layouts render a single lifetime row that carries only the `label`.
  * Horizontal layouts render a birth and/or death row that additionally carries
  * `withImage`, the marker icon and the corresponding flag.
