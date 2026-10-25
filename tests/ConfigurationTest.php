@@ -158,7 +158,6 @@ final class ConfigurationTest extends TestCase
                 'generations'         => 5,
                 'layout'              => Configuration::LAYOUT_TOPBOTTOM,
                 'hideSpouses'         => '1',
-                'marriedNamesMode'    => Configuration::MARRIED_NAMES_ONLY,
                 'showNicknames'       => '1',
                 'openNewTabOnClick'   => '1',
                 'showAlternativeName' => '1',
@@ -199,7 +198,6 @@ final class ConfigurationTest extends TestCase
                 'generations'         => 3,
                 'layout'              => Configuration::LAYOUT_LEFTRIGHT,
                 'hideSpouses'         => '0',
-                'marriedNamesMode'    => Configuration::MARRIED_NAMES_OFF,
                 'showNicknames'       => '0',
                 'openNewTabOnClick'   => '0',
                 'showAlternativeName' => '0',
@@ -234,12 +232,41 @@ final class ConfigurationTest extends TestCase
                 'generations'         => 7,
                 'layout'              => Configuration::LAYOUT_RIGHTLEFT,
                 'hideSpouses'         => '1',
-                'marriedNamesMode'    => Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED,
                 'showNicknames'       => '1',
                 'openNewTabOnClick'   => '0',
                 'showAlternativeName' => '1',
             ],
             $configuration->getRouteToggleParams()
+        );
+    }
+
+    /**
+     * The married-names mode is an admin preference without a form field on
+     * the chart page, so it resolves identically on the re-centered page and
+     * never travels in the URL, not even when the request happens to carry it.
+     */
+    #[Test]
+    public function routeParamsLeaveOutAdminOnlyPreferences(): void
+    {
+        $configuration = $this->buildConfiguration(
+            ['marriedNamesMode' => Configuration::MARRIED_NAMES_ONLY],
+            ['default_marriedNamesMode' => Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED]
+        );
+
+        $params = $configuration->getRouteToggleParams();
+
+        self::assertArrayNotHasKey('marriedNamesMode', $params);
+        self::assertArrayNotHasKey('nameAbbreviation', $params);
+        self::assertSame(
+            [
+                'generations',
+                'layout',
+                'hideSpouses',
+                'showNicknames',
+                'openNewTabOnClick',
+                'showAlternativeName',
+            ],
+            array_keys($params)
         );
     }
 

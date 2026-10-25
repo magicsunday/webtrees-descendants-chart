@@ -492,16 +492,18 @@ final class Configuration
      * reads: `openNewTabOnClick` and `showAlternativeName` are resolved by the
      * view rather than the facade and still have to be forwarded.
      *
-     * `nameAbbreviation` is deliberately absent — it is an admin preference with
-     * no form field, so it resolves identically on the re-centered page.
+     * An admin preference with no form field is deliberately absent, because it
+     * resolves identically on the re-centered page. That holds for
+     * `nameAbbreviation` and `marriedNamesMode`, which only the module
+     * configuration page sets.
      *
-     * Cheap to call per node even though it resolves seven settings: each getter
+     * Cheap to call per node even though it resolves several settings: each getter
      * memoises its value, and AbstractModule::getPreference() would otherwise
      * issue a database query on every call, putting the query count in linear
      * proportion to the tree size. The configuration is constructed per request,
      * so the resolved values cannot go stale within its lifetime.
      *
-     * @return array{generations: int, layout: string, hideSpouses: string, marriedNamesMode: string, showNicknames: string, openNewTabOnClick: string, showAlternativeName: string}
+     * @return array{generations: int, layout: string, hideSpouses: string, showNicknames: string, openNewTabOnClick: string, showAlternativeName: string}
      */
     public function getRouteToggleParams(): array
     {
@@ -509,7 +511,6 @@ final class Configuration
             'generations'         => $this->getGenerations(),
             'layout'              => $this->getLayout(),
             'hideSpouses'         => $this->getHideSpouses() ? '1' : '0',
-            'marriedNamesMode'    => $this->getMarriedNamesMode(),
             'showNicknames'       => $this->getShowNicknames() ? '1' : '0',
             'openNewTabOnClick'   => $this->getOpenNewTabOnClick() ? '1' : '0',
             'showAlternativeName' => $this->getShowAlternativeName() ? '1' : '0',
