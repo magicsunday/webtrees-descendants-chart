@@ -32,11 +32,11 @@ use Illuminate\Support\Collection;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
-use MagicSunday\Webtrees\DescendantsChart\Model\NodeData;
 use MagicSunday\Webtrees\DescendantsChart\Module;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
 use MagicSunday\Webtrees\ModuleBase\Contract\ModuleAssetUrlInterface;
 use MagicSunday\Webtrees\ModuleBase\Model\NameSegment;
+use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -62,7 +62,6 @@ use function http_build_query;
 #[UsesClass(Configuration::class)]
 #[UsesClass(CoupleNode::class)]
 #[UsesClass(Module::class)]
-#[UsesClass(NodeData::class)]
 final class DataFacadeTest extends TestCase
 {
     use ModuleSettingsFixtureTrait;

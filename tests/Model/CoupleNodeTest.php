@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace MagicSunday\Webtrees\DescendantsChart\Test\Model;
 
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
-use MagicSunday\Webtrees\DescendantsChart\Model\NodeData;
+use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
