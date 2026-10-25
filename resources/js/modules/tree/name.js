@@ -6,8 +6,8 @@
  */
 
 import { truncateNames } from "@magicsunday/webtrees-chart-lib/infra";
+import { TextRenderer } from "@magicsunday/webtrees-chart-lib/linked-tree";
 import * as d3 from "../d3.js";
-import TextRenderer from "./text-renderer.js";
 
 /**
  * @import { Selection } from "d3-selection"
