@@ -24,6 +24,7 @@ use Fisharebest\Webtrees\Individual;
 use Fisharebest\Webtrees\Registry;
 use Fisharebest\Webtrees\Services\ChartService;
 use Fisharebest\Webtrees\Tree;
+use Fisharebest\Webtrees\View;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\ServerRequest;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
@@ -147,6 +148,34 @@ final class ModuleTest extends TestCase
         );
 
         self::assertSame('maternal', $module->getPreference('default_descendantLine'));
+    }
+
+    /**
+     * The module configuration page renders and preselects the stored
+     * name-abbreviation strategy.
+     */
+    #[Test]
+    public function configurationPageRendersTheStoredNameAbbreviation(): void
+    {
+        $this->registerRouteFactory();
+        $this->initialiseTranslator();
+
+        $module = $this->createModuleWithPreferences(['default_nameAbbreviation' => 'SURNAME']);
+
+        View::registerNamespace($module->name(), dirname(__DIR__, 2) . '/resources/views/');
+
+        $html = View::make(
+            $module->name() . '::modules/descendants-chart/config',
+            [
+                'configuration' => new Configuration(new ServerRequest(RequestMethodInterface::METHOD_GET, '/'), $module),
+                'moduleName'    => $module->name(),
+                'title'         => $module->title(),
+                'description'   => $module->description(),
+            ]
+        );
+
+        self::assertStringContainsString('<option value="SURNAME" selected="selected">', $html);
+        self::assertStringNotContainsString('<option value="AUTO" selected="selected">', $html);
     }
 
     /**
