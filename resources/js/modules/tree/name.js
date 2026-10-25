@@ -11,6 +11,7 @@ import TextRenderer from "./text-renderer.js";
 
 /**
  * @import { Selection } from "d3-selection"
+ * @import Configuration from "../configuration.js"
  */
 
 /**
@@ -289,7 +290,8 @@ export default class Name extends TextRenderer {
                 availableWidth,
                 (text) => this.measureText(text, fontSize, fontWeight),
                 {
-                    strategy: this._svg._configuration.nameAbbreviation,
+                    strategy: /** @type {Configuration} */ (this._svg._configuration)
+                        .nameAbbreviation,
                     // Married-name suffixes like "(Müller)" are supplementary;
                     // drop them entirely instead of truncating to "(.".
                     dropEmptyBracketed: true,

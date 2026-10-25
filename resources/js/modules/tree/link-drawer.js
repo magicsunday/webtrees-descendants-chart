@@ -9,7 +9,7 @@ import { elbowsPath, LINE_END_TRIM_PX, marriagePath } from "@magicsunday/webtree
 
 /**
  * @import { Selection } from "d3-selection"
- * @import Svg from "../chart/svg.js"
+ * @import { LinkedTreeSvg as Svg } from "@magicsunday/webtrees-chart-lib/linked-tree"
  * @import Configuration from "../configuration.js"
  */
 

@@ -5,7 +5,7 @@
  * LICENSE file distributed with this source code.
  */
 
-import { LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET } from "../constants.js";
+import { LAYOUT_VERTICAL_NODE_HEIGHT_OFFSET } from "@magicsunday/webtrees-chart-lib/linked-tree";
 import TextRenderer from "./text-renderer.js";
 
 /**
