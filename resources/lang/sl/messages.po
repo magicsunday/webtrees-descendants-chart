@@ -23,19 +23,23 @@ msgstr ""
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 "X-Loco-Parser: loco_parse_po\n"
 
-#: src/Configuration.php:451
+#: src/Configuration.php:502
 msgid "Abbreviate given names first"
 msgstr "Najprej skrajšaj osebna imena"
 
-#: src/Configuration.php:452
+#: src/Configuration.php:503
 msgid "Abbreviate surnames first"
 msgstr "Najprej skrajšaj priimke"
+
+#: src/Configuration.php:324
+msgid "All descendants"
+msgstr ""
 
 #: src/Module.php:130
 msgid "An overview of an individual’s descendants."
 msgstr "Pregled potomcev osebe."
 
-#: src/Configuration.php:450
+#: src/Configuration.php:501
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Samodejno (glede na drevesno tradicijo priimkov)"
 
@@ -43,11 +47,11 @@ msgstr "Samodejno (glede na drevesno tradicijo priimkov)"
 msgid "Behavior"
 msgstr "Vedenje"
 
-#: src/Configuration.php:324
+#: src/Configuration.php:375
 msgid "Birth name only"
 msgstr "Samo rojstno ime"
 
-#: src/Configuration.php:326
+#: src/Configuration.php:377
 msgid "Birth name with married name in brackets"
 msgstr "Rojstno ime s poročnim priimkom v oklepaju"
 
@@ -64,6 +68,10 @@ msgstr ""
 "Določa, kateri del imena se najprej skrajša, ko je polje preozko za polno "
 "ime. »Samodejno« uporablja drevesno tradicijo priimkov (islandska tradicija "
 "krajša priimke; vse ostale krajšajo osebna imena)."
+
+#: resources/views/modules/descendants-chart/form/display.phtml:36
+msgid "Descendant line"
+msgstr ""
 
 #: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
@@ -137,13 +145,17 @@ msgstr ""
 "Martin \"Chalky\" White). Posnema staro vedenje webtrees za drevesa, ki "
 "vzdevke shranjujejo v ločenem polju GEDCOM NICK."
 
-#: src/Configuration.php:325
+#: src/Configuration.php:376
 msgid "Married name only"
 msgstr "Samo poročni priimek"
 
 #: resources/views/modules/descendants-chart/config.phtml:90
 msgid "Married names"
 msgstr "Poročni priimki"
+
+#: src/Configuration.php:326
+msgid "Maternal line (mother to child)"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
@@ -173,6 +185,10 @@ msgstr ""
 msgid "Orientation"
 msgstr "Usmerjenost"
 
+#: src/Configuration.php:325
+msgid "Paternal line (father to son)"
+msgstr ""
+
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
 msgstr "Znova na sredino"
@@ -197,7 +213,16 @@ msgstr "Prikaži vzdevke v prikaznih imenih"
 msgid "Switch between full screen mode and normal view"
 msgstr "Preklopi med celozaslonskim in običajnim načinom"
 
-#: src/Module/ConfigTrait.php:104
+#: resources/views/modules/descendants-chart/form/display.phtml:47
+msgid ""
+"The paternal line follows a father to his sons only, which is the line of "
+"inheritance of the Y chromosome. The maternal line follows a mother to all "
+"her children, but not the children of a son, which is the line of "
+"inheritance of the mitochondrial DNA. The individual at the top of the chart "
+"is always shown, and a person of unknown sex ends the line."
+msgstr ""
+
+#: src/Module/ConfigTrait.php:108
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
 msgstr "Nastavitve modula “%s” so posodobljene."
@@ -222,15 +247,15 @@ msgstr ""
 msgid "cancel"
 msgstr "Prekliči"
 
-#: src/Configuration.php:244 src/Configuration.php:252
+#: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
 msgstr "Dol"
 
-#: src/Configuration.php:241 src/Configuration.php:249
+#: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
 msgstr "Levo"
 
-#: src/Configuration.php:242 src/Configuration.php:250
+#: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
 msgstr "Desno"
 
@@ -238,7 +263,7 @@ msgstr "Desno"
 msgid "save"
 msgstr "Shrani"
 
-#: src/Configuration.php:243 src/Configuration.php:251
+#: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
 msgstr "Gor"
 

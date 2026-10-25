@@ -18,19 +18,23 @@ msgstr ""
 "X-Poedit-SearchPath-0: src\n"
 "X-Poedit-SearchPath-1: resources/views\n"
 
-#: src/Configuration.php:451
+#: src/Configuration.php:502
 msgid "Abbreviate given names first"
 msgstr "优先缩写名字"
 
-#: src/Configuration.php:452
+#: src/Configuration.php:503
 msgid "Abbreviate surnames first"
 msgstr "优先缩写姓氏"
+
+#: src/Configuration.php:324
+msgid "All descendants"
+msgstr ""
 
 #: src/Module.php:130
 msgid "An overview of an individual’s descendants."
 msgstr "个人后代的概览图"
 
-#: src/Configuration.php:450
+#: src/Configuration.php:501
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "自动（根据族谱的姓氏传统）"
 
@@ -38,11 +42,11 @@ msgstr "自动（根据族谱的姓氏传统）"
 msgid "Behavior"
 msgstr "行为"
 
-#: src/Configuration.php:324
+#: src/Configuration.php:375
 msgid "Birth name only"
 msgstr "仅出生姓名"
 
-#: src/Configuration.php:326
+#: src/Configuration.php:377
 msgid "Birth name with married name in brackets"
 msgstr "出生姓名后附婚后姓名（括号内）"
 
@@ -58,6 +62,10 @@ msgid ""
 msgstr ""
 "控制当方框对完整姓名而言过窄时，先缩写哪个名字部分。“自动”使用族谱的姓氏传统"
 "（冰岛语缩写姓氏；其他所有传统缩写名字）。"
+
+#: resources/views/modules/descendants-chart/form/display.phtml:36
+msgid "Descendant line"
+msgstr ""
 
 #: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
@@ -130,13 +138,17 @@ msgstr ""
 "White）。模拟旧版 webtrees 的行为，适用于在单独的 GEDCOM NICK 字段中保存昵称"
 "的家谱。"
 
-#: src/Configuration.php:325
+#: src/Configuration.php:376
 msgid "Married name only"
 msgstr "仅婚后姓名"
 
 #: resources/views/modules/descendants-chart/config.phtml:90
 msgid "Married names"
 msgstr "婚后姓名"
+
+#: src/Configuration.php:326
+msgid "Maternal line (mother to child)"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
@@ -166,6 +178,10 @@ msgstr ""
 msgid "Orientation"
 msgstr ""
 
+#: src/Configuration.php:325
+msgid "Paternal line (father to son)"
+msgstr ""
+
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
 msgstr "居中"
@@ -190,7 +206,16 @@ msgstr "在显示名中显示昵称"
 msgid "Switch between full screen mode and normal view"
 msgstr "切换全屏模式和普通视图"
 
-#: src/Module/ConfigTrait.php:104
+#: resources/views/modules/descendants-chart/form/display.phtml:47
+msgid ""
+"The paternal line follows a father to his sons only, which is the line of "
+"inheritance of the Y chromosome. The maternal line follows a mother to all "
+"her children, but not the children of a son, which is the line of "
+"inheritance of the mitochondrial DNA. The individual at the top of the chart "
+"is always shown, and a person of unknown sex ends the line."
+msgstr ""
+
+#: src/Module/ConfigTrait.php:108
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
 msgstr "模块 “%s” 的设置已更新。"
@@ -214,15 +239,15 @@ msgstr ""
 msgid "cancel"
 msgstr ""
 
-#: src/Configuration.php:244 src/Configuration.php:252
+#: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
 msgstr "子孙在下"
 
-#: src/Configuration.php:241 src/Configuration.php:249
+#: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
 msgstr "子孙在左"
 
-#: src/Configuration.php:242 src/Configuration.php:250
+#: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
 msgstr "子孙在右"
 
@@ -230,7 +255,7 @@ msgstr "子孙在右"
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:243 src/Configuration.php:251
+#: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
 msgstr "子孙在上"
 

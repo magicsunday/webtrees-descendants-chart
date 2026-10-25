@@ -20,19 +20,23 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:451
+#: src/Configuration.php:502
 msgid "Abbreviate given names first"
 msgstr "Nejprve zkrátit křestní jména"
 
-#: src/Configuration.php:452
+#: src/Configuration.php:503
 msgid "Abbreviate surnames first"
 msgstr "Nejprve zkrátit příjmení"
+
+#: src/Configuration.php:324
+msgid "All descendants"
+msgstr ""
 
 #: src/Module.php:130
 msgid "An overview of an individual’s descendants."
 msgstr "Přehled potomků osoby."
 
-#: src/Configuration.php:450
+#: src/Configuration.php:501
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automaticky (podle tradice příjmení stromu)"
 
@@ -40,11 +44,11 @@ msgstr "Automaticky (podle tradice příjmení stromu)"
 msgid "Behavior"
 msgstr "Chování"
 
-#: src/Configuration.php:324
+#: src/Configuration.php:375
 msgid "Birth name only"
 msgstr "Pouze rodné jméno"
 
-#: src/Configuration.php:326
+#: src/Configuration.php:377
 msgid "Birth name with married name in brackets"
 msgstr "Rodné jméno se jménem po sňatku v závorkách"
 
@@ -61,6 +65,10 @@ msgstr ""
 "Určuje, která část jména se zkrátí první, když je rámeček příliš úzký pro "
 "celé jméno. \"Automaticky\" používá tradici příjmení stromu (islandská "
 "tradice zkracuje příjmení; všechny ostatní zkracují křestní jména)."
+
+#: resources/views/modules/descendants-chart/form/display.phtml:36
+msgid "Descendant line"
+msgstr ""
 
 #: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
@@ -132,13 +140,17 @@ msgstr ""
 "Martin \"Chalky\" White). Napodobuje původní chování webtrees pro stromy, "
 "které přezdívky ukládají do samostatného pole GEDCOM NICK."
 
-#: src/Configuration.php:325
+#: src/Configuration.php:376
 msgid "Married name only"
 msgstr "Pouze jméno po sňatku"
 
 #: resources/views/modules/descendants-chart/config.phtml:90
 msgid "Married names"
 msgstr "Jména po sňatku"
+
+#: src/Configuration.php:326
+msgid "Maternal line (mother to child)"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
@@ -166,6 +178,10 @@ msgstr ""
 msgid "Orientation"
 msgstr ""
 
+#: src/Configuration.php:325
+msgid "Paternal line (father to son)"
+msgstr ""
+
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
 msgstr "Vystředit"
@@ -190,7 +206,16 @@ msgstr "Zobrazit přezdívky ve zobrazovaných jménech"
 msgid "Switch between full screen mode and normal view"
 msgstr "Přepnout mezi celou obrazovkou a normálním zobrazením"
 
-#: src/Module/ConfigTrait.php:104
+#: resources/views/modules/descendants-chart/form/display.phtml:47
+msgid ""
+"The paternal line follows a father to his sons only, which is the line of "
+"inheritance of the Y chromosome. The maternal line follows a mother to all "
+"her children, but not the children of a son, which is the line of "
+"inheritance of the mitochondrial DNA. The individual at the top of the chart "
+"is always shown, and a person of unknown sex ends the line."
+msgstr ""
+
+#: src/Module/ConfigTrait.php:108
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
@@ -215,15 +240,15 @@ msgstr ""
 msgid "cancel"
 msgstr ""
 
-#: src/Configuration.php:244 src/Configuration.php:252
+#: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
 msgstr ""
 
-#: src/Configuration.php:241 src/Configuration.php:249
+#: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
 msgstr ""
 
-#: src/Configuration.php:242 src/Configuration.php:250
+#: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
 msgstr ""
 
@@ -231,7 +256,7 @@ msgstr ""
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:243 src/Configuration.php:251
+#: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
 msgstr ""
 
