@@ -14,16 +14,16 @@ import { pickGap } from "./separation.js";
 import { buildConnections } from "./tree/connection-builder.js";
 
 /**
- * @import { HierarchyNode, HierarchyPointNode, TreeLayout } from "d3-hierarchy"
+ * @import { HierarchyPointNode, TreeLayout } from "d3-hierarchy"
  * @import { LinkedTreeSvg as Svg } from "@magicsunday/webtrees-chart-lib/linked-tree"
  * @import Hierarchy from "./hierarchy.js"
  * @import Configuration from "./configuration.js"
  */
 
 /**
- * Lays out one descendants chart. The d3 hierarchy is a tree of FamilyNodes
- * (see family-tree.js); each node represents one (real-person + 0..1 spouse +
- * their children-as-FamilyNodes).
+ * Lays out one descendants chart and draws it once on construction. The d3
+ * hierarchy is a tree of FamilyNodes (see family-tree.js), each representing
+ * one real person, at most one spouse and the families of their children.
  *
  * After d3.tree() lays the family-nodes out, `connection-builder` walks the
  * result and turns it into pure-geometry payloads:
@@ -32,7 +32,8 @@ import { buildConnections } from "./tree/connection-builder.js";
  *     intermediate-boxes, marriage stagger)
  * The drawers consume those without ever touching the d3 hierarchy themselves,
  * so the line-drawing logic stays generic and independent of where the boxes
- * ended up.
+ * ended up. The class also supplies the variable-width separation that keeps
+ * spouses, siblings and cousins apart.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
@@ -49,18 +50,12 @@ export default class Tree {
         this._configuration = configuration;
         this._hierarchy = hierarchy;
 
-        // d3 HierarchyNode does not declare x0/y0 — they are
-        // descendants-specific scratch props for the transitions.
-        const root = /** @type {any} */ (this._hierarchy.root);
-        root.x0 = 0;
-        root.y0 = 0;
-
         this._orientation = this._configuration.orientation;
 
-        this._nodeDrawer = new NodeDrawer(this._svg, this._hierarchy, this._configuration);
+        this._nodeDrawer = new NodeDrawer(this._svg, this._configuration);
         this._linkDrawer = new LinkDrawer(this._svg, this._configuration);
 
-        this.draw(this._hierarchy.root);
+        this.draw();
     }
 
     /**
@@ -96,10 +91,8 @@ export default class Tree {
 
     /**
      * Lays out the tree and draws its links and person boxes.
-     *
-     * @param {HierarchyNode<FamilyTreeNode>} source The node the transitions originate from
      */
-    draw(source) {
+    draw() {
         /** @type {TreeLayout<FamilyTreeNode>} */
         const tree = d3
             .tree()
@@ -120,33 +113,6 @@ export default class Tree {
 
         // Lines first so the boxes overlap any rounding-error stubs.
         this._linkDrawer.drawLinks(connections);
-        this._nodeDrawer.drawNodes(renderedBoxes, source);
-    }
-
-    centerTree() {
-        // TODO Doesn't work
-        console.log("centerTree");
-    }
-
-    /**
-     * Collapses or expands the children of the given node and redraws.
-     *
-     * @param {Event}                         _event The triggering event
-     * @param {HierarchyNode<FamilyTreeNode>} node   The node to toggle
-     */
-    togglePerson(_event, node) {
-        // d3 HierarchyNode does not declare _children, and its children
-        // property does not admit the null a collapsed node carries.
-        const person = /** @type {any} */ (node);
-
-        if (person.children) {
-            person._children = person.children;
-            person.children = null;
-        } else {
-            person.children = person._children;
-            person._children = null;
-        }
-
-        this.draw(person);
+        this._nodeDrawer.drawNodes(renderedBoxes);
     }
 }

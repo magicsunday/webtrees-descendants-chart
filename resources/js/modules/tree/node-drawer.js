@@ -10,10 +10,8 @@ import Name from "./name.js";
 import { DateRenderer, ImageBox, TextBox } from "@magicsunday/webtrees-chart-lib/linked-tree";
 
 /**
- * @import { HierarchyNode } from "d3-hierarchy"
  * @import { Selection } from "d3-selection"
  * @import { LinkedTreeSvg as Svg } from "@magicsunday/webtrees-chart-lib/linked-tree"
- * @import Hierarchy from "../hierarchy.js"
  * @import Configuration from "../configuration.js"
  */
 
@@ -28,13 +26,11 @@ import { DateRenderer, ImageBox, TextBox } from "@magicsunday/webtrees-chart-lib
  */
 export default class NodeDrawer {
     /**
-     * @param {Svg}           svg
-     * @param {Hierarchy}     hierarchy     The hierarchical data
+     * @param {Svg}           svg           The render host
      * @param {Configuration} configuration The configuration
      */
-    constructor(svg, hierarchy, configuration) {
+    constructor(svg, configuration) {
         this._svg = svg;
-        this._hierarchy = hierarchy;
         this._configuration = configuration;
         this._orientation = this._configuration.orientation;
 
@@ -47,12 +43,11 @@ export default class NodeDrawer {
     /**
      * Draw the person boxes.
      *
-     * @param {RenderedBox[]}                 renderedBoxes Pre-positioned box descriptors from connection-builder
-     * @param {HierarchyNode<FamilyTreeNode>} source        The node the enter/exit transitions originate from
+     * @param {RenderedBox[]} renderedBoxes Pre-positioned box descriptors from connection-builder
      *
      * @public
      */
-    drawNodes(renderedBoxes, source) {
+    drawNodes(renderedBoxes) {
         // Image clip path
         this._svg.defs
             .append("clipPath")
@@ -69,29 +64,20 @@ export default class NodeDrawer {
             .selectAll("g.person")
             .data(renderedBoxes, (person) => person.id)
             .join(
-                (enter) => this.nodeEnter(enter, source),
+                (enter) => this.nodeEnter(enter),
                 (update) => this.nodeUpdate(update),
-                (exit) => this.nodeExit(exit, source),
+                (exit) => this.nodeExit(exit),
             );
-
-        // Stash the old positions for transition. d3 HierarchyNode does not
-        // declare x0/y0 — they are descendants-specific scratch props.
-        this._hierarchy.root.eachBefore((node) => {
-            const d = /** @type {any} */ (node);
-            d.x0 = d.x;
-            d.y0 = d.y;
-        });
     }
 
     /**
      * Enter transition (new nodes).
      *
      * @param {Selection<any, any, any, any>} enter
-     * @param {HierarchyNode<FamilyTreeNode>} _source
      *
      * @private
      */
-    nodeEnter(enter, _source) {
+    nodeEnter(enter) {
         return enter
             .append("g")
             .attr("opacity", 0)
@@ -148,22 +134,12 @@ export default class NodeDrawer {
      * Exit transition (nodes to be removed).
      *
      * @param {Selection<any, any, any, any>} exit
-     * @param {HierarchyNode<FamilyTreeNode>} source
      *
      * @private
      */
-    nodeExit(exit, source) {
-        const src = /** @type {any} */ (source);
+    nodeExit(exit) {
         exit.call((g) =>
-            g
-                .transition()
-                .duration(this._configuration.duration)
-                .attr("opacity", 0)
-                .attr("transform", () => {
-                    // Transition exit nodes to the source's position
-                    return `translate(${src.x0 ?? 0},${src.y0 ?? 0})`;
-                })
-                .remove(),
+            g.transition().duration(this._configuration.duration).attr("opacity", 0).remove(),
         );
     }
 
