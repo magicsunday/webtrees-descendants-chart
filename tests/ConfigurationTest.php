@@ -105,7 +105,7 @@ final class ConfigurationTest extends TestCase
 
     /**
      * An unknown request value neither reaches the filter nor overrides the
-     * preference with garbage: the preference value is used.
+     * preference with garbage. The preference value is used.
      */
     #[Test]
     public function unknownDescendantLineRequestValueUsesThePreference(): void

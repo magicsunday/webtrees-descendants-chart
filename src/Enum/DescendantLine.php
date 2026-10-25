@@ -31,12 +31,12 @@ enum DescendantLine: string
     case All = 'all';
 
     /**
-     * The Y-chromosomal line: a father passes it to his sons only.
+     * The Y-chromosomal line. A father passes it to his sons only.
      */
     case Paternal = 'paternal';
 
     /**
-     * The mitochondrial line: a mother passes it to all her children, while a
+     * The mitochondrial line. A mother passes it to all her children, while a
      * son does not pass it on.
      */
     case Maternal = 'maternal';

@@ -51,8 +51,8 @@ export function initPage(config) {
      * belong here. hideSpouses / descendantLine / showNicknames are
      * server-rendered via DataFacade so they are persisted in localStorage via
      * storage.register() above (to keep the form state across reloads) but do
-     * NOT need to ship in chartOptions. Only options with a field on the chart page form are
-     * registered, so an admin-only preference is never registered.
+     * NOT need to ship in chartOptions. Only options with a field on the chart
+     * page form are registered, so an admin-only preference is never registered.
      *
      * @type {{
      *   generations: number|null,

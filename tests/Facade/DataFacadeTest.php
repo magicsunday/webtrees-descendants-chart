@@ -511,7 +511,7 @@ final class DataFacadeTest extends TestCase
     }
 
     /**
-     * The maternal line of a man ends at the man: his family entries stay and
+     * The maternal line of a man ends at the man. His family entries stay and
      * none of his children is kept.
      */
     #[Test]
@@ -680,8 +680,8 @@ final class DataFacadeTest extends TestCase
             }
         }
 
-        // Breadth first per level keeps the expectation readable: siblings first,
-        // then what hangs below them.
+        // Breadth first per level keeps the expectation readable. Siblings come
+        // first, then what hangs below them.
         return [...$children, ...array_merge(...$deeper)];
     }
 
