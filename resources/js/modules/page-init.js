@@ -28,6 +28,7 @@ export function initPage(config) {
     storage.register("generations");
     storage.register("layout");
     storage.register("hideSpouses");
+    storage.register("descendantLine");
     storage.register("openNewTabOnClick");
     storage.register("showAlternativeName");
     storage.register("showNicknames");
@@ -47,10 +48,10 @@ export function initPage(config) {
      * server default"; chart.phtml falls back to the PHP-side value via `??`.
      *
      * Only options that the chart re-evaluates client-side (no form submit)
-     * belong here. hideSpouses / showNicknames are server-rendered via
-     * DataFacade so they are persisted in localStorage via storage.register()
-     * above (to keep the form state across reloads) but do NOT need to ship in
-     * chartOptions. Only options with a field on the chart page form are
+     * belong here. hideSpouses / descendantLine / showNicknames are
+     * server-rendered via DataFacade so they are persisted in localStorage via
+     * storage.register() above (to keep the form state across reloads) but do
+     * NOT need to ship in chartOptions. Only options with a field on the chart page form are
      * registered, so an admin-only preference is never registered.
      *
      * @type {{
