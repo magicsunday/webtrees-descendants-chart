@@ -78,14 +78,14 @@ Flat layout — every file is descendants-specific glue. Reusable base classes (
 ### Views (`resources/views/`)
 - **`descendants-chart/page.phtml`** — Form + AJAX container. Loads `descendants-chart-page.min.js` and calls `WebtreesDescendantsChart.initPage({ ajaxUrl })`.
 - **`descendants-chart/chart.phtml`** — AJAX response: `<script type="module">` with `import()` to load ES module bundle. Reads user overrides from `WebtreesDescendantsChart.chartOptions ?? PHP defaults`.
-- **`descendants-chart/form/*.phtml`** — Form partials (generations, layout, orientation, married-names toggle).
+- **`descendants-chart/form/*.phtml`** — Form partials (generations, orientation, display, details, behavior).
 - **`charts/chart.phtml`** — Block template override (home page widget), uses `data-wt-ajax-url` pattern.
 
 ## Key patterns
 - **ES module loading**: `import().then(({ DescendantsChart }) => ...)` in `<script type="module">`, avoiding the `webtrees.load()` race condition.
 - **Storage flow**: `page-init.js` reads localStorage → publishes resolved options under `WebtreesDescendantsChart.chartOptions` → `chart.phtml` getter reads `opts.x ?? PHP default`.
 - **Orientation strategy**: chart layout is configurable in 4 directions (top-bottom, bottom-top, left-right, right-left) via the `OrientationCollection` of the chart-lib `linked-tree` subpath and its matching `Orientation*` classes (node coordinate transforms + elbow connector geometry).
-- **Married-name modes**: configurable via `marriedNamesMode` (3-value: `off`, `married_only`, `birth_and_married`). `married_only` swaps the primary to a `_MARNM` record matching the spouse's surname (NameProcessor's `useMarriedName` flag). `birth_and_married` keeps the birth-name primary and appends the married surname in brackets, e.g. `Schmidt (Müller)`. The bracketed text is the last name segment, of kind `married`, and it also ends the flat `name`, which the box tooltip reads. Migrates from the legacy boolean `default_showMarriedNames` preference (true → `married_only`, false → `off`).
+- **Married-name modes**: an admin-only default, set as `default_marriedNamesMode` on the module configuration page. The chart page has no form field for it, so it is neither registered in the page script nor forwarded in the chart URLs. The modes are `off`, `married_only` and `birth_and_married`. `married_only` swaps the primary to a `_MARNM` record matching the spouse's surname (NameProcessor's `useMarriedName` flag). `birth_and_married` keeps the birth-name primary and appends the married surname in brackets, e.g. `Schmidt (Müller)`. The bracketed text is the last name segment, of kind `married`, and it also ends the flat `name`, which the box tooltip reads. Migrates from the legacy boolean `default_showMarriedNames` preference (true → `married_only`, false → `off`).
 - **Block template**: Overrides core `modules/charts/chart.phtml` — must stay in sync with webtrees core changes (e.g. VanillaJS conversion).
 
 ## Release process
