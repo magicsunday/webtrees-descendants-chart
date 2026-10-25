@@ -15,18 +15,38 @@ await jest.unstable_mockModule("@magicsunday/webtrees-chart-lib/chart-core", () 
     setChartOptionsGlobal: jest.fn(),
     syncCollapseToggle: jest.fn(),
     Storage: class {
+        /**
+         * Records the name of the registered option.
+         *
+         * @param {string} name The option name
+         */
         register(name) {
             registered.push(name);
         }
 
+        /**
+         * Returns no stored number value, as an empty storage does.
+         *
+         * @return {null}
+         */
         readNumber() {
             return null;
         }
 
+        /**
+         * Returns no stored string value, as an empty storage does.
+         *
+         * @return {null}
+         */
         readString() {
             return null;
         }
 
+        /**
+         * Returns no stored boolean value, as an empty storage does.
+         *
+         * @return {null}
+         */
         readBool() {
             return null;
         }
