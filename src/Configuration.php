@@ -16,8 +16,11 @@ use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Module\AbstractModule;
 use Fisharebest\Webtrees\Module\PedigreeChartModule;
 use Fisharebest\Webtrees\Validator;
+use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\ModuleBase\Model\NameAbbreviation;
 use Psr\Http\Message\ServerRequestInterface;
+
+use function array_column;
 
 /**
  * Configuration class.
@@ -86,7 +89,7 @@ final class Configuration
         self::MARRIED_NAMES_BIRTH_AND_MARRIED,
     ];
 
-    // The seven getters below are each called once per node while the tree is
+    // The memoised getters below are each called once per node while the tree is
     // built. AbstractModule::getPreference() runs a `module_setting` query on
     // every call and holds no cache, and Validator::__construct() re-scans all
     // request parameters for valid UTF-8, so both costs would scale with the
@@ -108,6 +111,11 @@ final class Configuration
      * Whether spouses are hidden, or null until first resolved.
      */
     private ?bool $hideSpouses = null;
+
+    /**
+     * The resolved descendant line, or null until first resolved.
+     */
+    private ?DescendantLine $descendantLine = null;
 
     /**
      * The resolved married-names display mode, or null until first resolved.
@@ -274,6 +282,49 @@ final class Configuration
                     '0'
                 )
             );
+    }
+
+    /**
+     * Returns the line of descent the chart follows below its subject.
+     *
+     * Reads the `descendantLine` request parameter when it is one of the known
+     * words, otherwise the `default_descendantLine` module preference. Returns
+     * {@see DescendantLine::All} when neither is a known word.
+     */
+    public function getDescendantLine(): DescendantLine
+    {
+        if ($this->descendantLine instanceof DescendantLine) {
+            return $this->descendantLine;
+        }
+
+        $validator = $this->requestValidator();
+
+        $line = $validator
+            ->isInArray(array_column(DescendantLine::cases(), 'value'))
+            ->string(
+                'descendantLine',
+                $this->module->getPreference(
+                    'default_descendantLine',
+                    DescendantLine::All->value
+                )
+            );
+
+        return $this->descendantLine = DescendantLine::tryFrom($line) ?? DescendantLine::All;
+    }
+
+    /**
+     * Returns the descendant lines keyed by storage value, with translated
+     * labels, for use in the chart form and the configuration form.
+     *
+     * @return array<string, string>
+     */
+    public function getDescendantLines(): array
+    {
+        return [
+            DescendantLine::All->value      => I18N::translate('All descendants'),
+            DescendantLine::Paternal->value => I18N::translate('Paternal line (father to son)'),
+            DescendantLine::Maternal->value => I18N::translate('Maternal line (mother to child)'),
+        ];
     }
 
     /**
@@ -505,7 +556,7 @@ final class Configuration
      * proportion to the tree size. The configuration is constructed per request,
      * so the resolved values cannot go stale within its lifetime.
      *
-     * @return array{generations: int, layout: string, hideSpouses: string, showNicknames: string, openNewTabOnClick: string, showAlternativeName: string}
+     * @return array{generations: int, layout: string, hideSpouses: string, descendantLine: string, showNicknames: string, openNewTabOnClick: string, showAlternativeName: string}
      */
     public function getRouteToggleParams(): array
     {
@@ -513,6 +564,7 @@ final class Configuration
             'generations'         => $this->getGenerations(),
             'layout'              => $this->getLayout(),
             'hideSpouses'         => $this->getHideSpouses() ? '1' : '0',
+            'descendantLine'      => $this->getDescendantLine()->value,
             'showNicknames'       => $this->getShowNicknames() ? '1' : '0',
             'openNewTabOnClick'   => $this->getOpenNewTabOnClick() ? '1' : '0',
             'showAlternativeName' => $this->getShowAlternativeName() ? '1' : '0',

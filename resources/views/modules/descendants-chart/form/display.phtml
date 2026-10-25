@@ -30,5 +30,22 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
             'unchecked' => '0',
         ]);
 ?>
+
+        <div class="mt-3">
+            <label for="descendantLine" class="form-label">
+                <?php echo I18N::translate('Descendant line'); ?>
+            </label>
+            <?php echo view('components/select', [
+                'name'     => 'descendantLine',
+                'id'       => 'descendantLine',
+                'selected' => $configuration->getDescendantLine()->value,
+                'options'  => $configuration->getDescendantLines(),
+                'class'    => 'form-control-sm',
+            ]);
+?>
+            <small class="form-text text-muted form-element-description" style="box-decoration-break: clone;">
+                <?php echo I18N::translate('The paternal line follows a father to his sons only, which is the line of inheritance of the Y chromosome. The maternal line follows a mother to all her children, but not the children of a son, which is the line of inheritance of the mitochondrial DNA. The individual at the top of the chart is always shown, and a person of unknown sex ends the line.'); ?>
+            </small>
+        </div>
     </div>
 </div>

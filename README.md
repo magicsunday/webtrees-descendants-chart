@@ -28,6 +28,11 @@ It is capable of displaying up to 25 generations of descendants from an individu
 In addition to the descendants, the respective spouses are also displayed for a person. The display can be
 deactivated via the configuration form so that only the direct descendants are displayed.
 
+The descendant line option limits the chart to the paternal or the maternal line, which helps to find
+candidates for a DNA test. The paternal line follows a father to his sons only (the line of the Y chromosome).
+The maternal line follows a mother to all her children, but not the children of a son (the line of the
+mitochondrial DNA). The individual at the top is always shown, and a person of unknown sex ends the line.
+
 ![descendants-chart-4-generations](assets/descendants-chart-4-generations.png)
 
 *Fig. 1: A four generations descendants chart with spouses (drawn top to bottom)*

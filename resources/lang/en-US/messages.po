@@ -20,19 +20,23 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:451
+#: src/Configuration.php:502
 msgid "Abbreviate given names first"
 msgstr "Abbreviate given names first"
 
-#: src/Configuration.php:452
+#: src/Configuration.php:503
 msgid "Abbreviate surnames first"
 msgstr "Abbreviate surnames first"
+
+#: src/Configuration.php:324
+msgid "All descendants"
+msgstr "All descendants"
 
 #: src/Module.php:130
 msgid "An overview of an individual’s descendants."
 msgstr "An overview of an individual’s descendants."
 
-#: src/Configuration.php:450
+#: src/Configuration.php:501
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automatic (based on tree's surname tradition)"
 
@@ -40,11 +44,11 @@ msgstr "Automatic (based on tree's surname tradition)"
 msgid "Behavior"
 msgstr "Behavior"
 
-#: src/Configuration.php:324
+#: src/Configuration.php:375
 msgid "Birth name only"
 msgstr "Birth name only"
 
-#: src/Configuration.php:326
+#: src/Configuration.php:377
 msgid "Birth name with married name in brackets"
 msgstr "Birth name with married name in brackets"
 
@@ -61,6 +65,10 @@ msgstr ""
 "Controls which name part shrinks first when a box is too narrow for the full "
 "name. \"Automatic\" uses the tree's surname tradition (Icelandic abbreviates "
 "surnames; everything else abbreviates given names)."
+
+#: resources/views/modules/descendants-chart/form/display.phtml:36
+msgid "Descendant line"
+msgstr "Descendant line"
 
 #: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
@@ -132,13 +140,17 @@ msgstr ""
 "surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees "
 "behaviour for trees that store nicknames in the separate GEDCOM NICK field."
 
-#: src/Configuration.php:325
+#: src/Configuration.php:376
 msgid "Married name only"
 msgstr "Married name only"
 
 #: resources/views/modules/descendants-chart/config.phtml:90
 msgid "Married names"
 msgstr "Married names"
+
+#: src/Configuration.php:326
+msgid "Maternal line (mother to child)"
+msgstr "Maternal line (mother to child)"
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
@@ -166,6 +178,10 @@ msgstr ""
 msgid "Orientation"
 msgstr "Orientation"
 
+#: src/Configuration.php:325
+msgid "Paternal line (father to son)"
+msgstr "Paternal line (father to son)"
+
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
 msgstr "Re center"
@@ -190,7 +206,21 @@ msgstr "Show nicknames in display names"
 msgid "Switch between full screen mode and normal view"
 msgstr "Switch between full screen mode and normal view"
 
-#: src/Module/ConfigTrait.php:104
+#: resources/views/modules/descendants-chart/form/display.phtml:47
+msgid ""
+"The paternal line follows a father to his sons only, which is the line of "
+"inheritance of the Y chromosome. The maternal line follows a mother to all "
+"her children, but not the children of a son, which is the line of "
+"inheritance of the mitochondrial DNA. The individual at the top of the chart "
+"is always shown, and a person of unknown sex ends the line."
+msgstr ""
+"The paternal line follows a father to his sons only, which is the line of "
+"inheritance of the Y chromosome. The maternal line follows a mother to all "
+"her children, but not the children of a son, which is the line of "
+"inheritance of the mitochondrial DNA. The individual at the top of the chart "
+"is always shown, and a person of unknown sex ends the line."
+
+#: src/Module/ConfigTrait.php:108
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
 msgstr "The preferences for the module “%s” have been updated."
@@ -215,15 +245,15 @@ msgstr ""
 msgid "cancel"
 msgstr "cancel"
 
-#: src/Configuration.php:244 src/Configuration.php:252
+#: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
 msgstr "down"
 
-#: src/Configuration.php:241 src/Configuration.php:249
+#: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
 msgstr "left"
 
-#: src/Configuration.php:242 src/Configuration.php:250
+#: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
 msgstr "right"
 
@@ -231,7 +261,7 @@ msgstr "right"
 msgid "save"
 msgstr "save"
 
-#: src/Configuration.php:243 src/Configuration.php:251
+#: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
 msgstr "up"
 

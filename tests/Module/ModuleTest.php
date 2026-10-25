@@ -27,6 +27,7 @@ use Fisharebest\Webtrees\Tree;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\ServerRequest;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
+use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Module;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
@@ -42,6 +43,7 @@ use ReflectionProperty;
  */
 #[CoversClass(Module::class)]
 #[UsesClass(Configuration::class)]
+#[UsesClass(DescendantLine::class)]
 final class ModuleTest extends TestCase
 {
     use ModuleSettingsFixtureTrait;
@@ -59,14 +61,7 @@ final class ModuleTest extends TestCase
         $individual   = self::createStub(Individual::class);
         $tree         = self::createStub(Tree::class);
 
-        $locale     = Locale::create('en');
-        $translator = new Translator([], $locale->pluralRule());
-
-        $localeProperty = new ReflectionProperty(I18N::class, 'locale');
-        $localeProperty->setValue(null, $locale);
-
-        $translatorProperty = new ReflectionProperty(I18N::class, 'translator');
-        $translatorProperty->setValue(null, $translator);
+        $this->initialiseTranslator();
 
         $individual->method('fullName')->willReturn('Example Person');
         $individual->method('xref')->willReturn('I1');
@@ -96,6 +91,7 @@ final class ModuleTest extends TestCase
                 'generations'         => '3',
                 'layout'              => 'down',
                 'hideSpouses'         => '1',
+                'descendantLine'      => 'maternal',
                 'marriedNamesMode'    => 'married_only',
                 'showNicknames'       => '1',
                 'openNewTabOnClick'   => '0',
@@ -124,6 +120,48 @@ final class ModuleTest extends TestCase
         self::assertArrayHasKey('tree', $query);
         self::assertSame('I1', $query['xref']);
         self::assertSame('main', $query['tree']);
+    }
+
+    /**
+     * The module configuration page stores the descendant line as the default
+     * for the chart page, and a value outside the three words keeps the stored default.
+     */
+    #[Test]
+    public function adminFormStoresTheDescendantLineAsDefault(): void
+    {
+        $this->registerRouteFactory();
+        $this->initialiseTranslator();
+
+        $module = $this->createModuleWithPreferences([]);
+
+        $module->postAdminAction(
+            (new ServerRequest(RequestMethodInterface::METHOD_POST, '/'))
+                ->withParsedBody(['descendantLine' => 'maternal'])
+        );
+
+        self::assertSame('maternal', $module->getPreference('default_descendantLine'));
+
+        $module->postAdminAction(
+            (new ServerRequest(RequestMethodInterface::METHOD_POST, '/'))
+                ->withParsedBody(['descendantLine' => 'sideways'])
+        );
+
+        self::assertSame('maternal', $module->getPreference('default_descendantLine'));
+    }
+
+    /**
+     * Gives the translation context the module needs for flash messages and titles.
+     */
+    private function initialiseTranslator(): void
+    {
+        $locale     = Locale::create('en');
+        $translator = new Translator([], $locale->pluralRule());
+
+        $localeProperty = new ReflectionProperty(I18N::class, 'locale');
+        $localeProperty->setValue(null, $locale);
+
+        $translatorProperty = new ReflectionProperty(I18N::class, 'translator');
+        $translatorProperty->setValue(null, $translator);
     }
 
     /**

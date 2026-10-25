@@ -158,6 +158,7 @@ final class DataFacade
         }
 
         $hideSpouses    = $this->configuration->getHideSpouses();
+        $descendantLine = $this->configuration->getDescendantLine();
         $mergedChildren = [];
 
         /** @var Family $family */
@@ -165,6 +166,10 @@ final class DataFacade
             $children = [];
 
             foreach ($family->children() as $child) {
+                if (!$descendantLine->keepsLink($individual->sex(), $child->sex())) {
+                    continue;
+                }
+
                 $childCouple = $this->buildCoupleStructure($child, $generation + 1);
 
                 if ($childCouple instanceof CoupleNode) {

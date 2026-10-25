@@ -65,6 +65,7 @@ describe("initPage", () => {
         initPage({ ajaxUrl: "https://example.test/chart" });
 
         expect(registered.sort()).toEqual([
+            "descendantLine",
             "generations",
             "hideSpouses",
             "layout",

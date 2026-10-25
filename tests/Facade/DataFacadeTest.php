@@ -30,6 +30,7 @@ use Fisharebest\Webtrees\Validator;
 use GuzzleHttp\Psr7\ServerRequest;
 use Illuminate\Support\Collection;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
+use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\DescendantsChart\Module;
@@ -46,6 +47,7 @@ use ReflectionProperty;
 
 use function array_keys;
 use function array_map;
+use function array_merge;
 use function array_values;
 use function http_build_query;
 
@@ -60,6 +62,7 @@ use function http_build_query;
  */
 #[CoversClass(DataFacade::class)]
 #[UsesClass(Configuration::class)]
+#[UsesClass(DescendantLine::class)]
 #[UsesClass(CoupleNode::class)]
 #[UsesClass(Module::class)]
 final class DataFacadeTest extends TestCase
@@ -476,6 +479,210 @@ final class DataFacadeTest extends TestCase
 
         self::assertSame([], $this->buildStructure($root, ['generations' => '2', 'hideSpouses' => '1'])['memberFamilies']);
         self::assertSame([], $this->buildStructure($root, ['generations' => '2', 'hideSpouses' => '0'])['memberFamilies']);
+    }
+
+    /**
+     * Without a filter every child is kept, whatever its sex.
+     */
+    #[Test]
+    public function allLinesKeepEveryDescendant(): void
+    {
+        $structure = $this->buildStructure($this->createMixedFamilyRoot('M'), ['generations' => '3']);
+
+        self::assertSame(
+            ['S1', 'D1', 'S2', 'U1', 'DC1', 'DC2', 'G1', 'G2'],
+            $this->descendantXrefs($structure['memberFamilies']),
+        );
+    }
+
+    /**
+     * The paternal line follows father to son only, so a daughter and everything
+     * below her are left out, and a person of unknown sex is never kept.
+     */
+    #[Test]
+    public function paternalLineKeepsOnlyFathersToSons(): void
+    {
+        $structure = $this->buildStructure(
+            $this->createMixedFamilyRoot('M'),
+            ['generations' => '3', 'descendantLine' => 'paternal'],
+        );
+
+        self::assertSame(['S1', 'S2', 'G1'], $this->descendantXrefs($structure['memberFamilies']));
+    }
+
+    /**
+     * The maternal line of a man ends at the man. His family entries stay and
+     * none of his children is kept.
+     */
+    #[Test]
+    public function maternalLineOfAMaleSubjectShowsTheSubjectAlone(): void
+    {
+        $structure = $this->buildStructure(
+            $this->createMixedFamilyRoot('M'),
+            ['generations' => '3', 'descendantLine' => 'maternal'],
+        );
+
+        self::assertCount(1, $structure['memberFamilies']);
+        self::assertSame([], $this->descendantXrefs($structure['memberFamilies']));
+    }
+
+    /**
+     * A woman passes the line to all her children, a son ends it, and a
+     * daughter passes it on again.
+     */
+    #[Test]
+    public function maternalLineOfAFemaleSubjectEndsAtTheSons(): void
+    {
+        $structure = $this->buildStructure(
+            $this->createMixedFamilyRoot('F'),
+            ['generations' => '3', 'descendantLine' => 'maternal'],
+        );
+
+        self::assertSame(['S1', 'D1', 'S2', 'U1', 'DC1', 'DC2'], $this->descendantXrefs($structure['memberFamilies']));
+    }
+
+    /**
+     * The paternal line of a woman ends at the woman.
+     */
+    #[Test]
+    public function paternalLineOfAFemaleSubjectShowsTheSubjectAlone(): void
+    {
+        $structure = $this->buildStructure(
+            $this->createMixedFamilyRoot('F'),
+            ['generations' => '3', 'descendantLine' => 'paternal'],
+        );
+
+        self::assertSame([], $this->descendantXrefs($structure['memberFamilies']));
+    }
+
+    /**
+     * A filtered subject keeps its partner in every mode, only the children go.
+     */
+    #[Test]
+    public function filterLeavesThePartnerOfTheSubjectInPlace(): void
+    {
+        $structure = $this->buildStructure(
+            $this->createMixedFamilyRoot('M'),
+            ['generations' => '3', 'descendantLine' => 'maternal'],
+        );
+
+        self::assertCount(2, $structure['members']);
+        self::assertSame(1, $this->spouseIndexOf($structure, 0));
+    }
+
+    /**
+     * Hidden spouses merge the children of all families before the order by birth
+     * date, and the filter applies to the merged children as well.
+     */
+    #[Test]
+    public function hiddenSpousesApplyTheFilterToTheMergedChildren(): void
+    {
+        $name = [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')];
+
+        $youngSon     = $this->createLineMember('S1', 'M', [], '1 JAN 1950');
+        $oldDaughter  = $this->createLineMember('D1', 'F', [], '1 JAN 1900');
+        $middleSon    = $this->createLineMember('S2', 'M', [], '1 JAN 1925');
+        $unknownChild = $this->createLineMember('U1', 'U', [], '1 JAN 1930');
+
+        $root = $this->createPerson('I1', 'M', $name);
+        $root->method('spouseFamilies')->willReturn(
+            new Collection([
+                $this->createFamily($this->createPerson('I5', 'F', $name), [$youngSon, $oldDaughter]),
+                $this->createFamily(null, [$unknownChild, $middleSon]),
+            ])
+        );
+
+        $paternal = $this->buildStructure($root, ['generations' => '2', 'hideSpouses' => '1', 'descendantLine' => 'paternal']);
+
+        self::assertSame(['S2', 'S1'], $this->childXrefs($paternal, 0));
+
+        $all = $this->buildStructure($root, ['generations' => '2', 'hideSpouses' => '1']);
+
+        self::assertSame(['D1', 'S2', 'U1', 'S1'], $this->childXrefs($all, 0));
+    }
+
+    /**
+     * Builds a subject with a partner and a mixed family: two sons, a daughter and
+     * a child of unknown sex. The first son has no children, the second son has a
+     * son and a daughter, and the daughter has a son and a daughter.
+     *
+     * @param string $sex The sex of the subject
+     *
+     * @return Individual&Stub
+     */
+    private function createMixedFamilyRoot(string $sex): Individual
+    {
+        $name = [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')];
+
+        $secondSon = $this->createLineMember(
+            'S2',
+            'M',
+            [$this->createFamily(null, [$this->createLineMember('G1', 'M'), $this->createLineMember('G2', 'F')])],
+        );
+
+        $daughter = $this->createLineMember(
+            'D1',
+            'F',
+            [$this->createFamily(null, [$this->createLineMember('DC1', 'M'), $this->createLineMember('DC2', 'F')])],
+        );
+
+        $root = $this->createPerson('I1', $sex, $name);
+        $root->method('spouseFamilies')->willReturn(
+            new Collection([
+                $this->createFamily(
+                    $this->createPerson('I9', ($sex === 'M') ? 'F' : 'M', $name),
+                    [
+                        $this->createLineMember('S1', 'M'),
+                        $daughter,
+                        $secondSon,
+                        $this->createLineMember('U1', 'U'),
+                    ],
+                ),
+            ])
+        );
+
+        return $root;
+    }
+
+    /**
+     * Creates a person of the descendant line tests with the given families.
+     *
+     * @param Family[] $families The spouse families of the person
+     * @param string   $birth    The GEDCOM birth date of the person
+     *
+     * @return Individual&Stub
+     */
+    private function createLineMember(string $xref, string $sex, array $families = [], string $birth = ''): Individual
+    {
+        $person = $this->createPerson($xref, $sex, [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')], '', 0, $birth);
+        $person->method('spouseFamilies')->willReturn(new Collection($families));
+
+        return $person;
+    }
+
+    /**
+     * Returns the XREFs of all descendants in the order the chart draws them:
+     * every child, followed by the descendants of that child.
+     *
+     * @param array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}> $families
+     *
+     * @return list<bool|int|string>
+     */
+    private function descendantXrefs(array $families): array
+    {
+        $children = [];
+        $deeper   = [];
+
+        foreach ($families as $entry) {
+            foreach ($entry['children'] as $child) {
+                $children[] = $this->valueOf($this->memberAt($child->getMembers(), 0), 'xref');
+                $deeper[]   = $this->descendantXrefs($child->getMemberFamilies());
+            }
+        }
+
+        // Breadth first per level keeps the expectation readable. Siblings come
+        // first, then what hangs below them.
+        return [...$children, ...array_merge(...$deeper)];
     }
 
     /**

@@ -71,6 +71,10 @@ trait ConfigTrait
             (string) $configuration->getHideSpouses()
         );
         $this->setPreference(
+            'default_descendantLine',
+            $configuration->getDescendantLine()->value
+        );
+        $this->setPreference(
             'default_marriedNamesMode',
             $configuration->getMarriedNamesMode()
         );
