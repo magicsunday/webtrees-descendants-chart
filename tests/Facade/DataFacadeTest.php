@@ -30,6 +30,7 @@ use Fisharebest\Webtrees\Validator;
 use GuzzleHttp\Psr7\ServerRequest;
 use Illuminate\Support\Collection;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
+use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\DescendantsChart\Module;
@@ -61,6 +62,7 @@ use function http_build_query;
  */
 #[CoversClass(DataFacade::class)]
 #[UsesClass(Configuration::class)]
+#[UsesClass(DescendantLine::class)]
 #[UsesClass(CoupleNode::class)]
 #[UsesClass(Module::class)]
 final class DataFacadeTest extends TestCase

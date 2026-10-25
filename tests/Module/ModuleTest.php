@@ -27,6 +27,7 @@ use Fisharebest\Webtrees\Tree;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\ServerRequest;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
+use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Module;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
@@ -42,6 +43,7 @@ use ReflectionProperty;
  */
 #[CoversClass(Module::class)]
 #[UsesClass(Configuration::class)]
+#[UsesClass(DescendantLine::class)]
 final class ModuleTest extends TestCase
 {
     use ModuleSettingsFixtureTrait;
