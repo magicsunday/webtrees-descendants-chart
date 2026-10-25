@@ -85,7 +85,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
 msgid "Display"
-msgstr ""
+msgstr "Weergave"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:34
 msgid ""
