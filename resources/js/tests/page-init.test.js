@@ -115,6 +115,15 @@ describe("initPage", () => {
         });
     });
 
+    it("leaves the switch to the server default while nothing is stored", () => {
+        initPage({ ajaxUrl: "https://example.test/chart" });
+
+        expect(buildChartAjaxUrl.mock.calls[0][1].query).toContainEqual({
+            key: "showDetailPanel",
+            value: null,
+        });
+    });
+
     it("does not publish the switch, because the server reads the facts and its value decides", () => {
         stored.showDetailPanel = true;
 

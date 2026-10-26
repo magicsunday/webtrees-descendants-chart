@@ -50,6 +50,7 @@ use function array_keys;
 use function array_map;
 use function array_merge;
 use function array_values;
+use function count;
 use function http_build_query;
 use function is_string;
 use function json_decode;
@@ -224,6 +225,37 @@ final class DataFacadeTest extends TestCase
         $data = $this->memberAt($this->buildStructure($person, ['generations' => '1', 'showDetailPanel' => '1'])['members'], 0);
 
         self::assertSame([null, null], $this->serialisedFacts($data));
+    }
+
+    /**
+     * A facade that gets a new configuration reads the facts of a later run with the tags of the
+     * tree of that run, so the slots follow the chart box tags of the tree and not those of the
+     * run before.
+     */
+    #[Test]
+    public function readsTheFactsOfALaterRunWithTheTagsOfItsOwnTree(): void
+    {
+        $name   = [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')];
+        $module = self::createStubForIntersectionOfInterfaces([ModuleCustomInterface::class, ModuleAssetUrlInterface::class]);
+        $module->method('name')->willReturn('webtrees-descendants-chart');
+
+        $facade = (new DataFacade())->setModule($module)->setRoute('module');
+        $slots  = [];
+
+        foreach (['OCCU,RESI', ''] as $tags) {
+            $person  = $this->createPerson('I1', 'M', $name, factsByTag: [], chartBoxTags: $tags);
+            $request = (new ServerRequest('GET', '/'))->withQueryParams(['generations' => '1', 'showDetailPanel' => '1']);
+
+            $structure = $facade
+                ->setConfiguration(new Configuration($request, $this->createModuleWithPreferences([])))
+                ->createTreeStructure($person);
+
+            self::assertIsArray($structure);
+
+            $slots[] = count($this->serialisedFacts($this->memberAt($structure['members'], 0)) ?? []);
+        }
+
+        self::assertSame([4, 2], $slots);
     }
 
     /**

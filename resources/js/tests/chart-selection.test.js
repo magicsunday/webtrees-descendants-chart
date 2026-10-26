@@ -71,6 +71,15 @@ describe("Chart click routing", () => {
         expect(data.data.generation).toBe(1);
     });
 
+    test("hands a partner of a later generation to the panel unchanged", () => {
+        const { context } = buildChart();
+        const data = { ...person({ generation: 2 }), spouse: true };
+
+        Chart.prototype.personClick.call(context, data);
+
+        expect(context._detailPanel.select.mock.calls[0][0].generation).toBe(2);
+    });
+
     test("hands the chart subject to the panel as the center of the chart", () => {
         const { context } = buildChart();
         const data = { ...person({ generation: 1 }), spouse: false };
