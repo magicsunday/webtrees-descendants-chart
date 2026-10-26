@@ -30,7 +30,7 @@ msgstr "Forkort etternamn først"
 
 #: src/Configuration.php:324
 msgid "All descendants"
-msgstr ""
+msgstr "Alle etterkomarar"
 
 #: src/Module.php:130
 msgid "An overview of an individual’s descendants."
@@ -54,7 +54,7 @@ msgstr "Fødenamn med namn som gift i parentes"
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
-msgstr ""
+msgstr "KOntrollpanel"
 
 #: resources/views/modules/descendants-chart/config.phtml:84
 msgid ""
@@ -68,7 +68,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
-msgstr ""
+msgstr "Etterkomarlinje"
 
 #: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
@@ -81,11 +81,11 @@ msgstr "Etterkomardiagram for %s"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:23
 msgid "Details"
-msgstr ""
+msgstr "Detaljar"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
 msgid "Display"
-msgstr ""
+msgstr "Utsjånad"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:34
 msgid ""
@@ -106,11 +106,11 @@ msgstr "Eksporter som SVG"
 
 #: resources/views/modules/descendants-chart/config.phtml:50
 msgid "General"
-msgstr ""
+msgstr "Generelt"
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
-msgstr ""
+msgstr "Generasjonar"
 
 #: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Hide more options"
@@ -130,7 +130,7 @@ msgstr "Skjul etterkomarar sine ektefeller"
 
 #: resources/views/modules/descendants-chart/page.phtml:39
 msgid "Individual"
-msgstr ""
+msgstr "Person"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""
@@ -152,11 +152,11 @@ msgstr "Namn som gift"
 
 #: src/Configuration.php:326
 msgid "Maternal line (mother to child)"
-msgstr ""
+msgstr "Maternell linje (mor til barn)"
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
-msgstr ""
+msgstr "Modular"
 
 #: src/Module.php:251
 msgid "Move the view with two fingers"
@@ -180,11 +180,11 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
-msgstr ""
+msgstr "Orientering"
 
 #: src/Configuration.php:325
 msgid "Paternal line (father to son)"
-msgstr ""
+msgstr "Paternell linje (far til barn)"
 
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
@@ -242,28 +242,28 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
-msgstr ""
+msgstr "avbryt"
 
 #: src/Configuration.php:252 src/Configuration.php:260
 msgid "down"
-msgstr ""
+msgstr "ned"
 
 #: src/Configuration.php:249 src/Configuration.php:257
 msgid "left"
-msgstr ""
+msgstr "venstre"
 
 #: src/Configuration.php:250 src/Configuration.php:258
 msgid "right"
-msgstr ""
+msgstr "høgre"
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
-msgstr ""
+msgstr "lagre"
 
 #: src/Configuration.php:251 src/Configuration.php:259
 msgid "up"
-msgstr ""
+msgstr "opp"
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr ""
+msgstr "syn"
