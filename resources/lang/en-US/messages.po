@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
@@ -20,15 +21,15 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:502
+#: src/Configuration.php:531
 msgid "Abbreviate given names first"
 msgstr "Abbreviate given names first"
 
-#: src/Configuration.php:503
+#: src/Configuration.php:532
 msgid "Abbreviate surnames first"
 msgstr "Abbreviate surnames first"
 
-#: src/Configuration.php:324
+#: src/Configuration.php:329
 msgid "All descendants"
 msgstr "All descendants"
 
@@ -36,7 +37,7 @@ msgstr "All descendants"
 msgid "An overview of an individual’s descendants."
 msgstr "An overview of an individual’s descendants."
 
-#: src/Configuration.php:501
+#: src/Configuration.php:530
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automatic (based on tree's surname tradition)"
 
@@ -44,13 +45,17 @@ msgstr "Automatic (based on tree's surname tradition)"
 msgid "Behavior"
 msgstr "Behavior"
 
-#: src/Configuration.php:375
+#: src/Configuration.php:380
 msgid "Birth name only"
 msgstr "Birth name only"
 
-#: src/Configuration.php:377
+#: src/Configuration.php:382
 msgid "Birth name with married name in brackets"
 msgstr "Birth name with married name in brackets"
+
+#: resources/views/modules/descendants-chart/page.phtml:117
+msgid "Center chart on this person"
+msgstr "Center chart on this person"
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
@@ -140,7 +145,7 @@ msgstr ""
 "surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees "
 "behaviour for trees that store nicknames in the separate GEDCOM NICK field."
 
-#: src/Configuration.php:376
+#: src/Configuration.php:381
 msgid "Married name only"
 msgstr "Married name only"
 
@@ -148,7 +153,7 @@ msgstr "Married name only"
 msgid "Married names"
 msgstr "Married names"
 
-#: src/Configuration.php:326
+#: src/Configuration.php:331
 msgid "Maternal line (mother to child)"
 msgstr "Maternal line (mother to child)"
 
@@ -164,9 +169,17 @@ msgstr "Move the view with two fingers"
 msgid "Name abbreviation when space is tight"
 msgstr "Name abbreviation when space is tight"
 
+#: resources/views/modules/descendants-chart/page.phtml:114
+msgid "No details are available for this person."
+msgstr "No details are available for this person."
+
 #: resources/views/modules/descendants-chart/form/behavior.phtml:28
 msgid "Open individual in new browser window/tab"
 msgstr "Open individual in new browser window/tab"
+
+#: resources/views/modules/descendants-chart/page.phtml:116
+msgid "Open individual page"
+msgstr "Open individual page"
 
 #: resources/views/modules/descendants-chart/form/behavior.phtml:34
 msgid ""
@@ -178,7 +191,7 @@ msgstr ""
 msgid "Orientation"
 msgstr "Orientation"
 
-#: src/Configuration.php:325
+#: src/Configuration.php:330
 msgid "Paternal line (father to son)"
 msgstr "Paternal line (father to son)"
 
@@ -186,9 +199,29 @@ msgstr "Paternal line (father to son)"
 msgid "Re center"
 msgstr "Re center"
 
+#: resources/views/modules/descendants-chart/page.phtml:112
+msgid "Select a person in the chart to see the details here."
+msgstr "Select a person in the chart to see the details here."
+
+#: resources/views/modules/descendants-chart/form/details.phtml:59
+msgid ""
+"Selecting a person shows the birth, the death with places and the facts that "
+"the tree names for the chart box (\"Other facts to show in charts\") in a "
+"panel that slides in over the chart. A click then selects a person instead "
+"of opening the chart for them, and the panel offers both actions."
+msgstr ""
+"Selecting a person shows the birth, the death with places and the facts that "
+"the tree names for the chart box (\"Other facts to show in charts\") in a "
+"panel that slides in over the chart. A click then selects a person instead "
+"of opening the chart for them, and the panel offers both actions."
+
 #: resources/views/modules/descendants-chart/form/details.phtml:28
 msgid "Show alternative name of individual"
 msgstr "Show alternative name of individual"
+
+#: resources/views/modules/descendants-chart/form/details.phtml:53
+msgid "Show details panel"
+msgstr "Show details panel"
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:17
 msgid "Show help"
@@ -220,7 +253,7 @@ msgstr ""
 "inheritance of the mitochondrial DNA. The individual at the top of the chart "
 "is always shown, and a person of unknown sex ends the line."
 
-#: src/Module/ConfigTrait.php:108
+#: src/Module/ConfigTrait.php:112
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
 msgstr "The preferences for the module “%s” have been updated."
@@ -245,15 +278,19 @@ msgstr ""
 msgid "cancel"
 msgstr "cancel"
 
-#: src/Configuration.php:252 src/Configuration.php:260
+#: resources/views/modules/descendants-chart/page.phtml:108
+msgid "close"
+msgstr ""
+
+#: src/Configuration.php:257 src/Configuration.php:265
 msgid "down"
 msgstr "down"
 
-#: src/Configuration.php:249 src/Configuration.php:257
+#: src/Configuration.php:254 src/Configuration.php:262
 msgid "left"
 msgstr "left"
 
-#: src/Configuration.php:250 src/Configuration.php:258
+#: src/Configuration.php:255 src/Configuration.php:263
 msgid "right"
 msgstr "right"
 
@@ -261,7 +298,7 @@ msgstr "right"
 msgid "save"
 msgstr "save"
 
-#: src/Configuration.php:251 src/Configuration.php:259
+#: src/Configuration.php:256 src/Configuration.php:264
 msgid "up"
 msgstr "up"
 

@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
@@ -18,15 +19,15 @@ msgstr ""
 "X-Poedit-SearchPath-0: src\n"
 "X-Poedit-SearchPath-1: resources/views\n"
 
-#: src/Configuration.php:502
+#: src/Configuration.php:531
 msgid "Abbreviate given names first"
 msgstr "优先缩写名字"
 
-#: src/Configuration.php:503
+#: src/Configuration.php:532
 msgid "Abbreviate surnames first"
 msgstr "优先缩写姓氏"
 
-#: src/Configuration.php:324
+#: src/Configuration.php:329
 msgid "All descendants"
 msgstr ""
 
@@ -34,7 +35,7 @@ msgstr ""
 msgid "An overview of an individual’s descendants."
 msgstr "个人后代的概览图"
 
-#: src/Configuration.php:501
+#: src/Configuration.php:530
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "自动（根据族谱的姓氏传统）"
 
@@ -42,13 +43,17 @@ msgstr "自动（根据族谱的姓氏传统）"
 msgid "Behavior"
 msgstr "行为"
 
-#: src/Configuration.php:375
+#: src/Configuration.php:380
 msgid "Birth name only"
 msgstr "仅出生姓名"
 
-#: src/Configuration.php:377
+#: src/Configuration.php:382
 msgid "Birth name with married name in brackets"
 msgstr "出生姓名后附婚后姓名（括号内）"
+
+#: resources/views/modules/descendants-chart/page.phtml:117
+msgid "Center chart on this person"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
@@ -138,7 +143,7 @@ msgstr ""
 "White）。模拟旧版 webtrees 的行为，适用于在单独的 GEDCOM NICK 字段中保存昵称"
 "的家谱。"
 
-#: src/Configuration.php:376
+#: src/Configuration.php:381
 msgid "Married name only"
 msgstr "仅婚后姓名"
 
@@ -146,7 +151,7 @@ msgstr "仅婚后姓名"
 msgid "Married names"
 msgstr "婚后姓名"
 
-#: src/Configuration.php:326
+#: src/Configuration.php:331
 msgid "Maternal line (mother to child)"
 msgstr ""
 
@@ -162,9 +167,17 @@ msgstr "用两根手指拖动视图"
 msgid "Name abbreviation when space is tight"
 msgstr "空间不足时的姓名缩写方式"
 
+#: resources/views/modules/descendants-chart/page.phtml:114
+msgid "No details are available for this person."
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/behavior.phtml:28
 msgid "Open individual in new browser window/tab"
 msgstr "在新的浏览器窗口/标签页中打开个人页面"
+
+#: resources/views/modules/descendants-chart/page.phtml:116
+msgid "Open individual page"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/behavior.phtml:34
 msgid ""
@@ -178,7 +191,7 @@ msgstr ""
 msgid "Orientation"
 msgstr ""
 
-#: src/Configuration.php:325
+#: src/Configuration.php:330
 msgid "Paternal line (father to son)"
 msgstr ""
 
@@ -186,9 +199,25 @@ msgstr ""
 msgid "Re center"
 msgstr "居中"
 
+#: resources/views/modules/descendants-chart/page.phtml:112
+msgid "Select a person in the chart to see the details here."
+msgstr ""
+
+#: resources/views/modules/descendants-chart/form/details.phtml:59
+msgid ""
+"Selecting a person shows the birth, the death with places and the facts that "
+"the tree names for the chart box (\"Other facts to show in charts\") in a "
+"panel that slides in over the chart. A click then selects a person instead "
+"of opening the chart for them, and the panel offers both actions."
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/details.phtml:28
 msgid "Show alternative name of individual"
 msgstr "显示个人的替代姓名"
+
+#: resources/views/modules/descendants-chart/form/details.phtml:53
+msgid "Show details panel"
+msgstr ""
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:17
 msgid "Show help"
@@ -215,7 +244,7 @@ msgid ""
 "is always shown, and a person of unknown sex ends the line."
 msgstr ""
 
-#: src/Module/ConfigTrait.php:108
+#: src/Module/ConfigTrait.php:112
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
 msgstr "模块 “%s” 的设置已更新。"
@@ -239,15 +268,19 @@ msgstr ""
 msgid "cancel"
 msgstr ""
 
-#: src/Configuration.php:252 src/Configuration.php:260
+#: resources/views/modules/descendants-chart/page.phtml:108
+msgid "close"
+msgstr ""
+
+#: src/Configuration.php:257 src/Configuration.php:265
 msgid "down"
 msgstr "子孙在下"
 
-#: src/Configuration.php:249 src/Configuration.php:257
+#: src/Configuration.php:254 src/Configuration.php:262
 msgid "left"
 msgstr "子孙在左"
 
-#: src/Configuration.php:250 src/Configuration.php:258
+#: src/Configuration.php:255 src/Configuration.php:263
 msgid "right"
 msgstr "子孙在右"
 
@@ -255,7 +288,7 @@ msgstr "子孙在右"
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:251 src/Configuration.php:259
+#: src/Configuration.php:256 src/Configuration.php:264
 msgid "up"
 msgstr "子孙在上"
 
