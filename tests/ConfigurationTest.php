@@ -247,6 +247,7 @@ final class ConfigurationTest extends TestCase
                 'showNicknames'       => '1',
                 'openNewTabOnClick'   => '1',
                 'showAlternativeName' => '1',
+                'showDetailPanel'     => '1',
             ],
             []
         );
@@ -260,6 +261,7 @@ final class ConfigurationTest extends TestCase
                 'showNicknames'       => '1',
                 'openNewTabOnClick'   => '1',
                 'showAlternativeName' => '1',
+                'showDetailPanel'     => '1',
             ],
             $configuration->getRouteToggleParams()
         );
@@ -289,6 +291,7 @@ final class ConfigurationTest extends TestCase
                 'showNicknames'       => '0',
                 'openNewTabOnClick'   => '0',
                 'showAlternativeName' => '0',
+                'showDetailPanel'     => '0',
             ],
             []
         );
@@ -302,6 +305,7 @@ final class ConfigurationTest extends TestCase
                 'showNicknames'       => '0',
                 'openNewTabOnClick'   => '0',
                 'showAlternativeName' => '0',
+                'showDetailPanel'     => '0',
             ],
             $configuration->getRouteToggleParams()
         );
@@ -326,6 +330,7 @@ final class ConfigurationTest extends TestCase
                 'default_showNicknames'       => '1',
                 'default_openNewTabOnClick'   => '0',
                 'default_showAlternativeName' => '1',
+                'default_showDetailPanel'     => '1',
             ]
         );
 
@@ -338,6 +343,7 @@ final class ConfigurationTest extends TestCase
                 'showNicknames'       => '1',
                 'openNewTabOnClick'   => '0',
                 'showAlternativeName' => '1',
+                'showDetailPanel'     => '1',
             ],
             $configuration->getRouteToggleParams()
         );
@@ -369,9 +375,40 @@ final class ConfigurationTest extends TestCase
                 'showNicknames',
                 'openNewTabOnClick',
                 'showAlternativeName',
+                'showDetailPanel',
             ],
             array_keys($params)
         );
+    }
+
+    /**
+     * The detail panel is off until the request or the administrator turns it on,
+     * and the request wins over the module preference in both directions.
+     *
+     * @param array<string, string> $queryParams
+     * @param array<string, string> $preferences
+     */
+    #[Test]
+    #[DataProvider('showDetailPanelProvider')]
+    public function showDetailPanelResolvesFromTheRequestThenThePreference(
+        array $queryParams,
+        array $preferences,
+        bool $expected,
+    ): void {
+        self::assertSame($expected, $this->buildConfiguration($queryParams, $preferences)->getShowDetailPanel());
+    }
+
+    /**
+     * @return array<string, array{array<string, string>, array<string, string>, bool}>
+     */
+    public static function showDetailPanelProvider(): array
+    {
+        return [
+            'off without request or preference' => [[], [], false],
+            'on by the administrator'           => [[], ['default_showDetailPanel' => '1'], true],
+            'request switches it on'            => [['showDetailPanel' => '1'], [], true],
+            'request switches it off'           => [['showDetailPanel' => '0'], ['default_showDetailPanel' => '1'], false],
+        ];
     }
 
     /**
@@ -418,6 +455,7 @@ final class ConfigurationTest extends TestCase
                 $configuration->getDescendantLine();
                 $configuration->getMarriedNamesMode();
                 $configuration->getShowNicknames();
+                $configuration->getShowDetailPanel();
                 $configuration->getOpenNewTabOnClick();
                 $configuration->getShowAlternativeName();
             }

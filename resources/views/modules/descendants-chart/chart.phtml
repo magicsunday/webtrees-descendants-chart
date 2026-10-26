@@ -57,6 +57,10 @@ import(<?php echo json_encode($javascript, $jsonFlags); ?>).then(({ DescendantsC
                 return opts.showAlternativeName ?? <?php echo json_encode($configuration->getShowAlternativeName(), $jsonFlags); ?>;
             },
 
+            // The server reads the facts for the panel only while the switch is on, so its value
+            // decides and the browser storage cannot override it.
+            showDetailPanel: <?php echo json_encode($configuration->getShowDetailPanel(), $jsonFlags); ?>,
+
             nameAbbreviation: <?php echo json_encode($chartParams['nameAbbreviation'], $jsonFlags); ?>,
 
             data: <?php echo json_encode($data, $jsonFlags); ?>

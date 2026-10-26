@@ -67,6 +67,24 @@ final class ChartViewTest extends TestCase
     }
 
     /**
+     * The panel switch reaches the chart as the server value, which the browser storage cannot
+     * override because the server reads the facts only while it is on.
+     */
+    #[Test]
+    public function handsTheDetailPanelSwitchToTheChart(): void
+    {
+        $output = $this->render([]);
+
+        self::assertStringContainsString('showDetailPanel: false,', $output);
+        self::assertStringNotContainsString('opts.showDetailPanel', $output);
+
+        // The value is the one of the configuration, not a constant of the view
+        $enabled = $this->render([], ['default_showDetailPanel' => '1']);
+
+        self::assertStringContainsString('showDetailPanel: true,', $enabled);
+    }
+
+    /**
      * Renders the view with the variables of the chart action and returns the page together with
      * the script that the view pushes onto the javascript stack.
      *
