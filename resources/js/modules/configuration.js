@@ -32,6 +32,7 @@ export default class Configuration {
      * @param {boolean}  showAlternativeName
      * @param {string}   nameAbbreviation One of "GIVEN" or "SURNAME". Resolved server-side from the tree's SURNAME_TRADITION when admin sets it to AUTO.
      * @param {boolean}  rtl
+     * @param {boolean}  showDetailPanel Whether a click selects a person for the detail panel
      */
     constructor(
         labels,
@@ -41,6 +42,7 @@ export default class Configuration {
         showAlternativeName = true,
         nameAbbreviation = "GIVEN",
         rtl = false,
+        showDetailPanel = false,
     ) {
         // The layout/orientation of the tree
         this._treeLayout = treeLayout;
@@ -49,6 +51,7 @@ export default class Configuration {
         this._openNewTabOnClick = openNewTabOnClick;
         this._showAlternativeName = showAlternativeName;
         this._nameAbbreviation = nameAbbreviation;
+        this._showDetailPanel = showDetailPanel;
 
         //
         this.duration = 750;
@@ -122,6 +125,16 @@ export default class Configuration {
      */
     get openNewTabOnClick() {
         return this._openNewTabOnClick;
+    }
+
+    /**
+     * Returns TRUE if a click selects a person for the detail panel instead of
+     * opening the chart or the individual page.
+     *
+     * @return {boolean}
+     */
+    get showDetailPanel() {
+        return this._showDetailPanel;
     }
 
     /**

@@ -6,6 +6,7 @@
  */
 import * as d3 from "./d3.js";
 import Hierarchy from "./hierarchy.js";
+import { PanelSelection } from "@magicsunday/webtrees-chart-lib/chart-core";
 import { LinkedTreeSvg as Svg } from "@magicsunday/webtrees-chart-lib/linked-tree";
 import { ChartOverlay as Overlay } from "@magicsunday/webtrees-chart-lib/infra";
 import Tree from "./tree.js";
@@ -13,9 +14,26 @@ import Tree from "./tree.js";
 /**
  * @import { Selection } from "d3-selection"
  * @import Configuration from "./configuration.js"
+ * @import { DetailPanel, PanelPerson } from "@magicsunday/webtrees-chart-lib/chart-core"
  */
 
 const MIN_PADDING = 1; // Minimum padding around view box in "rem"
+
+/**
+ * Returns the person as the detail panel reads it. The panel takes the first generation for the
+ * center of the chart and offers no centering for it. A partner of the chart subject shares that
+ * generation but is not the center, so the panel has to offer centering on the partner.
+ *
+ * @param {PersonBoxData} data The person payload bound to the box
+ *
+ * @return {PanelPerson}
+ */
+function toPanelPerson(data) {
+    const person =
+        data.spouse && data.data.generation === 1 ? { ...data.data, generation: 0 } : data.data;
+
+    return /** @type {PanelPerson} */ (/** @type {unknown} */ (person));
+}
 
 /**
  * This class handles the overall chart creation.
@@ -41,6 +59,19 @@ export default class Chart {
         this._svg = /** @type {Svg} */ (/** @type {unknown} */ (null));
         /** @type {Overlay} */
         this._overlay = /** @type {Overlay} */ (/** @type {unknown} */ (null));
+        /** @type {DetailPanel|null} */
+        this._detailPanel = null;
+        /** @type {PanelSelection<PersonBoxData>} */
+        this._selection = new PanelSelection(() => this._svg?.visual);
+    }
+
+    /**
+     * Sets the detail panel that shows the selected person.
+     *
+     * @param {DetailPanel|null} panel The detail panel
+     */
+    set detailPanel(panel) {
+        this._detailPanel = panel;
     }
 
     /**
@@ -183,19 +214,52 @@ export default class Chart {
             .selectAll("g.person")
             .filter((person) => person.data.data.xref !== "")
             .each(function (person) {
-                d3.select(this).on("click", () => that.personClick(person.data));
+                const element = d3.select(this);
+
+                element.on("click", () => that.personClick(person.data));
+
+                if (that._configuration.showDetailPanel) {
+                    that._selection.makeOperable(element, person, (datum, byKeyboard) =>
+                        that.personClick(datum, byKeyboard),
+                    );
+                }
             });
+
+        this._selection.apply();
+    }
+
+    /**
+     * Removes the selection, so no person stays marked once the panel has closed.
+     */
+    clearSelection() {
+        this._selection.clear();
+    }
+
+    /**
+     * Gives the focus back to the selected person, if it is still in the chart.
+     */
+    restoreFocus() {
+        this._selection.restoreFocus();
     }
 
     /**
      * Method triggers either the "update" or "individual" method on the click
      * on a person.
      *
-     * @param {PersonBoxData} data The person payload bound to the clicked box
+     * @param {PersonBoxData} data       The person payload bound to the clicked box
+     * @param {boolean}       byKeyboard Whether a key triggered the activation
      *
      * @private
      */
-    personClick(data) {
+    personClick(data, byKeyboard = false) {
+        // With the detail panel a click selects the person, the panel offers both actions
+        if (this._configuration.showDetailPanel && this._detailPanel !== null) {
+            this._selection.select(data);
+            this._detailPanel.select(toPanelPerson(data), byKeyboard);
+
+            return;
+        }
+
         // Trigger either "update" or "redirectToIndividual" method on click depending on person in chart
         data.data.generation === 1
             ? this.redirectToIndividual(data.data.url)
@@ -206,8 +270,6 @@ export default class Chart {
      * Redirects to the individual page.
      *
      * @param {string} url The individual URL
-     *
-     * @private
      */
     redirectToIndividual(url) {
         if (this._configuration.openNewTabOnClick) {
