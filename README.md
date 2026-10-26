@@ -162,6 +162,16 @@ installed descendant chart module) and save your settings.
 At the charts' menu, you will find a new link called `Descendants chart`. Use the provided configuration options
 to adjust the layout of the charts according to your needs.
 
+With ``Show details panel`` switched on, a click on a person selects the person and a panel slides in over the chart
+from the right (from the left in right-to-left languages). It shows the birth and the death with their places and further facts such as the occupation, and it has
+buttons to open the individual page and to center the chart on the person. The chart stays usable while the panel is
+open and closes with a click beside it, with its close button or with Escape. Places show with their full name. The facts come from the tree setting ``Other facts to show in charts``. Add the tags ``MARR`` and ``DIV`` there to
+show the marriages and divorces as well, one entry per marriage with the name of the spouse. The birth stays first and
+the death last, the facts between them are ordered by time, whatever the order of the tags in the setting. A fact
+without a usable date keeps its place among the others. Above the facts the panel shows the same highlight image as
+the person box, and none for a person whose box shows none.
+The option is off by default.
+
 Furthermore, it is possible to export the generated tree diagram as an SVG or PNG image
 in order to be able to use it elsewhere.
 
