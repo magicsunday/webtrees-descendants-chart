@@ -217,7 +217,11 @@ msgid ""
 "her children, but not the children of a son, which is the line of "
 "inheritance of the mitochondrial DNA. The individual at the top of the chart "
 "is always shown, and a person of unknown sex ends the line."
-msgstr ""
+msgstr "Patrilieær linje går kun fra far til sønner, og er linje for arv av Y-"
+"kromosom. Matrilineær linje går fra mor til barn, men ikke videre fra "
+"sønner, og er linje for arv av mitokondrielt DNA. Startpersonen på "
+"diagrammet vises hele tiden, og en person av ukjent kjønn vil avslutte "
+"linjen."
 
 #: src/Module/ConfigTrait.php:108
 #, php-format
