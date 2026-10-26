@@ -39,7 +39,7 @@
     position: relative;
 }
 
-.webtrees-descendants-fullscreen-container .btn-primary:hover {
+.webtrees-descendants-fullscreen-container .btn-chart.btn-primary:hover {
     background: var(--bs-secondary-bg, rgb(245, 245, 245));
 }
 
