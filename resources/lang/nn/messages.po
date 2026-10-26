@@ -54,7 +54,7 @@ msgstr "Fødenamn med namn som gift i parentes"
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
-msgstr "KOntrollpanel"
+msgstr "Kontrollpanel"
 
 #: resources/views/modules/descendants-chart/config.phtml:84
 msgid ""
@@ -152,7 +152,7 @@ msgstr "Namn som gift"
 
 #: src/Configuration.php:326
 msgid "Maternal line (mother to child)"
-msgstr "Maternell linje (mor til barn)"
+msgstr "Matrilineær linje (mor til barn)"
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
@@ -184,7 +184,7 @@ msgstr "Orientering"
 
 #: src/Configuration.php:325
 msgid "Paternal line (father to son)"
-msgstr "Paternell linje (far til barn)"
+msgstr "Patrilineær linje (far til barn)"
 
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
