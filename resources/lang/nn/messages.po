@@ -184,7 +184,7 @@ msgstr "Orientering"
 
 #: src/Configuration.php:325
 msgid "Paternal line (father to son)"
-msgstr "Patrilineær linje (far til barn)"
+msgstr "Patrilineær linje (far til son)"
 
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
