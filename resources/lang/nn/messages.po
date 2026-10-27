@@ -220,7 +220,7 @@ msgid ""
 msgstr "Patrilineær linje går kun frå far til søner, og er linje for arv av Y-"
 "kromosom. Matrilineær linje går frå mor til born, men ikkje vidare frå "
 "søner, og er linje for arv av mitokondrielt DNA. Startpersonen på diagrammet "
-"synast heile tida, og ein person av ukjent kjønn vil avslutte linja."
+"visast heile tida, og ein person av ukjent kjønn vil avslutte linja."
 
 #: src/Module/ConfigTrait.php:108
 #, php-format
