@@ -209,7 +209,7 @@ describe("Chart click binding with real elements", () => {
      * @param {object[]} nodes           The d3 data of the person groups
      * @param {boolean}  showDetailPanel Whether the panel is on
      */
-    function bindReal(nodes, showDetailPanel = false) {
+    function bindReal(nodes, showDetailPanel = false, lines = []) {
         document.body.innerHTML = '<svg><g class="visual"></g></svg>';
 
         const visual = d3.select(document.querySelector("g.visual"));
@@ -219,10 +219,26 @@ describe("Chart click binding with real elements", () => {
             .enter()
             .append("g")
             .attr("class", "person");
+
+        // Like the chart draws a box: one text per line with a tspan and a title of its own
+        personNodes.each(function () {
+            lines.forEach((line) => {
+                const text = d3.select(this).append("text");
+
+                // A line is one tspan, or several like the horizontal layouts draw the name parts
+                [line].flat().forEach((part) => text.append("tspan").text(part));
+                text.append("title").text([line].flat().join(" "));
+            });
+        });
+
+        // The chart library labels the element with the bare name
         const context = {
             _configuration: { showDetailPanel },
             _svg: { visual },
-            _selection: { makeOperable: jest.fn(), apply: jest.fn() },
+            _selection: {
+                makeOperable: jest.fn((target) => target.attr("aria-label", "Jane Doe")),
+                apply: jest.fn(),
+            },
             personClick: jest.fn(),
         };
 
@@ -252,6 +268,32 @@ describe("Chart click binding with real elements", () => {
 
         expect(context.personClick).toHaveBeenCalledTimes(1);
         expect(context.personClick).toHaveBeenCalledWith(first.data);
+    });
+
+    test("labels an operable person with the text that the box shows", () => {
+        // The bare name would not contain the dates that the box shows (WCAG 2.5.3)
+        const { elements } = bindReal([node("I1", "/i/1")], true, ["Jane", "Doe", "Born: 1850"]);
+
+        expect(elements[0].getAttribute("aria-label")).toBe("Jane Doe Born: 1850");
+    });
+
+    test("separates the tspans of one line in the label", () => {
+        // The horizontal layouts draw the parts of a name as tspans of one text
+        const { elements } = bindReal([node("I1", "/i/1")], true, [["Jane", "Doe"], "Born: 1850"]);
+
+        expect(elements[0].getAttribute("aria-label")).toBe("Jane Doe Born: 1850");
+    });
+
+    test("keeps the label of the chart library for a box without visible text", () => {
+        const { elements } = bindReal([node("I1", "/i/1")], true);
+
+        expect(elements[0].getAttribute("aria-label")).toBe("Jane Doe");
+    });
+
+    test("leaves the label alone with the panel off", () => {
+        const { elements } = bindReal([node("I1", "/i/1")], false, ["Jane", "Doe"]);
+
+        expect(elements[0].hasAttribute("aria-label")).toBe(false);
     });
 
     test("binds no click to a box that has neither an xref nor a url", () => {
