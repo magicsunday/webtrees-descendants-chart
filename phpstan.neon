@@ -22,14 +22,16 @@ parameters:
         # symplify forbiddenTrait bans traits wholesale. ChartTrait and
         # ConfigTrait are the module's own composition of the module-base
         # sharing traits, and ModuleSettingsFixtureTrait is the preference
-        # fixture that several test classes share. All of them are a
-        # deliberate house idiom.
+        # fixture that several test classes share, and DataFacadeFixtureTrait
+        # is the person and chart builder that the facade test classes share.
+        # All of them are a deliberate house idiom.
         -
             identifier: symplify.forbiddenTrait
             paths:
                 - src/Module/ChartTrait.php
                 - src/Module/ConfigTrait.php
                 - tests/Support/ModuleSettingsFixtureTrait.php
+                - tests/Support/DataFacadeFixtureTrait.php
 
         # The module chains DataFacade::setConfiguration() when it wires the
         # facade for a request. The setter returns the instance by design.
