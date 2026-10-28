@@ -111,7 +111,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
-msgstr "代数"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Hide more options"
@@ -131,7 +131,7 @@ msgstr "隐藏与个人关联的配偶"
 
 #: resources/views/modules/descendants-chart/page.phtml:39
 msgid "Individual"
-msgstr "个人"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""
@@ -247,7 +247,7 @@ msgstr ""
 #: src/Module/ConfigTrait.php:112
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
-msgstr "模块 “%s” 的设置已更新。"
+msgstr ""
 
 #: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"
@@ -274,15 +274,15 @@ msgstr ""
 
 #: src/Configuration.php:257 src/Configuration.php:265
 msgid "down"
-msgstr "子孙在下"
+msgstr ""
 
 #: src/Configuration.php:254 src/Configuration.php:262
 msgid "left"
-msgstr "子孙在左"
+msgstr ""
 
 #: src/Configuration.php:255 src/Configuration.php:263
 msgid "right"
-msgstr "子孙在右"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
@@ -290,7 +290,7 @@ msgstr ""
 
 #: src/Configuration.php:256 src/Configuration.php:264
 msgid "up"
-msgstr "子孙在上"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"

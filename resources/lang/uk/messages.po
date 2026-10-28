@@ -296,4 +296,4 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr "Перегляд"
+msgstr ""

@@ -251,7 +251,7 @@ msgstr ""
 #: src/Module/ConfigTrait.php:112
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
-msgstr "Innstillingane for modulen “%s” har blitt oppdatert."
+msgstr ""
 
 #: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"

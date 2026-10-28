@@ -62,7 +62,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
-msgstr "Nadzorna plošča"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:84
 msgid ""
@@ -118,7 +118,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
-msgstr "Generacije"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Hide more options"
@@ -164,7 +164,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
-msgstr "Moduli"
+msgstr ""
 
 #: src/Module.php:251
 msgid "Move the view with two fingers"
@@ -196,7 +196,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
-msgstr "Usmerjenost"
+msgstr ""
 
 #: src/Configuration.php:330
 msgid "Paternal line (father to son)"
@@ -254,7 +254,7 @@ msgstr ""
 #: src/Module/ConfigTrait.php:112
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
-msgstr "Nastavitve modula “%s” so posodobljene."
+msgstr ""
 
 #: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"
@@ -274,7 +274,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
-msgstr "Prekliči"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:108
 msgid "close"
@@ -282,24 +282,24 @@ msgstr ""
 
 #: src/Configuration.php:257 src/Configuration.php:265
 msgid "down"
-msgstr "Dol"
+msgstr ""
 
 #: src/Configuration.php:254 src/Configuration.php:262
 msgid "left"
-msgstr "Levo"
+msgstr ""
 
 #: src/Configuration.php:255 src/Configuration.php:263
 msgid "right"
-msgstr "Desno"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
-msgstr "Shrani"
+msgstr ""
 
 #: src/Configuration.php:256 src/Configuration.php:264
 msgid "up"
-msgstr "Gor"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr "Prikaži"
+msgstr ""

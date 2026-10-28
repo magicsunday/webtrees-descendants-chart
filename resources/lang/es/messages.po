@@ -110,7 +110,7 @@ msgstr "Exportar como SVG"
 
 #: resources/views/modules/descendants-chart/config.phtml:50
 msgid "General"
-msgstr "Opciones generales"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
@@ -134,7 +134,7 @@ msgstr "Ocultar los cónyuges asociados a un individuo"
 
 #: resources/views/modules/descendants-chart/page.phtml:39
 msgid "Individual"
-msgstr "Individuo"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""

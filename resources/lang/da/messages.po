@@ -133,7 +133,7 @@ msgstr "Skjul ægtefæller knyttet til en person"
 
 #: resources/views/modules/descendants-chart/page.phtml:39
 msgid "Individual"
-msgstr "Person"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""

@@ -254,7 +254,7 @@ msgstr ""
 #: src/Module/ConfigTrait.php:112
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
-msgstr "De voorkeuren voor de module \"%s\" zijn bijgewerkt."
+msgstr ""
 
 #: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"
@@ -300,4 +300,4 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr "weergeven"
+msgstr ""

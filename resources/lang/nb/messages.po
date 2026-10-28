@@ -193,7 +193,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
-msgstr "Orientering"
+msgstr ""
 
 #: src/Configuration.php:330
 msgid "Paternal line (father to son)"
@@ -251,7 +251,7 @@ msgstr ""
 #: src/Module/ConfigTrait.php:112
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
-msgstr "Innstillingene for modulen “%s” har blitt oppdatert."
+msgstr ""
 
 #: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"
@@ -271,7 +271,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
-msgstr "avbryt"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:108
 msgid "close"

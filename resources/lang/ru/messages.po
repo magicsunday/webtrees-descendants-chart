@@ -134,7 +134,7 @@ msgstr "Скрыть супругов персоны"
 
 #: resources/views/modules/descendants-chart/page.phtml:39
 msgid "Individual"
-msgstr "Человек"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""
@@ -280,11 +280,11 @@ msgstr ""
 
 #: src/Configuration.php:254 src/Configuration.php:262
 msgid "left"
-msgstr "влево"
+msgstr ""
 
 #: src/Configuration.php:255 src/Configuration.php:263
 msgid "right"
-msgstr "вправо"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
@@ -296,4 +296,4 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr "обновить"
+msgstr ""

@@ -113,7 +113,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
-msgstr "Các thế hệ"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Hide more options"
@@ -189,7 +189,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
-msgstr "Chiều hiển thị biểu đồ"
+msgstr ""
 
 #: src/Configuration.php:330
 msgid "Paternal line (father to son)"
@@ -291,8 +291,8 @@ msgstr ""
 
 #: src/Configuration.php:256 src/Configuration.php:264
 msgid "up"
-msgstr "Từ dưới lên"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr "Xem biểu đồ"
+msgstr ""

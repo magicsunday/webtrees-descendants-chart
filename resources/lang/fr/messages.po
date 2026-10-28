@@ -278,15 +278,15 @@ msgstr ""
 
 #: src/Configuration.php:257 src/Configuration.php:265
 msgid "down"
-msgstr "bas"
+msgstr ""
 
 #: src/Configuration.php:254 src/Configuration.php:262
 msgid "left"
-msgstr "gauche"
+msgstr ""
 
 #: src/Configuration.php:255 src/Configuration.php:263
 msgid "right"
-msgstr "droite"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
@@ -294,8 +294,8 @@ msgstr ""
 
 #: src/Configuration.php:256 src/Configuration.php:264
 msgid "up"
-msgstr "haut"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr "Afficher"
+msgstr ""

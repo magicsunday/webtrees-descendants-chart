@@ -251,7 +251,7 @@ msgstr ""
 #: src/Module/ConfigTrait.php:112
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
-msgstr "Kjörstillingar fyrir eininguna “%s“ hafa verið uppfærðar."
+msgstr ""
 
 #: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"
@@ -271,7 +271,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
-msgstr "hætta"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:108
 msgid "close"
