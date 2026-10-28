@@ -14,12 +14,9 @@ namespace MagicSunday\Webtrees\DescendantsChart\Test\Module;
 use Aura\Router\Map;
 use Aura\Router\Route;
 use Fig\Http\Message\RequestMethodInterface;
-use Fisharebest\Localization\Locale;
-use Fisharebest\Localization\Translator;
 use Fisharebest\Webtrees\Contracts\ContainerInterface;
 use Fisharebest\Webtrees\Contracts\RouteFactoryInterface;
 use Fisharebest\Webtrees\Contracts\UserInterface;
-use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Individual;
 use Fisharebest\Webtrees\Registry;
 use Fisharebest\Webtrees\Services\ChartService;
@@ -31,13 +28,13 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Module;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\EnglishLocaleFixture;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
-use ReflectionProperty;
 
 /**
  * Validates module metadata exposure and chart helpers.
@@ -62,7 +59,7 @@ final class ModuleTest extends TestCase
         $individual   = self::createStub(Individual::class);
         $tree         = self::createStub(Tree::class);
 
-        $this->initialiseTranslator();
+        EnglishLocaleFixture::install();
 
         $individual->method('fullName')->willReturn('Example Person');
         $individual->method('xref')->willReturn('I1');
@@ -132,7 +129,7 @@ final class ModuleTest extends TestCase
     public function adminFormStoresTheDescendantLineAsDefault(): void
     {
         $this->registerRouteFactory();
-        $this->initialiseTranslator();
+        EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
 
@@ -159,7 +156,7 @@ final class ModuleTest extends TestCase
     public function adminFormStoresThePanelDefault(): void
     {
         $this->registerRouteFactory();
-        $this->initialiseTranslator();
+        EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
 
@@ -182,7 +179,7 @@ final class ModuleTest extends TestCase
     public function adminFormTakesThePanelDefaultBackWhenTheSwitchIsOff(): void
     {
         $this->registerRouteFactory();
-        $this->initialiseTranslator();
+        EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences(['default_showDetailPanel' => '1']);
 
@@ -204,7 +201,7 @@ final class ModuleTest extends TestCase
     public function configurationPageRendersTheStoredNameAbbreviation(): void
     {
         $this->registerRouteFactory();
-        $this->initialiseTranslator();
+        EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences(['default_nameAbbreviation' => 'SURNAME']);
 
@@ -222,21 +219,6 @@ final class ModuleTest extends TestCase
 
         self::assertStringContainsString('<option value="SURNAME" selected="selected">', $html);
         self::assertStringNotContainsString('<option value="AUTO" selected="selected">', $html);
-    }
-
-    /**
-     * Gives the translation context the module needs for flash messages and titles.
-     */
-    private function initialiseTranslator(): void
-    {
-        $locale     = Locale::create('en');
-        $translator = new Translator([], $locale->pluralRule());
-
-        $localeProperty = new ReflectionProperty(I18N::class, 'locale');
-        $localeProperty->setValue(null, $locale);
-
-        $translatorProperty = new ReflectionProperty(I18N::class, 'translator');
-        $translatorProperty->setValue(null, $translator);
     }
 
     /**
