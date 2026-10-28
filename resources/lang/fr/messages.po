@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
@@ -138,8 +139,8 @@ msgstr ""
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""
 "Inserts the GEDCOM NICK value in quotes between the given names and the "
-"surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees "
-"behaviour for trees that store nicknames in the separate GEDCOM NICK field."
+"surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees behavior "
+"for trees that store nicknames in the separate GEDCOM NICK field."
 msgstr ""
 "Insère la valeur GEDCOM NICK entre guillemets entre les prénoms et le nom de "
 "famille (par ex. Martin \"Chalky\" White). Reproduit l'ancien comportement "
@@ -277,15 +278,15 @@ msgstr ""
 
 #: src/Configuration.php:257 src/Configuration.php:265
 msgid "down"
-msgstr "bas"
+msgstr ""
 
 #: src/Configuration.php:254 src/Configuration.php:262
 msgid "left"
-msgstr "gauche"
+msgstr ""
 
 #: src/Configuration.php:255 src/Configuration.php:263
 msgid "right"
-msgstr "droite"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
@@ -293,8 +294,8 @@ msgstr ""
 
 #: src/Configuration.php:256 src/Configuration.php:264
 msgid "up"
-msgstr "haut"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr "Afficher"
+msgstr ""

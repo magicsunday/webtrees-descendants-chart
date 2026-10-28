@@ -112,7 +112,7 @@ msgstr "Als SVG exportieren"
 
 #: resources/views/modules/descendants-chart/config.phtml:50
 msgid "General"
-msgstr "Allgemein"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
@@ -141,8 +141,8 @@ msgstr ""
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""
 "Inserts the GEDCOM NICK value in quotes between the given names and the "
-"surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees "
-"behaviour for trees that store nicknames in the separate GEDCOM NICK field."
+"surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees behavior "
+"for trees that store nicknames in the separate GEDCOM NICK field."
 msgstr ""
 "Fügt den GEDCOM NICK-Wert in Anführungszeichen zwischen Vornamen und "
 "Nachnamen ein (z.B. Martin \"Chalky\" White). Bildet das alte webtrees-"
@@ -196,7 +196,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
-msgstr "Ausrichtung"
+msgstr ""
 
 #: src/Configuration.php:330
 msgid "Paternal line (father to son)"
@@ -293,15 +293,15 @@ msgstr ""
 
 #: src/Configuration.php:257 src/Configuration.php:265
 msgid "down"
-msgstr "Unten"
+msgstr ""
 
 #: src/Configuration.php:254 src/Configuration.php:262
 msgid "left"
-msgstr "Links"
+msgstr ""
 
 #: src/Configuration.php:255 src/Configuration.php:263
 msgid "right"
-msgstr "Rechts"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
@@ -309,8 +309,8 @@ msgstr ""
 
 #: src/Configuration.php:256 src/Configuration.php:264
 msgid "up"
-msgstr "Oben"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr "Anzeigen"
+msgstr ""

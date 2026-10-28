@@ -133,13 +133,13 @@ msgstr "Skjul ægtefæller knyttet til en person"
 
 #: resources/views/modules/descendants-chart/page.phtml:39
 msgid "Individual"
-msgstr "Person"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""
 "Inserts the GEDCOM NICK value in quotes between the given names and the "
-"surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees "
-"behaviour for trees that store nicknames in the separate GEDCOM NICK field."
+"surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees behavior "
+"for trees that store nicknames in the separate GEDCOM NICK field."
 msgstr ""
 "Indsætter GEDCOM NICK-værdien i anførselstegn mellem fornavne og efternavn "
 "(f.eks. Martin \"Chalky\" White). Efterligner den tidligere webtrees-adfærd "

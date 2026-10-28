@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Descendants chart\n"
@@ -13,15 +14,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
 "n%100==4 ? 3 : 0);\n"
-"X-Loco-Source-Locale: sl_SI\n"
 "X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Parser: loco_parse_po\n"
+"X-Loco-Source-Locale: sl_SI\n"
 "X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: webtrees-descendants-chart/module.php\n"
 "X-Poedit-SearchPath-1: webtrees-descendants-chart/src\n"
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
-"X-Loco-Parser: loco_parse_po\n"
 
 #: src/Configuration.php:531
 msgid "Abbreviate given names first"
@@ -61,7 +62,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
-msgstr "Nadzorna plošča"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:84
 msgid ""
@@ -117,7 +118,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
-msgstr "Generacije"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Hide more options"
@@ -142,8 +143,8 @@ msgstr ""
 #: resources/views/modules/descendants-chart/form/details.phtml:46
 msgid ""
 "Inserts the GEDCOM NICK value in quotes between the given names and the "
-"surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees "
-"behaviour for trees that store nicknames in the separate GEDCOM NICK field."
+"surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees behavior "
+"for trees that store nicknames in the separate GEDCOM NICK field."
 msgstr ""
 "Vstavi vrednost GEDCOM NICK v narekovajih med osebna imena in priimek (npr. "
 "Martin \"Chalky\" White). Posnema staro vedenje webtrees za drevesa, ki "
@@ -163,7 +164,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
-msgstr "Moduli"
+msgstr ""
 
 #: src/Module.php:251
 msgid "Move the view with two fingers"
@@ -195,7 +196,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
-msgstr "Usmerjenost"
+msgstr ""
 
 #: src/Configuration.php:330
 msgid "Paternal line (father to son)"
@@ -253,7 +254,7 @@ msgstr ""
 #: src/Module/ConfigTrait.php:112
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
-msgstr "Nastavitve modula “%s” so posodobljene."
+msgstr ""
 
 #: src/Module.php:250
 msgid "Use Ctrl + scroll to zoom in the view"
@@ -273,7 +274,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
-msgstr "Prekliči"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:108
 msgid "close"
@@ -281,24 +282,24 @@ msgstr ""
 
 #: src/Configuration.php:257 src/Configuration.php:265
 msgid "down"
-msgstr "Dol"
+msgstr ""
 
 #: src/Configuration.php:254 src/Configuration.php:262
 msgid "left"
-msgstr "Levo"
+msgstr ""
 
 #: src/Configuration.php:255 src/Configuration.php:263
 msgid "right"
-msgstr "Desno"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:111
 msgid "save"
-msgstr "Shrani"
+msgstr ""
 
 #: src/Configuration.php:256 src/Configuration.php:264
 msgid "up"
-msgstr "Gor"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
-msgstr "Prikaži"
+msgstr ""
