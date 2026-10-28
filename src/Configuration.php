@@ -138,6 +138,11 @@ final class Configuration
     private ?bool $showAlternativeName = null;
 
     /**
+     * Whether the detail panel is shown, or null until first resolved.
+     */
+    private ?bool $showDetailPanel = null;
+
+    /**
      * Configuration constructor.
      *
      * @param ServerRequestInterface $request
@@ -429,6 +434,30 @@ final class Configuration
     }
 
     /**
+     * Returns whether the detail panel with the facts of the selected person is
+     * shown. It is off unless the request or the module preference turns it on.
+     *
+     * @return bool
+     */
+    public function getShowDetailPanel(): bool
+    {
+        if ($this->showDetailPanel !== null) {
+            return $this->showDetailPanel;
+        }
+
+        $validator = $this->requestValidator();
+
+        return $this->showDetailPanel = $validator
+            ->boolean(
+                'showDetailPanel',
+                (bool) $this->module->getPreference(
+                    'default_showDetailPanel',
+                    '0'
+                )
+            );
+    }
+
+    /**
      * Returns whether to show the alternative name of an individual or not.
      *
      * @return bool
@@ -556,7 +585,7 @@ final class Configuration
      * proportion to the tree size. The configuration is constructed per request,
      * so the resolved values cannot go stale within its lifetime.
      *
-     * @return array{generations: int, layout: string, hideSpouses: string, descendantLine: string, showNicknames: string, openNewTabOnClick: string, showAlternativeName: string}
+     * @return array{generations: int, layout: string, hideSpouses: string, descendantLine: string, showNicknames: string, openNewTabOnClick: string, showAlternativeName: string, showDetailPanel: string}
      */
     public function getRouteToggleParams(): array
     {
@@ -568,6 +597,7 @@ final class Configuration
             'showNicknames'       => $this->getShowNicknames() ? '1' : '0',
             'openNewTabOnClick'   => $this->getOpenNewTabOnClick() ? '1' : '0',
             'showAlternativeName' => $this->getShowAlternativeName() ? '1' : '0',
+            'showDetailPanel'     => $this->getShowDetailPanel() ? '1' : '0',
         ];
     }
 }

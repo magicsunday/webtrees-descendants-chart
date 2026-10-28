@@ -97,6 +97,7 @@ final class ModuleTest extends TestCase
                 'showNicknames'       => '1',
                 'openNewTabOnClick'   => '0',
                 'showAlternativeName' => '0',
+                'showDetailPanel'     => '1',
             ])
             ->withAttribute('tree', $tree)
             ->withAttribute('xref', 'I1')
@@ -148,6 +149,51 @@ final class ModuleTest extends TestCase
         );
 
         self::assertSame('maternal', $module->getPreference('default_descendantLine'));
+    }
+
+    /**
+     * Pins that saving the administration form stores the detail panel option
+     * as the default of the chart.
+     */
+    #[Test]
+    public function adminFormStoresThePanelDefault(): void
+    {
+        $this->registerRouteFactory();
+        $this->initialiseTranslator();
+
+        $module = $this->createModuleWithPreferences([]);
+
+        $module->postAdminAction(
+            (new ServerRequest(RequestMethodInterface::METHOD_POST, '/'))
+                ->withParsedBody(['showDetailPanel' => '1'])
+        );
+
+        $stored = new Configuration(new ServerRequest(RequestMethodInterface::METHOD_GET, '/'), $module);
+
+        self::assertSame('1', $module->getPreference('default_showDetailPanel'));
+        self::assertTrue($stored->getShowDetailPanel());
+    }
+
+    /**
+     * Pins that saving the administration form with the switch off takes the panel
+     * default back. The form submits a hidden zero for an unchecked box.
+     */
+    #[Test]
+    public function adminFormTakesThePanelDefaultBackWhenTheSwitchIsOff(): void
+    {
+        $this->registerRouteFactory();
+        $this->initialiseTranslator();
+
+        $module = $this->createModuleWithPreferences(['default_showDetailPanel' => '1']);
+
+        $module->postAdminAction(
+            (new ServerRequest(RequestMethodInterface::METHOD_POST, '/'))
+                ->withParsedBody(['showDetailPanel' => '0'])
+        );
+
+        $stored = new Configuration(new ServerRequest(RequestMethodInterface::METHOD_GET, '/'), $module);
+
+        self::assertFalse($stored->getShowDetailPanel());
     }
 
     /**

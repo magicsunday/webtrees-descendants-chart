@@ -14,7 +14,9 @@ namespace MagicSunday\Webtrees\DescendantsChart\Facade;
 use Closure;
 use Fisharebest\Webtrees\Date;
 use Fisharebest\Webtrees\Family;
+use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Individual;
+use Fisharebest\Webtrees\Tree;
 use Illuminate\Support\Collection;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
@@ -22,9 +24,14 @@ use MagicSunday\Webtrees\ModuleBase\Facade\RouteAwareDataFacadeTrait;
 use MagicSunday\Webtrees\ModuleBase\Model\NameSegment;
 use MagicSunday\Webtrees\ModuleBase\Model\NameSegmentKind;
 use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
+use MagicSunday\Webtrees\ModuleBase\Model\PlaceFormatSpec;
+use MagicSunday\Webtrees\ModuleBase\Model\PlaceStyle;
 use MagicSunday\Webtrees\ModuleBase\Processor\DateProcessor;
+use MagicSunday\Webtrees\ModuleBase\Processor\FactResolver;
 use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
 use MagicSunday\Webtrees\ModuleBase\Processor\NameProcessor;
+use MagicSunday\Webtrees\ModuleBase\Support\CompactDateFormat;
+use MagicSunday\Webtrees\ModuleBase\Support\Locale\IsoCountryMap;
 use MagicSunday\Webtrees\ModuleBase\Support\TextDirection;
 
 /**
@@ -51,13 +58,34 @@ final class DataFacade
     private int $nodeIdCounter = 0;
 
     /**
+     * The resolver of the fact rows, built on first use and shared by every node
+     * of the request.
+     */
+    private ?FactResolver $factResolver = null;
+
+    /**
      * Injects the per-request configuration before tree-structure assembly.
      */
     public function setConfiguration(Configuration $configuration): DataFacade
     {
         $this->configuration = $configuration;
+        $this->factResolver  = null;
 
         return $this;
+    }
+
+    /**
+     * Returns the resolver of the facts of the detail panel. It is shared by
+     * every node of the request.
+     */
+    private function getFactResolver(Tree $tree): FactResolver
+    {
+        return $this->factResolver ??= new FactResolver(
+            $tree,
+            new PlaceFormatSpec(PlaceStyle::Full),
+            new IsoCountryMap(),
+            CompactDateFormat::forLocale(I18N::languageTag())
+        );
     }
 
     /**
@@ -273,6 +301,12 @@ final class DataFacade
             ->setDeath($dateProcessor->getDeathDate())
             ->setTimespan($dateProcessor->getLifetimeDescription())
             ->setIndividual($individual);
+
+        // The facts are only read for the detail panel, so a chart without the panel
+        // pays neither their payload nor their database work.
+        if ($this->configuration->getShowDetailPanel()) {
+            $treeData->setFacts($this->getFactResolver($individual->tree())->factsFor($individual, true));
+        }
 
         return $treeData;
     }

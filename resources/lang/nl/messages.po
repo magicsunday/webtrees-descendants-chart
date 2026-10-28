@@ -20,15 +20,15 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:502
+#: src/Configuration.php:531
 msgid "Abbreviate given names first"
 msgstr "Voornamen eerst afkorten"
 
-#: src/Configuration.php:503
+#: src/Configuration.php:532
 msgid "Abbreviate surnames first"
 msgstr "Achternamen eerst afkorten"
 
-#: src/Configuration.php:324
+#: src/Configuration.php:329
 msgid "All descendants"
 msgstr ""
 
@@ -36,7 +36,7 @@ msgstr ""
 msgid "An overview of an individual’s descendants."
 msgstr "Een overzicht van de afstammelingen van een persoon."
 
-#: src/Configuration.php:501
+#: src/Configuration.php:530
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automatisch (op basis van de achternaamtraditie van de stamboom)"
 
@@ -44,13 +44,17 @@ msgstr "Automatisch (op basis van de achternaamtraditie van de stamboom)"
 msgid "Behavior"
 msgstr "Gedrag"
 
-#: src/Configuration.php:375
+#: src/Configuration.php:380
 msgid "Birth name only"
 msgstr "Alleen geboortenaam"
 
-#: src/Configuration.php:377
+#: src/Configuration.php:382
 msgid "Birth name with married name in brackets"
 msgstr "Geboortenaam met huwelijksnaam tussen haakjes"
+
+#: resources/views/modules/descendants-chart/page.phtml:117
+msgid "Center chart on this person"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
@@ -144,7 +148,7 @@ msgstr ""
 "gedrag na voor stambomen die bijnamen in het afzonderlijke GEDCOM NICK-veld "
 "opslaan."
 
-#: src/Configuration.php:376
+#: src/Configuration.php:381
 msgid "Married name only"
 msgstr "Alleen huwelijksnaam"
 
@@ -152,7 +156,7 @@ msgstr "Alleen huwelijksnaam"
 msgid "Married names"
 msgstr "Huwelijksnamen"
 
-#: src/Configuration.php:326
+#: src/Configuration.php:331
 msgid "Maternal line (mother to child)"
 msgstr ""
 
@@ -168,9 +172,17 @@ msgstr "Verplaats de weergave met twee vingers"
 msgid "Name abbreviation when space is tight"
 msgstr "Afkorting van naam bij beperkte ruimte"
 
+#: resources/views/modules/descendants-chart/page.phtml:114
+msgid "No details are available for this person."
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/behavior.phtml:28
 msgid "Open individual in new browser window/tab"
 msgstr "Open persoon in nieuw browservenster/tabblad"
+
+#: resources/views/modules/descendants-chart/page.phtml:116
+msgid "Open individual page"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/behavior.phtml:34
 msgid ""
@@ -185,7 +197,7 @@ msgstr ""
 msgid "Orientation"
 msgstr ""
 
-#: src/Configuration.php:325
+#: src/Configuration.php:330
 msgid "Paternal line (father to son)"
 msgstr ""
 
@@ -193,9 +205,25 @@ msgstr ""
 msgid "Re center"
 msgstr "Opnieuw centreren"
 
+#: resources/views/modules/descendants-chart/page.phtml:112
+msgid "Select a person in the chart to see the details here."
+msgstr ""
+
+#: resources/views/modules/descendants-chart/form/details.phtml:59
+msgid ""
+"Selecting a person shows the birth, the death with places and the facts that "
+"the tree names for the chart box (\"Other facts to show in charts\") in a "
+"panel that slides in over the chart. A click then selects a person instead "
+"of opening the chart for them, and the panel offers both actions."
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/details.phtml:28
 msgid "Show alternative name of individual"
 msgstr "Toon alternatieve naam van persoon"
+
+#: resources/views/modules/descendants-chart/form/details.phtml:53
+msgid "Show details panel"
+msgstr ""
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:17
 msgid "Show help"
@@ -222,7 +250,7 @@ msgid ""
 "is always shown, and a person of unknown sex ends the line."
 msgstr ""
 
-#: src/Module/ConfigTrait.php:108
+#: src/Module/ConfigTrait.php:112
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
 msgstr "De voorkeuren voor de module \"%s\" zijn bijgewerkt."
@@ -245,15 +273,19 @@ msgstr ""
 msgid "cancel"
 msgstr ""
 
-#: src/Configuration.php:252 src/Configuration.php:260
+#: resources/views/modules/descendants-chart/page.phtml:108
+msgid "close"
+msgstr ""
+
+#: src/Configuration.php:257 src/Configuration.php:265
 msgid "down"
 msgstr ""
 
-#: src/Configuration.php:249 src/Configuration.php:257
+#: src/Configuration.php:254 src/Configuration.php:262
 msgid "left"
 msgstr ""
 
-#: src/Configuration.php:250 src/Configuration.php:258
+#: src/Configuration.php:255 src/Configuration.php:263
 msgid "right"
 msgstr ""
 
@@ -261,7 +293,7 @@ msgstr ""
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:251 src/Configuration.php:259
+#: src/Configuration.php:256 src/Configuration.php:264
 msgid "up"
 msgstr ""
 

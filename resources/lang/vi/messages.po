@@ -20,15 +20,15 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:502
+#: src/Configuration.php:531
 msgid "Abbreviate given names first"
 msgstr "Viết tắt tên gọi trước"
 
-#: src/Configuration.php:503
+#: src/Configuration.php:532
 msgid "Abbreviate surnames first"
 msgstr "Viết tắt họ trước"
 
-#: src/Configuration.php:324
+#: src/Configuration.php:329
 msgid "All descendants"
 msgstr ""
 
@@ -36,7 +36,7 @@ msgstr ""
 msgid "An overview of an individual’s descendants."
 msgstr "Tổng quan về con cháu của một cá nhân."
 
-#: src/Configuration.php:501
+#: src/Configuration.php:530
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Tự động (dựa trên truyền thống họ của cây phả hệ)"
 
@@ -44,13 +44,17 @@ msgstr "Tự động (dựa trên truyền thống họ của cây phả hệ)"
 msgid "Behavior"
 msgstr "Hành vi"
 
-#: src/Configuration.php:375
+#: src/Configuration.php:380
 msgid "Birth name only"
 msgstr "Chỉ tên khai sinh"
 
-#: src/Configuration.php:377
+#: src/Configuration.php:382
 msgid "Birth name with married name in brackets"
 msgstr "Tên khai sinh kèm tên sau khi kết hôn trong ngoặc"
+
+#: resources/views/modules/descendants-chart/page.phtml:117
+msgid "Center chart on this person"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
@@ -140,7 +144,7 @@ msgstr ""
 "Martin \"Chalky\" White). Tái hiện hành vi webtrees cũ cho cây gia phả lưu "
 "biệt danh trong trường GEDCOM NICK riêng."
 
-#: src/Configuration.php:376
+#: src/Configuration.php:381
 msgid "Married name only"
 msgstr "Chỉ tên sau khi kết hôn"
 
@@ -148,7 +152,7 @@ msgstr "Chỉ tên sau khi kết hôn"
 msgid "Married names"
 msgstr "Tên sau khi kết hôn"
 
-#: src/Configuration.php:326
+#: src/Configuration.php:331
 msgid "Maternal line (mother to child)"
 msgstr ""
 
@@ -164,9 +168,17 @@ msgstr "Di chuyển tầm nhìn bằng hai ngón tay"
 msgid "Name abbreviation when space is tight"
 msgstr "Viết tắt tên khi không đủ chỗ"
 
+#: resources/views/modules/descendants-chart/page.phtml:114
+msgid "No details are available for this person."
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/behavior.phtml:28
 msgid "Open individual in new browser window/tab"
 msgstr "Mở cá nhân trong cửa sổ/tab trình duyệt mới"
+
+#: resources/views/modules/descendants-chart/page.phtml:116
+msgid "Open individual page"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/behavior.phtml:34
 msgid ""
@@ -178,7 +190,7 @@ msgstr ""
 msgid "Orientation"
 msgstr "Chiều hiển thị biểu đồ"
 
-#: src/Configuration.php:325
+#: src/Configuration.php:330
 msgid "Paternal line (father to son)"
 msgstr ""
 
@@ -186,9 +198,25 @@ msgstr ""
 msgid "Re center"
 msgstr "Chỉnh biểu đồ về giữa màn hình"
 
+#: resources/views/modules/descendants-chart/page.phtml:112
+msgid "Select a person in the chart to see the details here."
+msgstr ""
+
+#: resources/views/modules/descendants-chart/form/details.phtml:59
+msgid ""
+"Selecting a person shows the birth, the death with places and the facts that "
+"the tree names for the chart box (\"Other facts to show in charts\") in a "
+"panel that slides in over the chart. A click then selects a person instead "
+"of opening the chart for them, and the panel offers both actions."
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/details.phtml:28
 msgid "Show alternative name of individual"
 msgstr "Hiển thị tên thay thế của cá nhân"
+
+#: resources/views/modules/descendants-chart/form/details.phtml:53
+msgid "Show details panel"
+msgstr ""
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:17
 msgid "Show help"
@@ -215,7 +243,7 @@ msgid ""
 "is always shown, and a person of unknown sex ends the line."
 msgstr ""
 
-#: src/Module/ConfigTrait.php:108
+#: src/Module/ConfigTrait.php:112
 #, php-format
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
@@ -240,15 +268,19 @@ msgstr ""
 msgid "cancel"
 msgstr ""
 
-#: src/Configuration.php:252 src/Configuration.php:260
+#: resources/views/modules/descendants-chart/page.phtml:108
+msgid "close"
+msgstr ""
+
+#: src/Configuration.php:257 src/Configuration.php:265
 msgid "down"
 msgstr "Từ trên xuống"
 
-#: src/Configuration.php:249 src/Configuration.php:257
+#: src/Configuration.php:254 src/Configuration.php:262
 msgid "left"
 msgstr "Từ trái sang phải"
 
-#: src/Configuration.php:250 src/Configuration.php:258
+#: src/Configuration.php:255 src/Configuration.php:263
 msgid "right"
 msgstr "Từ phải sang trái"
 
@@ -256,7 +288,7 @@ msgstr "Từ phải sang trái"
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:251 src/Configuration.php:259
+#: src/Configuration.php:256 src/Configuration.php:264
 msgid "up"
 msgstr "Từ dưới lên"
 

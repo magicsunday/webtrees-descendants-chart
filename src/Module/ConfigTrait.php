@@ -91,6 +91,10 @@ trait ConfigTrait
             (string) $configuration->getShowNicknames()
         );
         $this->setPreference(
+            'default_showDetailPanel',
+            (string) $configuration->getShowDetailPanel()
+        );
+        $this->setPreference(
             'default_hideSvgExport',
             (string) $configuration->getHideSvgExport()
         );
