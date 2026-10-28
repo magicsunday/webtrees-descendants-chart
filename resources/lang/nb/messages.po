@@ -31,7 +31,7 @@ msgstr "Forkort etternavn først"
 
 #: src/Configuration.php:329
 msgid "All descendants"
-msgstr ""
+msgstr "Alle etterkommere"
 
 #: src/Module.php:130
 msgid "An overview of an individual’s descendants."
@@ -73,7 +73,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
-msgstr ""
+msgstr "Etterkommerlinje"
 
 #: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
@@ -90,7 +90,7 @@ msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
 msgid "Display"
-msgstr ""
+msgstr "Vis"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:34
 msgid ""
@@ -157,7 +157,7 @@ msgstr "Navn som gift"
 
 #: src/Configuration.php:331
 msgid "Maternal line (mother to child)"
-msgstr ""
+msgstr "Matrilineær linje (mor til barn)"
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
@@ -197,7 +197,7 @@ msgstr ""
 
 #: src/Configuration.php:330
 msgid "Paternal line (father to son)"
-msgstr ""
+msgstr "Patrilineær linje (far til sønn)"
 
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
@@ -247,6 +247,11 @@ msgid ""
 "inheritance of the mitochondrial DNA. The individual at the top of the chart "
 "is always shown, and a person of unknown sex ends the line."
 msgstr ""
+"Patrilineær linje går kun fra far til sønner, og er linje for arv av Y-"
+"kromosom. Matrilineær linje går fra mor til barn, men ikke videre fra "
+"sønner, og er linje for arv av mitokondrielt DNA. Startpersonen på "
+"diagrammet vises hele tiden, og en person av ukjent kjønn vil avslutte "
+"linjen."
 
 #: src/Module/ConfigTrait.php:112
 #, php-format
