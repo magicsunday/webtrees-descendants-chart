@@ -185,12 +185,24 @@ describe("Chart click binding", () => {
         expect(context.personClick).toHaveBeenCalledWith(first.data, true);
     });
 
-    test("leaves the persons as they were with the panel off", () => {
-        const { context } = bind(false, [node("I1", "/i/1")]);
+    test("makes the selectable persons keyboard operable with the panel off too", () => {
+        const first = node("I1", "/i/1");
+        const { context, bound } = bind(false, [first, node("", "")]);
 
         Chart.prototype.bindClickEventListener.call(context);
 
-        expect(context._selection.makeOperable).not.toHaveBeenCalled();
+        expect(context._selection.makeOperable).toHaveBeenCalledTimes(1);
+        expect(bound[0][1]).toBe(first);
+    });
+
+    test("hands the key activation of a person to the click routing with the panel off too", () => {
+        const first = node("I1", "/i/1");
+        const { context, bound } = bind(false, [first]);
+
+        Chart.prototype.bindClickEventListener.call(context);
+        bound[0][2](first.data, true);
+
+        expect(context.personClick).toHaveBeenCalledWith(first.data, true);
     });
 
     test("applies the selection again after the persons are bound", () => {
@@ -290,10 +302,10 @@ describe("Chart click binding with real elements", () => {
         expect(elements[0].getAttribute("aria-label")).toBe("Jane Doe");
     });
 
-    test("leaves the label alone with the panel off", () => {
-        const { elements } = bindReal([node("I1", "/i/1")], false, ["Jane", "Doe"]);
+    test("labels an operable person with the text that the box shows with the panel off too", () => {
+        const { elements } = bindReal([node("I1", "/i/1")], false, ["Jane", "Doe", "Born: 1850"]);
 
-        expect(elements[0].hasAttribute("aria-label")).toBe(false);
+        expect(elements[0].getAttribute("aria-label")).toBe("Jane Doe Born: 1850");
     });
 
     test("binds no click to a box that has neither an xref nor a url", () => {
