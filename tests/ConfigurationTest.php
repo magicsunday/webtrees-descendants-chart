@@ -12,21 +12,18 @@ declare(strict_types=1);
 namespace MagicSunday\Webtrees\DescendantsChart\Test;
 
 use Fig\Http\Message\RequestMethodInterface;
-use Fisharebest\Localization\Locale;
-use Fisharebest\Localization\Translator;
 use Fisharebest\Webtrees\DB;
-use Fisharebest\Webtrees\I18N;
 use GuzzleHttp\Psr7\ServerRequest;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Module;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\EnglishLocaleFixture;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use ReflectionProperty;
 
 /**
  * Verifies how Configuration resolves request parameters and module
@@ -138,10 +135,7 @@ final class ConfigurationTest extends TestCase
     #[Test]
     public function descendantLinesListTheThreeValues(): void
     {
-        $locale = Locale::create('en');
-
-        (new ReflectionProperty(I18N::class, 'locale'))->setValue(null, $locale);
-        (new ReflectionProperty(I18N::class, 'translator'))->setValue(null, new Translator([], $locale->pluralRule()));
+        EnglishLocaleFixture::install();
 
         self::assertSame(
             ['all', 'paternal', 'maternal'],
