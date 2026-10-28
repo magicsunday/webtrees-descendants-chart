@@ -314,3 +314,6 @@ msgstr ""
 #: resources/views/modules/descendants-chart/page.phtml:65
 msgid "view"
 msgstr ""
+
+msgid "Age"
+msgstr "Alter (probe)"
