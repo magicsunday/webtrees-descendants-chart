@@ -11,30 +11,15 @@ declare(strict_types=1);
 
 namespace MagicSunday\Webtrees\DescendantsChart\Test\Facade;
 
-use Aura\Router\Map;
-use Aura\Router\Route;
-use Fisharebest\Webtrees\Contracts\ContainerInterface;
-use Fisharebest\Webtrees\Contracts\RouteFactoryInterface;
-use Fisharebest\Webtrees\Date;
-use Fisharebest\Webtrees\Fact;
-use Fisharebest\Webtrees\Factories\CalendarDateFactory;
 use Fisharebest\Webtrees\Family;
 use Fisharebest\Webtrees\Individual;
-use Fisharebest\Webtrees\Module\ModuleCustomInterface;
-use Fisharebest\Webtrees\Place;
-use Fisharebest\Webtrees\Registry;
-use Fisharebest\Webtrees\Tree;
-use Fisharebest\Webtrees\Validator;
-use GuzzleHttp\Psr7\ServerRequest;
 use Illuminate\Support\Collection;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\DescendantsChart\Module;
-use MagicSunday\Webtrees\DescendantsChart\Test\Support\EnglishLocaleFixture;
-use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
-use MagicSunday\Webtrees\ModuleBase\Contract\ModuleAssetUrlInterface;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\DataFacadeFixtureTrait;
 use MagicSunday\Webtrees\ModuleBase\Model\NameSegment;
 use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -47,13 +32,6 @@ use function array_keys;
 use function array_map;
 use function array_merge;
 use function array_values;
-use function count;
-use function http_build_query;
-use function is_string;
-use function json_decode;
-use function json_encode;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Validates how the facade fills the name of a person into the node data: the
@@ -71,12 +49,7 @@ use const JSON_THROW_ON_ERROR;
 #[UsesClass(Module::class)]
 final class DataFacadeTest extends TestCase
 {
-    use ModuleSettingsFixtureTrait;
-
-    /**
-     * The formatted birth name of the person the married-name tests start from.
-     */
-    private const string ANNA_SCHMIDT = '<span class="NAME" dir="auto" translate="no">Anna <span class="SURN">Schmidt</span></span>';
+    use DataFacadeFixtureTrait;
 
     /**
      * Prepares the router and translation context the facade needs.
@@ -85,12 +58,7 @@ final class DataFacadeTest extends TestCase
     {
         parent::setUp();
 
-        Validator::serverParams(new ServerRequest('GET', '/'));
-        Registry::calendarDateFactory(new CalendarDateFactory());
-
-        EnglishLocaleFixture::install();
-
-        $this->registerRouting();
+        $this->installFacadeContext();
     }
 
     /**
@@ -125,127 +93,6 @@ final class DataFacadeTest extends TestCase
         );
 
         self::assertSame('José Antonio von Gómez Iglesias', $this->valueOf($data, 'name'));
-    }
-
-    /**
-     * Without the detail panel the payload carries no facts, so the default chart
-     * pays neither their size nor their database work.
-     */
-    #[Test]
-    public function leavesTheFactsOutWhileTheDetailPanelIsOff(): void
-    {
-        $person = $this->createPerson(
-            'I1',
-            'M',
-            [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')],
-            factsByTag: ['OCCU' => $this->createFact('Occupation', '', '', 'Smith')],
-            chartBoxTags: 'OCCU',
-        );
-
-        $data = $this->memberAt($this->buildStructure($person, ['generations' => '1'])['members'], 0);
-
-        self::assertNull($this->serialisedFacts($data));
-    }
-
-    /**
-     * With the detail panel on, the payload of the subject and of its partner carries
-     * the birth, the death and one slot for every tag the tree names for the chart
-     * box. A slot the person has no fact for is null.
-     */
-    #[Test]
-    public function handsOverOneFactSlotPerRowToTheSubjectAndThePartner(): void
-    {
-        $birth = $this->createFact('Birth', 'Berlin, Germany', 'Berlin', '');
-        $work  = $this->createFact('Occupation', '', '', 'Smith');
-        $name  = [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')];
-
-        $partner = $this->createPerson('I2', 'F', $name, factsByTag: [], chartBoxTags: 'OCCU,RESI');
-        $root    = $this->createPerson('I1', 'M', $name, factsByTag: ['BIRT' => $birth, 'OCCU' => $work], chartBoxTags: 'OCCU,RESI');
-
-        $root->method('spouseFamilies')->willReturn(new Collection([$this->createFamily($partner, [])]));
-
-        $members = $this->buildStructure($root, ['generations' => '1', 'showDetailPanel' => '1'])['members'];
-
-        self::assertSame(
-            [
-                [
-                    'tag'       => 'BIRT',
-                    'label'     => 'Birth',
-                    'date'      => '',
-                    'place'     => 'Berlin, Germany',
-                    'placeFull' => 'Berlin, Germany',
-                    'value'     => '',
-                    'partner'   => '',
-                    'sortDay'   => 0,
-                ],
-                null,
-                [
-                    'tag'       => 'OCCU',
-                    'label'     => 'Occupation',
-                    'date'      => '',
-                    'place'     => '',
-                    'placeFull' => '',
-                    'value'     => 'Smith',
-                    'partner'   => '',
-                    'sortDay'   => 0,
-                ],
-                null,
-            ],
-            $this->serialisedFacts($this->memberAt($members, 0))
-        );
-
-        self::assertSame([null, null, null, null], $this->serialisedFacts($this->memberAt($members, 1)));
-    }
-
-    /**
-     * A tree that names no tag for the chart box has the birth and the death
-     * slot only.
-     */
-    #[Test]
-    public function hasTheBirthAndDeathSlotOnlyWithoutChartBoxTags(): void
-    {
-        $person = $this->createPerson(
-            'I1',
-            'M',
-            [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')],
-            factsByTag: [],
-            chartBoxTags: '',
-        );
-
-        $data = $this->memberAt($this->buildStructure($person, ['generations' => '1', 'showDetailPanel' => '1'])['members'], 0);
-
-        self::assertSame([null, null], $this->serialisedFacts($data));
-    }
-
-    /**
-     * A facade that gets a new configuration reads the facts of a later run with the tags of the
-     * tree of that run, so the slots follow the chart box tags of the tree and not those of the
-     * run before.
-     */
-    #[Test]
-    public function readsTheFactsOfALaterRunWithTheTagsOfItsOwnTree(): void
-    {
-        $name   = [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')];
-        $module = self::createStubForIntersectionOfInterfaces([ModuleCustomInterface::class, ModuleAssetUrlInterface::class]);
-        $module->method('name')->willReturn('webtrees-descendants-chart');
-
-        $facade = (new DataFacade())->setModule($module)->setRoute('module');
-        $slots  = [];
-
-        foreach (['OCCU,RESI', ''] as $tags) {
-            $person  = $this->createPerson('I1', 'M', $name, factsByTag: [], chartBoxTags: $tags);
-            $request = (new ServerRequest('GET', '/'))->withQueryParams(['generations' => '1', 'showDetailPanel' => '1']);
-
-            $structure = $facade
-                ->setConfiguration(new Configuration($request, $this->createModuleWithPreferences([])))
-                ->createTreeStructure($person);
-
-            self::assertIsArray($structure);
-
-            $slots[] = count($this->serialisedFacts($this->memberAt($structure['members'], 0)) ?? []);
-        }
-
-        self::assertSame([4, 2], $slots);
     }
 
     /**
@@ -836,33 +683,6 @@ final class DataFacadeTest extends TestCase
     }
 
     /**
-     * Builds the chart of the person from the request parameters and returns its
-     * first couple, the way the facade serialises it for the browser.
-     *
-     * @param array<string, string> $query The request parameters of the chart
-     *
-     * @return array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>}
-     */
-    private function buildStructure(Individual&Stub $person, array $query): array
-    {
-        $module = self::createStubForIntersectionOfInterfaces([ModuleCustomInterface::class, ModuleAssetUrlInterface::class]);
-        $module->method('name')->willReturn('webtrees-descendants-chart');
-
-        $request = (new ServerRequest('GET', '/'))->withQueryParams($query);
-
-        $facade = (new DataFacade())
-            ->setConfiguration(new Configuration($request, $this->createModuleWithPreferences([])))
-            ->setModule($module)
-            ->setRoute('module');
-
-        $structure = $facade->createTreeStructure($person);
-
-        self::assertIsArray($structure);
-
-        return $structure;
-    }
-
-    /**
      * Builds the chart of the person and returns the node data of the person itself.
      *
      * @param string $marriedNamesMode The married-names mode of the chart
@@ -874,18 +694,6 @@ final class DataFacadeTest extends TestCase
         bool $showNicknames = false,
     ): NodeData {
         return $this->memberAt($this->buildMembers($person, $marriedNamesMode, $partner, $showNicknames), 0);
-    }
-
-    /**
-     * Returns the member of a couple at the given position.
-     *
-     * @param NodeData[] $members
-     */
-    private function memberAt(array $members, int $index): NodeData
-    {
-        self::assertArrayHasKey($index, $members);
-
-        return $members[$index];
     }
 
     /**
@@ -920,20 +728,6 @@ final class DataFacadeTest extends TestCase
         self::assertIsNotArray($value);
 
         return $value;
-    }
-
-    /**
-     * Creates a family stub with an optional partner and the given children.
-     *
-     * @param Individual[] $children
-     */
-    private function createFamily(?Individual $partner, array $children): Family
-    {
-        $family = self::createStub(Family::class);
-        $family->method('children')->willReturn(new Collection($children));
-        $family->method('spouse')->willReturn($partner);
-
-        return $family;
     }
 
     /**
@@ -1009,160 +803,5 @@ final class DataFacadeTest extends TestCase
                 ),
             ],
         );
-    }
-
-    /**
-     * Creates a name record the way webtrees supplies it to the name processor.
-     *
-     * @return array<string, string>
-     */
-    private function createName(string $formatted, string $plain, string $surname = '', string $type = 'BIRT'): array
-    {
-        return [
-            'full'   => $formatted,
-            'fullNN' => $plain,
-            'type'   => $type,
-            'surn'   => $surname,
-            'givn'   => '',
-            'sort'   => '',
-        ];
-    }
-
-    /**
-     * Creates an individual stub with the given name records and no dates.
-     *
-     * @param list<array<string, string>> $names         The name records of the person
-     * @param string                      $nickname      The GEDCOM nickname of the primary name
-     * @param int                         $secondaryName The index of the alternative name record
-     * @param string                      $birth         The GEDCOM birth date of the person
-     * @param array<string, Fact>|null    $factsByTag    The fact of each tag, or null for a person without facts
-     * @param string                      $chartBoxTags  The tags that the tree names for the chart box
-     *
-     * @return Individual&Stub
-     */
-    private function createPerson(
-        string $xref,
-        string $sex,
-        array $names,
-        string $nickname = '',
-        int $secondaryName = 0,
-        string $birth = '',
-        ?array $factsByTag = null,
-        string $chartBoxTags = '',
-    ): Individual {
-        $tree = self::createStub(Tree::class);
-        $tree->method('name')->willReturn('main');
-        $tree->method('getPreference')->willReturnCallback(
-            static fn (string $name): string => ($name === 'CHART_BOX_TAGS') ? $chartBoxTags : ''
-        );
-
-        $nameFact = self::createStub(Fact::class);
-        $nameFact->method('attribute')->willReturnMap([
-            ['TYPE', ''],
-            ['NICK', $nickname],
-        ]);
-
-        $person = self::createStub(Individual::class);
-        $person->method('xref')->willReturn($xref);
-        $person->method('url')->willReturn('/individual/' . $xref);
-        $person->method('sex')->willReturn($sex);
-        $person->method('canShow')->willReturn(true);
-        $person->method('canShowName')->willReturn(true);
-        $person->method('getAllNames')->willReturn($names);
-        $person->method('getPrimaryName')->willReturn(0);
-        $person->method('getSecondaryName')->willReturn($secondaryName);
-        $person->method('getBirthDate')->willReturn(new Date($birth));
-        $person->method('getEstimatedBirthDate')->willReturn(new Date($birth));
-        $person->method('getDeathDate')->willReturn(new Date(''));
-        $person->method('tree')->willReturn($tree);
-        $person->method('facts')->willReturnCallback(
-            static function (array $filter = []) use ($nameFact, $factsByTag): Collection {
-                $first = $filter[0] ?? '';
-                $tag   = is_string($first) ? $first : '';
-
-                if (($factsByTag === null) || ($tag === 'NAME')) {
-                    return new Collection([$nameFact]);
-                }
-
-                return new Collection(isset($factsByTag[$tag]) ? [$factsByTag[$tag]] : []);
-            }
-        );
-        $person->method('findHighlightedMediaFile')->willReturn(null);
-
-        return $person;
-    }
-
-    /**
-     * Builds a fact with the given label, place and value, and no date.
-     */
-    private function createFact(string $label, string $placeFull, string $placeShort, string $value): Fact
-    {
-        $place = self::createStub(Place::class);
-        $place->method('gedcomName')->willReturn($placeFull);
-        $place->method('firstParts')->willReturn(new Collection($placeShort === '' ? [] : [$placeShort]));
-
-        $fact = self::createStub(Fact::class);
-        $fact->method('label')->willReturn($label);
-        $fact->method('date')->willReturn(new Date(''));
-        $fact->method('place')->willReturn($place);
-        $fact->method('value')->willReturn($value);
-
-        return $fact;
-    }
-
-    /**
-     * Returns the facts that the browser receives for a node, or null when the
-     * payload carries none.
-     *
-     * @return list<array<string, int|string>|null>|null
-     */
-    private function serialisedFacts(NodeData $data): ?array
-    {
-        /** @var array{facts?: list<array<string, int|string>|null>} $serialised */
-        $serialised = json_decode(json_encode($data, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
-
-        return $serialised['facts'] ?? null;
-    }
-
-    /**
-     * Sets up the route factory and the container the facade needs for the update URL.
-     */
-    private function registerRouting(): void
-    {
-        $routeFactory = new class implements RouteFactoryInterface {
-            public function route(string $route_name, array $parameters = []): string
-            {
-                return '/route/' . $route_name . '?' . http_build_query($parameters);
-            }
-
-            public function routeMap(): Map
-            {
-                return new Map(new Route());
-            }
-        };
-
-        $container = new readonly class($routeFactory) implements ContainerInterface {
-            public function __construct(private RouteFactoryInterface $routeFactory)
-            {
-            }
-
-            public function get(string $id): RouteFactoryInterface
-            {
-                return $this->routeFactory;
-            }
-
-            public function has(string $id): bool
-            {
-                return $id === RouteFactoryInterface::class;
-            }
-
-            public function set(string $id, object $object): static
-            {
-                return $this;
-            }
-        };
-
-        Registry::routeFactory($routeFactory);
-        Registry::container($container);
     }
 }
