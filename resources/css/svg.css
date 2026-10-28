@@ -91,10 +91,7 @@
  */
 .webtrees-descendants-chart-container svg g.person.selected rect.male,
 .webtrees-descendants-chart-container svg g.person.selected rect.female,
-.webtrees-descendants-chart-container svg g.person.selected rect.unknown,
-.webtrees-descendants-chart-container svg g.person:focus-visible rect.male,
-.webtrees-descendants-chart-container svg g.person:focus-visible rect.female,
-.webtrees-descendants-chart-container svg g.person:focus-visible rect.unknown {
+.webtrees-descendants-chart-container svg g.person.selected rect.unknown {
     stroke-width: 4px;
 }
 
