@@ -233,10 +233,6 @@ msgstr ""
 msgid "Re center"
 msgstr "Volver a centrar"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:22
-msgid "Reload chart for that person"
-msgstr "Recargar el diagrama para esa persona"
-
 #: resources/views/modules/descendants-chart/page.phtml:106
 msgid "Select a person in the chart to see the details here."
 msgstr ""
@@ -252,6 +248,12 @@ msgstr ""
 #: resources/views/modules/descendants-chart/form/details.phtml:28
 msgid "Show alternative name of individual"
 msgstr "Mostrar nombre alternativo del individuo"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:22
+msgid ""
+"Show chart for that person, or open the page of a person of the first "
+"generation"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/details.phtml:53
 msgid "Show details panel"

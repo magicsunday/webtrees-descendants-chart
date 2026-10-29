@@ -238,10 +238,6 @@ msgstr "Väterliche Linie (Vater zu Sohn)"
 msgid "Re center"
 msgstr "Neu zentrieren"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:22
-msgid "Reload chart for that person"
-msgstr "Diagramm für diese Person neu laden"
-
 #: resources/views/modules/descendants-chart/page.phtml:106
 msgid "Select a person in the chart to see the details here."
 msgstr "Person im Diagramm auswählen, um hier die Details anzuzeigen."
@@ -262,6 +258,14 @@ msgstr ""
 #: resources/views/modules/descendants-chart/form/details.phtml:28
 msgid "Show alternative name of individual"
 msgstr "Alternativen Namen der Person anzeigen"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:22
+msgid ""
+"Show chart for that person, or open the page of a person of the first "
+"generation"
+msgstr ""
+"Diagramm für diese Person anzeigen oder bei einer Person der ersten "
+"Generation deren Seite öffnen"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:53
 msgid "Show details panel"
