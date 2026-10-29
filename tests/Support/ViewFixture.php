@@ -42,9 +42,9 @@ final class ViewFixture
     private const string STUB_NAMESPACE = 'descendants-test';
 
     /**
-     * Registers the views of the module and of the module base and redirects the core components that they use to stand-ins.
-     * The stand-ins keep the parts that the tests look at: the name, the value and the checked state of
-     * a checkbox.
+     * Registers the views of the module and of the module base and redirects the core components
+     * that they use to stand-ins. The stand-ins keep the parts that the tests look at: the name,
+     * the value and the checked state of a checkbox.
      */
     public static function register(): void
     {
