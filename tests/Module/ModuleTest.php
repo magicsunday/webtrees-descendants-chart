@@ -230,10 +230,17 @@ final class ModuleTest extends TestCase
     #[PreserveGlobalState(false)]
     public function bootRegistersTheSharedViewsOfTheModuleBase(): void
     {
-        RoutingFixture::install(new HttpFactory());
+        $routeMap = RoutingFixture::install(new HttpFactory());
         EnglishLocaleFixture::install();
 
-        $this->createModuleWithPreferences([])->boot();
+        $module = $this->createModuleWithPreferences([]);
+        $module->boot();
+
+        $route = $routeMap->getRoute(Module::ROUTE_DEFAULT);
+
+        self::assertSame(Module::ROUTE_DEFAULT_URL, $route->path);
+        self::assertContains('POST', $route->allows);
+        self::assertFileExists((new View($module->name() . '::layouts/ajax'))->getFilenameForView($module->name() . '::layouts/ajax'));
 
         $markup = view('webtrees-module-base::help-popover', [
             'id'         => 'booted-help-popover',
