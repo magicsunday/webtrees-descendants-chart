@@ -34,7 +34,7 @@ msgstr "Сокращать сначала фамилии"
 msgid "All descendants"
 msgstr ""
 
-#: src/Module.php:130
+#: src/Module.php:133
 msgid "An overview of an individual’s descendants."
 msgstr "Диаграмма потомков в виде дерева."
 
@@ -54,19 +54,19 @@ msgstr "Только имя при рождении"
 msgid "Birth name with married name in brackets"
 msgstr "Имя при рождении с фамилией в браке в скобках"
 
-#: resources/views/modules/descendants-chart/page.phtml:117
+#: resources/views/modules/descendants-chart/page.phtml:109
 msgid "Center chart on this person"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:36
+#: resources/views/modules/components/buttonbar/help-button.phtml:27
 msgid "Click and drag"
 msgstr "Нажмите и перетащите"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:31
+#: resources/views/modules/components/buttonbar/help-button.phtml:22
 msgid "Click on a person"
 msgstr "Нажмите на персону"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:33
+#: resources/views/modules/components/buttonbar/help-button.phtml:24
 msgid "Click or Enter on a person"
 msgstr ""
 
@@ -84,7 +84,7 @@ msgstr ""
 "для полного имени. «Автоматически» использует традицию фамилий дерева "
 "(исландская традиция сокращает фамилии; все остальные сокращают имена)."
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:35
+#: resources/views/modules/components/buttonbar/help-button.phtml:26
 msgid "Ctrl + scroll"
 msgstr "Ctrl + колёсико мыши"
 
@@ -92,11 +92,11 @@ msgstr "Ctrl + колёсико мыши"
 msgid "Descendant line"
 msgstr ""
 
-#: src/Module.php:119 src/Module.php:232
+#: src/Module.php:122 src/Module.php:235
 msgid "Descendants chart"
 msgstr "Потомки (новое)"
 
-#: src/Module.php:229 src/Module/ChartTrait.php:43
+#: src/Module.php:232 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Диаграмма потомков у %s"
@@ -105,7 +105,7 @@ msgstr "Диаграмма потомков у %s"
 msgid "Details"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:34
+#: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Details panel"
 msgstr ""
 
@@ -136,7 +136,7 @@ msgstr ""
 msgid "Generations"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:77
+#: resources/views/modules/descendants-chart/page.phtml:78
 msgid "Hide more options"
 msgstr "Скрыть параметры"
 
@@ -152,7 +152,7 @@ msgstr "Скрыть кнопку экспорта в SVG"
 msgid "Hide the spouses associated with an individual"
 msgstr "Скрыть супругов персоны"
 
-#: resources/views/modules/descendants-chart/page.phtml:39
+#: resources/views/modules/descendants-chart/page.phtml:40
 msgid "Individual"
 msgstr ""
 
@@ -182,15 +182,15 @@ msgstr ""
 msgid "Modules"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:32
+#: resources/views/modules/components/buttonbar/help-button.phtml:23
 msgid "Move between the persons"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:36
+#: resources/views/modules/components/buttonbar/help-button.phtml:27
 msgid "Move the chart"
 msgstr "Переместить диаграмму"
 
-#: src/Module.php:251
+#: src/Module.php:254
 msgid "Move the view with two fingers"
 msgstr "Измените вид двумя пальцами"
 
@@ -198,7 +198,7 @@ msgstr "Измените вид двумя пальцами"
 msgid "Name abbreviation when space is tight"
 msgstr "Сокращение имени при недостатке места"
 
-#: resources/views/modules/descendants-chart/page.phtml:114
+#: resources/views/modules/descendants-chart/page.phtml:107
 msgid "No details are available for this person."
 msgstr ""
 
@@ -206,7 +206,7 @@ msgstr ""
 msgid "Open individual in new browser window/tab"
 msgstr "Открывать персону в новом окне/вкладке браузера"
 
-#: resources/views/modules/descendants-chart/page.phtml:116
+#: resources/views/modules/descendants-chart/page.phtml:108
 msgid "Open individual page"
 msgstr ""
 
@@ -216,7 +216,7 @@ msgid ""
 "it's left-clicked, otherwise the current window/tab is used."
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:34
+#: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Open the individual page or center the chart on the person"
 msgstr ""
 
@@ -232,11 +232,11 @@ msgstr ""
 msgid "Re center"
 msgstr "Центрировать"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:31
+#: resources/views/modules/components/buttonbar/help-button.phtml:22
 msgid "Reload chart for that person"
 msgstr "Перезагрузить диаграмму для этой персоны"
 
-#: resources/views/modules/descendants-chart/page.phtml:112
+#: resources/views/modules/descendants-chart/page.phtml:106
 msgid "Select a person in the chart to see the details here."
 msgstr ""
 
@@ -256,12 +256,11 @@ msgstr "Показывать альтернативное имя персоны"
 msgid "Show details panel"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:18
-#: resources/views/modules/components/buttonbar/help-button.phtml:29
+#: resources/views/modules/components/buttonbar/help-button.phtml:19
 msgid "Show help"
 msgstr "Показать справку"
 
-#: resources/views/modules/descendants-chart/page.phtml:76
+#: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Show more options"
 msgstr "Показать больше параметров"
 
@@ -269,7 +268,7 @@ msgstr "Показать больше параметров"
 msgid "Show nicknames in display names"
 msgstr "Показывать прозвища в отображаемых именах"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:33
+#: resources/views/modules/components/buttonbar/help-button.phtml:24
 msgid "Show the details of the person in the panel"
 msgstr ""
 
@@ -277,7 +276,7 @@ msgstr ""
 msgid "Switch between full screen mode and normal view"
 msgstr "Переключение между полноэкранным и обычным режимом"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:32
+#: resources/views/modules/components/buttonbar/help-button.phtml:23
 msgid "Tab key"
 msgstr ""
 
@@ -295,7 +294,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:250
+#: src/Module.php:253
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Используйте Ctrl + scroll, чтобы  увеличить"
 
@@ -311,7 +310,7 @@ msgstr ""
 "\"MARRIED\" или \"_MARNM\") — заменяя имя при рождении, добавляясь в скобках "
 "после имени при рождении, или скрывается."
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:35
+#: resources/views/modules/components/buttonbar/help-button.phtml:26
 msgid "Zoom in/out"
 msgstr "Увеличить/Уменьшить"
 
@@ -319,7 +318,7 @@ msgstr "Увеличить/Уменьшить"
 msgid "cancel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:108
+#: resources/views/modules/descendants-chart/page.phtml:105
 msgid "close"
 msgstr ""
 
@@ -343,6 +342,6 @@ msgstr ""
 msgid "up"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:65
+#: resources/views/modules/descendants-chart/page.phtml:66
 msgid "view"
 msgstr ""

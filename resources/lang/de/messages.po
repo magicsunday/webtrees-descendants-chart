@@ -33,7 +33,7 @@ msgstr "Zuerst Nachnamen abkürzen"
 msgid "All descendants"
 msgstr "Alle Nachkommen"
 
-#: src/Module.php:130
+#: src/Module.php:133
 msgid "An overview of an individual’s descendants."
 msgstr "Ein Überblick über die Nachkommen einer Person."
 
@@ -53,19 +53,19 @@ msgstr "Nur Geburtsname"
 msgid "Birth name with married name in brackets"
 msgstr "Geburtsname mit Ehenamen in Klammern"
 
-#: resources/views/modules/descendants-chart/page.phtml:117
+#: resources/views/modules/descendants-chart/page.phtml:109
 msgid "Center chart on this person"
 msgstr "Diagramm auf diese Person zentrieren"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:36
+#: resources/views/modules/components/buttonbar/help-button.phtml:27
 msgid "Click and drag"
 msgstr "Klicken und Ziehen"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:31
+#: resources/views/modules/components/buttonbar/help-button.phtml:22
 msgid "Click on a person"
 msgstr "Auf eine Person klicken"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:33
+#: resources/views/modules/components/buttonbar/help-button.phtml:24
 msgid "Click or Enter on a person"
 msgstr "Klick oder Eingabetaste auf eine Person"
 
@@ -83,7 +83,7 @@ msgstr ""
 "den vollen Namen ist. „Automatisch“ verwendet die Nachnamen-Tradition des "
 "Stammbaums (Isländisch kürzt Nachnamen; alles andere kürzt Vornamen)."
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:35
+#: resources/views/modules/components/buttonbar/help-button.phtml:26
 msgid "Ctrl + scroll"
 msgstr "Strg + Scrollen"
 
@@ -91,11 +91,11 @@ msgstr "Strg + Scrollen"
 msgid "Descendant line"
 msgstr "Nachkommenlinie"
 
-#: src/Module.php:119 src/Module.php:232
+#: src/Module.php:122 src/Module.php:235
 msgid "Descendants chart"
 msgstr "Nachkommentafel"
 
-#: src/Module.php:229 src/Module/ChartTrait.php:43
+#: src/Module.php:232 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Nachkommentafel von %s"
@@ -104,7 +104,7 @@ msgstr "Nachkommentafel von %s"
 msgid "Details"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:34
+#: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Details panel"
 msgstr "Detailbereich"
 
@@ -138,7 +138,7 @@ msgstr ""
 msgid "Generations"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:77
+#: resources/views/modules/descendants-chart/page.phtml:78
 msgid "Hide more options"
 msgstr "Verstecke weitere Optionen"
 
@@ -154,7 +154,7 @@ msgstr "Die Schaltfläche für den SVG-Export ausblenden"
 msgid "Hide the spouses associated with an individual"
 msgstr "Ausblenden der mit einer Person verbundenen Ehepartner"
 
-#: resources/views/modules/descendants-chart/page.phtml:39
+#: resources/views/modules/descendants-chart/page.phtml:40
 msgid "Individual"
 msgstr ""
 
@@ -185,15 +185,15 @@ msgstr "Mütterliche Linie (Mutter zu Kind)"
 msgid "Modules"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:32
+#: resources/views/modules/components/buttonbar/help-button.phtml:23
 msgid "Move between the persons"
 msgstr "Zwischen den Personen wechseln"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:36
+#: resources/views/modules/components/buttonbar/help-button.phtml:27
 msgid "Move the chart"
 msgstr "Diagramm verschieben"
 
-#: src/Module.php:251
+#: src/Module.php:254
 msgid "Move the view with two fingers"
 msgstr "Verschieben der Ansicht mit zwei Fingern"
 
@@ -201,7 +201,7 @@ msgstr "Verschieben der Ansicht mit zwei Fingern"
 msgid "Name abbreviation when space is tight"
 msgstr "Namensabkürzung bei knappem Platz"
 
-#: resources/views/modules/descendants-chart/page.phtml:114
+#: resources/views/modules/descendants-chart/page.phtml:107
 msgid "No details are available for this person."
 msgstr "Für diese Person sind keine Details verfügbar."
 
@@ -209,7 +209,7 @@ msgstr "Für diese Person sind keine Details verfügbar."
 msgid "Open individual in new browser window/tab"
 msgstr "Aktuelle Person in neuem Browserfenster/Tab öffnen"
 
-#: resources/views/modules/descendants-chart/page.phtml:116
+#: resources/views/modules/descendants-chart/page.phtml:108
 msgid "Open individual page"
 msgstr "Personenseite öffnen"
 
@@ -222,7 +222,7 @@ msgstr ""
 "Tab, wenn mit der linken Maustaste darauf geklickt wird. Andernfalls wird "
 "das aktuelle Fenster/Tab verwendet."
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:34
+#: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Open the individual page or center the chart on the person"
 msgstr "Personenseite öffnen oder das Diagramm auf die Person zentrieren"
 
@@ -238,11 +238,11 @@ msgstr "Väterliche Linie (Vater zu Sohn)"
 msgid "Re center"
 msgstr "Neu zentrieren"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:31
+#: resources/views/modules/components/buttonbar/help-button.phtml:22
 msgid "Reload chart for that person"
 msgstr "Diagramm für diese Person neu laden"
 
-#: resources/views/modules/descendants-chart/page.phtml:112
+#: resources/views/modules/descendants-chart/page.phtml:106
 msgid "Select a person in the chart to see the details here."
 msgstr "Person im Diagramm auswählen, um hier die Details anzuzeigen."
 
@@ -267,12 +267,11 @@ msgstr "Alternativen Namen der Person anzeigen"
 msgid "Show details panel"
 msgstr "Detailbereich anzeigen"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:18
-#: resources/views/modules/components/buttonbar/help-button.phtml:29
+#: resources/views/modules/components/buttonbar/help-button.phtml:19
 msgid "Show help"
 msgstr "Hilfe anzeigen"
 
-#: resources/views/modules/descendants-chart/page.phtml:76
+#: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Show more options"
 msgstr "Zeige weitere Optionen"
 
@@ -280,7 +279,7 @@ msgstr "Zeige weitere Optionen"
 msgid "Show nicknames in display names"
 msgstr "Spitznamen in den angezeigten Namen anzeigen"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:33
+#: resources/views/modules/components/buttonbar/help-button.phtml:24
 msgid "Show the details of the person in the panel"
 msgstr "Die Details der Person im Detailbereich anzeigen"
 
@@ -288,7 +287,7 @@ msgstr "Die Details der Person im Detailbereich anzeigen"
 msgid "Switch between full screen mode and normal view"
 msgstr "Zwischen Vollbildmodus und normaler Ansicht umschalten"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:32
+#: resources/views/modules/components/buttonbar/help-button.phtml:23
 msgid "Tab key"
 msgstr "Tabulatortaste"
 
@@ -312,7 +311,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:250
+#: src/Module.php:253
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Verwende Strg+Scrollen zum Zoomen der Ansicht"
 
@@ -328,7 +327,7 @@ msgstr ""
 "\"_MARNM\"-Namenseintrag) angezeigt wird – anstelle des Geburtsnamens, in "
 "Klammern hinter dem Geburtsnamen oder ausgeblendet."
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:35
+#: resources/views/modules/components/buttonbar/help-button.phtml:26
 msgid "Zoom in/out"
 msgstr "Vergrößern/Verkleinern"
 
@@ -336,7 +335,7 @@ msgstr "Vergrößern/Verkleinern"
 msgid "cancel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:108
+#: resources/views/modules/descendants-chart/page.phtml:105
 msgid "close"
 msgstr ""
 
@@ -360,6 +359,6 @@ msgstr ""
 msgid "up"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:65
+#: resources/views/modules/descendants-chart/page.phtml:66
 msgid "view"
 msgstr ""

@@ -33,7 +33,7 @@ msgstr "Nejprve zkrátit příjmení"
 msgid "All descendants"
 msgstr ""
 
-#: src/Module.php:130
+#: src/Module.php:133
 msgid "An overview of an individual’s descendants."
 msgstr "Přehled potomků osoby."
 
@@ -53,19 +53,19 @@ msgstr "Pouze rodné jméno"
 msgid "Birth name with married name in brackets"
 msgstr "Rodné jméno se jménem po sňatku v závorkách"
 
-#: resources/views/modules/descendants-chart/page.phtml:117
+#: resources/views/modules/descendants-chart/page.phtml:109
 msgid "Center chart on this person"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:36
+#: resources/views/modules/components/buttonbar/help-button.phtml:27
 msgid "Click and drag"
 msgstr "Klikněte a táhněte"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:31
+#: resources/views/modules/components/buttonbar/help-button.phtml:22
 msgid "Click on a person"
 msgstr "Klikněte na osobu"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:33
+#: resources/views/modules/components/buttonbar/help-button.phtml:24
 msgid "Click or Enter on a person"
 msgstr ""
 
@@ -83,7 +83,7 @@ msgstr ""
 "celé jméno. \"Automaticky\" používá tradici příjmení stromu (islandská "
 "tradice zkracuje příjmení; všechny ostatní zkracují křestní jména)."
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:35
+#: resources/views/modules/components/buttonbar/help-button.phtml:26
 msgid "Ctrl + scroll"
 msgstr "Ctrl + kolečko myši"
 
@@ -91,11 +91,11 @@ msgstr "Ctrl + kolečko myši"
 msgid "Descendant line"
 msgstr ""
 
-#: src/Module.php:119 src/Module.php:232
+#: src/Module.php:122 src/Module.php:235
 msgid "Descendants chart"
 msgstr "Diagram potomků"
 
-#: src/Module.php:229 src/Module/ChartTrait.php:43
+#: src/Module.php:232 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Diagram potomků osoby %s"
@@ -104,7 +104,7 @@ msgstr "Diagram potomků osoby %s"
 msgid "Details"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:34
+#: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Details panel"
 msgstr ""
 
@@ -135,7 +135,7 @@ msgstr ""
 msgid "Generations"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:77
+#: resources/views/modules/descendants-chart/page.phtml:78
 msgid "Hide more options"
 msgstr "Skrýt další volby"
 
@@ -151,7 +151,7 @@ msgstr "Skrýt tlačítko exportu SVG"
 msgid "Hide the spouses associated with an individual"
 msgstr "Skrýt manžele/manželky."
 
-#: resources/views/modules/descendants-chart/page.phtml:39
+#: resources/views/modules/descendants-chart/page.phtml:40
 msgid "Individual"
 msgstr ""
 
@@ -181,15 +181,15 @@ msgstr ""
 msgid "Modules"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:32
+#: resources/views/modules/components/buttonbar/help-button.phtml:23
 msgid "Move between the persons"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:36
+#: resources/views/modules/components/buttonbar/help-button.phtml:27
 msgid "Move the chart"
 msgstr "Přesunout diagram"
 
-#: src/Module.php:251
+#: src/Module.php:254
 msgid "Move the view with two fingers"
 msgstr "Přemístit pohled dvěma prsty"
 
@@ -197,7 +197,7 @@ msgstr "Přemístit pohled dvěma prsty"
 msgid "Name abbreviation when space is tight"
 msgstr "Zkracování jména při nedostatku místa"
 
-#: resources/views/modules/descendants-chart/page.phtml:114
+#: resources/views/modules/descendants-chart/page.phtml:107
 msgid "No details are available for this person."
 msgstr ""
 
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Open individual in new browser window/tab"
 msgstr "Otevřít osobu v novém okně/záložce prohlížeče"
 
-#: resources/views/modules/descendants-chart/page.phtml:116
+#: resources/views/modules/descendants-chart/page.phtml:108
 msgid "Open individual page"
 msgstr ""
 
@@ -215,7 +215,7 @@ msgid ""
 "it's left-clicked, otherwise the current window/tab is used."
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:34
+#: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Open the individual page or center the chart on the person"
 msgstr ""
 
@@ -231,11 +231,11 @@ msgstr ""
 msgid "Re center"
 msgstr "Vystředit"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:31
+#: resources/views/modules/components/buttonbar/help-button.phtml:22
 msgid "Reload chart for that person"
 msgstr "Načíst diagram pro tuto osobu znovu"
 
-#: resources/views/modules/descendants-chart/page.phtml:112
+#: resources/views/modules/descendants-chart/page.phtml:106
 msgid "Select a person in the chart to see the details here."
 msgstr ""
 
@@ -255,12 +255,11 @@ msgstr "Zobrazit alternativní jméno osoby"
 msgid "Show details panel"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:18
-#: resources/views/modules/components/buttonbar/help-button.phtml:29
+#: resources/views/modules/components/buttonbar/help-button.phtml:19
 msgid "Show help"
 msgstr "Zobrazit nápovědu"
 
-#: resources/views/modules/descendants-chart/page.phtml:76
+#: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Show more options"
 msgstr "Zobrazit další volby"
 
@@ -268,7 +267,7 @@ msgstr "Zobrazit další volby"
 msgid "Show nicknames in display names"
 msgstr "Zobrazit přezdívky ve zobrazovaných jménech"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:33
+#: resources/views/modules/components/buttonbar/help-button.phtml:24
 msgid "Show the details of the person in the panel"
 msgstr ""
 
@@ -276,7 +275,7 @@ msgstr ""
 msgid "Switch between full screen mode and normal view"
 msgstr "Přepnout mezi celou obrazovkou a normálním zobrazením"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:32
+#: resources/views/modules/components/buttonbar/help-button.phtml:23
 msgid "Tab key"
 msgstr ""
 
@@ -294,7 +293,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:250
+#: src/Module.php:253
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Pomocí Ctrl + kolečko zvětšit pohled"
 
@@ -310,7 +309,7 @@ msgstr ""
 "jména typu \"MARRIED\" nebo \"_MARNM\") – nahrazuje rodné jméno, je "
 "připojeno v závorkách za rodným jménem, nebo je skryto."
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:35
+#: resources/views/modules/components/buttonbar/help-button.phtml:26
 msgid "Zoom in/out"
 msgstr "Přiblížení/Oddálení"
 
@@ -318,7 +317,7 @@ msgstr "Přiblížení/Oddálení"
 msgid "cancel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:108
+#: resources/views/modules/descendants-chart/page.phtml:105
 msgid "close"
 msgstr ""
 
@@ -342,6 +341,6 @@ msgstr ""
 msgid "up"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:65
+#: resources/views/modules/descendants-chart/page.phtml:66
 msgid "view"
 msgstr ""
