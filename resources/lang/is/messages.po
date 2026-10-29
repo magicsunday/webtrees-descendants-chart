@@ -33,7 +33,7 @@ msgstr "Stytta eftirnöfn fyrst"
 msgid "All descendants"
 msgstr ""
 
-#: src/Module.php:130
+#: src/Module.php:134
 msgid "An overview of an individual’s descendants."
 msgstr "Yfirlit yfir afkomendur einstaklings."
 
@@ -53,19 +53,19 @@ msgstr "Aðeins fæðingarnafn"
 msgid "Birth name with married name in brackets"
 msgstr "Fæðingarnafn með giftingarnafni innan sviga"
 
-#: resources/views/modules/descendants-chart/page.phtml:117
+#: resources/views/modules/descendants-chart/page.phtml:109
 msgid "Center chart on this person"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:36
+#: resources/views/modules/components/buttonbar/help-button.phtml:27
 msgid "Click and drag"
 msgstr "Smella og draga"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:31
+#: resources/views/modules/components/buttonbar/help-button.phtml:22
 msgid "Click on a person"
 msgstr "Smella á einstakling"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:33
+#: resources/views/modules/components/buttonbar/help-button.phtml:24
 msgid "Click or Enter on a person"
 msgstr ""
 
@@ -83,7 +83,7 @@ msgstr ""
 "fyrir fullt nafn. „Sjálfvirkt“ notar eftirnafnshefð trésins (íslensk hefð "
 "styttir eftirnöfn; aðrar stytta eiginnöfn)."
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:35
+#: resources/views/modules/components/buttonbar/help-button.phtml:26
 msgid "Ctrl + scroll"
 msgstr "Ctrl + skruna"
 
@@ -91,11 +91,11 @@ msgstr "Ctrl + skruna"
 msgid "Descendant line"
 msgstr ""
 
-#: src/Module.php:119 src/Module.php:232
+#: src/Module.php:123 src/Module.php:236
 msgid "Descendants chart"
 msgstr "Afkomendagraf"
 
-#: src/Module.php:229 src/Module/ChartTrait.php:43
+#: src/Module.php:233 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Afkomendagraf fyrir %s"
@@ -104,7 +104,7 @@ msgstr "Afkomendagraf fyrir %s"
 msgid "Details"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:34
+#: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Details panel"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr ""
 msgid "Generations"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:77
+#: resources/views/modules/descendants-chart/page.phtml:78
 msgid "Hide more options"
 msgstr "Fela fleiri valkosti"
 
@@ -153,7 +153,7 @@ msgstr "Fela SVG útflutningshnappinn"
 msgid "Hide the spouses associated with an individual"
 msgstr "Fela maka sem tengjast einstaklingi."
 
-#: resources/views/modules/descendants-chart/page.phtml:39
+#: resources/views/modules/descendants-chart/page.phtml:40
 msgid "Individual"
 msgstr ""
 
@@ -183,15 +183,15 @@ msgstr ""
 msgid "Modules"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:32
+#: resources/views/modules/components/buttonbar/help-button.phtml:23
 msgid "Move between the persons"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:36
+#: resources/views/modules/components/buttonbar/help-button.phtml:27
 msgid "Move the chart"
 msgstr "Færa línuritið"
 
-#: src/Module.php:251
+#: src/Module.php:255
 msgid "Move the view with two fingers"
 msgstr "Færðu yfirlitið með tveimur fingrum"
 
@@ -199,7 +199,7 @@ msgstr "Færðu yfirlitið með tveimur fingrum"
 msgid "Name abbreviation when space is tight"
 msgstr "Nafnastytting þegar pláss er lítið"
 
-#: resources/views/modules/descendants-chart/page.phtml:114
+#: resources/views/modules/descendants-chart/page.phtml:107
 msgid "No details are available for this person."
 msgstr ""
 
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Open individual in new browser window/tab"
 msgstr "Opnaðu einstakling í nýjum vafraglugga/flipa"
 
-#: resources/views/modules/descendants-chart/page.phtml:116
+#: resources/views/modules/descendants-chart/page.phtml:108
 msgid "Open individual page"
 msgstr ""
 
@@ -219,7 +219,7 @@ msgstr ""
 "Opnaðu upplýsingasíðu viðkomandi einstaklings í nýjum vafraglugga/flipa "
 "þegar vinstrismellt er á hann, annars er núverandi gluggi/flipi notaður."
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:34
+#: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Open the individual page or center the chart on the person"
 msgstr ""
 
@@ -235,11 +235,11 @@ msgstr ""
 msgid "Re center"
 msgstr "Endurmiðja"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:31
+#: resources/views/modules/components/buttonbar/help-button.phtml:22
 msgid "Reload chart for that person"
 msgstr "Endurhlaða línurit fyrir þann einstakling"
 
-#: resources/views/modules/descendants-chart/page.phtml:112
+#: resources/views/modules/descendants-chart/page.phtml:106
 msgid "Select a person in the chart to see the details here."
 msgstr ""
 
@@ -259,12 +259,11 @@ msgstr "Sýna aukanafn einstaklings"
 msgid "Show details panel"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:18
-#: resources/views/modules/components/buttonbar/help-button.phtml:29
+#: resources/views/modules/components/buttonbar/help-button.phtml:19
 msgid "Show help"
 msgstr "Sýna hjálp"
 
-#: resources/views/modules/descendants-chart/page.phtml:76
+#: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Show more options"
 msgstr "Birta fleiri valkosti"
 
@@ -272,7 +271,7 @@ msgstr "Birta fleiri valkosti"
 msgid "Show nicknames in display names"
 msgstr "Sýna gælunöfn í birtingarnafni"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:33
+#: resources/views/modules/components/buttonbar/help-button.phtml:24
 msgid "Show the details of the person in the panel"
 msgstr ""
 
@@ -280,7 +279,7 @@ msgstr ""
 msgid "Switch between full screen mode and normal view"
 msgstr "Skiptu á milli fullsskjás og venjulegs skjás"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:32
+#: resources/views/modules/components/buttonbar/help-button.phtml:23
 msgid "Tab key"
 msgstr ""
 
@@ -298,7 +297,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:250
+#: src/Module.php:254
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Notaðu Ctrl + skruna til að þysja í ættartrénu"
 
@@ -314,7 +313,7 @@ msgstr ""
 "\"_MARNM\") sé sýnt — kemur í stað fæðingarnafns, bætt við innan sviga á "
 "eftir fæðingarnafni, eða falið."
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:35
+#: resources/views/modules/components/buttonbar/help-button.phtml:26
 msgid "Zoom in/out"
 msgstr "Þysja inn/út"
 
@@ -322,7 +321,7 @@ msgstr "Þysja inn/út"
 msgid "cancel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:108
+#: resources/views/modules/descendants-chart/page.phtml:105
 msgid "close"
 msgstr ""
 
@@ -346,6 +345,6 @@ msgstr ""
 msgid "up"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:65
+#: resources/views/modules/descendants-chart/page.phtml:66
 msgid "view"
 msgstr ""

@@ -34,7 +34,7 @@ msgstr "Prvo skrati prezimena"
 msgid "All descendants"
 msgstr ""
 
-#: src/Module.php:130
+#: src/Module.php:134
 msgid "An overview of an individual’s descendants."
 msgstr "Pregled potomaka pojedinca."
 
@@ -54,19 +54,19 @@ msgstr "Samo rodno ime"
 msgid "Birth name with married name in brackets"
 msgstr "Rodno ime sa bračnim prezimenom u zagradi"
 
-#: resources/views/modules/descendants-chart/page.phtml:117
+#: resources/views/modules/descendants-chart/page.phtml:109
 msgid "Center chart on this person"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:36
+#: resources/views/modules/components/buttonbar/help-button.phtml:27
 msgid "Click and drag"
 msgstr "Klikni i prevuci"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:31
+#: resources/views/modules/components/buttonbar/help-button.phtml:22
 msgid "Click on a person"
 msgstr "Klikni na osobu"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:33
+#: resources/views/modules/components/buttonbar/help-button.phtml:24
 msgid "Click or Enter on a person"
 msgstr ""
 
@@ -84,7 +84,7 @@ msgstr ""
 "ime. „Automatski“ koristi tradiciju prezimena stabla (islandska tradicija "
 "skraćuje prezimena; sve ostale skraćuju lična imena)."
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:35
+#: resources/views/modules/components/buttonbar/help-button.phtml:26
 msgid "Ctrl + scroll"
 msgstr "Ctrl + skrolovanje"
 
@@ -92,11 +92,11 @@ msgstr "Ctrl + skrolovanje"
 msgid "Descendant line"
 msgstr ""
 
-#: src/Module.php:119 src/Module.php:232
+#: src/Module.php:123 src/Module.php:236
 msgid "Descendants chart"
 msgstr "Grafikon potomaka"
 
-#: src/Module.php:229 src/Module/ChartTrait.php:43
+#: src/Module.php:233 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Grafikon potomaka osobe %s"
@@ -105,7 +105,7 @@ msgstr "Grafikon potomaka osobe %s"
 msgid "Details"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:34
+#: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Details panel"
 msgstr ""
 
@@ -136,7 +136,7 @@ msgstr ""
 msgid "Generations"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:77
+#: resources/views/modules/descendants-chart/page.phtml:78
 msgid "Hide more options"
 msgstr "Sakrij dodatne opcije"
 
@@ -152,7 +152,7 @@ msgstr "Sakrij dugme za izvoz SVG"
 msgid "Hide the spouses associated with an individual"
 msgstr "Sakrij supružnike povezane sa osobom."
 
-#: resources/views/modules/descendants-chart/page.phtml:39
+#: resources/views/modules/descendants-chart/page.phtml:40
 msgid "Individual"
 msgstr ""
 
@@ -182,15 +182,15 @@ msgstr ""
 msgid "Modules"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:32
+#: resources/views/modules/components/buttonbar/help-button.phtml:23
 msgid "Move between the persons"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:36
+#: resources/views/modules/components/buttonbar/help-button.phtml:27
 msgid "Move the chart"
 msgstr "Pomeri dijagram"
 
-#: src/Module.php:251
+#: src/Module.php:255
 msgid "Move the view with two fingers"
 msgstr "Pomeraj prikaz sa dva prsta"
 
@@ -198,7 +198,7 @@ msgstr "Pomeraj prikaz sa dva prsta"
 msgid "Name abbreviation when space is tight"
 msgstr "Skraćivanje imena kada je prostor ograničen"
 
-#: resources/views/modules/descendants-chart/page.phtml:114
+#: resources/views/modules/descendants-chart/page.phtml:107
 msgid "No details are available for this person."
 msgstr ""
 
@@ -206,7 +206,7 @@ msgstr ""
 msgid "Open individual in new browser window/tab"
 msgstr "Otvori osobu u novom prozoru/tabu pregledača"
 
-#: resources/views/modules/descendants-chart/page.phtml:116
+#: resources/views/modules/descendants-chart/page.phtml:108
 msgid "Open individual page"
 msgstr ""
 
@@ -216,7 +216,7 @@ msgid ""
 "it's left-clicked, otherwise the current window/tab is used."
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:34
+#: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Open the individual page or center the chart on the person"
 msgstr ""
 
@@ -232,11 +232,11 @@ msgstr ""
 msgid "Re center"
 msgstr "Ponovo centriraj"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:31
+#: resources/views/modules/components/buttonbar/help-button.phtml:22
 msgid "Reload chart for that person"
 msgstr "Ponovo učitaj dijagram za tu osobu"
 
-#: resources/views/modules/descendants-chart/page.phtml:112
+#: resources/views/modules/descendants-chart/page.phtml:106
 msgid "Select a person in the chart to see the details here."
 msgstr ""
 
@@ -256,12 +256,11 @@ msgstr "Prikaži alternativno ime osobe"
 msgid "Show details panel"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:18
-#: resources/views/modules/components/buttonbar/help-button.phtml:29
+#: resources/views/modules/components/buttonbar/help-button.phtml:19
 msgid "Show help"
 msgstr "Prikaži pomoć"
 
-#: resources/views/modules/descendants-chart/page.phtml:76
+#: resources/views/modules/descendants-chart/page.phtml:77
 msgid "Show more options"
 msgstr "Prikaži dodatne opcije"
 
@@ -269,7 +268,7 @@ msgstr "Prikaži dodatne opcije"
 msgid "Show nicknames in display names"
 msgstr "Prikaži nadimke u prikazanim imenima"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:33
+#: resources/views/modules/components/buttonbar/help-button.phtml:24
 msgid "Show the details of the person in the panel"
 msgstr ""
 
@@ -277,7 +276,7 @@ msgstr ""
 msgid "Switch between full screen mode and normal view"
 msgstr "Prebacivanje između celog ekrana i običnog prikaza"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:32
+#: resources/views/modules/components/buttonbar/help-button.phtml:23
 msgid "Tab key"
 msgstr ""
 
@@ -295,7 +294,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:250
+#: src/Module.php:254
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Koristi CTRL + skrol da bi zumirao prikaz"
 
@@ -311,7 +310,7 @@ msgstr ""
 "\"_MARNM\") prikazuje — zamenjujući rodno ime, dodato u zagradi posle rodnog "
 "imena, ili sakriveno."
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:35
+#: resources/views/modules/components/buttonbar/help-button.phtml:26
 msgid "Zoom in/out"
 msgstr "Uvećaj/Umanji"
 
@@ -319,7 +318,7 @@ msgstr "Uvećaj/Umanji"
 msgid "cancel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:108
+#: resources/views/modules/descendants-chart/page.phtml:105
 msgid "close"
 msgstr ""
 
@@ -343,6 +342,6 @@ msgstr ""
 msgid "up"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:65
+#: resources/views/modules/descendants-chart/page.phtml:66
 msgid "view"
 msgstr ""

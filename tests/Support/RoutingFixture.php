@@ -35,10 +35,18 @@ final class RoutingFixture
      * follows a redirect passes the PSR-17 response factory, which the container then hands out too.
      *
      * @param ResponseFactoryInterface|null $responseFactory The response factory that the global redirect() helper resolves
+     *
+     * @return Map The route map that the route factory hands out, so a test can read back the registered routes
      */
-    public static function install(?ResponseFactoryInterface $responseFactory = null): void
+    public static function install(?ResponseFactoryInterface $responseFactory = null): Map
     {
-        $routeFactory = new class implements RouteFactoryInterface {
+        $routeMap = new Map(new Route());
+
+        $routeFactory = new readonly class($routeMap) implements RouteFactoryInterface {
+            public function __construct(private Map $routeMap)
+            {
+            }
+
             public function route(string $route_name, array $parameters = []): string
             {
                 return '/route/' . $route_name . '?' . http_build_query($parameters);
@@ -46,7 +54,7 @@ final class RoutingFixture
 
             public function routeMap(): Map
             {
-                return new Map(new Route());
+                return $this->routeMap;
             }
         };
 
@@ -86,5 +94,7 @@ final class RoutingFixture
 
         Registry::routeFactory($routeFactory);
         Registry::container($container);
+
+        return $routeMap;
     }
 }
