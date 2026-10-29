@@ -57,6 +57,18 @@ msgstr "Tên khai sinh kèm tên sau khi kết hôn trong ngoặc"
 msgid "Center chart on this person"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Click and drag"
+msgstr "Nhấp và kéo"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Click on a person"
+msgstr "Nhấp vào một người"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Click or Enter on a person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
 msgstr ""
@@ -70,6 +82,10 @@ msgstr ""
 "Kiểm soát phần nào của tên được rút ngắn trước khi hộp quá hẹp để hiển thị "
 "tên đầy đủ. \"Tự động\" sử dụng truyền thống họ của cây phả hệ (Iceland viết "
 "tắt họ; còn lại viết tắt tên gọi)."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Ctrl + scroll"
+msgstr "Ctrl + cuộn chuột"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
@@ -86,6 +102,10 @@ msgstr "Biểu đồ con cháu của %s"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:23
 msgid "Details"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Details panel"
 msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
@@ -161,6 +181,14 @@ msgstr ""
 msgid "Modules"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Move between the persons"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Move the chart"
+msgstr "Di chuyển biểu đồ"
+
 #: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "Di chuyển tầm nhìn bằng hai ngón tay"
@@ -187,6 +215,10 @@ msgid ""
 "it's left-clicked, otherwise the current window/tab is used."
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Open the individual page or center the chart on the person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
 msgstr ""
@@ -198,6 +230,10 @@ msgstr ""
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
 msgstr "Chỉnh biểu đồ về giữa màn hình"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Reload chart for that person"
+msgstr "Tải lại biểu đồ cho người đó"
 
 #: resources/views/modules/descendants-chart/page.phtml:112
 msgid "Select a person in the chart to see the details here."
@@ -219,7 +255,8 @@ msgstr "Hiển thị tên thay thế của cá nhân"
 msgid "Show details panel"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:17
+#: resources/views/modules/components/buttonbar/help-button.phtml:18
+#: resources/views/modules/components/buttonbar/help-button.phtml:29
 msgid "Show help"
 msgstr "Hiển thị trợ giúp"
 
@@ -231,9 +268,17 @@ msgstr "Hiển thị thêm tùy chọn"
 msgid "Show nicknames in display names"
 msgstr "Hiển thị biệt danh trong tên hiển thị"
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Show the details of the person in the panel"
+msgstr ""
+
 #: resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
 msgid "Switch between full screen mode and normal view"
 msgstr "Chuyển giữa toàn màn hình và xem bình thường"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Tab key"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:47
 msgid ""
@@ -264,6 +309,10 @@ msgstr ""
 "ngoặc sau tên khai sinh, hay ẩn đi.Liệu tên sau khi kết hôn (từ mục tên kiểu "
 "\"MARRIED\" hoặc \"_MARNM\") có được hiển thị — thay thế tên khai sinh, thêm "
 "trong ngoặc sau tên khai sinh, hoặc bị ẩn."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Zoom in/out"
+msgstr "Phóng to/Thu nhỏ"
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"

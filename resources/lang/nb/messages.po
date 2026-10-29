@@ -57,6 +57,18 @@ msgstr "Fødselsnavn med navn som gift i parentes"
 msgid "Center chart on this person"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Click and drag"
+msgstr "Klikk og dra"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Click on a person"
+msgstr "Klikk på en person"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Click or Enter on a person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
 msgstr ""
@@ -70,6 +82,10 @@ msgstr ""
 "Styrer hvilken navnedel som forkortes først når en boks er for smal for hele "
 "navnet. «Automatisk» bruker treets etternavnstradisjon (islandsk forkorter "
 "etternavn; alt annet forkorter fornavn)."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Ctrl + scroll"
+msgstr "Ctrl + rull"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
@@ -86,6 +102,10 @@ msgstr "Etterkommerdiagram for %s"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:23
 msgid "Details"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Details panel"
 msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
@@ -163,6 +183,14 @@ msgstr "Matrilineær linje (mor til barn)"
 msgid "Modules"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Move between the persons"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Move the chart"
+msgstr "Flytt diagrammet"
+
 #: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "Bruk to fingre for å flytte utsnitt"
@@ -191,6 +219,10 @@ msgstr ""
 "Åpner gjeldende persons faktaside i nytt vindu/fane ved venstreklikk. Om "
 "ikke, åpnes siden i samme vindu/fane."
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Open the individual page or center the chart on the person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
 msgstr ""
@@ -202,6 +234,10 @@ msgstr "Patrilineær linje (far til sønn)"
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
 msgstr "Tilbakestill"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Reload chart for that person"
+msgstr "Last diagrammet på nytt for den personen"
 
 #: resources/views/modules/descendants-chart/page.phtml:112
 msgid "Select a person in the chart to see the details here."
@@ -223,7 +259,8 @@ msgstr "Vis alternativt navn på person"
 msgid "Show details panel"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:17
+#: resources/views/modules/components/buttonbar/help-button.phtml:18
+#: resources/views/modules/components/buttonbar/help-button.phtml:29
 msgid "Show help"
 msgstr "Vis hjelp"
 
@@ -235,9 +272,17 @@ msgstr "Vis flere valg"
 msgid "Show nicknames in display names"
 msgstr "Vis kallenavn i visningsnavn"
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Show the details of the person in the panel"
+msgstr ""
+
 #: resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
 msgid "Switch between full screen mode and normal view"
 msgstr "Bytt mellom fullskjerm og normal visning"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Tab key"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:47
 msgid ""
@@ -273,6 +318,10 @@ msgstr ""
 "fødselsnavnet, eller skjules.Om navnet som gift (fra en \"MARRIED\"- eller "
 "\"_MARNM\"-navneoppføring) vises — erstatter fødselsnavnet, legges til i "
 "parentes etter fødselsnavnet, eller skjules."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Zoom in/out"
+msgstr "Zoom inn/ut"
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"

@@ -57,6 +57,18 @@ msgstr "Fødselsnavn med gifteenavn i parentes"
 msgid "Center chart on this person"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Click and drag"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Click on a person"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Click or Enter on a person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
 msgstr ""
@@ -70,6 +82,10 @@ msgstr ""
 "Styrer hvilken navnedel der forkortes først, når en boks er for smal til det "
 "fulde navn. „Automatisk“ bruger træets efternavnstradition (islandsk "
 "forkorter efternavne; alle andre forkorter fornavne)."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Ctrl + scroll"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
@@ -86,6 +102,10 @@ msgstr "Graf over efterkommere af %s"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:23
 msgid "Details"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Details panel"
 msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
@@ -161,6 +181,14 @@ msgstr ""
 msgid "Modules"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Move between the persons"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Move the chart"
+msgstr ""
+
 #: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "Flyt visningen med to fingre"
@@ -187,6 +215,10 @@ msgid ""
 "it's left-clicked, otherwise the current window/tab is used."
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Open the individual page or center the chart on the person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
 msgstr ""
@@ -198,6 +230,10 @@ msgstr ""
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
 msgstr "Gen-centrer"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Reload chart for that person"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/page.phtml:112
 msgid "Select a person in the chart to see the details here."
@@ -219,7 +255,8 @@ msgstr "Vis alternativt navn på personen"
 msgid "Show details panel"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:17
+#: resources/views/modules/components/buttonbar/help-button.phtml:18
+#: resources/views/modules/components/buttonbar/help-button.phtml:29
 msgid "Show help"
 msgstr "Vis hjælp"
 
@@ -231,9 +268,17 @@ msgstr "Vis flere indstillinger"
 msgid "Show nicknames in display names"
 msgstr "Vis kælenavne i visningsnavne"
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Show the details of the person in the panel"
+msgstr ""
+
 #: resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
 msgid "Switch between full screen mode and normal view"
 msgstr "Skift mellem fuldskærms- og normal visning"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Tab key"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:47
 msgid ""
@@ -264,6 +309,10 @@ msgstr ""
 "eller skjult.Om gifteenavnet (fra en \"MARRIED\"- eller \"_MARNM\"-"
 "navnepost) vises – erstatter fødselsnavnet, vedhæftes i parentes efter "
 "fødselsnavnet, eller skjules."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Zoom in/out"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"

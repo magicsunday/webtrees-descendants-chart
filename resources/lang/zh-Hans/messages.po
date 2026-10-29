@@ -55,6 +55,18 @@ msgstr "出生姓名后附婚后姓名（括号内）"
 msgid "Center chart on this person"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Click and drag"
+msgstr "点击并拖动"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Click on a person"
+msgstr "点击某人"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Click or Enter on a person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
 msgstr ""
@@ -67,6 +79,10 @@ msgid ""
 msgstr ""
 "控制当方框对完整姓名而言过窄时，先缩写哪个名字部分。“自动”使用族谱的姓氏传统"
 "（冰岛语缩写姓氏；其他所有传统缩写名字）。"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Ctrl + scroll"
+msgstr "Ctrl + 滚动"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
@@ -83,6 +99,10 @@ msgstr "%s的后代图"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:23
 msgid "Details"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Details panel"
 msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
@@ -159,6 +179,14 @@ msgstr ""
 msgid "Modules"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Move between the persons"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Move the chart"
+msgstr "移动图表"
+
 #: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "用两根手指拖动视图"
@@ -187,6 +215,10 @@ msgstr ""
 "左键点击时在新浏览器窗口/标签页中打开当前个人的详情页面，否则使用当前窗口/标"
 "签页。"
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Open the individual page or center the chart on the person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
 msgstr ""
@@ -198,6 +230,10 @@ msgstr ""
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
 msgstr "居中"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Reload chart for that person"
+msgstr "为该人重新加载图表"
 
 #: resources/views/modules/descendants-chart/page.phtml:112
 msgid "Select a person in the chart to see the details here."
@@ -219,7 +255,8 @@ msgstr "显示个人的替代姓名"
 msgid "Show details panel"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:17
+#: resources/views/modules/components/buttonbar/help-button.phtml:18
+#: resources/views/modules/components/buttonbar/help-button.phtml:29
 msgid "Show help"
 msgstr "显示帮助"
 
@@ -231,9 +268,17 @@ msgstr "显示更多选项"
 msgid "Show nicknames in display names"
 msgstr "在显示名中显示昵称"
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Show the details of the person in the panel"
+msgstr ""
+
 #: resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
 msgid "Switch between full screen mode and normal view"
 msgstr "切换全屏模式和普通视图"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Tab key"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:47
 msgid ""
@@ -263,6 +308,10 @@ msgstr ""
 "生姓名、附加在出生姓名后括号内，或隐藏。是否显示婚后姓名（来自 \"MARRIED\" "
 "或 \"_MARNM\" 类型的姓名条目）— 替换出生姓名、附加在出生姓名后的括号内或隐"
 "藏。"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Zoom in/out"
+msgstr "放大/缩小"
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"

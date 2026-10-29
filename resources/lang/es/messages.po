@@ -57,6 +57,18 @@ msgstr "Nombre de nacimiento con nombre de casada entre paréntesis"
 msgid "Center chart on this person"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Click and drag"
+msgstr "Hacer clic y arrastrar"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Click on a person"
+msgstr "Hacer clic en una persona"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Click or Enter on a person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
 msgstr ""
@@ -71,6 +83,10 @@ msgstr ""
 "demasiado estrecho para el nombre completo. \"Automático\" utiliza la "
 "tradición de apellidos del árbol (islandés abrevia apellidos; el resto "
 "abrevia nombres de pila)."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Ctrl + scroll"
+msgstr "Ctrl + scroll"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
@@ -87,6 +103,10 @@ msgstr "Árbol de descendientes de %s"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:23
 msgid "Details"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Details panel"
 msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
@@ -163,6 +183,14 @@ msgstr ""
 msgid "Modules"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Move between the persons"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Move the chart"
+msgstr "Mover el diagrama"
+
 #: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "Mueve la vista con dos dedos"
@@ -189,6 +217,10 @@ msgid ""
 "it's left-clicked, otherwise the current window/tab is used."
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Open the individual page or center the chart on the person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
 msgstr ""
@@ -200,6 +232,10 @@ msgstr ""
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
 msgstr "Volver a centrar"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Reload chart for that person"
+msgstr "Recargar el diagrama para esa persona"
 
 #: resources/views/modules/descendants-chart/page.phtml:112
 msgid "Select a person in the chart to see the details here."
@@ -221,7 +257,8 @@ msgstr "Mostrar nombre alternativo del individuo"
 msgid "Show details panel"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:17
+#: resources/views/modules/components/buttonbar/help-button.phtml:18
+#: resources/views/modules/components/buttonbar/help-button.phtml:29
 msgid "Show help"
 msgstr "Mostrar ayuda"
 
@@ -233,9 +270,17 @@ msgstr "Mostrar más opciones"
 msgid "Show nicknames in display names"
 msgstr "Mostrar apodos en los nombres mostrados"
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Show the details of the person in the panel"
+msgstr ""
+
 #: resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
 msgid "Switch between full screen mode and normal view"
 msgstr "Cambiar entre pantalla completa y vista normal"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Tab key"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:47
 msgid ""
@@ -267,6 +312,10 @@ msgstr ""
 "(desde una entrada de nombre de tipo \"MARRIED\" o \"_MARNM\") — "
 "reemplazando el nombre de nacimiento, añadido entre paréntesis tras el "
 "nombre de nacimiento, u oculto."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Zoom in/out"
+msgstr "Acercar/Alejar"
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"

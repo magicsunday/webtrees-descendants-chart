@@ -9,6 +9,7 @@ import { jest } from "@jest/globals";
 
 const registered = [];
 const stored = {};
+const restoredChecked = {};
 
 const buildChartAjaxUrl = jest.fn(() => "https://example.test/ajax");
 const setChartOptionsGlobal = jest.fn();
@@ -20,12 +21,21 @@ await jest.unstable_mockModule("@magicsunday/webtrees-chart-lib/chart-core", () 
     syncCollapseToggle: jest.fn(),
     Storage: class {
         /**
-         * Records the name of the registered option.
+         * Records the name of the registered option and puts a stored state back into the checkbox
+         * of the form, as the real storage does.
          *
          * @param {string} name The option name
          */
         register(name) {
             registered.push(name);
+
+            if (name in restoredChecked) {
+                const input = document.querySelector(`input[type="checkbox"][name="${name}"]`);
+
+                if (input) {
+                    input.checked = restoredChecked[name];
+                }
+            }
         }
 
         /**
@@ -67,6 +77,10 @@ describe("initPage", () => {
 
         for (const name of Object.keys(stored)) {
             delete stored[name];
+        }
+
+        for (const name of Object.keys(restoredChecked)) {
+            delete restoredChecked[name];
         }
 
         document.body.innerHTML = '<form id="webtrees-descendants-chart-form"></form>';
@@ -130,5 +144,64 @@ describe("initPage", () => {
         initPage({ ajaxUrl: "https://example.test/chart" });
 
         expect(setChartOptionsGlobal.mock.calls[0][1]).not.toHaveProperty("showDetailPanel");
+    });
+
+    /**
+     * Renders the form together with the help button, the help popover and the panel checkbox.
+     *
+     * @param {boolean} panel Whether the checkbox of the detail panel is ticked
+     */
+    function renderHelp(panel) {
+        document.body.innerHTML =
+            '<form id="webtrees-descendants-chart-form">' +
+            `<input type="checkbox" name="showDetailPanel" value="1"${panel ? " checked" : ""}>` +
+            "</form>" +
+            '<button class="btn-help" aria-expanded="false" aria-controls="descendants-chart-help-popover">Help</button>' +
+            '<div id="descendants-chart-help-popover" class="help-popover d-none" role="region">' +
+            '<div data-help-mode="default" id="help-default"></div>' +
+            '<div data-help-mode="panel" id="help-panel" class="d-none"></div>' +
+            "</div>";
+    }
+
+    it("wires the help button to its popover", () => {
+        renderHelp(false);
+
+        initPage({ ajaxUrl: "https://example.test/chart" });
+        document.querySelector(".btn-help").click();
+
+        expect(
+            document.getElementById("descendants-chart-help-popover").classList.contains("d-none"),
+        ).toBe(false);
+        expect(document.querySelector(".btn-help").getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("shows the help entries of the detail panel mode that the chart loads with", () => {
+        renderHelp(true);
+
+        initPage({ ajaxUrl: "https://example.test/chart" });
+
+        expect(document.getElementById("help-panel").classList.contains("d-none")).toBe(false);
+        expect(document.getElementById("help-default").classList.contains("d-none")).toBe(true);
+    });
+
+    it("shows the help entries of the mode that the stored state restores into the checkbox", () => {
+        // The markup renders the checkbox unticked and the storage ticks it, so the help has to follow
+        // the restored state and not the state of the markup.
+        renderHelp(false);
+        restoredChecked.showDetailPanel = true;
+
+        initPage({ ajaxUrl: "https://example.test/chart" });
+
+        expect(document.getElementById("help-panel").classList.contains("d-none")).toBe(false);
+        expect(document.getElementById("help-default").classList.contains("d-none")).toBe(true);
+    });
+
+    it("shows the default help entries while the detail panel is off", () => {
+        renderHelp(false);
+
+        initPage({ ajaxUrl: "https://example.test/chart" });
+
+        expect(document.getElementById("help-default").classList.contains("d-none")).toBe(false);
+        expect(document.getElementById("help-panel").classList.contains("d-none")).toBe(true);
     });
 });

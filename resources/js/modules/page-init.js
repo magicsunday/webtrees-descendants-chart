@@ -12,6 +12,7 @@ import {
     Storage,
     syncCollapseToggle,
 } from "@magicsunday/webtrees-chart-lib/chart-core";
+import { initHelpPopover, syncHelpMode } from "./help-popover.js";
 
 /**
  * Initialises the descendants chart page: restores form values from
@@ -35,6 +36,7 @@ export function initPage(config) {
     storage.register("showDetailPanel");
 
     syncCollapseToggle(storage);
+    initHelpPopover();
 
     const form = /** @type {HTMLFormElement} */ (
         document.getElementById("webtrees-descendants-chart-form")
@@ -82,4 +84,8 @@ export function initPage(config) {
         ],
     });
     setChartAjaxUrl("descendants-chart-url", ajaxUrl);
+
+    // The chart takes its mode from the stored state that the request above carries, so the help
+    // shows the entries of that mode.
+    syncHelpMode();
 }
