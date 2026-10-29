@@ -32,6 +32,7 @@ use MagicSunday\Webtrees\DescendantsChart\Module\ChartTrait;
 use MagicSunday\Webtrees\DescendantsChart\Module\ConfigTrait;
 use MagicSunday\Webtrees\ModuleBase\Contract\ModuleAssetUrlInterface;
 use MagicSunday\Webtrees\ModuleBase\Traits\ModuleCustomTrait;
+use MagicSunday\Webtrees\ModuleBase\View\SharedViews;
 use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -106,6 +107,8 @@ final class Module extends DescendancyChartModule implements ModuleAssetUrlInter
             ->allows(RequestMethodInterface::METHOD_POST);
 
         View::registerNamespace($this->name(), $this->resourcesFolder() . 'views/');
+
+        SharedViews::register();
     }
 
     /**

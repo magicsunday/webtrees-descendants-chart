@@ -165,6 +165,24 @@ final class PageViewTest extends TestCase
     }
 
     /**
+     * A translation can contain a tag. The texts of the panel come from the shared view, which escapes
+     * every value, so the hint stays text and opens no element.
+     */
+    #[Test]
+    public function keepsTheTranslatedHintOfThePanelAsText(): void
+    {
+        $text  = 'Pick <b>one</b> & "go"';
+        $xpath = ViewFixture::xpathOf(
+            $this->render('https://example.test/ajax', [], ['Select a person in the chart to see the details here.' => $text])
+        );
+
+        $hint = ViewFixture::first($xpath, '//*[@data-panel="hint"]');
+
+        self::assertSame($text, $hint->textContent);
+        self::assertSame(0, $hint->getElementsByTagName('b')->length);
+    }
+
+    /**
      * Renders the page view with the variables of the page action, followed by the scripts that the
      * view pushed onto the javascript stack.
      *
