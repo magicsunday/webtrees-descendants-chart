@@ -5,7 +5,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/magicsunday/webtrees-descendants-"
 "chart/issues\n"
 "POT-Creation-Date: 1970-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-05-03 08:26+0200\n"
+"PO-Revision-Date: 2026-10-29 06:23+0100\n"
 "Last-Translator: TheDutchJewel <thedutchjewel@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.9\n"
+"X-Generator: Poedit 3.10\n"
 "X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: webtrees-descendants-chart/module.php\n"
@@ -31,7 +31,7 @@ msgstr "Achternamen eerst afkorten"
 
 #: src/Configuration.php:329
 msgid "All descendants"
-msgstr ""
+msgstr "Alle afstammelingen"
 
 #: src/Module.php:130
 msgid "An overview of an individual’s descendants."
@@ -55,7 +55,7 @@ msgstr "Geboortenaam met huwelijksnaam tussen haakjes"
 
 #: resources/views/modules/descendants-chart/page.phtml:117
 msgid "Center chart on this person"
-msgstr ""
+msgstr "Diagram centreren op deze persoon"
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:36
 msgid "Click and drag"
@@ -89,7 +89,7 @@ msgstr "Ctrl + scrollen"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
-msgstr ""
+msgstr "Afstammelingenlijn"
 
 #: src/Module.php:119 src/Module.php:232
 msgid "Descendants chart"
@@ -179,7 +179,7 @@ msgstr "Huwelijksnamen"
 
 #: src/Configuration.php:331
 msgid "Maternal line (mother to child)"
-msgstr ""
+msgstr "Moederlijn (van moeder op kind)"
 
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Modules"
@@ -203,7 +203,7 @@ msgstr "Afkorting van naam bij beperkte ruimte"
 
 #: resources/views/modules/descendants-chart/page.phtml:114
 msgid "No details are available for this person."
-msgstr ""
+msgstr "Er zijn geen gegevens beschikbaar voor deze persoon."
 
 #: resources/views/modules/descendants-chart/form/behavior.phtml:28
 msgid "Open individual in new browser window/tab"
@@ -211,7 +211,7 @@ msgstr "Open persoon in nieuw browservenster/tabblad"
 
 #: resources/views/modules/descendants-chart/page.phtml:116
 msgid "Open individual page"
-msgstr ""
+msgstr "Persoonspagina openen"
 
 #: resources/views/modules/descendants-chart/form/behavior.phtml:34
 msgid ""
@@ -232,7 +232,7 @@ msgstr ""
 
 #: src/Configuration.php:330
 msgid "Paternal line (father to son)"
-msgstr ""
+msgstr "Vaderlijn (van vader op zoon)"
 
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
@@ -244,7 +244,7 @@ msgstr "Diagram voor die persoon herladen"
 
 #: resources/views/modules/descendants-chart/page.phtml:112
 msgid "Select a person in the chart to see the details here."
-msgstr ""
+msgstr "Selecteer een persoon in de grafiek om hier de gegevens te bekijken."
 
 #: resources/views/modules/descendants-chart/form/details.phtml:59
 msgid ""
@@ -253,6 +253,11 @@ msgid ""
 "panel that slides in over the chart. A click then selects a person instead "
 "of opening the chart for them, and the panel offers both actions."
 msgstr ""
+"Bij het selecteren van een persoon worden de geboorte, het overlijden met "
+"plaatsen en de feiten die de stamboom noemt voor de diagramvakken (\"Andere "
+"feiten weergeven in diagrammen\") getoond in een paneel dat over het diagram "
+"schuift. Een klik selecteert vervolgens een persoon in plaats van diens "
+"diagram te openen, en het paneel biedt beide mogelijkheden."
 
 #: resources/views/modules/descendants-chart/form/details.phtml:28
 msgid "Show alternative name of individual"
@@ -260,7 +265,7 @@ msgstr "Toon alternatieve naam van persoon"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:53
 msgid "Show details panel"
-msgstr ""
+msgstr "Toon detailspaneel"
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:18
 #: resources/views/modules/components/buttonbar/help-button.phtml:29
@@ -295,6 +300,12 @@ msgid ""
 "inheritance of the mitochondrial DNA. The individual at the top of the chart "
 "is always shown, and a person of unknown sex ends the line."
 msgstr ""
+"De vaderlijke lijn volgt een vader naar uitsluitend zijn zonen, wat de "
+"overervingslijn van het Y-chromosoom is. De moederlijke lijn volgt een "
+"moeder naar al haar kinderen, maar niet de kinderen van een zoon, wat de "
+"overervingslijn van het mitochondriale DNA is. De persoon bovenaan het "
+"diagram wordt altijd weergegeven, en een persoon met een onbekend geslacht "
+"beëindigt de lijn."
 
 #: src/Module/ConfigTrait.php:112
 #, php-format
