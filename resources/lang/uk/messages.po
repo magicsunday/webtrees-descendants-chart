@@ -58,6 +58,18 @@ msgstr "Ім'я при народженні з прізвищем у шлюбі 
 msgid "Center chart on this person"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Click and drag"
+msgstr "Натисніть і перетягніть"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Click on a person"
+msgstr "Натисніть на особу"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Click or Enter on a person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
 msgstr ""
@@ -71,6 +83,10 @@ msgstr ""
 "Визначає, яку частину імені скорочувати першою, коли рамка занадто вузька "
 "для повного імені. «Автоматично» використовує традицію прізвищ дерева "
 "(ісландська скорочує прізвища; усі інші скорочують імена)."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Ctrl + scroll"
+msgstr "Ctrl + прокрутка"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
@@ -87,6 +103,10 @@ msgstr "Нащадки для %s"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:23
 msgid "Details"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Details panel"
 msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
@@ -162,6 +182,14 @@ msgstr ""
 msgid "Modules"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Move between the persons"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Move the chart"
+msgstr "Перемістити діаграму"
+
 #: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "Переміщуйте зображення двома пальцями"
@@ -188,6 +216,10 @@ msgid ""
 "it's left-clicked, otherwise the current window/tab is used."
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Open the individual page or center the chart on the person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
 msgstr ""
@@ -199,6 +231,10 @@ msgstr ""
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
 msgstr "Відцентрувати"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Reload chart for that person"
+msgstr "Перезавантажити діаграму для цієї особи"
 
 #: resources/views/modules/descendants-chart/page.phtml:112
 msgid "Select a person in the chart to see the details here."
@@ -220,7 +256,8 @@ msgstr "Показувати альтернативне ім’я особи"
 msgid "Show details panel"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:17
+#: resources/views/modules/components/buttonbar/help-button.phtml:18
+#: resources/views/modules/components/buttonbar/help-button.phtml:29
 msgid "Show help"
 msgstr "Показати довідку"
 
@@ -232,9 +269,17 @@ msgstr "Більше параметрів"
 msgid "Show nicknames in display names"
 msgstr "Показувати прізвиська у відображуваних іменах"
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Show the details of the person in the panel"
+msgstr ""
+
 #: resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
 msgid "Switch between full screen mode and normal view"
 msgstr "Перемикання між повноекранним і звичайним режимом"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Tab key"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:47
 msgid ""
@@ -265,6 +310,10 @@ msgstr ""
 "при народженні або приховування.Чи відображається прізвище у шлюбі (з запису "
 "імені типу \"MARRIED\" або \"_MARNM\") — замінюючи ім'я при народженні, "
 "додаючись у дужках після імені при народженні, або прихованим."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Zoom in/out"
+msgstr "Збільшити/Зменшити"
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"

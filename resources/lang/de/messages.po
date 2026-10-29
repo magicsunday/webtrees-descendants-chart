@@ -57,6 +57,18 @@ msgstr "Geburtsname mit Ehenamen in Klammern"
 msgid "Center chart on this person"
 msgstr "Diagramm auf diese Person zentrieren"
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Click and drag"
+msgstr "Klicken und Ziehen"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Click on a person"
+msgstr "Auf eine Person klicken"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Click or Enter on a person"
+msgstr "Klick oder Eingabetaste auf eine Person"
+
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
 msgstr ""
@@ -70,6 +82,10 @@ msgstr ""
 "Steuert, welcher Namensteil zuerst gekürzt wird, wenn ein Feld zu schmal für "
 "den vollen Namen ist. „Automatisch“ verwendet die Nachnamen-Tradition des "
 "Stammbaums (Isländisch kürzt Nachnamen; alles andere kürzt Vornamen)."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Ctrl + scroll"
+msgstr "Strg + Scrollen"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
@@ -87,6 +103,10 @@ msgstr "Nachkommentafel von %s"
 #: resources/views/modules/descendants-chart/form/details.phtml:23
 msgid "Details"
 msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Details panel"
+msgstr "Detailbereich"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
 msgid "Display"
@@ -165,6 +185,14 @@ msgstr "Mütterliche Linie (Mutter zu Kind)"
 msgid "Modules"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Move between the persons"
+msgstr "Zwischen den Personen wechseln"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Move the chart"
+msgstr "Diagramm verschieben"
+
 #: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "Verschieben der Ansicht mit zwei Fingern"
@@ -194,6 +222,10 @@ msgstr ""
 "Tab, wenn mit der linken Maustaste darauf geklickt wird. Andernfalls wird "
 "das aktuelle Fenster/Tab verwendet."
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Open the individual page or center the chart on the person"
+msgstr "Personenseite öffnen oder das Diagramm auf die Person zentrieren"
+
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
 msgstr ""
@@ -205,6 +237,10 @@ msgstr "Väterliche Linie (Vater zu Sohn)"
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
 msgstr "Neu zentrieren"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Reload chart for that person"
+msgstr "Diagramm für diese Person neu laden"
 
 #: resources/views/modules/descendants-chart/page.phtml:112
 msgid "Select a person in the chart to see the details here."
@@ -231,7 +267,8 @@ msgstr "Alternativen Namen der Person anzeigen"
 msgid "Show details panel"
 msgstr "Detailbereich anzeigen"
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:17
+#: resources/views/modules/components/buttonbar/help-button.phtml:18
+#: resources/views/modules/components/buttonbar/help-button.phtml:29
 msgid "Show help"
 msgstr "Hilfe anzeigen"
 
@@ -243,9 +280,17 @@ msgstr "Zeige weitere Optionen"
 msgid "Show nicknames in display names"
 msgstr "Spitznamen in den angezeigten Namen anzeigen"
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Show the details of the person in the panel"
+msgstr "Die Details der Person im Detailbereich anzeigen"
+
 #: resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
 msgid "Switch between full screen mode and normal view"
 msgstr "Zwischen Vollbildmodus und normaler Ansicht umschalten"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Tab key"
+msgstr "Tabulatortaste"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:47
 msgid ""
@@ -282,6 +327,10 @@ msgstr ""
 "angefügt oder ausgeblendet.Ob der Ehenamen (aus einem \"MARRIED\"- oder "
 "\"_MARNM\"-Namenseintrag) angezeigt wird – anstelle des Geburtsnamens, in "
 "Klammern hinter dem Geburtsnamen oder ausgeblendet."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Zoom in/out"
+msgstr "Vergrößern/Verkleinern"
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"

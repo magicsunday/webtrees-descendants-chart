@@ -57,6 +57,18 @@ msgstr "Geboortenaam met huwelijksnaam tussen haakjes"
 msgid "Center chart on this person"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Click and drag"
+msgstr "Klikken en slepen"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Click on a person"
+msgstr "Klik op een persoon"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Click or Enter on a person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/config.phtml:25
 msgid "Control panel"
 msgstr ""
@@ -70,6 +82,10 @@ msgstr ""
 "Bepaalt welk naamdeel eerst wordt afgekort wanneer een vak te smal is voor "
 "de volledige naam. \"Automatisch\" gebruikt de achternaamtraditie van de "
 "stamboom (IJslands kort achternamen af; al het andere kort voornamen af)."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Ctrl + scroll"
+msgstr "Ctrl + scrollen"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
@@ -86,6 +102,10 @@ msgstr "Afstammelingen van %s"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:23
 msgid "Details"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Details panel"
 msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
@@ -165,6 +185,14 @@ msgstr ""
 msgid "Modules"
 msgstr ""
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Move between the persons"
+msgstr ""
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:36
+msgid "Move the chart"
+msgstr "Diagram verplaatsen"
+
 #: src/Module.php:251
 msgid "Move the view with two fingers"
 msgstr "Verplaats de weergave met twee vingers"
@@ -194,6 +222,10 @@ msgstr ""
 "tabblad als er met de linkermuisknop op wordt geklikt, anders wordt het "
 "huidige venster/tabblad gebruikt."
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:34
+msgid "Open the individual page or center the chart on the person"
+msgstr ""
+
 #: resources/views/modules/descendants-chart/form/orientation.phtml:22
 msgid "Orientation"
 msgstr ""
@@ -205,6 +237,10 @@ msgstr ""
 #: resources/views/modules/components/buttonbar/center-button.phtml:18
 msgid "Re center"
 msgstr "Opnieuw centreren"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:31
+msgid "Reload chart for that person"
+msgstr "Diagram voor die persoon herladen"
 
 #: resources/views/modules/descendants-chart/page.phtml:112
 msgid "Select a person in the chart to see the details here."
@@ -226,7 +262,8 @@ msgstr "Toon alternatieve naam van persoon"
 msgid "Show details panel"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/help-button.phtml:17
+#: resources/views/modules/components/buttonbar/help-button.phtml:18
+#: resources/views/modules/components/buttonbar/help-button.phtml:29
 msgid "Show help"
 msgstr "Toon help"
 
@@ -238,9 +275,17 @@ msgstr "Meer opties"
 msgid "Show nicknames in display names"
 msgstr "Toon bijnamen in weergavenamen"
 
+#: resources/views/modules/components/buttonbar/help-button.phtml:33
+msgid "Show the details of the person in the panel"
+msgstr ""
+
 #: resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
 msgid "Switch between full screen mode and normal view"
 msgstr "Schakelen tussen volledig scherm en normale weergave"
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:32
+msgid "Tab key"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:47
 msgid ""
@@ -269,6 +314,10 @@ msgstr ""
 "Of de huwelijksnaam (uit een naamsvermelding van het type \"MARRIED\" of "
 "\"_MARNM\") wordt weergegeven — ter vervanging van de geboortenaam, tussen "
 "haakjes achter de geboortenaam, of verborgen."
+
+#: resources/views/modules/components/buttonbar/help-button.phtml:35
+msgid "Zoom in/out"
+msgstr "In-/uitzoomen"
 
 #: resources/views/modules/descendants-chart/config.phtml:116
 msgid "cancel"
