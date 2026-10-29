@@ -86,7 +86,7 @@ msgstr ""
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:35
 msgid "Ctrl + scroll"
-msgstr "Ctrl + scroll"
+msgstr ""
 
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
