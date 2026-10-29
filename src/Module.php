@@ -108,7 +108,6 @@ final class Module extends DescendancyChartModule implements ModuleAssetUrlInter
             ->allows(RequestMethodInterface::METHOD_POST);
 
         View::registerNamespace($this->name(), $this->resourcesFolder() . 'views/');
-
         SharedViews::register();
     }
 
