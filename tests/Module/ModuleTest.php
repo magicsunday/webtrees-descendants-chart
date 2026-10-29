@@ -11,14 +11,9 @@ declare(strict_types=1);
 
 namespace MagicSunday\Webtrees\DescendantsChart\Test\Module;
 
-use Aura\Router\Map;
-use Aura\Router\Route;
 use Fig\Http\Message\RequestMethodInterface;
-use Fisharebest\Webtrees\Contracts\ContainerInterface;
-use Fisharebest\Webtrees\Contracts\RouteFactoryInterface;
 use Fisharebest\Webtrees\Contracts\UserInterface;
 use Fisharebest\Webtrees\Individual;
-use Fisharebest\Webtrees\Registry;
 use Fisharebest\Webtrees\Services\ChartService;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
@@ -30,11 +25,11 @@ use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Module;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\EnglishLocaleFixture;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\RoutingFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseFactoryInterface;
 
 /**
  * Validates module metadata exposure and chart helpers.
@@ -52,7 +47,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function traitHelpersExposeExpectedValues(): void
     {
-        $this->registerRouteFactory();
+        RoutingFixture::install(new HttpFactory());
 
         $chartService = self::createStub(ChartService::class);
         $module       = new Module($chartService, new DataFacade());
@@ -79,7 +74,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function postRedirectCarriesEveryRouteToggleParameter(): void
     {
-        $this->registerRouteFactory();
+        RoutingFixture::install(new HttpFactory());
 
         $module  = $this->createModuleWithPreferences([]);
         $tree    = self::createStub(Tree::class);
@@ -128,7 +123,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function adminFormStoresTheDescendantLineAsDefault(): void
     {
-        $this->registerRouteFactory();
+        RoutingFixture::install(new HttpFactory());
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
@@ -155,7 +150,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function adminFormStoresThePanelDefault(): void
     {
-        $this->registerRouteFactory();
+        RoutingFixture::install(new HttpFactory());
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
@@ -178,7 +173,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function adminFormTakesThePanelDefaultBackWhenTheSwitchIsOff(): void
     {
-        $this->registerRouteFactory();
+        RoutingFixture::install(new HttpFactory());
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences(['default_showDetailPanel' => '1']);
@@ -200,7 +195,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function configurationPageRendersTheStoredNameAbbreviation(): void
     {
-        $this->registerRouteFactory();
+        RoutingFixture::install(new HttpFactory());
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences(['default_nameAbbreviation' => 'SURNAME']);
@@ -219,51 +214,5 @@ final class ModuleTest extends TestCase
 
         self::assertStringContainsString('<option value="SURNAME" selected="selected">', $html);
         self::assertStringNotContainsString('<option value="AUTO" selected="selected">', $html);
-    }
-
-    /**
-     * Registers a route factory that renders a route as a plain path with its
-     * query string, and a container that hands out the PSR-17 response factory
-     * the global redirect() helper resolves.
-     */
-    private function registerRouteFactory(): void
-    {
-        $routeFactory = new class implements RouteFactoryInterface {
-            public function route(string $route_name, array $parameters = []): string
-            {
-                return '/route/' . $route_name . '?' . http_build_query($parameters);
-            }
-
-            public function routeMap(): Map
-            {
-                return new Map(new Route());
-            }
-        };
-
-        $container = new readonly class($routeFactory, new HttpFactory()) implements ContainerInterface {
-            public function __construct(
-                private RouteFactoryInterface $routeFactory,
-                private ResponseFactoryInterface $responseFactory,
-            ) {
-            }
-
-            public function get(string $id): object
-            {
-                return $id === ResponseFactoryInterface::class ? $this->responseFactory : $this->routeFactory;
-            }
-
-            public function has(string $id): bool
-            {
-                return in_array($id, [RouteFactoryInterface::class, ResponseFactoryInterface::class], true);
-            }
-
-            public function set(string $id, object $object): static
-            {
-                return $this;
-            }
-        };
-
-        Registry::routeFactory($routeFactory);
-        Registry::container($container);
     }
 }
