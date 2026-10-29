@@ -16,6 +16,8 @@ use Aura\Router\Route;
 use Fisharebest\Webtrees\Contracts\ContainerInterface;
 use Fisharebest\Webtrees\Contracts\RouteFactoryInterface;
 use Fisharebest\Webtrees\Registry;
+use OutOfBoundsException;
+use Psr\Http\Message\ResponseFactoryInterface;
 
 use function http_build_query;
 
@@ -29,9 +31,12 @@ use function http_build_query;
 final class RoutingFixture
 {
     /**
-     * Sets up the route factory and the container the facade needs for the update URL.
+     * Sets up the route factory and the container the facade needs for the update URL. A test that
+     * follows a redirect passes the PSR-17 response factory, which the container then hands out too.
+     *
+     * @param ResponseFactoryInterface|null $responseFactory The response factory that the global redirect() helper resolves
      */
-    public static function install(): void
+    public static function install(?ResponseFactoryInterface $responseFactory = null): void
     {
         $routeFactory = new class implements RouteFactoryInterface {
             public function route(string $route_name, array $parameters = []): string
@@ -45,19 +50,32 @@ final class RoutingFixture
             }
         };
 
-        $container = new readonly class($routeFactory) implements ContainerInterface {
-            public function __construct(private RouteFactoryInterface $routeFactory)
+        $services = [RouteFactoryInterface::class => $routeFactory];
+
+        if ($responseFactory instanceof ResponseFactoryInterface) {
+            $services[ResponseFactoryInterface::class] = $responseFactory;
+        }
+
+        $container = new readonly class($services) implements ContainerInterface {
+            /**
+             * @param array<string, object> $services The services by id
+             */
+            public function __construct(private array $services)
             {
             }
 
-            public function get(string $id): RouteFactoryInterface
+            public function get(string $id): object
             {
-                return $this->routeFactory;
+                if (!isset($this->services[$id])) {
+                    throw new OutOfBoundsException('The container has no service ' . $id);
+                }
+
+                return $this->services[$id];
             }
 
             public function has(string $id): bool
             {
-                return $id === RouteFactoryInterface::class;
+                return isset($this->services[$id]);
             }
 
             public function set(string $id, object $object): static
