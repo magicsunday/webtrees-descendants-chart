@@ -33,7 +33,7 @@ msgstr "Achternamen eerst afkorten"
 msgid "All descendants"
 msgstr "Alle afstammelingen"
 
-#: src/Module.php:133
+#: src/Module.php:134
 msgid "An overview of an individual’s descendants."
 msgstr "Een overzicht van de afstammelingen van een persoon."
 
@@ -91,11 +91,11 @@ msgstr "Ctrl + scrollen"
 msgid "Descendant line"
 msgstr "Afstammelingenlijn"
 
-#: src/Module.php:122 src/Module.php:235
+#: src/Module.php:123 src/Module.php:236
 msgid "Descendants chart"
 msgstr "Afstammelingendiagram"
 
-#: src/Module.php:232 src/Module/ChartTrait.php:43
+#: src/Module.php:233 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Afstammelingen van %s"
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Move the chart"
 msgstr "Diagram verplaatsen"
 
-#: src/Module.php:254
+#: src/Module.php:255
 msgid "Move the view with two fingers"
 msgstr "Verplaats de weergave met twee vingers"
 
@@ -311,7 +311,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:253
+#: src/Module.php:254
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Gebruik Ctrl + scroll om in te zoomen op de weergave"
 

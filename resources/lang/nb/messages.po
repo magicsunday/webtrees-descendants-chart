@@ -33,7 +33,7 @@ msgstr "Forkort etternavn først"
 msgid "All descendants"
 msgstr "Alle etterkommere"
 
-#: src/Module.php:133
+#: src/Module.php:134
 msgid "An overview of an individual’s descendants."
 msgstr "Et diagram over en persons etterkommere."
 
@@ -91,11 +91,11 @@ msgstr "Ctrl + rull"
 msgid "Descendant line"
 msgstr "Etterkommerlinje"
 
-#: src/Module.php:122 src/Module.php:235
+#: src/Module.php:123 src/Module.php:236
 msgid "Descendants chart"
 msgstr "Etterkommerdiagram"
 
-#: src/Module.php:232 src/Module/ChartTrait.php:43
+#: src/Module.php:233 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Etterkommerdiagram for %s"
@@ -191,7 +191,7 @@ msgstr ""
 msgid "Move the chart"
 msgstr "Flytt diagrammet"
 
-#: src/Module.php:254
+#: src/Module.php:255
 msgid "Move the view with two fingers"
 msgstr "Bruk to fingre for å flytte utsnitt"
 
@@ -302,7 +302,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:253
+#: src/Module.php:254
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Bruk Ctrl + scroll for zoom"
 

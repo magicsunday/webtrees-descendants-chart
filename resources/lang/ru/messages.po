@@ -34,7 +34,7 @@ msgstr "Сокращать сначала фамилии"
 msgid "All descendants"
 msgstr ""
 
-#: src/Module.php:133
+#: src/Module.php:134
 msgid "An overview of an individual’s descendants."
 msgstr "Диаграмма потомков в виде дерева."
 
@@ -92,11 +92,11 @@ msgstr "Ctrl + колёсико мыши"
 msgid "Descendant line"
 msgstr ""
 
-#: src/Module.php:122 src/Module.php:235
+#: src/Module.php:123 src/Module.php:236
 msgid "Descendants chart"
 msgstr "Потомки (новое)"
 
-#: src/Module.php:232 src/Module/ChartTrait.php:43
+#: src/Module.php:233 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Диаграмма потомков у %s"
@@ -190,7 +190,7 @@ msgstr ""
 msgid "Move the chart"
 msgstr "Переместить диаграмму"
 
-#: src/Module.php:254
+#: src/Module.php:255
 msgid "Move the view with two fingers"
 msgstr "Измените вид двумя пальцами"
 
@@ -294,7 +294,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:253
+#: src/Module.php:254
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Используйте Ctrl + scroll, чтобы  увеличить"
 
