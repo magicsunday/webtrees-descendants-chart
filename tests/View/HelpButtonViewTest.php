@@ -48,7 +48,7 @@ final class HelpButtonViewTest extends TestCase
         self::assertNotSame('', $button->getAttribute('title'), 'the icon is the only content, so the title names the button');
         self::assertSame('button', $button->getAttribute('type'), 'the button never submits a form');
         self::assertSame('false', $button->getAttribute('aria-expanded'));
-        self::assertNotSame('', $popover->getAttribute('id'));
+        self::assertSame('descendants-chart-help-popover', $popover->getAttribute('id'));
         self::assertSame($popover->getAttribute('id'), $button->getAttribute('aria-controls'));
         self::assertSame('region', $popover->getAttribute('role'));
         self::assertNotSame('', $popover->getAttribute('aria-label'));
