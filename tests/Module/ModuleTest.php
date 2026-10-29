@@ -27,9 +27,13 @@ use MagicSunday\Webtrees\DescendantsChart\Test\Support\EnglishLocaleFixture;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\RoutingFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+
+use function view;
 
 /**
  * Validates module metadata exposure and chart helpers.
@@ -214,5 +218,30 @@ final class ModuleTest extends TestCase
 
         self::assertStringContainsString('<option value="SURNAME" selected="selected">', $html);
         self::assertStringNotContainsString('<option value="AUTO" selected="selected">', $html);
+    }
+
+    /**
+     * Booting the module registers the shared views of the module base, so the page can render them.
+     * The registration is static state that other tests set up as well, so the test runs in its own
+     * process and starts without it.
+     */
+    #[Test]
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function bootRegistersTheSharedViewsOfTheModuleBase(): void
+    {
+        RoutingFixture::install(new HttpFactory());
+        EnglishLocaleFixture::install();
+
+        $this->createModuleWithPreferences([])->boot();
+
+        $markup = view('webtrees-module-base::help-popover', [
+            'id'         => 'booted-help-popover',
+            'label'      => 'Show help',
+            'rows'       => [['key' => 'Tab key', 'text' => 'Move between the persons']],
+            'activeMode' => null,
+        ]);
+
+        self::assertStringContainsString('id="booted-help-popover"', $markup);
     }
 }
