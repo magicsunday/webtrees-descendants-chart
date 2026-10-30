@@ -53,7 +53,7 @@ msgstr "Bare fødselsnavn"
 msgid "Birth name with married name in brackets"
 msgstr "Fødselsnavn med navn som gift i parentes"
 
-#: resources/views/modules/descendants-chart/page.phtml:109
+#: resources/views/modules/descendants-chart/page.phtml:111
 msgid "Center chart on this person"
 msgstr ""
 
@@ -199,7 +199,7 @@ msgstr "Bruk to fingre for å flytte utsnitt"
 msgid "Name abbreviation when space is tight"
 msgstr "Navneforkortelse når plassen er trang"
 
-#: resources/views/modules/descendants-chart/page.phtml:107
+#: resources/views/modules/descendants-chart/page.phtml:109
 msgid "No details are available for this person."
 msgstr ""
 
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Open individual in new browser window/tab"
 msgstr "Åpne person i nytt vindu/fane"
 
-#: resources/views/modules/descendants-chart/page.phtml:108
+#: resources/views/modules/descendants-chart/page.phtml:110
 msgid "Open individual page"
 msgstr ""
 
@@ -235,7 +235,7 @@ msgstr "Patrilineær linje (far til sønn)"
 msgid "Re center"
 msgstr "Tilbakestill"
 
-#: resources/views/modules/descendants-chart/page.phtml:106
+#: resources/views/modules/descendants-chart/page.phtml:108
 msgid "Select a person in the chart to see the details here."
 msgstr ""
 
@@ -328,7 +328,7 @@ msgstr "Zoom inn/ut"
 msgid "cancel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:105
+#: resources/views/modules/descendants-chart/page.phtml:107
 msgid "close"
 msgstr ""
 

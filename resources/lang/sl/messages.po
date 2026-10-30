@@ -56,7 +56,7 @@ msgstr "Samo rojstno ime"
 msgid "Birth name with married name in brackets"
 msgstr "Rojstno ime s poročnim priimkom v oklepaju"
 
-#: resources/views/modules/descendants-chart/page.phtml:109
+#: resources/views/modules/descendants-chart/page.phtml:111
 msgid "Center chart on this person"
 msgstr ""
 
@@ -202,7 +202,7 @@ msgstr "Premakni pogled z dvema prstoma"
 msgid "Name abbreviation when space is tight"
 msgstr "Krajšanje imena, ko je prostor omejen"
 
-#: resources/views/modules/descendants-chart/page.phtml:107
+#: resources/views/modules/descendants-chart/page.phtml:109
 msgid "No details are available for this person."
 msgstr ""
 
@@ -210,7 +210,7 @@ msgstr ""
 msgid "Open individual in new browser window/tab"
 msgstr "Odpri osebo v novem oknu/zavihku brskalnika"
 
-#: resources/views/modules/descendants-chart/page.phtml:108
+#: resources/views/modules/descendants-chart/page.phtml:110
 msgid "Open individual page"
 msgstr ""
 
@@ -238,7 +238,7 @@ msgstr ""
 msgid "Re center"
 msgstr "Znova na sredino"
 
-#: resources/views/modules/descendants-chart/page.phtml:106
+#: resources/views/modules/descendants-chart/page.phtml:108
 msgid "Select a person in the chart to see the details here."
 msgstr ""
 
@@ -326,7 +326,7 @@ msgstr "Povečaj/pomanjšaj"
 msgid "cancel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:105
+#: resources/views/modules/descendants-chart/page.phtml:107
 msgid "close"
 msgstr ""
 
