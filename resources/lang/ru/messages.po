@@ -54,7 +54,7 @@ msgstr "Только имя при рождении"
 msgid "Birth name with married name in brackets"
 msgstr "Имя при рождении с фамилией в браке в скобках"
 
-#: resources/views/modules/descendants-chart/page.phtml:109
+#: resources/views/modules/descendants-chart/page.phtml:111
 msgid "Center chart on this person"
 msgstr ""
 
@@ -198,7 +198,7 @@ msgstr "Измените вид двумя пальцами"
 msgid "Name abbreviation when space is tight"
 msgstr "Сокращение имени при недостатке места"
 
-#: resources/views/modules/descendants-chart/page.phtml:107
+#: resources/views/modules/descendants-chart/page.phtml:109
 msgid "No details are available for this person."
 msgstr ""
 
@@ -206,7 +206,7 @@ msgstr ""
 msgid "Open individual in new browser window/tab"
 msgstr "Открывать персону в новом окне/вкладке браузера"
 
-#: resources/views/modules/descendants-chart/page.phtml:108
+#: resources/views/modules/descendants-chart/page.phtml:110
 msgid "Open individual page"
 msgstr ""
 
@@ -232,7 +232,7 @@ msgstr ""
 msgid "Re center"
 msgstr "Центрировать"
 
-#: resources/views/modules/descendants-chart/page.phtml:106
+#: resources/views/modules/descendants-chart/page.phtml:108
 msgid "Select a person in the chart to see the details here."
 msgstr ""
 
@@ -320,7 +320,7 @@ msgstr "Увеличить/Уменьшить"
 msgid "cancel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:105
+#: resources/views/modules/descendants-chart/page.phtml:107
 msgid "close"
 msgstr ""
 

@@ -53,7 +53,7 @@ msgstr "Solo nombre de nacimiento"
 msgid "Birth name with married name in brackets"
 msgstr "Nombre de nacimiento con nombre de casada entre paréntesis"
 
-#: resources/views/modules/descendants-chart/page.phtml:109
+#: resources/views/modules/descendants-chart/page.phtml:111
 msgid "Center chart on this person"
 msgstr ""
 
@@ -199,7 +199,7 @@ msgstr "Mueve la vista con dos dedos"
 msgid "Name abbreviation when space is tight"
 msgstr "Abreviatura del nombre cuando el espacio es limitado"
 
-#: resources/views/modules/descendants-chart/page.phtml:107
+#: resources/views/modules/descendants-chart/page.phtml:109
 msgid "No details are available for this person."
 msgstr ""
 
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Open individual in new browser window/tab"
 msgstr "Abrir persona en una nueva ventana/pestaña del navegador"
 
-#: resources/views/modules/descendants-chart/page.phtml:108
+#: resources/views/modules/descendants-chart/page.phtml:110
 msgid "Open individual page"
 msgstr ""
 
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Re center"
 msgstr "Volver a centrar"
 
-#: resources/views/modules/descendants-chart/page.phtml:106
+#: resources/views/modules/descendants-chart/page.phtml:108
 msgid "Select a person in the chart to see the details here."
 msgstr ""
 
@@ -322,7 +322,7 @@ msgstr "Acercar/Alejar"
 msgid "cancel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:105
+#: resources/views/modules/descendants-chart/page.phtml:107
 msgid "close"
 msgstr ""
 
