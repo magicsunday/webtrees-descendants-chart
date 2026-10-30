@@ -24,8 +24,10 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
+use function file_get_contents;
 use function ob_get_clean;
 use function ob_start;
+use function substr_count;
 
 /**
  * Renders the page view of the descendants chart and looks at the detail panel that it carries.
@@ -134,6 +136,39 @@ final class PageViewTest extends TestCase
     }
 
     /**
+     * The rules of the toolbar buttons come from the shared view of the module base, written once as
+     * a style element that is scoped by the container class of the page, so they are in the document
+     * from the first paint and the stylesheet of the module does not repeat them.
+     */
+    #[Test]
+    public function rendersTheSharedToolbarStyleOnceForTheContainerClass(): void
+    {
+        $markup = $this->render();
+        $xpath  = ViewFixture::xpathOf($markup);
+
+        $styles = ViewFixture::elements($xpath, '//style[contains(., ".btn-chart")]');
+
+        self::assertCount(1, $styles, 'the page carries the toolbar style exactly once');
+        self::assertSame(
+            1,
+            substr_count($markup, '.webtrees-descendants-fullscreen-container .btn-chart {'),
+            'the rules of the button are written once'
+        );
+
+        ViewFixture::first($xpath, '//div[contains(concat(" ", @class, " "), " webtrees-descendants-fullscreen-container ")]');
+    }
+
+    /**
+     * The shared view carries the whole set of rules of the button, so the stylesheet of the module
+     * keeps none of them and only the rules of this chart remain.
+     */
+    #[Test]
+    public function keepsNoRuleOfTheToolbarButtonInTheStylesheet(): void
+    {
+        self::assertStringNotContainsString('.btn-chart', $this->stylesheet());
+    }
+
+    /**
      * The help is not an export button, so a tree that hides both exports still shows it.
      */
     #[Test]
@@ -202,6 +237,18 @@ final class PageViewTest extends TestCase
         }
 
         self::assertCount(0, ViewFixture::elements($xpath, '//aside[@id="webtrees-descendants-detail-panel"]//i'), 'no translated text is read as markup');
+    }
+
+    /**
+     * Returns the stylesheet of the module.
+     */
+    private function stylesheet(): string
+    {
+        $stylesheet = file_get_contents(__DIR__ . '/../../resources/css/descendants-chart.css');
+
+        self::assertIsString($stylesheet);
+
+        return $stylesheet;
     }
 
     /**
