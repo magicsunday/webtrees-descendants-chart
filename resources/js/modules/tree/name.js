@@ -69,7 +69,7 @@ export default class Name extends TextRenderer {
                         .attr("direction", (datum) => (datum.isRtl ? "rtl" : "ltr"))
                         .attr("text-anchor", "middle")
                         .attr("dominant-baseline", "central")
-                        .attr("y", that._text.y - 5 + index * 20);
+                        .attr("y", that._text.y - 10 + index * 20);
 
                     that.addNameElements(
                         text,
@@ -78,7 +78,7 @@ export default class Name extends TextRenderer {
                 });
             });
 
-            this.appendAlternativeName(enter, this._text.y + 40, (text) =>
+            this.appendAlternativeName(enter, this._text.y + 35, (text) =>
                 text.attr("text-anchor", "middle").attr("dominant-baseline", "central"),
             );
 

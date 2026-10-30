@@ -139,7 +139,7 @@ describe("Name.appendName in a vertical layout", () => {
         const texts = render(ANNA_MARIA);
 
         expect(lines(texts)).toEqual([["Anna", "Maria[u]"], ["Schmidt[last]"]]);
-        expect(texts.map((text) => text.y)).toEqual(["5", "25"]);
+        expect(texts.map((text) => text.y)).toEqual(["0", "20"]);
         expect(texts.map((text) => text.class)).toEqual(["wt-chart-box-name", "wt-chart-box-name"]);
         expect(texts.map((text) => text.anchor)).toEqual(["middle", "middle"]);
         expect(texts.map((text) => text.baseline)).toEqual(["central", "central"]);
@@ -225,7 +225,7 @@ describe("Name.appendName in a vertical layout", () => {
             ["Schmidt[last]"],
             ["Anna", "Maria", "Meier"],
         ]);
-        expect(texts[2]?.y).toBe("50");
+        expect(texts[2]?.y).toBe("45");
         expect(texts[2]?.class).toBe("wt-chart-box-name");
         expect(texts[2]?.anchor).toBe("middle");
         expect(texts[2]?.baseline).toBe("central");
