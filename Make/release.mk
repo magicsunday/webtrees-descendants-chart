@@ -230,6 +230,7 @@ dist-smoke:
 		vendor/magicsunday/webtrees-module-base/src/Processor/ \
 		vendor/magicsunday/webtrees-module-base/resources/views/detail-panel.phtml \
 		vendor/magicsunday/webtrees-module-base/resources/views/help-popover.phtml \
+		vendor/magicsunday/webtrees-module-base/resources/views/toolbar-style.phtml \
 	; do \
 		echo "$$paths" | grep -qE "^$$prefix" || { echo "Error: required prefix has no entries in zip: $$prefix"; exit 1; }; \
 	done; \
