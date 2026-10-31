@@ -74,6 +74,29 @@ final class ModuleTest extends TestCase
     }
 
     /**
+     * Names the individual in the page title only when the visitor may see the name, and falls back
+     * to the plain chart title otherwise, so a private name never reaches the title.
+     */
+    #[Test]
+    public function pageTitleNamesTheIndividualOnlyWhenTheNameIsVisible(): void
+    {
+        EnglishLocaleFixture::install();
+
+        $module = new Module(self::createStub(ChartService::class), new DataFacade());
+
+        $visible = self::createStub(Individual::class);
+        $visible->method('canShowName')->willReturn(true);
+        $visible->method('fullName')->willReturn('Example Person');
+
+        $hidden = self::createStub(Individual::class);
+        $hidden->method('canShowName')->willReturn(false);
+        $hidden->method('fullName')->willReturn('Secret Person');
+
+        self::assertSame('Descendants chart of Example Person', $module->pageTitle($visible));
+        self::assertSame('Descendants chart', $module->pageTitle($hidden));
+    }
+
+    /**
      * Pins that the redirect which turns a form POST into a GET carries every
      * route toggle parameter, so a setting added to the shared list cannot be
      * missing from the URL the user lands on.
