@@ -78,7 +78,7 @@ final class DataFacadeDetailPanelTest extends TestCase
             chartBoxTags: 'OCCU',
         );
 
-        $data = $this->memberAt($this->buildStructure($person, ['generations' => '1'])['members'], 0);
+        $data = $this->memberAt($this->buildStructure($person, ['generations' => '2'])['members'], 0);
 
         self::assertNull($this->serialisedFacts($data));
     }
@@ -100,7 +100,7 @@ final class DataFacadeDetailPanelTest extends TestCase
 
         $root->method('spouseFamilies')->willReturn(new Collection([$this->createFamily($partner, [])]));
 
-        $members = $this->buildStructure($root, ['generations' => '1', 'showDetailPanel' => '1'])['members'];
+        $members = $this->buildStructure($root, ['generations' => '2', 'showDetailPanel' => '1'])['members'];
 
         self::assertSame(
             [
@@ -148,7 +148,7 @@ final class DataFacadeDetailPanelTest extends TestCase
             chartBoxTags: '',
         );
 
-        $data = $this->memberAt($this->buildStructure($person, ['generations' => '1', 'showDetailPanel' => '1'])['members'], 0);
+        $data = $this->memberAt($this->buildStructure($person, ['generations' => '2', 'showDetailPanel' => '1'])['members'], 0);
 
         self::assertSame([null, null], $this->serialisedFacts($data));
     }
@@ -170,7 +170,7 @@ final class DataFacadeDetailPanelTest extends TestCase
 
         foreach (['OCCU,RESI', ''] as $tags) {
             $person  = $this->createPerson('I1', 'M', $name, factsByTag: [], chartBoxTags: $tags);
-            $request = (new ServerRequest('GET', '/'))->withQueryParams(['generations' => '1', 'showDetailPanel' => '1']);
+            $request = (new ServerRequest('GET', '/'))->withQueryParams(['generations' => '2', 'showDetailPanel' => '1']);
 
             $structure = $facade
                 ->setConfiguration(new Configuration($request, $this->createModuleWithPreferences([])))
