@@ -221,8 +221,7 @@ final class Module extends DescendancyChartModule implements ModuleAssetUrlInter
     }
 
     /**
-     * Returns the page title. It names the individual only when the visitor
-     * may see the name, otherwise it is the plain chart title.
+     * Returns the page title, which names the individual only if the name is visible.
      *
      * @param Individual $individual The individual used in the current chart
      *
