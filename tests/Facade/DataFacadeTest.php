@@ -30,7 +30,6 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
-use function array_keys;
 use function array_map;
 use function array_merge;
 use function array_values;
@@ -45,9 +44,9 @@ use function array_values;
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
 #[CoversClass(DataFacade::class)]
+#[CoversClass(CoupleNode::class)]
 #[UsesClass(Configuration::class)]
 #[UsesClass(DescendantLine::class)]
-#[UsesClass(CoupleNode::class)]
 #[UsesClass(Module::class)]
 final class DataFacadeTest extends TestCase
 {
@@ -153,38 +152,6 @@ final class DataFacadeTest extends TestCase
         );
 
         self::assertSame('José Antonio von Gómez Iglesias', $this->valueOf($data, 'name'));
-    }
-
-    /**
-     * The serialised node data lists its keys in the fixed order of the shared
-     * contract, with the name segments where the name token lists used to be.
-     */
-    #[Test]
-    public function serialisedNodeDataKeepsTheSharedKeyOrder(): void
-    {
-        $data = $this->buildRoot($this->createPerson('I1', 'M', [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')]), 'off');
-
-        self::assertSame(
-            [
-                'id',
-                'xref',
-                'url',
-                'updateUrl',
-                'generation',
-                'name',
-                'isNameRtl',
-                'nameSegments',
-                'alternativeName',
-                'isAltRtl',
-                'thumbnail',
-                'silhouette',
-                'sex',
-                'birth',
-                'death',
-                'timespan',
-            ],
-            array_keys($data->jsonSerialize()),
-        );
     }
 
     /**

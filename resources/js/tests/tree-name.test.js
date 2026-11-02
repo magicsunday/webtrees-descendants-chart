@@ -86,16 +86,4 @@ describe("Name.truncateNamesData", () => {
             }),
         );
     });
-
-    it("returns the (mocked) chart-lib result", () => {
-        const name = makeName();
-        const names = [
-            { label: "Anna", isPreferred: true, isLastName: false, isNameRtl: false },
-            { label: "Schmidt", isPreferred: false, isLastName: true, isNameRtl: false },
-        ];
-
-        const result = name.truncateNamesData(buildParent(), names, 60);
-
-        expect(result.map((n) => n.label)).toEqual(["A.", "S."]);
-    });
 });

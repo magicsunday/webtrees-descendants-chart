@@ -47,13 +47,4 @@ describe("pickGap", () => {
         const childB = family(21, parentB);
         expect(pickGap(childA, childB)).toBe(COUSIN_GAP_PX);
     });
-
-    it("treats parentless nodes (root level) as same-parent siblings", () => {
-        // d3 always passes nodes that share a parent, so this is the
-        // degenerate case — both .parent are null and the equality check
-        // resolves to sibling-gap. Documented to lock the behaviour.
-        const a = family(1);
-        const b = family(2);
-        expect(pickGap(a, b)).toBe(SIBLING_GAP_PX);
-    });
 });

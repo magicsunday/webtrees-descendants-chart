@@ -104,13 +104,13 @@ final class ChartViewTest extends TestCase
     {
         $output = $this->render([]);
 
-        self::assertStringContainsString('showDetailPanel: false,', $output);
+        self::assertMatchesRegularExpression('/\bshowDetailPanel:\s*false\b/', $output);
         self::assertStringNotContainsString('opts.showDetailPanel', $output);
 
         // The value is the one of the configuration, not a constant of the view
         $enabled = $this->render([], ['default_showDetailPanel' => '1']);
 
-        self::assertStringContainsString('showDetailPanel: true,', $enabled);
+        self::assertMatchesRegularExpression('/\bshowDetailPanel:\s*true\b/', $enabled);
     }
 
     /**

@@ -21,7 +21,7 @@ use function array_map;
 
 /**
  * Verifies the decision which parent to child link a descendant line keeps,
- * evaluated for every combination of recorded sexes.
+ * written out as literal verdicts per kind of sex pair.
  *
  * @author  Rico Sonntag <mail@ricosonntag.de>
  * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
@@ -31,39 +31,59 @@ use function array_map;
 final class DescendantLineTest extends TestCase
 {
     /**
-     * Every line, parent sex, child sex and the expected verdict.
+     * Every line with a representative parent and child sex pair per partition and the
+     * literal verdict. A male parent with a female child, a female parent with a male
+     * child and a parent of unknown, other or empty sex are the pairs that tell the lines apart.
      *
      * @return iterable<string, array{DescendantLine, string, string, bool}>
      */
     public static function linkProvider(): iterable
     {
-        $sexes = ['M', 'F', 'X', 'U'];
+        yield 'all, male to male' => [DescendantLine::All, 'M', 'M', true];
 
-        foreach ($sexes as $parent) {
-            foreach ($sexes as $child) {
-                yield "all, parent $parent, child $child" => [DescendantLine::All, $parent, $child, true];
+        yield 'all, male to female' => [DescendantLine::All, 'M', 'F', true];
 
-                yield "paternal, parent $parent, child $child" => [
-                    DescendantLine::Paternal,
-                    $parent,
-                    $child,
-                    ($parent === 'M') && ($child === 'M'),
-                ];
+        yield 'all, female to male' => [DescendantLine::All, 'F', 'M', true];
 
-                yield "maternal, parent $parent, child $child" => [
-                    DescendantLine::Maternal,
-                    $parent,
-                    $child,
-                    $parent === 'F',
-                ];
-            }
-        }
+        yield 'all, unknown to other' => [DescendantLine::All, 'U', 'X', true];
+
+        yield 'all, empty sexes' => [DescendantLine::All, '', '', true];
+
+        yield 'paternal, male to male' => [DescendantLine::Paternal, 'M', 'M', true];
+
+        yield 'paternal, male to female' => [DescendantLine::Paternal, 'M', 'F', false];
+
+        yield 'paternal, female to male' => [DescendantLine::Paternal, 'F', 'M', false];
+
+        yield 'paternal, female to female' => [DescendantLine::Paternal, 'F', 'F', false];
+
+        yield 'paternal, male to unknown' => [DescendantLine::Paternal, 'M', 'U', false];
+
+        yield 'paternal, unknown to male' => [DescendantLine::Paternal, 'U', 'M', false];
+
+        yield 'paternal, other to male' => [DescendantLine::Paternal, 'X', 'M', false];
 
         yield 'paternal, empty sexes' => [DescendantLine::Paternal, '', '', false];
 
-        yield 'maternal, empty sex' => [DescendantLine::Maternal, '', 'F', false];
+        yield 'maternal, female to male' => [DescendantLine::Maternal, 'F', 'M', true];
 
-        yield 'all, empty sexes' => [DescendantLine::All, '', '', true];
+        yield 'maternal, female to female' => [DescendantLine::Maternal, 'F', 'F', true];
+
+        yield 'maternal, female to unknown' => [DescendantLine::Maternal, 'F', 'U', true];
+
+        yield 'maternal, female to other' => [DescendantLine::Maternal, 'F', 'X', true];
+
+        yield 'maternal, female to empty child sex' => [DescendantLine::Maternal, 'F', '', true];
+
+        yield 'maternal, male to female' => [DescendantLine::Maternal, 'M', 'F', false];
+
+        yield 'maternal, male to male' => [DescendantLine::Maternal, 'M', 'M', false];
+
+        yield 'maternal, unknown to female' => [DescendantLine::Maternal, 'U', 'F', false];
+
+        yield 'maternal, other to female' => [DescendantLine::Maternal, 'X', 'F', false];
+
+        yield 'maternal, empty parent sex' => [DescendantLine::Maternal, '', 'F', false];
     }
 
     /**

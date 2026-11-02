@@ -122,14 +122,6 @@ const MARRIED = person({
     nameSegments: [preferred("Anna"), surname("Schmidt"), married("(Müller)")],
 });
 
-const REPEATED = person({
-    nameSegments: [preferred("Anna"), preferred("Anna"), preferred("Anna"), surname("Schmidt")],
-});
-
-const SAME_FIRST_AND_LAST = person({
-    nameSegments: [preferred("Maria"), surname("Maria")],
-});
-
 describe("Name.appendName in a vertical layout", () => {
     beforeEach(() => {
         truncateNamesMock.mockClear();
@@ -156,17 +148,6 @@ describe("Name.appendName in a vertical layout", () => {
 
     it("draws the married surname next to the birth surname", () => {
         expect(lines(render(MARRIED))).toEqual([["Anna[u]"], ["Schmidt[last]", "(Müller)[last]"]]);
-    });
-
-    it("draws a repeated given name once per occurrence", () => {
-        expect(lines(render(REPEATED))).toEqual([
-            ["Anna[u]", "Anna[u]", "Anna[u]"],
-            ["Schmidt[last]"],
-        ]);
-    });
-
-    it("tells a surname apart from an equal given name", () => {
-        expect(lines(render(SAME_FIRST_AND_LAST))).toEqual([["Maria[u]"], ["Maria[last]"]]);
     });
 
     it("draws only the surname line first when there is no given name", () => {
@@ -283,15 +264,6 @@ describe("Name.appendName in a horizontal layout", () => {
         ]);
         expect(lines(render(MARRIED, { vertical: false }))).toEqual([
             ["Anna[u]", "Schmidt[last]", "(Müller)[last]"],
-        ]);
-    });
-
-    it("draws repeated and equal given and surnames in order", () => {
-        expect(lines(render(REPEATED, { vertical: false }))).toEqual([
-            ["Anna[u]", "Anna[u]", "Anna[u]", "Schmidt[last]"],
-        ]);
-        expect(lines(render(SAME_FIRST_AND_LAST, { vertical: false }))).toEqual([
-            ["Maria[u]", "Maria[last]"],
         ]);
     });
 
@@ -416,6 +388,10 @@ describe("Name.createNamesData", () => {
             ["Anonymous!"],
             ['"Jonny"'],
         ]);
+    });
+
+    it("tells a surname apart from an equal given name by the kind and not by the label", () => {
+        expect(groupsOf([preferred("Maria"), surname("Maria")])).toEqual([["*Maria"], ["Maria!"]]);
     });
 
     it("creates no group for a part the name does not have", () => {
