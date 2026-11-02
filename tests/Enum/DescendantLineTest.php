@@ -71,6 +71,10 @@ final class DescendantLineTest extends TestCase
 
         yield 'maternal, female to unknown' => [DescendantLine::Maternal, 'F', 'U', true];
 
+        yield 'maternal, female to other' => [DescendantLine::Maternal, 'F', 'X', true];
+
+        yield 'maternal, female to empty child sex' => [DescendantLine::Maternal, 'F', '', true];
+
         yield 'maternal, male to female' => [DescendantLine::Maternal, 'M', 'F', false];
 
         yield 'maternal, male to male' => [DescendantLine::Maternal, 'M', 'M', false];
