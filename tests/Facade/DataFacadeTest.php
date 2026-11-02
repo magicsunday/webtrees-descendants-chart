@@ -20,9 +20,11 @@ use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\DescendantsChart\Module;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\DataFacadeFixtureTrait;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\EnglishLocaleFixture;
 use MagicSunday\Webtrees\ModuleBase\Model\NameSegment;
 use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\MockObject\Stub;
@@ -59,6 +61,64 @@ final class DataFacadeTest extends TestCase
         parent::setUp();
 
         $this->installFacadeContext();
+    }
+
+    /**
+     * Restores the plain English translator that the lifetime label test replaces.
+     */
+    protected function tearDown(): void
+    {
+        EnglishLocaleFixture::install();
+
+        parent::tearDown();
+    }
+
+    /**
+     * The facade builds the three texts of the lifetime label from its own
+     * translated literals, so the language of the user decides the text and the
+     * year lands where the translated format keeps its placeholder.
+     */
+    #[Test]
+    #[DataProvider('lifetimeLabelCases')]
+    public function handsOverTheLifetimeLabelInTheLanguageOfTheUser(
+        string $birth,
+        string $death,
+        bool $isDead,
+        string $expected,
+    ): void {
+        EnglishLocaleFixture::install([
+            'Born: %s' => 'Geboren: %s',
+            'Died: %s' => 'Gestorben: %s',
+            'Deceased' => 'Verstorben',
+        ]);
+
+        $person = $this->createPerson(
+            'I1',
+            'M',
+            [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')],
+            birth: $birth,
+            death: $death,
+            isDead: $isDead,
+        );
+
+        self::assertSame($expected, $this->valueOf($this->buildRoot($person, 'off'), 'timespan'));
+    }
+
+    /**
+     * Each label text differs from its source text, so a text taken from the wrong
+     * place or a lost placeholder changes the expected result of its case.
+     *
+     * @return array<string, array{string, string, bool, string}>
+     */
+    public static function lifetimeLabelCases(): array
+    {
+        return [
+            'a birth year only'               => ['1977', '', false, 'Geboren: 1977'],
+            'a death year only'               => ['', '2006', true, 'Gestorben: 2006'],
+            'a deceased person without years' => ['', '', true, 'Verstorben'],
+            'both years'                      => ['1923', '2006', true, '1923-2006'],
+            'a living person without a date'  => ['', '', false, ''],
+        ];
     }
 
     /**
