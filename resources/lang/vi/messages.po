@@ -53,6 +53,11 @@ msgstr "Chỉ tên khai sinh"
 msgid "Birth name with married name in brackets"
 msgstr "Tên khai sinh kèm tên sau khi kết hôn trong ngoặc"
 
+#: src/Facade/DataFacade.php:328
+#, php-format
+msgid "Born: %s"
+msgstr "Sinh: %s"
+
 #: resources/views/modules/descendants-chart/page.phtml:111
 msgid "Center chart on this person"
 msgstr ""
@@ -87,6 +92,10 @@ msgstr ""
 msgid "Ctrl + scroll"
 msgstr "Ctrl + cuộn chuột"
 
+#: src/Facade/DataFacade.php:330
+msgid "Deceased"
+msgstr "Người mất"
+
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
 msgstr ""
@@ -107,6 +116,11 @@ msgstr ""
 #: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Details panel"
 msgstr ""
+
+#: src/Facade/DataFacade.php:329
+#, php-format
+msgid "Died: %s"
+msgstr "Mất: %s"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
 msgid "Display"

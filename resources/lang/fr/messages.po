@@ -53,6 +53,11 @@ msgstr "Nom de naissance uniquement"
 msgid "Birth name with married name in brackets"
 msgstr "Nom de naissance avec nom d'épouse entre parenthèses"
 
+#: src/Facade/DataFacade.php:328
+#, php-format
+msgid "Born: %s"
+msgstr "Naissance: %s"
+
 #: resources/views/modules/descendants-chart/page.phtml:111
 msgid "Center chart on this person"
 msgstr ""
@@ -88,6 +93,10 @@ msgstr ""
 msgid "Ctrl + scroll"
 msgstr "Ctrl + molette"
 
+#: src/Facade/DataFacade.php:330
+msgid "Deceased"
+msgstr "Décédé"
+
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
 msgstr ""
@@ -108,6 +117,11 @@ msgstr ""
 #: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Details panel"
 msgstr ""
+
+#: src/Facade/DataFacade.php:329
+#, php-format
+msgid "Died: %s"
+msgstr "Décès: %s"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
 msgid "Display"

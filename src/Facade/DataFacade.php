@@ -21,6 +21,7 @@ use Illuminate\Support\Collection;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\ModuleBase\Facade\RouteAwareDataFacadeTrait;
+use MagicSunday\Webtrees\ModuleBase\Model\LifetimeLabels;
 use MagicSunday\Webtrees\ModuleBase\Model\NameSegment;
 use MagicSunday\Webtrees\ModuleBase\Model\NameSegmentKind;
 use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
@@ -303,7 +304,7 @@ final class DataFacade
             ->setSex($individual->sex())
             ->setBirth($dateProcessor->getBirthDate())
             ->setDeath($dateProcessor->getDeathDate())
-            ->setTimespan($dateProcessor->getLifetimeDescription())
+            ->setTimespan($dateProcessor->getLifetimeDescription($this->lifetimeLabels()))
             ->setIndividual($individual);
 
         // The facts are only read for the detail panel, so a chart without the panel
@@ -313,6 +314,21 @@ final class DataFacade
         }
 
         return $treeData;
+    }
+
+    /**
+     * Builds the texts of the lifetime label from the translations of the current language.
+     *
+     * @return LifetimeLabels
+     */
+    private function lifetimeLabels(): LifetimeLabels
+    {
+        // The two formats keep their placeholder, the year is filled in afterwards.
+        return new LifetimeLabels(
+            bornFormat: I18N::translate('Born: %s', '%s'),
+            diedFormat: I18N::translate('Died: %s', '%s'),
+            deceased: I18N::translate('Deceased'),
+        );
     }
 
     /**

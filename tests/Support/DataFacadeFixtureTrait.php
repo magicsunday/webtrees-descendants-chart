@@ -69,6 +69,8 @@ trait DataFacadeFixtureTrait
      * @param string                      $birth         The GEDCOM birth date of the person
      * @param array<string, Fact>|null    $factsByTag    The fact of each tag, or null for a person without facts
      * @param string                      $chartBoxTags  The tags that the tree names for the chart box
+     * @param string                      $death         The GEDCOM death date of the person
+     * @param bool                        $isDead        Whether the person is marked as dead
      *
      * @return Individual&Stub
      */
@@ -81,6 +83,8 @@ trait DataFacadeFixtureTrait
         string $birth = '',
         ?array $factsByTag = null,
         string $chartBoxTags = '',
+        string $death = '',
+        bool $isDead = false,
     ): Individual {
         $tree = self::createStub(Tree::class);
         $tree->method('name')->willReturn('main');
@@ -105,7 +109,8 @@ trait DataFacadeFixtureTrait
         $person->method('getSecondaryName')->willReturn($secondaryName);
         $person->method('getBirthDate')->willReturn(new Date($birth));
         $person->method('getEstimatedBirthDate')->willReturn(new Date($birth));
-        $person->method('getDeathDate')->willReturn(new Date(''));
+        $person->method('getDeathDate')->willReturn(new Date($death));
+        $person->method('isDead')->willReturn($isDead);
         $person->method('tree')->willReturn($tree);
         $person->method('facts')->willReturnCallback(
             static function (array $filter = []) use ($nameFact, $factsByTag): Collection {
