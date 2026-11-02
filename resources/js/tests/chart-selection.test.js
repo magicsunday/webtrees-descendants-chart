@@ -336,6 +336,40 @@ describe("A real chart with the detail panel", () => {
         },
     );
 
+    test("removes the mark and aria-current from the selected person when the selection is cleared", () => {
+        const first = node("I1");
+        const { chart, elements } = buildRealChart([first, node("I2")]);
+
+        chart.detailPanel = { select: jest.fn() };
+        chart.personClick(first.data);
+
+        expect(elements[0].classList.contains("selected")).toBe(true);
+        expect(elements[0].getAttribute("aria-current")).toBe("true");
+
+        chart.clearSelection();
+
+        expect(elements[0].classList.contains("selected")).toBe(false);
+        expect(elements[0].hasAttribute("aria-current")).toBe(false);
+    });
+
+    test("gives the focus back to the selected person and to no other one", () => {
+        const first = node("I1");
+        const second = node("I2");
+        const { chart, elements } = buildRealChart([first, second]);
+
+        chart.detailPanel = { select: jest.fn() };
+        // Makes the persons focusable, like the drawn chart does
+        chart.bindClickEventListener();
+        chart.personClick(second.data);
+
+        expect(document.activeElement).not.toBe(elements[1]);
+
+        chart.restoreFocus();
+
+        expect(document.activeElement).toBe(elements[1]);
+        expect(document.activeElement).not.toBe(elements[0]);
+    });
+
     test("marks the selected person again on the elements of the next draw", () => {
         const { chart, elements } = buildRealChart([node("I1"), node("I2")]);
 
