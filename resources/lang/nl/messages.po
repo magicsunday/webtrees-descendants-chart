@@ -53,6 +53,11 @@ msgstr "Alleen geboortenaam"
 msgid "Birth name with married name in brackets"
 msgstr "Geboortenaam met huwelijksnaam tussen haakjes"
 
+#: src/Facade/DataFacade.php:328
+#, php-format
+msgid "Born: %s"
+msgstr "Geboren: %s"
+
 #: resources/views/modules/descendants-chart/page.phtml:111
 msgid "Center chart on this person"
 msgstr "Diagram centreren op deze persoon"
@@ -87,6 +92,10 @@ msgstr ""
 msgid "Ctrl + scroll"
 msgstr "Ctrl + scrollen"
 
+#: src/Facade/DataFacade.php:330
+msgid "Deceased"
+msgstr "Overleden"
+
 #: resources/views/modules/descendants-chart/form/display.phtml:36
 msgid "Descendant line"
 msgstr "Afstammelingenlijn"
@@ -107,6 +116,11 @@ msgstr ""
 #: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Details panel"
 msgstr ""
+
+#: src/Facade/DataFacade.php:329
+#, php-format
+msgid "Died: %s"
+msgstr "Overleden: %s"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:23
 msgid "Display"
