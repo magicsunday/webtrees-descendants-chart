@@ -45,9 +45,9 @@ use function array_values;
  * @link    https://github.com/magicsunday/webtrees-descendants-chart/
  */
 #[CoversClass(DataFacade::class)]
+#[CoversClass(CoupleNode::class)]
 #[UsesClass(Configuration::class)]
 #[UsesClass(DescendantLine::class)]
-#[UsesClass(CoupleNode::class)]
 #[UsesClass(Module::class)]
 final class DataFacadeTest extends TestCase
 {
