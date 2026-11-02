@@ -87,7 +87,11 @@ final class PageViewTest extends TestCase
 
         self::assertStringContainsString('.webtrees-descendants-fullscreen-container .btn-chart {', $markup);
 
-        ViewFixture::first($xpath, '//div[contains(concat(" ", @class, " "), " webtrees-descendants-fullscreen-container ")]');
+        ViewFixture::first(
+            $xpath,
+            '//div[contains(concat(" ", @class, " "), " webtrees-descendants-fullscreen-container ")]'
+            . '//button[contains(concat(" ", @class, " "), " btn-chart ")]'
+        );
     }
 
     /**
