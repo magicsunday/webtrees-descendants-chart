@@ -45,7 +45,10 @@ const BOX_HEIGHT = 40;
 
 /**
  * Lets the d3 transitions of the drawer run to their end. The configured duration is zero,
- * so a short real wait is enough for the timer to tick and finish them.
+ * so a short real wait is enough for the timer to tick and finish them. The wait is real on
+ * purpose, because flushing the timer queue instead would need d3-timer as a direct dev
+ * dependency, while it is only a transitive one of d3-transition here. Settle deterministically
+ * if a run ever fails on a slow machine.
  *
  * @return {Promise<void>}
  */
