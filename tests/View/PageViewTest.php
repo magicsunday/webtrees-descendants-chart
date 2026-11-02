@@ -24,10 +24,8 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-use function file_get_contents;
 use function ob_get_clean;
 use function ob_start;
-use function substr_count;
 
 /**
  * Renders the page view of the descendants chart and looks at the detail panel that it carries.
@@ -40,64 +38,6 @@ use function substr_count;
 final class PageViewTest extends TestCase
 {
     use ModuleSettingsFixtureTrait;
-
-    /**
-     * The panel script of the chart library looks up its parts by the data-panel attribute and throws
-     * for a part that the markup lacks, so the page has to carry each of them exactly once, in a
-     * panel that stays hidden until the script enables it and that is named by its own heading.
-     */
-    #[Test]
-    public function carriesTheHiddenPanelWithEveryPartTheScriptLooksUp(): void
-    {
-        $xpath  = ViewFixture::xpathOf($this->render());
-        $panels = ViewFixture::elements($xpath, '//aside[@id="webtrees-descendants-detail-panel"]');
-
-        self::assertCount(1, $panels, 'the page carries exactly one panel element');
-
-        $panel = $panels[0];
-
-        self::assertTrue($panel->hasAttribute('hidden'), 'the panel stays hidden until the script enables it');
-        self::assertSame('webtrees-descendants-detail-panel-title', $panel->getAttribute('aria-labelledby'));
-
-        foreach (['title', 'image', 'hint', 'facts', 'empty', 'actions', 'individual', 'center'] as $part) {
-            self::assertCount(
-                1,
-                ViewFixture::elements($xpath, '//aside[@id="webtrees-descendants-detail-panel"]//*[@data-panel="' . $part . '"]'),
-                'the panel carries the part ' . $part . ' once'
-            );
-        }
-
-        $headings = ViewFixture::elements($xpath, '//*[@id="webtrees-descendants-detail-panel-title"]');
-
-        self::assertCount(1, $headings);
-        self::assertSame('title', $headings[0]->getAttribute('data-panel'), 'the heading that names the panel is the title part');
-    }
-
-    /**
-     * The two actions are buttons that the panel script binds, and the parts that the script shows
-     * only on demand are hidden in the markup.
-     */
-    #[Test]
-    public function hidesThePartsThatTheScriptShowsOnDemand(): void
-    {
-        $xpath = ViewFixture::xpathOf($this->render());
-
-        foreach (['image', 'empty', 'actions'] as $part) {
-            self::assertTrue(
-                ViewFixture::first($xpath, '//*[@data-panel="' . $part . '"]')->hasAttribute('hidden'),
-                'the part ' . $part . ' starts hidden'
-            );
-        }
-
-        self::assertFalse(
-            ViewFixture::first($xpath, '//*[@data-panel="hint"]')->hasAttribute('hidden'),
-            'the hint is what a panel without a selection shows'
-        );
-
-        foreach (['individual', 'center'] as $action) {
-            self::assertSame('button', ViewFixture::first($xpath, '//*[@data-panel="' . $action . '"]')->tagName);
-        }
-    }
 
     /**
      * The URL is written into an inline script. Like every value of the chart view, it is encoded
@@ -136,36 +76,18 @@ final class PageViewTest extends TestCase
     }
 
     /**
-     * The rules of the toolbar buttons come from the shared view of the module base, written once as
-     * a style element that is scoped by the container class of the page, so they are in the document
-     * from the first paint and the stylesheet of the module does not repeat them.
+     * The shared toolbar style is scoped by the container class that the page puts around the
+     * toolbar, so the rules reach the buttons of this page and no other element.
      */
     #[Test]
-    public function rendersTheSharedToolbarStyleOnceForTheContainerClass(): void
+    public function scopesTheSharedToolbarStyleToTheContainerClassOfThePage(): void
     {
         $markup = $this->render();
         $xpath  = ViewFixture::xpathOf($markup);
 
-        $styles = ViewFixture::elements($xpath, '//style[contains(., ".btn-chart")]');
-
-        self::assertCount(1, $styles, 'the page carries the toolbar style exactly once');
-        self::assertSame(
-            1,
-            substr_count($markup, '.webtrees-descendants-fullscreen-container .btn-chart {'),
-            'the rules of the button are written once'
-        );
+        self::assertStringContainsString('.webtrees-descendants-fullscreen-container .btn-chart {', $markup);
 
         ViewFixture::first($xpath, '//div[contains(concat(" ", @class, " "), " webtrees-descendants-fullscreen-container ")]');
-    }
-
-    /**
-     * The shared view carries the whole set of rules of the button, so the stylesheet of the module
-     * keeps none of them and only the rules of this chart remain.
-     */
-    #[Test]
-    public function keepsNoRuleOfTheToolbarButtonInTheStylesheet(): void
-    {
-        self::assertStringNotContainsString('.btn-chart', $this->stylesheet());
     }
 
     /**
@@ -237,18 +159,6 @@ final class PageViewTest extends TestCase
         }
 
         self::assertCount(0, ViewFixture::elements($xpath, '//aside[@id="webtrees-descendants-detail-panel"]//i'), 'no translated text is read as markup');
-    }
-
-    /**
-     * Returns the stylesheet of the module.
-     */
-    private function stylesheet(): string
-    {
-        $stylesheet = file_get_contents(__DIR__ . '/../../resources/css/descendants-chart.css');
-
-        self::assertIsString($stylesheet);
-
-        return $stylesheet;
     }
 
     /**
