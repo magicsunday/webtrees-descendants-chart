@@ -71,6 +71,7 @@ trait DataFacadeFixtureTrait
      * @param string                      $chartBoxTags  The tags that the tree names for the chart box
      * @param string                      $death         The GEDCOM death date of the person
      * @param bool                        $isDead        Whether the person is marked as dead
+     * @param bool                        $visible       Whether the viewer may see the person
      *
      * @return Individual&Stub
      */
@@ -85,6 +86,7 @@ trait DataFacadeFixtureTrait
         string $chartBoxTags = '',
         string $death = '',
         bool $isDead = false,
+        bool $visible = true,
     ): Individual {
         $tree = self::createStub(Tree::class);
         $tree->method('name')->willReturn('main');
@@ -102,8 +104,8 @@ trait DataFacadeFixtureTrait
         $person->method('xref')->willReturn($xref);
         $person->method('url')->willReturn('/individual/' . $xref);
         $person->method('sex')->willReturn($sex);
-        $person->method('canShow')->willReturn(true);
-        $person->method('canShowName')->willReturn(true);
+        $person->method('canShow')->willReturn($visible);
+        $person->method('canShowName')->willReturn($visible);
         $person->method('getAllNames')->willReturn($names);
         $person->method('getPrimaryName')->willReturn(0);
         $person->method('getSecondaryName')->willReturn($secondaryName);

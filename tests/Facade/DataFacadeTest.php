@@ -107,6 +107,28 @@ final class DataFacadeTest extends TestCase
     }
 
     /**
+     * A dead person that the viewer may not see is drawn as private, so the label
+     * stays empty instead of telling that the person is deceased.
+     */
+    #[Test]
+    public function keepsTheLifetimeLabelEmptyForADeceasedPersonThatIsHidden(): void
+    {
+        EnglishLocaleFixture::install([
+            "lifetime label\x04Deceased" => 'Verstorben',
+        ]);
+
+        $person = $this->createPerson(
+            'I1',
+            'M',
+            [$this->createName(self::ANNA_SCHMIDT, 'Anna Schmidt')],
+            isDead: true,
+            visible: false,
+        );
+
+        self::assertSame('', $this->valueOf($this->buildRoot($person, 'off'), 'timespan'));
+    }
+
+    /**
      * Each label text differs from its source text, so a text taken from the wrong
      * place or a lost placeholder changes the expected result of its case.
      *
