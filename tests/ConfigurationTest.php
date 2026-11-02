@@ -57,6 +57,42 @@ final class ConfigurationTest extends TestCase
     }
 
     /**
+     * The number of generations is accepted from the lowest to the highest selectable value, and a
+     * value outside that range falls back to the stored default instead of being clamped or passed on.
+     */
+    #[Test]
+    #[DataProvider('generationsProvider')]
+    public function generationsAreBoundedByTheSelectableRange(string $requested, int $expected): void
+    {
+        $configuration = $this->buildConfiguration(['generations' => $requested], ['default_generations' => '7']);
+
+        self::assertSame($expected, $configuration->getGenerations());
+    }
+
+    /**
+     * @return iterable<string, array{string, int}>
+     */
+    public static function generationsProvider(): iterable
+    {
+        yield 'one below the lowest value' => ['1', 7];
+        yield 'the lowest value' => ['2', 2];
+        yield 'the highest value' => ['25', 25];
+        yield 'one above the highest value' => ['26', 7];
+        yield 'not a number' => ['many', 7];
+    }
+
+    /**
+     * Without a stored default, a value below the range resolves to the built-in default.
+     */
+    #[Test]
+    public function generationsBelowTheRangeFallBackToTheBuiltInDefault(): void
+    {
+        $configuration = $this->buildConfiguration(['generations' => '1'], []);
+
+        self::assertSame(Configuration::DEFAULT_GENERATIONS, $configuration->getGenerations());
+    }
+
+    /**
      * The descendant line is read from the request parameter.
      */
     #[Test]

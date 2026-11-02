@@ -209,7 +209,7 @@ final class Module extends DescendancyChartModule implements ModuleAssetUrlInter
             $this->name() . '::modules/descendants-chart/page',
             [
                 'ajaxUrl'       => $this->getAjaxRoute($individual, $xref),
-                'title'         => $this->getPageTitle($individual),
+                'title'         => $this->pageTitle($individual),
                 'moduleName'    => $this->name(),
                 'individual'    => $individual,
                 'tree'          => $tree,
@@ -221,13 +221,13 @@ final class Module extends DescendancyChartModule implements ModuleAssetUrlInter
     }
 
     /**
-     * Returns the page title.
+     * Returns the page title, which names the individual only if the name is visible.
      *
      * @param Individual $individual The individual used in the current chart
      *
      * @return string
      */
-    private function getPageTitle(Individual $individual): string
+    public function pageTitle(Individual $individual): string
     {
         if ($individual->canShowName()) {
             return I18N::translate('Descendants chart of %s', $individual->fullName());

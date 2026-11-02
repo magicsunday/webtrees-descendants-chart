@@ -27,12 +27,15 @@ use MagicSunday\Webtrees\DescendantsChart\Test\Support\EnglishLocaleFixture;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\RoutingFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
+use function array_keys;
+use function array_replace;
 use function view;
 
 /**
@@ -68,6 +71,29 @@ final class ModuleTest extends TestCase
         self::assertSame('menu-chart-descendants', $module->chartMenuClass());
         self::assertStringContainsString('Example Person', $module->chartTitle($individual));
         self::assertStringContainsString('/route/webtrees-descendants-chart?', $module->chartUrl($individual));
+    }
+
+    /**
+     * Names the individual in the page title only when the visitor may see the name, and falls back
+     * to the plain chart title otherwise, so a private name never reaches the title.
+     */
+    #[Test]
+    public function pageTitleNamesTheIndividualOnlyWhenTheNameIsVisible(): void
+    {
+        EnglishLocaleFixture::install();
+
+        $module = new Module(self::createStub(ChartService::class), new DataFacade());
+
+        $visible = self::createStub(Individual::class);
+        $visible->method('canShowName')->willReturn(true);
+        $visible->method('fullName')->willReturn('Example Person');
+
+        $hidden = self::createStub(Individual::class);
+        $hidden->method('canShowName')->willReturn(false);
+        $hidden->method('fullName')->willReturn('Secret Person');
+
+        self::assertSame('Descendants chart of Example Person', $module->pageTitle($visible));
+        self::assertSame('Descendants chart', $module->pageTitle($hidden));
     }
 
     /**
@@ -190,6 +216,99 @@ final class ModuleTest extends TestCase
         $stored = new Configuration(new ServerRequest(RequestMethodInterface::METHOD_GET, '/'), $module);
 
         self::assertFalse($stored->getShowDetailPanel());
+    }
+
+    /**
+     * Pins the preference key and the stored value of every chart setting that is not a switch. Each
+     * one is posted with a value that differs from its default, so a renamed key or a setting that is
+     * not stored leaves the stored default visible.
+     */
+    #[Test]
+    public function adminFormStoresTheValueOfEveryChoiceSetting(): void
+    {
+        RoutingFixture::install(new HttpFactory());
+        EnglishLocaleFixture::install();
+
+        $module = $this->createModuleWithPreferences([]);
+
+        $module->postAdminAction(
+            (new ServerRequest(RequestMethodInterface::METHOD_POST, '/'))
+                ->withParsedBody([
+                    'generations'      => '9',
+                    'layout'           => Configuration::LAYOUT_TOPBOTTOM,
+                    'descendantLine'   => 'paternal',
+                    'marriedNamesMode' => Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED,
+                    'nameAbbreviation' => 'SURNAME',
+                ])
+        );
+
+        self::assertSame('9', $module->getPreference('default_generations'));
+        self::assertSame(Configuration::LAYOUT_TOPBOTTOM, $module->getPreference('default_layout'));
+        self::assertSame('paternal', $module->getPreference('default_descendantLine'));
+        self::assertSame(Configuration::MARRIED_NAMES_BIRTH_AND_MARRIED, $module->getPreference('default_marriedNamesMode'));
+        self::assertSame('SURNAME', $module->getPreference('default_nameAbbreviation'));
+    }
+
+    /**
+     * Pins the preference key of every switch. Only the posted switch differs from the stored
+     * defaults in each case, so a switch that is written to the key of another one is seen, and a
+     * switch that is not written at all keeps its default.
+     *
+     * @param array<string, string> $posted   The form fields of the request
+     * @param array<string, string> $expected The stored value of each switch that differs from the default
+     */
+    #[Test]
+    #[DataProvider('switchProvider')]
+    public function adminFormStoresEachSwitchUnderItsOwnKey(array $posted, array $expected): void
+    {
+        RoutingFixture::install(new HttpFactory());
+        EnglishLocaleFixture::install();
+
+        $module = $this->createModuleWithPreferences([]);
+
+        $module->postAdminAction(
+            (new ServerRequest(RequestMethodInterface::METHOD_POST, '/'))->withParsedBody($posted)
+        );
+
+        $stored = [];
+
+        foreach (array_keys($this->storedSwitchDefaults()) as $key) {
+            $stored[$key] = $module->getPreference($key, 'not stored');
+        }
+
+        self::assertSame(array_replace($this->storedSwitchDefaults(), $expected), $stored);
+    }
+
+    /**
+     * @return iterable<string, array{array<string, string>, array<string, string>}>
+     */
+    public static function switchProvider(): iterable
+    {
+        yield 'hide spouses' => [['hideSpouses' => '1'], ['default_hideSpouses' => '1']];
+        yield 'new tab on click off' => [['openNewTabOnClick' => '0'], ['default_openNewTabOnClick' => '']];
+        yield 'alternative name' => [['showAlternativeName' => '1'], ['default_showAlternativeName' => '1']];
+        yield 'nicknames' => [['showNicknames' => '1'], ['default_showNicknames' => '1']];
+        yield 'detail panel' => [['showDetailPanel' => '1'], ['default_showDetailPanel' => '1']];
+        yield 'hide SVG export' => [['hideSvgExport' => '1'], ['default_hideSvgExport' => '1']];
+        yield 'hide PNG export' => [['hidePngExport' => '1'], ['default_hidePngExport' => '1']];
+    }
+
+    /**
+     * The value that a form without any posted switch stores under the key of each switch.
+     *
+     * @return array<string, string>
+     */
+    private function storedSwitchDefaults(): array
+    {
+        return [
+            'default_hideSpouses'         => '',
+            'default_openNewTabOnClick'   => '1',
+            'default_showAlternativeName' => '',
+            'default_showNicknames'       => '',
+            'default_showDetailPanel'     => '',
+            'default_hideSvgExport'       => '',
+            'default_hidePngExport'       => '',
+        ];
     }
 
     /**
