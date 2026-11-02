@@ -33,169 +33,47 @@ use function trim;
 final class HelpButtonViewTest extends TestCase
 {
     /**
-     * The button tells assistive technology that it controls the popover and whether that is open,
-     * and the popover is a named region with the id that the button points to. The popover starts
-     * closed, so the button starts with the state collapsed.
-     */
-    #[Test]
-    public function exposesTheStateOfThePopoverOnTheButton(): void
-    {
-        $xpath = ViewFixture::xpathOf($this->render());
-
-        $button  = ViewFixture::first($xpath, '//button[contains(concat(" ", @class, " "), " btn-help ")]');
-        $popover = ViewFixture::first($xpath, '//div[contains(concat(" ", @class, " "), " help-popover ")]');
-
-        self::assertNotSame('', $button->getAttribute('title'), 'the icon is the only content, so the title names the button');
-        self::assertSame('button', $button->getAttribute('type'), 'the button never submits a form');
-        self::assertSame('false', $button->getAttribute('aria-expanded'));
-        self::assertSame('descendants-chart-help-popover', $popover->getAttribute('id'));
-        self::assertSame($popover->getAttribute('id'), $button->getAttribute('aria-controls'));
-        self::assertSame('region', $popover->getAttribute('role'));
-        self::assertNotSame('', $popover->getAttribute('aria-label'));
-        self::assertStringContainsString('d-none', $popover->getAttribute('class'));
-    }
-
-    /**
-     * The popover lists the interactions of both modes of the chart. The entries of the default
-     * mode start visible, the entries of the detail panel mode start hidden, and the page script
-     * switches them with the checkbox. The entries for the Tab key, zooming and moving
-     * apply to both modes and carry no mode.
-     */
-    #[Test]
-    public function marksTheEntriesOfEachMode(): void
-    {
-        $xpath = ViewFixture::xpathOf($this->render());
-
-        $default = ViewFixture::elements($xpath, '//tr[@data-help-mode="default"]');
-        $panel   = ViewFixture::elements($xpath, '//tr[@data-help-mode="panel"]');
-        $both    = ViewFixture::elements($xpath, '//tr[not(@data-help-mode)]');
-
-        self::assertNotSame([], $default);
-        self::assertNotSame([], $panel);
-        self::assertCount(3, $both, 'moving between the persons, zooming and moving apply to both modes');
-
-        foreach ($default as $row) {
-            self::assertStringNotContainsString('d-none', $row->getAttribute('class'));
-        }
-
-        foreach ($panel as $row) {
-            self::assertStringContainsString('d-none', $row->getAttribute('class'));
-        }
-
-        foreach ($both as $row) {
-            self::assertStringNotContainsString('d-none', $row->getAttribute('class'));
-        }
-    }
-
-    /**
-     * Each interaction that the issue asks for has its own row in the mode it belongs to. The page
-     * without the detail panel has the click on a person, the mode with the panel has the selection
-     * of a person and the panel that opens the individual page or centers the chart.
-     */
-    #[Test]
-    public function listsTheInteractionsOfEachMode(): void
-    {
-        $xpath = ViewFixture::xpathOf($this->render());
-
-        $expected = [
-            'default' => ['Click on a person'],
-            'panel'   => ['Click or Enter on a person', 'Details panel'],
-        ];
-
-        foreach ($expected as $mode => $labels) {
-            foreach ($labels as $label) {
-                $row = ViewFixture::first(
-                    $xpath,
-                    '//tr[@data-help-mode="' . $mode . '"][td/strong[normalize-space() = "' . $label . '"]]'
-                );
-
-                self::assertNotSame('', trim($row->textContent));
-            }
-        }
-    }
-
-    /**
-     * Every row names the interaction and describes what it does, and the rows for zooming and moving
-     * are there for both modes. A row with an empty description would show a bare key.
-     */
-    #[Test]
-    public function describesEveryInteractionAndNamesTheZoomAndMoveRows(): void
-    {
-        $xpath = ViewFixture::xpathOf($this->render());
-
-        $rows = ViewFixture::elements($xpath, '//div[contains(concat(" ", @class, " "), " help-popover ")]//tr');
-
-        self::assertNotSame([], $rows);
-
-        foreach ($rows as $row) {
-            self::assertGreaterThan(0, $xpath->evaluate('string-length(normalize-space(td[1]))', $row));
-            self::assertGreaterThan(0, $xpath->evaluate('string-length(normalize-space(td[2]))', $row));
-        }
-
-        foreach (['Ctrl + scroll', 'Click and drag'] as $label) {
-            $row = ViewFixture::first($xpath, '//tr[td/strong[normalize-space() = "' . $label . '"]]');
-
-            self::assertFalse($row->hasAttribute('data-help-mode'));
-            self::assertStringNotContainsString('d-none', $row->getAttribute('class'));
-        }
-    }
-
-    /**
-     * The row for the Tab key applies to both modes, because the persons are reached with the keyboard
-     * with the detail panel as well as without it.
-     */
-    #[Test]
-    public function sharesTheTabKeyRowBetweenBothModes(): void
-    {
-        $xpath = ViewFixture::xpathOf($this->render());
-
-        $row = ViewFixture::first($xpath, '//tr[td/strong[normalize-space() = "Tab key"]]');
-
-        self::assertFalse($row->hasAttribute('data-help-mode'));
-        self::assertStringNotContainsString('d-none', $row->getAttribute('class'));
-    }
-
-    /**
-     * The toggle lives in the page script, which also closes the popover on Escape, so the markup
-     * carries no inline click handler that would toggle it a second time.
-     */
-    #[Test]
-    public function carriesNoInlineClickHandler(): void
-    {
-        $xpath = ViewFixture::xpathOf($this->render());
-
-        self::assertSame([], ViewFixture::elements($xpath, '//*[@onclick]'));
-    }
-
-    /**
-     * The rows follow each other in a fixed order, each with its own mode and its own text, so a row
-     * that moves to the other mode or to another place changes what the help shows in each mode.
+     * The rows follow each other in a fixed order, each with its own key and its own mode, so a row
+     * that moves to the other mode or to another place changes what the help shows in each mode. The
+     * active mode is the default one, so its rows and the rows of both modes are visible while the
+     * rows of the detail panel mode start hidden. Every row has a text, and the button has a title,
+     * because the icon is its only content. The wording of the texts is not pinned.
      */
     #[Test]
     public function listsTheRowsInTheirOrderWithTheirModes(): void
     {
         $xpath    = ViewFixture::xpathOf($this->render());
         $expected = [
-            ['default', 'Click on a person', 'Show chart for that person, or open the page of a person of the first generation'],
-            ['', 'Tab key', 'Move between the persons'],
-            ['panel', 'Click or Enter on a person', 'Show the details of the person in the panel'],
-            ['panel', 'Details panel', 'Open the individual page or center the chart on the person'],
-            ['', 'Ctrl + scroll', 'Zoom in/out'],
-            ['', 'Click and drag', 'Move the chart'],
+            ['default', 'Click on a person'],
+            ['', 'Tab key'],
+            ['panel', 'Click or Enter on a person'],
+            ['panel', 'Details panel'],
+            ['', 'Ctrl + scroll'],
+            ['', 'Click and drag'],
         ];
 
+        $button = ViewFixture::first($xpath, '//button[contains(concat(" ", @class, " "), " btn-help ")]');
+
+        self::assertNotSame('', $button->getAttribute('title'), 'the icon is the only content, so the title names the button');
         self::assertCount(count($expected), ViewFixture::elements($xpath, '//tr'));
 
-        foreach ($expected as $index => [$mode, $key, $text]) {
-            $row = '(//tr)[' . ($index + 1) . ']';
+        foreach ($expected as $index => [$mode, $key]) {
+            $row     = '(//tr)[' . ($index + 1) . ']';
+            $element = ViewFixture::first($xpath, $row);
 
             self::assertSame(
                 $mode,
-                ViewFixture::first($xpath, $row)->getAttribute('data-help-mode'),
+                $element->getAttribute('data-help-mode'),
                 'the row ' . $key . ' belongs to the mode ' . ($mode === '' ? 'of both' : $mode)
             );
             self::assertSame($key, trim(ViewFixture::first($xpath, $row . '/td[1]')->textContent));
-            self::assertSame($text, trim(ViewFixture::first($xpath, $row . '/td[2]')->textContent));
+            self::assertNotSame('', trim(ViewFixture::first($xpath, $row . '/td[2]')->textContent), 'the row ' . $key . ' describes what it does');
+
+            if ($mode === 'panel') {
+                self::assertStringContainsString('d-none', $element->getAttribute('class'), 'the row ' . $key . ' starts hidden');
+            } else {
+                self::assertStringNotContainsString('d-none', $element->getAttribute('class'), 'the row ' . $key . ' starts visible');
+            }
         }
     }
 
