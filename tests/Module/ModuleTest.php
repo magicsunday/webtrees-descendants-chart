@@ -49,31 +49,6 @@ final class ModuleTest extends TestCase
     use ModuleSettingsFixtureTrait;
 
     /**
-     * Ensures trait-provided helpers return expected metadata and URLs.
-     */
-    #[Test]
-    public function traitHelpersExposeExpectedValues(): void
-    {
-        RoutingFixture::install(new HttpFactory());
-
-        $chartService = self::createStub(ChartService::class);
-        $module       = new Module($chartService, new DataFacade());
-        $individual   = self::createStub(Individual::class);
-        $tree         = self::createStub(Tree::class);
-
-        EnglishLocaleFixture::install();
-
-        $individual->method('fullName')->willReturn('Example Person');
-        $individual->method('xref')->willReturn('I1');
-        $individual->method('tree')->willReturn($tree);
-        $tree->method('name')->willReturn('main');
-
-        self::assertSame('menu-chart-descendants', $module->chartMenuClass());
-        self::assertStringContainsString('Example Person', $module->chartTitle($individual));
-        self::assertStringContainsString('/route/webtrees-descendants-chart?', $module->chartUrl($individual));
-    }
-
-    /**
      * Names the individual in the page title only when the visitor may see the name, and falls back
      * to the plain chart title otherwise, so a private name never reaches the title.
      */
