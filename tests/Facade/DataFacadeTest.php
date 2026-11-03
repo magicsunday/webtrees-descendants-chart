@@ -89,7 +89,7 @@ final class DataFacadeTest extends TestCase
             'Born: %s' => 'Geboren: %s',
             'Died: %s' => 'Gestorben: %s',
             // A context key is the context, the separator and the source text.
-            "lifetime label\x04Deceased" => 'Verstorben',
+            "webtrees-descendants-chart\x04Deceased" => 'Verstorben',
             // The plain source text belongs to another module with another meaning.
             'Deceased' => 'Verstorbene',
         ]);
@@ -114,7 +114,7 @@ final class DataFacadeTest extends TestCase
     public function keepsTheLifetimeLabelEmptyForADeceasedPersonThatIsHidden(): void
     {
         EnglishLocaleFixture::install([
-            "lifetime label\x04Deceased" => 'Verstorben',
+            "webtrees-descendants-chart\x04Deceased" => 'Verstorben',
         ]);
 
         $person = $this->createPerson(

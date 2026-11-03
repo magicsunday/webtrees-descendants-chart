@@ -327,7 +327,7 @@ final class DataFacade
         return new LifetimeLabels(
             bornFormat: I18N::translate('Born: %s', '%s'),
             diedFormat: I18N::translate('Died: %s', '%s'),
-            deceased: I18N::translateContext('lifetime label', 'Deceased'),
+            deceased: I18N::translateContext('webtrees-descendants-chart', 'Deceased'),
         );
     }
 

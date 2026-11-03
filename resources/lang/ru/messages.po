@@ -94,7 +94,7 @@ msgid "Ctrl + scroll"
 msgstr "Ctrl + колёсико мыши"
 
 #: src/Facade/DataFacade.php:330
-msgctxt "lifetime label"
+msgctxt "webtrees-descendants-chart"
 msgid "Deceased"
 msgstr "Умерший"
 
