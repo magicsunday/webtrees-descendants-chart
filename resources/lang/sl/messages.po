@@ -24,15 +24,15 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:531
+#: src/Configuration.php:537
 msgid "Abbreviate given names first"
 msgstr "Najprej skrajšaj osebna imena"
 
-#: src/Configuration.php:532
+#: src/Configuration.php:538
 msgid "Abbreviate surnames first"
 msgstr "Najprej skrajšaj priimke"
 
-#: src/Configuration.php:329
+#: src/Configuration.php:335
 msgid "All descendants"
 msgstr ""
 
@@ -40,7 +40,7 @@ msgstr ""
 msgid "An overview of an individual’s descendants."
 msgstr "Pregled potomcev osebe."
 
-#: src/Configuration.php:530
+#: src/Configuration.php:536
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Samodejno (glede na drevesno tradicijo priimkov)"
 
@@ -48,11 +48,11 @@ msgstr "Samodejno (glede na drevesno tradicijo priimkov)"
 msgid "Behavior"
 msgstr "Vedenje"
 
-#: src/Configuration.php:380
+#: src/Configuration.php:386
 msgid "Birth name only"
 msgstr "Samo rojstno ime"
 
-#: src/Configuration.php:382
+#: src/Configuration.php:388
 msgid "Birth name with married name in brackets"
 msgstr "Rojstno ime s poročnim priimkom v oklepaju"
 
@@ -61,7 +61,7 @@ msgstr "Rojstno ime s poročnim priimkom v oklepaju"
 msgid "Born: %s"
 msgstr "Rojstvo: %s"
 
-#: resources/views/modules/descendants-chart/page.phtml:111
+#: resources/views/modules/descendants-chart/page.phtml:112
 msgid "Center chart on this person"
 msgstr ""
 
@@ -77,11 +77,11 @@ msgstr "Kliknite na osebo"
 msgid "Click or Enter on a person"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/config.phtml:25
+#: resources/views/modules/descendants-chart/config.phtml:26
 msgid "Control panel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/config.phtml:84
+#: resources/views/modules/descendants-chart/config.phtml:85
 msgid ""
 "Controls which name part shrinks first when a box is too narrow for the full "
 "name. \"Automatic\" uses the tree's surname tradition (Icelandic abbreviates "
@@ -96,7 +96,7 @@ msgid "Ctrl + scroll"
 msgstr "Ctrl + drsenje"
 
 #: src/Facade/DataFacade.php:330
-msgctxt "lifetime label"
+msgctxt "webtrees-descendants-chart"
 msgid "Deceased"
 msgstr "Pokojni/a"
 
@@ -147,7 +147,8 @@ msgstr "Izvozi kot PNG"
 msgid "Export as SVG"
 msgstr "Izvozi kot SVG"
 
-#: resources/views/modules/descendants-chart/config.phtml:50
+#: resources/views/modules/descendants-chart/config.phtml:51
+msgctxt "webtrees-descendants-chart"
 msgid "General"
 msgstr ""
 
@@ -155,15 +156,15 @@ msgstr ""
 msgid "Generations"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:78
+#: resources/views/modules/descendants-chart/page.phtml:79
 msgid "Hide more options"
 msgstr "Skrij več možnosti"
 
-#: resources/views/modules/descendants-chart/config.phtml:64
+#: resources/views/modules/descendants-chart/config.phtml:65
 msgid "Hide the PNG export button"
 msgstr "Skrij gumb PNG izvoz"
 
-#: resources/views/modules/descendants-chart/config.phtml:55
+#: resources/views/modules/descendants-chart/config.phtml:56
 msgid "Hide the SVG export button"
 msgstr "Skrij gumb SVG izvoz"
 
@@ -171,7 +172,7 @@ msgstr "Skrij gumb SVG izvoz"
 msgid "Hide the spouses associated with an individual"
 msgstr "Skrij partnerje, povezane z osebo"
 
-#: resources/views/modules/descendants-chart/page.phtml:40
+#: resources/views/modules/descendants-chart/page.phtml:41
 msgid "Individual"
 msgstr ""
 
@@ -185,19 +186,19 @@ msgstr ""
 "Martin \"Chalky\" White). Posnema staro vedenje webtrees za drevesa, ki "
 "vzdevke shranjujejo v ločenem polju GEDCOM NICK."
 
-#: src/Configuration.php:381
+#: src/Configuration.php:387
 msgid "Married name only"
 msgstr "Samo poročni priimek"
 
-#: resources/views/modules/descendants-chart/config.phtml:90
+#: resources/views/modules/descendants-chart/config.phtml:91
 msgid "Married names"
 msgstr "Poročni priimki"
 
-#: src/Configuration.php:331
+#: src/Configuration.php:337
 msgid "Maternal line (mother to child)"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/config.phtml:25
+#: resources/views/modules/descendants-chart/config.phtml:26
 msgid "Modules"
 msgstr ""
 
@@ -213,11 +214,11 @@ msgstr "Premakni diagram"
 msgid "Move the view with two fingers"
 msgstr "Premakni pogled z dvema prstoma"
 
-#: resources/views/modules/descendants-chart/config.phtml:73
+#: resources/views/modules/descendants-chart/config.phtml:74
 msgid "Name abbreviation when space is tight"
 msgstr "Krajšanje imena, ko je prostor omejen"
 
-#: resources/views/modules/descendants-chart/page.phtml:109
+#: resources/views/modules/descendants-chart/page.phtml:110
 msgid "No details are available for this person."
 msgstr ""
 
@@ -225,7 +226,7 @@ msgstr ""
 msgid "Open individual in new browser window/tab"
 msgstr "Odpri osebo v novem oknu/zavihku brskalnika"
 
-#: resources/views/modules/descendants-chart/page.phtml:110
+#: resources/views/modules/descendants-chart/page.phtml:111
 msgid "Open individual page"
 msgstr ""
 
@@ -241,11 +242,12 @@ msgstr ""
 msgid "Open the individual page or center the chart on the person"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/orientation.phtml:22
+#: resources/views/modules/descendants-chart/form/orientation.phtml:23
+msgctxt "webtrees-descendants-chart"
 msgid "Orientation"
 msgstr ""
 
-#: src/Configuration.php:330
+#: src/Configuration.php:336
 msgid "Paternal line (father to son)"
 msgstr ""
 
@@ -253,7 +255,7 @@ msgstr ""
 msgid "Re center"
 msgstr "Znova na sredino"
 
-#: resources/views/modules/descendants-chart/page.phtml:108
+#: resources/views/modules/descendants-chart/page.phtml:109
 msgid "Select a person in the chart to see the details here."
 msgstr ""
 
@@ -283,7 +285,7 @@ msgstr ""
 msgid "Show help"
 msgstr "Prikaži pomoč"
 
-#: resources/views/modules/descendants-chart/page.phtml:77
+#: resources/views/modules/descendants-chart/page.phtml:78
 msgid "Show more options"
 msgstr "Prikaži več možnosti"
 
@@ -321,7 +323,7 @@ msgstr ""
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Uporabi Ctrl+Scroll kolesce za povečavo diagrama"
 
-#: resources/views/modules/descendants-chart/config.phtml:101
+#: resources/views/modules/descendants-chart/config.phtml:102
 msgid ""
 "Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
 "shown — replacing the birth name, appended in brackets after the birth name, "
@@ -337,34 +339,39 @@ msgstr ""
 msgid "Zoom in/out"
 msgstr "Povečaj/pomanjšaj"
 
-#: resources/views/modules/descendants-chart/config.phtml:116
+#: resources/views/modules/descendants-chart/config.phtml:117
 msgid "cancel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:107
+#: resources/views/modules/descendants-chart/page.phtml:108
 msgid "close"
 msgstr ""
 
-#: src/Configuration.php:257 src/Configuration.php:265
+#: src/Configuration.php:256
+msgctxt "webtrees-descendants-chart"
 msgid "down"
 msgstr ""
 
-#: src/Configuration.php:254 src/Configuration.php:262
+#: src/Configuration.php:253
+msgctxt "webtrees-descendants-chart"
 msgid "left"
 msgstr ""
 
-#: src/Configuration.php:255 src/Configuration.php:263
+#: src/Configuration.php:254
+msgctxt "webtrees-descendants-chart"
 msgid "right"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/config.phtml:111
+#: resources/views/modules/descendants-chart/config.phtml:112
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:256 src/Configuration.php:264
+#: src/Configuration.php:255
+msgctxt "webtrees-descendants-chart"
 msgid "up"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:66
+#: resources/views/modules/descendants-chart/page.phtml:67
+msgctxt "webtrees-descendants-chart"
 msgid "view"
 msgstr ""
