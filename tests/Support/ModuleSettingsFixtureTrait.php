@@ -23,7 +23,7 @@ use ReflectionProperty;
  *
  * AbstractModule::getPreference() is final and cannot be stubbed, and the real
  * implementation reads from the `module_setting` table, so the tests that need
- * preferences boot a minimal SQLite schema for it.
+ * preferences seed that table through the shared settings fixture.
  */
 trait ModuleSettingsFixtureTrait
 {

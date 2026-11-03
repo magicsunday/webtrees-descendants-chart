@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace MagicSunday\Webtrees\DescendantsChart\Test\Module;
 
+use Aura\Router\Map;
 use Fig\Http\Message\RequestMethodInterface;
 use Fisharebest\Webtrees\Contracts\UserInterface;
 use Fisharebest\Webtrees\Individual;
@@ -80,7 +81,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function postRedirectCarriesEveryRouteToggleParameter(): void
     {
-        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
+        $this->registerRouting();
 
         $module  = $this->createModuleWithPreferences([]);
         $tree    = self::createStub(Tree::class);
@@ -129,7 +130,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function adminFormStoresTheDescendantLineAsDefault(): void
     {
-        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
+        $this->registerRouting();
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
@@ -156,7 +157,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function adminFormStoresThePanelDefault(): void
     {
-        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
+        $this->registerRouting();
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
@@ -179,7 +180,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function adminFormTakesThePanelDefaultBackWhenTheSwitchIsOff(): void
     {
-        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
+        $this->registerRouting();
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences(['default_showDetailPanel' => '1']);
@@ -202,7 +203,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function adminFormStoresTheValueOfEveryChoiceSetting(): void
     {
-        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
+        $this->registerRouting();
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
@@ -237,7 +238,7 @@ final class ModuleTest extends TestCase
     #[DataProvider('switchProvider')]
     public function adminFormStoresEachSwitchUnderItsOwnKey(array $posted, array $expected): void
     {
-        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
+        $this->registerRouting();
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
@@ -270,6 +271,17 @@ final class ModuleTest extends TestCase
     }
 
     /**
+     * Registers the routes and the container that the module needs, including the response factory
+     * that a redirect resolves.
+     *
+     * @return Map The route map that the module registers its routes in
+     */
+    private function registerRouting(): Map
+    {
+        return RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
+    }
+
+    /**
      * The value that a form without any posted switch stores under the key of each switch.
      *
      * @return array<string, string>
@@ -294,7 +306,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function configurationPageRendersTheStoredNameAbbreviation(): void
     {
-        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
+        $this->registerRouting();
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences(['default_nameAbbreviation' => 'SURNAME']);
@@ -325,7 +337,7 @@ final class ModuleTest extends TestCase
     #[PreserveGlobalState(false)]
     public function bootRegistersTheSharedViewsOfTheModuleBase(): void
     {
-        $routeMap = RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
+        $routeMap = $this->registerRouting();
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
