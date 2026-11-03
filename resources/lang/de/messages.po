@@ -21,15 +21,15 @@ msgstr ""
 "X-Poedit-SearchPath-2: webtrees-descendants-chart/resources/views\n"
 "X-Poedit-SearchPath-3: webtrees-module-base/src\n"
 
-#: src/Configuration.php:531
+#: src/Configuration.php:537
 msgid "Abbreviate given names first"
 msgstr "Zuerst Vornamen abkürzen"
 
-#: src/Configuration.php:532
+#: src/Configuration.php:538
 msgid "Abbreviate surnames first"
 msgstr "Zuerst Nachnamen abkürzen"
 
-#: src/Configuration.php:329
+#: src/Configuration.php:335
 msgid "All descendants"
 msgstr "Alle Nachkommen"
 
@@ -37,7 +37,7 @@ msgstr "Alle Nachkommen"
 msgid "An overview of an individual’s descendants."
 msgstr "Ein Überblick über die Nachkommen einer Person."
 
-#: src/Configuration.php:530
+#: src/Configuration.php:536
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Automatisch (basierend auf der Nachnamen-Tradition des Stammbaums)"
 
@@ -45,11 +45,11 @@ msgstr "Automatisch (basierend auf der Nachnamen-Tradition des Stammbaums)"
 msgid "Behavior"
 msgstr "Verhalten"
 
-#: src/Configuration.php:380
+#: src/Configuration.php:386
 msgid "Birth name only"
 msgstr "Nur Geburtsname"
 
-#: src/Configuration.php:382
+#: src/Configuration.php:388
 msgid "Birth name with married name in brackets"
 msgstr "Geburtsname mit Ehenamen in Klammern"
 
@@ -58,7 +58,7 @@ msgstr "Geburtsname mit Ehenamen in Klammern"
 msgid "Born: %s"
 msgstr "Geboren: %s"
 
-#: resources/views/modules/descendants-chart/page.phtml:111
+#: resources/views/modules/descendants-chart/page.phtml:112
 msgid "Center chart on this person"
 msgstr "Diagramm auf diese Person zentrieren"
 
@@ -74,11 +74,11 @@ msgstr "Auf eine Person klicken"
 msgid "Click or Enter on a person"
 msgstr "Klick oder Eingabetaste auf eine Person"
 
-#: resources/views/modules/descendants-chart/config.phtml:25
+#: resources/views/modules/descendants-chart/config.phtml:26
 msgid "Control panel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/config.phtml:84
+#: resources/views/modules/descendants-chart/config.phtml:85
 msgid ""
 "Controls which name part shrinks first when a box is too narrow for the full "
 "name. \"Automatic\" uses the tree's surname tradition (Icelandic abbreviates "
@@ -145,23 +145,24 @@ msgstr "Als PNG exportieren"
 msgid "Export as SVG"
 msgstr "Als SVG exportieren"
 
-#: resources/views/modules/descendants-chart/config.phtml:50
+#: resources/views/modules/descendants-chart/config.phtml:51
+msgctxt "webtrees-descendants-chart"
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: resources/views/modules/descendants-chart/form/generations.phtml:22
 msgid "Generations"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:78
+#: resources/views/modules/descendants-chart/page.phtml:79
 msgid "Hide more options"
 msgstr "Verstecke weitere Optionen"
 
-#: resources/views/modules/descendants-chart/config.phtml:64
+#: resources/views/modules/descendants-chart/config.phtml:65
 msgid "Hide the PNG export button"
 msgstr "Die Schaltfläche für den PNG-Export ausblenden"
 
-#: resources/views/modules/descendants-chart/config.phtml:55
+#: resources/views/modules/descendants-chart/config.phtml:56
 msgid "Hide the SVG export button"
 msgstr "Die Schaltfläche für den SVG-Export ausblenden"
 
@@ -169,7 +170,7 @@ msgstr "Die Schaltfläche für den SVG-Export ausblenden"
 msgid "Hide the spouses associated with an individual"
 msgstr "Ausblenden der mit einer Person verbundenen Ehepartner"
 
-#: resources/views/modules/descendants-chart/page.phtml:40
+#: resources/views/modules/descendants-chart/page.phtml:41
 msgid "Individual"
 msgstr ""
 
@@ -184,19 +185,19 @@ msgstr ""
 "Verhalten für Bäume nach, die Spitznamen im separaten GEDCOM NICK-Feld "
 "speichern."
 
-#: src/Configuration.php:381
+#: src/Configuration.php:387
 msgid "Married name only"
 msgstr "Nur Ehenamen"
 
-#: resources/views/modules/descendants-chart/config.phtml:90
+#: resources/views/modules/descendants-chart/config.phtml:91
 msgid "Married names"
 msgstr "Ehenamen"
 
-#: src/Configuration.php:331
+#: src/Configuration.php:337
 msgid "Maternal line (mother to child)"
 msgstr "Mütterliche Linie (Mutter zu Kind)"
 
-#: resources/views/modules/descendants-chart/config.phtml:25
+#: resources/views/modules/descendants-chart/config.phtml:26
 msgid "Modules"
 msgstr ""
 
@@ -212,11 +213,11 @@ msgstr "Diagramm verschieben"
 msgid "Move the view with two fingers"
 msgstr "Verschieben der Ansicht mit zwei Fingern"
 
-#: resources/views/modules/descendants-chart/config.phtml:73
+#: resources/views/modules/descendants-chart/config.phtml:74
 msgid "Name abbreviation when space is tight"
 msgstr "Namensabkürzung bei knappem Platz"
 
-#: resources/views/modules/descendants-chart/page.phtml:109
+#: resources/views/modules/descendants-chart/page.phtml:110
 msgid "No details are available for this person."
 msgstr "Für diese Person sind keine Details verfügbar."
 
@@ -224,7 +225,7 @@ msgstr "Für diese Person sind keine Details verfügbar."
 msgid "Open individual in new browser window/tab"
 msgstr "Aktuelle Person in neuem Browserfenster/Tab öffnen"
 
-#: resources/views/modules/descendants-chart/page.phtml:110
+#: resources/views/modules/descendants-chart/page.phtml:111
 msgid "Open individual page"
 msgstr "Personenseite öffnen"
 
@@ -241,11 +242,12 @@ msgstr ""
 msgid "Open the individual page or center the chart on the person"
 msgstr "Personenseite öffnen oder das Diagramm auf die Person zentrieren"
 
-#: resources/views/modules/descendants-chart/form/orientation.phtml:22
+#: resources/views/modules/descendants-chart/form/orientation.phtml:23
+msgctxt "webtrees-descendants-chart"
 msgid "Orientation"
-msgstr ""
+msgstr "Ausrichtung"
 
-#: src/Configuration.php:330
+#: src/Configuration.php:336
 msgid "Paternal line (father to son)"
 msgstr "Väterliche Linie (Vater zu Sohn)"
 
@@ -253,7 +255,7 @@ msgstr "Väterliche Linie (Vater zu Sohn)"
 msgid "Re center"
 msgstr "Neu zentrieren"
 
-#: resources/views/modules/descendants-chart/page.phtml:108
+#: resources/views/modules/descendants-chart/page.phtml:109
 msgid "Select a person in the chart to see the details here."
 msgstr "Person im Diagramm auswählen, um hier die Details anzuzeigen."
 
@@ -290,7 +292,7 @@ msgstr "Detailbereich anzeigen"
 msgid "Show help"
 msgstr "Hilfe anzeigen"
 
-#: resources/views/modules/descendants-chart/page.phtml:77
+#: resources/views/modules/descendants-chart/page.phtml:78
 msgid "Show more options"
 msgstr "Zeige weitere Optionen"
 
@@ -334,7 +336,7 @@ msgstr ""
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Verwende Strg+Scrollen zum Zoomen der Ansicht"
 
-#: resources/views/modules/descendants-chart/config.phtml:101
+#: resources/views/modules/descendants-chart/config.phtml:102
 msgid ""
 "Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
 "shown — replacing the birth name, appended in brackets after the birth name, "
@@ -350,34 +352,39 @@ msgstr ""
 msgid "Zoom in/out"
 msgstr "Vergrößern/Verkleinern"
 
-#: resources/views/modules/descendants-chart/config.phtml:116
+#: resources/views/modules/descendants-chart/config.phtml:117
 msgid "cancel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/page.phtml:107
+#: resources/views/modules/descendants-chart/page.phtml:108
 msgid "close"
 msgstr ""
 
-#: src/Configuration.php:257 src/Configuration.php:265
+#: src/Configuration.php:256
+msgctxt "webtrees-descendants-chart"
 msgid "down"
-msgstr ""
+msgstr "Unten"
 
-#: src/Configuration.php:254 src/Configuration.php:262
+#: src/Configuration.php:253
+msgctxt "webtrees-descendants-chart"
 msgid "left"
-msgstr ""
+msgstr "Links"
 
-#: src/Configuration.php:255 src/Configuration.php:263
+#: src/Configuration.php:254
+msgctxt "webtrees-descendants-chart"
 msgid "right"
-msgstr ""
+msgstr "Rechts"
 
-#: resources/views/modules/descendants-chart/config.phtml:111
+#: resources/views/modules/descendants-chart/config.phtml:112
 msgid "save"
 msgstr ""
 
-#: src/Configuration.php:256 src/Configuration.php:264
+#: src/Configuration.php:255
+msgctxt "webtrees-descendants-chart"
 msgid "up"
-msgstr ""
+msgstr "Oben"
 
-#: resources/views/modules/descendants-chart/page.phtml:66
+#: resources/views/modules/descendants-chart/page.phtml:67
+msgctxt "webtrees-descendants-chart"
 msgid "view"
-msgstr ""
+msgstr "Anzeigen"

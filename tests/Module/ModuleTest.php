@@ -24,6 +24,7 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Module;
+use MagicSunday\Webtrees\DescendantsChart\Support\ContextText;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
 use MagicSunday\Webtrees\ModuleBase\Testing\EnglishLocaleFixture;
 use MagicSunday\Webtrees\ModuleBase\Testing\RoutingFixture;
@@ -46,6 +47,7 @@ use function view;
 #[CoversClass(Module::class)]
 #[UsesClass(Configuration::class)]
 #[UsesClass(DescendantLine::class)]
+#[UsesClass(ContextText::class)]
 final class ModuleTest extends TestCase
 {
     use ModuleSettingsFixtureTrait;
