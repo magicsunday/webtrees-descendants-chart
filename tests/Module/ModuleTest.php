@@ -23,9 +23,9 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Module;
-use MagicSunday\Webtrees\DescendantsChart\Test\Support\EnglishLocaleFixture;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
-use MagicSunday\Webtrees\DescendantsChart\Test\Support\RoutingFixture;
+use MagicSunday\Webtrees\ModuleBase\Testing\EnglishLocaleFixture;
+use MagicSunday\Webtrees\ModuleBase\Testing\RoutingFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
@@ -33,6 +33,7 @@ use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseFactoryInterface;
 
 use function array_keys;
 use function array_replace;
@@ -79,7 +80,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function postRedirectCarriesEveryRouteToggleParameter(): void
     {
-        RoutingFixture::install(new HttpFactory());
+        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
 
         $module  = $this->createModuleWithPreferences([]);
         $tree    = self::createStub(Tree::class);
@@ -128,7 +129,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function adminFormStoresTheDescendantLineAsDefault(): void
     {
-        RoutingFixture::install(new HttpFactory());
+        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
@@ -155,7 +156,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function adminFormStoresThePanelDefault(): void
     {
-        RoutingFixture::install(new HttpFactory());
+        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
@@ -178,7 +179,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function adminFormTakesThePanelDefaultBackWhenTheSwitchIsOff(): void
     {
-        RoutingFixture::install(new HttpFactory());
+        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences(['default_showDetailPanel' => '1']);
@@ -201,7 +202,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function adminFormStoresTheValueOfEveryChoiceSetting(): void
     {
-        RoutingFixture::install(new HttpFactory());
+        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
@@ -236,7 +237,7 @@ final class ModuleTest extends TestCase
     #[DataProvider('switchProvider')]
     public function adminFormStoresEachSwitchUnderItsOwnKey(array $posted, array $expected): void
     {
-        RoutingFixture::install(new HttpFactory());
+        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
@@ -293,7 +294,7 @@ final class ModuleTest extends TestCase
     #[Test]
     public function configurationPageRendersTheStoredNameAbbreviation(): void
     {
-        RoutingFixture::install(new HttpFactory());
+        RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences(['default_nameAbbreviation' => 'SURNAME']);
@@ -324,7 +325,7 @@ final class ModuleTest extends TestCase
     #[PreserveGlobalState(false)]
     public function bootRegistersTheSharedViewsOfTheModuleBase(): void
     {
-        $routeMap = RoutingFixture::install(new HttpFactory());
+        $routeMap = RoutingFixture::register([ResponseFactoryInterface::class => new HttpFactory()]);
         EnglishLocaleFixture::install();
 
         $module = $this->createModuleWithPreferences([]);
