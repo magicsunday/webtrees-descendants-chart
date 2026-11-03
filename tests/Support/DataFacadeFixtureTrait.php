@@ -27,6 +27,8 @@ use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\ModuleBase\Contract\ModuleAssetUrlInterface;
 use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
+use MagicSunday\Webtrees\ModuleBase\Testing\EnglishLocaleFixture;
+use MagicSunday\Webtrees\ModuleBase\Testing\RoutingFixture;
 use PHPUnit\Framework\MockObject\Stub;
 
 use function is_string;
@@ -57,7 +59,7 @@ trait DataFacadeFixtureTrait
 
         EnglishLocaleFixture::install();
 
-        RoutingFixture::install();
+        RoutingFixture::register();
     }
 
     /**

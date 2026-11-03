@@ -11,12 +11,11 @@ declare(strict_types=1);
 
 namespace MagicSunday\Webtrees\DescendantsChart\Test\Support;
 
-use Fisharebest\Webtrees\DB;
 use Fisharebest\Webtrees\Module\AbstractModule;
 use Fisharebest\Webtrees\Services\ChartService;
-use Illuminate\Database\Schema\Blueprint;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Module;
+use MagicSunday\Webtrees\ModuleBase\Testing\ModuleSettingsFixture;
 use ReflectionProperty;
 
 /**
@@ -29,47 +28,14 @@ use ReflectionProperty;
 trait ModuleSettingsFixtureTrait
 {
     /**
-     * Boots an in-memory SQLite + minimal `module_setting` schema once per
-     * process; subsequent calls just truncate the table and re-seed.
+     * Builds the module with the given preferences, which the shared settings fixture seeds into
+     * an in-memory database.
      *
      * @param array<string, string> $preferences
      */
     private function createModuleWithPreferences(array $preferences): Module
     {
-        static $initialised = false;
-
-        if ($initialised === false) {
-            $database = new DB();
-            $database->addConnection([
-                'driver'   => 'sqlite',
-                'database' => ':memory:',
-            ]);
-            $database->setAsGlobal();
-            $database->bootEloquent();
-            DB::connection()->getSchemaBuilder()->create('module_setting', static function (Blueprint $table): void {
-                $table->string('module_name');
-                $table->string('setting_name');
-                $table->string('setting_value');
-            });
-
-            $initialised = true;
-        }
-
-        DB::table('module_setting')->delete();
-
-        if ($preferences !== []) {
-            DB::table('module_setting')->insert(
-                array_map(
-                    static fn (string $name, string $value): array => [
-                        'module_name'   => 'webtrees-descendants-chart',
-                        'setting_name'  => $name,
-                        'setting_value' => $value,
-                    ],
-                    array_keys($preferences),
-                    array_values($preferences),
-                )
-            );
-        }
+        ModuleSettingsFixture::seed('webtrees-descendants-chart', $preferences);
 
         $chartService = self::createStub(ChartService::class);
         $module       = new Module($chartService, new DataFacade());
