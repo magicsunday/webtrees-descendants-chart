@@ -256,8 +256,8 @@ dist-smoke:
 	if echo "$$paths" | grep -qE '^deptrac\.ya?ml$$'; then \
 		echo "Error: deptrac.yaml found in zip"; exit 1; \
 	fi; \
-	if echo "$$paths" | grep -qxF jsconfig.json; then \
-		echo "Error: jsconfig.json found in zip"; exit 1; \
+	if echo "$$paths" | grep -qE '(^|/)tsconfig\.json$$'; then \
+		echo "Error: tsconfig.json found in zip"; exit 1; \
 	fi
 	@unzip -p $(MODULE_NAME).zip module.php | grep -qF 'MagicSunday\\$(SCOPE_NS)\\Webtrees\\ModuleBase' \
 		|| { echo "Error: module.php in zip is missing prefixed namespace ($(SCOPE_NS))"; exit 1; }
@@ -281,6 +281,10 @@ dist-smoke:
 	for d in Contract Model Module Processor; do \
 		find "$$tmp/vendor/magicsunday/webtrees-module-base/src/$$d" -name '*.php' -print 2>/dev/null | grep -q . \
 			|| { echo "Error: bundled module-base src/$$d has no PHP files in extracted zip"; exit 1; }; \
+	done; \
+	for v in detail-panel help-popover toolbar-style; do \
+		[ -s "$$tmp/vendor/magicsunday/webtrees-module-base/resources/views/$$v.phtml" ] \
+			|| { echo "Error: bundled module-base view $$v is missing or empty in extracted zip"; exit 1; }; \
 	done; \
 	shared_views="$$tmp/vendor/magicsunday/webtrees-module-base/src/View/SharedViews.php"; \
 	grep -qF "'$(SCOPE_VIEW_NS)'" "$$shared_views" \
