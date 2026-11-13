@@ -80,24 +80,36 @@ function build(overrides = {}, withPanel = true) {
     return application;
 }
 
-describe("DescendantsChart without the screen orientation API", () => {
+describe("DescendantsChart page listeners", () => {
+    const descriptor = Object.getOwnPropertyDescriptor(window.screen, "orientation");
+
     afterEach(() => {
-        Object.defineProperty(window.screen, "orientation", {
-            value: { addEventListener: () => {} },
-            configurable: true,
-        });
+        Object.defineProperty(window.screen, "orientation", descriptor);
     });
 
-    test("still draws the chart", () => {
+    test("draws the chart in a browser without screen.orientation", () => {
         Object.defineProperty(window.screen, "orientation", {
             value: undefined,
             configurable: true,
         });
 
-        expect(() => build({ showDetailPanel: false })).not.toThrow();
+        build({ showDetailPanel: false });
 
-        // The stand-in chart records a draw by setting this flag.
-        expect(charts[0].drawnWithPanel).toBeDefined();
+        // The stand-in chart sets this flag in draw(), so a boolean means the chart was drawn.
+        expect(charts[0].drawnWithPanel).toBe(false);
+    });
+
+    test("listens for orientation changes where screen.orientation exists", () => {
+        const addEventListener = jest.fn();
+
+        Object.defineProperty(window.screen, "orientation", {
+            value: { addEventListener },
+            configurable: true,
+        });
+
+        build({ showDetailPanel: false });
+
+        expect(addEventListener).toHaveBeenCalledWith("change", expect.any(Function));
     });
 });
 
