@@ -15,6 +15,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
         __DIR__ . '/src/',
         __DIR__ . '/tests/',
+        __DIR__ . '/scripts/',
         __DIR__ . '/resources/views/',
     ]);
 

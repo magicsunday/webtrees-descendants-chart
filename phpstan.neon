@@ -14,6 +14,7 @@ parameters:
     paths:
         - %currentWorkingDirectory%/src/
         - %currentWorkingDirectory%/tests/
+        - %currentWorkingDirectory%/scripts/
 
     excludePaths:
         - %currentWorkingDirectory%/.build/
