@@ -80,6 +80,27 @@ function build(overrides = {}, withPanel = true) {
     return application;
 }
 
+describe("DescendantsChart without the screen orientation API", () => {
+    afterEach(() => {
+        Object.defineProperty(window.screen, "orientation", {
+            value: { addEventListener: () => {} },
+            configurable: true,
+        });
+    });
+
+    test("still draws the chart", () => {
+        Object.defineProperty(window.screen, "orientation", {
+            value: undefined,
+            configurable: true,
+        });
+
+        expect(() => build({ showDetailPanel: false })).not.toThrow();
+
+        // The stand-in chart records a draw by setting this flag.
+        expect(charts[0].drawnWithPanel).toBeDefined();
+    });
+});
+
 describe("DescendantsChart detail panel", () => {
     test("hands the option to the configuration without moving the options before it", () => {
         const application = build({
