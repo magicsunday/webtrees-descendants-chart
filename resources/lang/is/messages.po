@@ -33,7 +33,7 @@ msgstr "Stytta eftirnöfn fyrst"
 msgid "All descendants"
 msgstr ""
 
-#: src/Module.php:134
+#: src/Module.php:133
 msgid "An overview of an individual’s descendants."
 msgstr "Yfirlit yfir afkomendur einstaklings."
 
@@ -101,11 +101,11 @@ msgstr "Látin/-n"
 msgid "Descendant line"
 msgstr ""
 
-#: src/Module.php:123 src/Module.php:236
+#: src/Module.php:122 src/Module.php:234
 msgid "Descendants chart"
 msgstr "Afkomendagraf"
 
-#: src/Module.php:233 src/Module/ChartTrait.php:43
+#: src/Module.php:231 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Afkomendagraf fyrir %s"
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Move the chart"
 msgstr "Færa línuritið"
 
-#: src/Module.php:255
+#: src/Module.php:253
 msgid "Move the view with two fingers"
 msgstr "Færðu yfirlitið með tveimur fingrum"
 
@@ -316,7 +316,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:254
+#: src/Module.php:252
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Notaðu Ctrl + skruna til að þysja í ættartrénu"
 

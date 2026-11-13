@@ -31,7 +31,7 @@ msgstr "优先缩写姓氏"
 msgid "All descendants"
 msgstr ""
 
-#: src/Module.php:134
+#: src/Module.php:133
 msgid "An overview of an individual’s descendants."
 msgstr "个人后代的概览图"
 
@@ -98,11 +98,11 @@ msgstr "已故"
 msgid "Descendant line"
 msgstr ""
 
-#: src/Module.php:123 src/Module.php:236
+#: src/Module.php:122 src/Module.php:234
 msgid "Descendants chart"
 msgstr "后代图"
 
-#: src/Module.php:233 src/Module/ChartTrait.php:43
+#: src/Module.php:231 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "%s的后代图"
@@ -203,7 +203,7 @@ msgstr ""
 msgid "Move the chart"
 msgstr "移动图表"
 
-#: src/Module.php:255
+#: src/Module.php:253
 msgid "Move the view with two fingers"
 msgstr "用两根手指拖动视图"
 
@@ -312,7 +312,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:254
+#: src/Module.php:252
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "按住Ctrl和鼠标滚轮放大查看"
 
