@@ -72,7 +72,6 @@ function build(overrides = {}, withPanel = true) {
         openNewTabOnClick: true,
         showAlternativeName: false,
         nameAbbreviation: "GIVEN",
-        cssFiles: [],
         data: { members: [], memberFamilies: [] },
         ...overrides,
     });
