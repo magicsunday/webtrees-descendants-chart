@@ -9,26 +9,48 @@ import Configuration from "../modules/configuration.js";
 
 const LABELS = { zoom: "Zoom", move: "Move" };
 
-describe("Configuration", () => {
-    test("passes every option that PHP owns to its getter", () => {
-        const configuration = new Configuration(
-            LABELS,
-            7,
-            "top-bottom",
-            false,
-            true,
-            "SURNAME",
-            true,
-            true,
-        );
+// The switches of the constructor in the order of its parameters.
+const switches = ["openNewTabOnClick", "showAlternativeName", "rtl", "showDetailPanel"];
 
+/**
+ * Builds a configuration in which exactly one switch is on, so that every switch has a pattern of its own.
+ *
+ * @param {string} enabled The switch that is on
+ *
+ * @return {Configuration}
+ */
+function buildWithOnly(enabled) {
+    const on = (name) => name === enabled;
+
+    return new Configuration(
+        LABELS,
+        7,
+        "down",
+        on("openNewTabOnClick"),
+        on("showAlternativeName"),
+        "SURNAME",
+        on("rtl"),
+        on("showDetailPanel"),
+    );
+}
+
+describe("Configuration", () => {
+    test("hands the labels, the generations, the layout and the name abbreviation to their getters", () => {
+        const configuration = buildWithOnly("rtl");
+
+        expect(configuration.labels).toBe(LABELS);
         expect(configuration.generations).toBe(7);
-        expect(configuration.treeLayout).toBe("top-bottom");
-        expect(configuration.openNewTabOnClick).toBe(false);
-        expect(configuration.showAlternativeName).toBe(true);
-        expect(configuration.showDetailPanel).toBe(true);
+        expect(configuration.treeLayout).toBe("down");
+        expect(configuration.orientation).toBeDefined();
         expect(configuration.nameAbbreviation).toBe("SURNAME");
-        expect(configuration.rtl).toBe(true);
+    });
+
+    test.each(switches)("hands the switch %s to its own getter and to no other", (enabled) => {
+        const configuration = buildWithOnly(enabled);
+
+        for (const name of switches) {
+            expect(configuration[name]).toBe(name === enabled);
+        }
     });
 
     test("holds no JavaScript default for an option of the chart page", () => {
