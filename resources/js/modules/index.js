@@ -36,7 +36,6 @@ export class DescendantsChart {
      * @param {boolean}    options.showAlternativeName
      * @param {boolean}    options.showDetailPanel
      * @param {string}     options.nameAbbreviation
-     * @param {string[]}   options.cssFiles
      * @param {CoupleNode} options.data
      */
     constructor(selector, options) {
@@ -56,8 +55,6 @@ export class DescendantsChart {
             options.rtl,
             options.showDetailPanel,
         );
-
-        this._cssFiles = options.cssFiles;
 
         // Set up chart instance
         this._chart = new Chart(this._parent, this._configuration);

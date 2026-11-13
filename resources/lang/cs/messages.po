@@ -33,7 +33,7 @@ msgstr "Nejprve zkrátit příjmení"
 msgid "All descendants"
 msgstr ""
 
-#: src/Module.php:134
+#: src/Module.php:133
 msgid "An overview of an individual’s descendants."
 msgstr "Přehled potomků osoby."
 
@@ -101,11 +101,11 @@ msgstr "Zesnulý/á"
 msgid "Descendant line"
 msgstr ""
 
-#: src/Module.php:123 src/Module.php:236
+#: src/Module.php:122 src/Module.php:234
 msgid "Descendants chart"
 msgstr "Diagram potomků"
 
-#: src/Module.php:233 src/Module/ChartTrait.php:43
+#: src/Module.php:231 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Diagram potomků osoby %s"
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Move the chart"
 msgstr "Přesunout diagram"
 
-#: src/Module.php:255
+#: src/Module.php:253
 msgid "Move the view with two fingers"
 msgstr "Přemístit pohled dvěma prsty"
 
@@ -312,7 +312,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:254
+#: src/Module.php:252
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Pomocí Ctrl + kolečko zvětšit pohled"
 

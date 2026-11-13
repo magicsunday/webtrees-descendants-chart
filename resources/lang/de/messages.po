@@ -33,7 +33,7 @@ msgstr "Zuerst Nachnamen abkürzen"
 msgid "All descendants"
 msgstr "Alle Nachkommen"
 
-#: src/Module.php:134
+#: src/Module.php:133
 msgid "An overview of an individual’s descendants."
 msgstr "Ein Überblick über die Nachkommen einer Person."
 
@@ -101,11 +101,11 @@ msgstr "Verstorben"
 msgid "Descendant line"
 msgstr "Nachkommenlinie"
 
-#: src/Module.php:123 src/Module.php:236
+#: src/Module.php:122 src/Module.php:234
 msgid "Descendants chart"
 msgstr "Nachkommentafel"
 
-#: src/Module.php:233 src/Module/ChartTrait.php:43
+#: src/Module.php:231 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Nachkommentafel von %s"
@@ -209,7 +209,7 @@ msgstr "Zwischen den Personen wechseln"
 msgid "Move the chart"
 msgstr "Diagramm verschieben"
 
-#: src/Module.php:255
+#: src/Module.php:253
 msgid "Move the view with two fingers"
 msgstr "Verschieben der Ansicht mit zwei Fingern"
 
@@ -332,7 +332,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:254
+#: src/Module.php:252
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Verwende Strg+Scrollen zum Zoomen der Ansicht"
 
