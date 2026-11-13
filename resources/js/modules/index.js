@@ -135,8 +135,8 @@ export class DescendantsChart {
             this._chart.updateViewBox();
         });
 
-        // Listen for orientation change event
-        screen.orientation.addEventListener("change", () => {
+        // Listen for orientation change event, not every browser provides the API
+        screen.orientation?.addEventListener("change", () => {
             this._chart.updateViewBox();
         });
     }
