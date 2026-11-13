@@ -136,7 +136,7 @@ final class DataFacade
         $descendantLine = $this->configuration->getDescendantLine();
         $people         = [$individual];
 
-        for ($generation = 1; ($generation <= $this->configuration->getGenerations()) && ($people !== []); ++$generation) {
+        for ($generation = 1; $generation <= $this->configuration->getGenerations(); ++$generation) {
             $generationPeople = $people;
             $children         = [];
 
