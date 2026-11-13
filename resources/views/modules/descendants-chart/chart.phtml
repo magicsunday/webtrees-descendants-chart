@@ -17,7 +17,6 @@ use MagicSunday\Webtrees\DescendantsChart\Configuration;
  * @var Configuration $configuration
  * @var string        $id                The unique chart ID
  * @var array         $chartParams
- * @var string[]      $exportStylesheets A list of stylesheets used by SVG export
  * @var array|null    $data              The chart data tree, JSON-serialized into the chart "data" option
  */
 
@@ -39,7 +38,6 @@ import(<?php echo json_encode($javascript, $jsonFlags); ?>).then(({ DescendantsC
         {
             labels: <?php echo json_encode($chartParams['labels'], $jsonFlags); ?>,
             rtl: <?php echo json_encode($chartParams['rtl'], $jsonFlags); ?>,
-            cssFiles: <?php echo json_encode($exportStylesheets, $jsonFlags); ?>,
 
             get generations() {
                 return opts.generations ?? <?php echo $configuration->getGenerations(); ?>;
