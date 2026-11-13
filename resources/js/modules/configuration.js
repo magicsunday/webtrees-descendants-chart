@@ -5,10 +5,7 @@
  * LICENSE file distributed with this source code.
  */
 
-import {
-    LAYOUT_LEFTRIGHT,
-    OrientationCollection,
-} from "@magicsunday/webtrees-chart-lib/linked-tree";
+import { OrientationCollection } from "@magicsunday/webtrees-chart-lib/linked-tree";
 
 /**
  * @import { Orientation } from "@magicsunday/webtrees-chart-lib/infra"
@@ -36,13 +33,13 @@ export default class Configuration {
      */
     constructor(
         labels,
-        generations = 4,
-        treeLayout = LAYOUT_LEFTRIGHT,
-        openNewTabOnClick = true,
-        showAlternativeName = true,
-        nameAbbreviation = "GIVEN",
-        rtl = false,
-        showDetailPanel = false,
+        generations,
+        treeLayout,
+        openNewTabOnClick,
+        showAlternativeName,
+        nameAbbreviation,
+        rtl,
+        showDetailPanel,
     ) {
         // The layout/orientation of the tree
         this._treeLayout = treeLayout;
