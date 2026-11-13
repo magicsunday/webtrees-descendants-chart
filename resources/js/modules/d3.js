@@ -18,4 +18,4 @@ export { select } from "d3-selection";
 
 export { transition } from "d3-transition";
 
-export * from "d3-zoom";
+export { zoomIdentity } from "d3-zoom";
