@@ -53,7 +53,7 @@ msgstr "Solo nombre de nacimiento"
 msgid "Birth name with married name in brackets"
 msgstr "Nombre de nacimiento con nombre de casada entre paréntesis"
 
-#: src/Facade/DataFacade.php:328
+#: src/Facade/DataFacade.php:375
 #, php-format
 msgid "Born: %s"
 msgstr "Nació: %s"
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Ctrl + scroll"
 msgstr ""
 
-#: src/Facade/DataFacade.php:330
+#: src/Facade/DataFacade.php:377
 msgctxt "webtrees-descendants-chart"
 msgid "Deceased"
 msgstr "Fallecido"
@@ -119,7 +119,7 @@ msgstr ""
 msgid "Details panel"
 msgstr ""
 
-#: src/Facade/DataFacade.php:329
+#: src/Facade/DataFacade.php:376
 #, php-format
 msgid "Died: %s"
 msgstr "Murió: %s"
