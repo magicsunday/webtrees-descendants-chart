@@ -48,6 +48,7 @@ use function preg_quote;
 use function preg_replace;
 use function rmdir;
 use function str_contains;
+use function strlen;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
@@ -168,8 +169,14 @@ final class DataFacadePrivacyTest extends TestCase
         '1965',
     ];
 
+    /**
+     * The module of the chart.
+     */
     private Module $module;
 
+    /**
+     * The index directory of the media file, which the test creates and removes.
+     */
     private string $indexDirectory;
 
     /**
@@ -190,7 +197,10 @@ final class DataFacadePrivacyTest extends TestCase
             throw new RuntimeException('The media directory could not be created.');
         }
 
-        file_put_contents($this->indexDirectory . 'media/hiddenlivingphoto.jpg', 'image');
+        if (file_put_contents($this->indexDirectory . 'media/hiddenlivingphoto.jpg', 'image') !== strlen('image')) {
+            throw new RuntimeException('The media file could not be written.');
+        }
+
         Site::setPreference('INDEX_DIRECTORY', $this->indexDirectory);
 
         DB::table('module')->insert(['module_name' => 'webtrees-descendants-chart']);
@@ -265,7 +275,7 @@ final class DataFacadePrivacyTest extends TestCase
     /**
      * A member who is no editor sees the living people. Of the person with a confidential
      * restriction the member sees the name, which the tree setting for the names of private people
-     * allows, and no date, place or fact.
+     * allows, and no date, place or fact. The fixture pins that setting to members.
      */
     #[Test]
     public function memberWhoIsNoEditorSeesTheLivingButNoDetailsOfTheConfidentialPerson(): void
@@ -558,6 +568,7 @@ final class DataFacadePrivacyTest extends TestCase
         $tree = RealTreeFixture::importGedcom($gedcom, 'privacy');
 
         $tree->setPreference('HIDE_LIVE_PEOPLE', '1');
+        $tree->setPreference('SHOW_LIVING_NAMES', (string) Auth::PRIV_USER);
         $tree->setPreference('SHOW_DEAD_PEOPLE', (string) Auth::PRIV_PRIVATE);
         $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
 
