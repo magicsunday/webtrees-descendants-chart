@@ -69,7 +69,7 @@ use const JSON_UNESCAPED_UNICODE;
  * first, so the data of the private people is shown to be in the fixture and in the payload, and
  * only then drops to the other viewers, so that the absence of the data is the gate and not an
  * empty fixture. The public people are the positive control, so that the absence is not an empty
- * chart. A family is private for a viewer who may not see one of its members, a child included,
+ * chart. A family is private for a viewer who may not see one of its members,
  * so the marriage of the public people sits in a family without private members.
  *
  * A private person stays in the chart as a stub, as it does in the core charts. The stub holds
@@ -175,9 +175,10 @@ final class DataFacadePrivacyTest extends TestCase
     private Module $module;
 
     /**
-     * The index directory of the media file, which the test creates and removes.
+     * The index directory of the media file, which the test creates and removes, or an empty
+     * string while there is none.
      */
-    private string $indexDirectory;
+    private string $indexDirectory = '';
 
     /**
      * Boots webtrees, builds a fresh schema in memory and logs in an administrator, the way the
@@ -220,10 +221,12 @@ final class DataFacadePrivacyTest extends TestCase
         Site::$preferences = [];
         Registry::cache(new CacheFactory());
 
-        unlink($this->indexDirectory . 'media/hiddenlivingphoto.jpg');
+        if ($this->indexDirectory !== '') {
+            unlink($this->indexDirectory . 'media/hiddenlivingphoto.jpg');
 
-        rmdir($this->indexDirectory . 'media');
-        rmdir($this->indexDirectory);
+            rmdir($this->indexDirectory . 'media');
+            rmdir($this->indexDirectory);
+        }
 
         RealTreeFixture::restoreMinimalDatabase();
 
@@ -247,8 +250,8 @@ final class DataFacadePrivacyTest extends TestCase
     }
 
     /**
-     * A visitor gets no name, date, place, image reference or fact of a confidential or a living
-     * person, and the public deceased people are still there.
+     * A visitor gets no name, date, place or fact of a confidential or a living person and no
+     * image reference of a living person, and the public deceased people are still there.
      */
     #[Test]
     public function visitorPayloadHoldsNothingOfThePrivatePeople(): void
@@ -568,6 +571,7 @@ final class DataFacadePrivacyTest extends TestCase
         $tree = RealTreeFixture::importGedcom($gedcom, 'privacy');
 
         $tree->setPreference('HIDE_LIVE_PEOPLE', '1');
+        $tree->setPreference('SHOW_PRIVATE_RELATIONSHIPS', '1');
         $tree->setPreference('SHOW_LIVING_NAMES', (string) Auth::PRIV_USER);
         $tree->setPreference('SHOW_DEAD_PEOPLE', (string) Auth::PRIV_PRIVATE);
         $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
