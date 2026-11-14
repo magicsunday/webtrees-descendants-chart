@@ -1,0 +1,1000 @@
+<?php
+
+/**
+ * This file is part of the package magicsunday/webtrees-descendants-chart.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace MagicSunday\Webtrees\DescendantsChart\Test\Facade;
+
+use Fig\Http\Message\RequestMethodInterface;
+use Fisharebest\Webtrees\Auth;
+use Fisharebest\Webtrees\Contracts\UserInterface;
+use Fisharebest\Webtrees\DB;
+use Fisharebest\Webtrees\Factories\CacheFactory;
+use Fisharebest\Webtrees\Individual;
+use Fisharebest\Webtrees\Registry;
+use Fisharebest\Webtrees\Services\ChartService;
+use Fisharebest\Webtrees\Services\UserService;
+use Fisharebest\Webtrees\Session;
+use Fisharebest\Webtrees\Site;
+use Fisharebest\Webtrees\Tree;
+use GuzzleHttp\Psr7\ServerRequest;
+use MagicSunday\Webtrees\DescendantsChart\Configuration;
+use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
+use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
+use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
+use MagicSunday\Webtrees\DescendantsChart\Module;
+use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
+use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
+use MagicSunday\Webtrees\ModuleBase\Support\MediaPreloader;
+use MagicSunday\Webtrees\ModuleBase\Testing\RealTreeFixture;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
+
+use function array_filter;
+use function array_keys;
+use function array_unique;
+use function array_values;
+use function count;
+use function file_put_contents;
+use function glob;
+use function implode;
+use function intdiv;
+use function is_dir;
+use function is_scalar;
+use function ksort;
+use function max;
+use function mkdir;
+use function preg_match;
+use function rmdir;
+use function sort;
+use function str_contains;
+use function sys_get_temp_dir;
+use function uniqid;
+use function unlink;
+
+/**
+ * Counts the media statements of one chart request over an imported descendant tree and
+ * compares the images of the chart with those that the image processor gives without the preload.
+ *
+ * @author  Rico Sonntag <mail@ricosonntag.de>
+ * @license https://opensource.org/licenses/GPL-3.0 GNU General Public License v3.0
+ * @link    https://github.com/magicsunday/webtrees-descendants-chart/
+ */
+#[CoversClass(DataFacade::class)]
+#[UsesClass(Configuration::class)]
+#[UsesClass(DescendantLine::class)]
+#[UsesClass(CoupleNode::class)]
+#[UsesClass(Module::class)]
+final class DataFacadeQueryCountTest extends TestCase
+{
+    /**
+     * The number of generations of the imported descendant tree.
+     */
+    private const int DEPTH = 9;
+
+    /**
+     * The number added to the number of a family to get the number of its partner.
+     */
+    private const int PARTNER_OFFSET = 100000;
+
+    /**
+     * The number added to the number of a family to get the number of the father of its partner.
+     */
+    private const int PARTNER_FATHER_OFFSET = 200000;
+
+    /**
+     * The module of the chart.
+     */
+    private Module $module;
+
+    /**
+     * The index directory of the media files, or an empty string while there is none.
+     */
+    private string $indexDirectory = '';
+
+    /**
+     * Boots webtrees and registers the module of the chart with its route.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        RealTreeFixture::boot();
+
+        DB::table('module')->insert(['module_name' => 'webtrees-descendants-chart']);
+
+        $this->module = new Module(self::createStub(ChartService::class), new DataFacade());
+        $this->module->setName('webtrees-descendants-chart');
+        $this->module->boot();
+    }
+
+    /**
+     * Drops the viewer and restores the minimal database.
+     */
+    protected function tearDown(): void
+    {
+        Auth::logout();
+        Session::clear();
+        Site::$preferences = [];
+        Registry::cache(new CacheFactory());
+
+        $this->removeMediaFiles();
+        RealTreeFixture::restoreMinimalDatabase();
+
+        parent::tearDown();
+    }
+
+    /**
+     * Compares the statements of a request with and without highlight images against a bound
+     * that follows the number of generations.
+     *
+     * @param bool $visitor     Whether a visitor requests the chart and not the administrator
+     * @param bool $hideSpouses Whether the chart hides the partners
+     */
+    #[Test]
+    #[DataProvider('viewersAndSpouses')]
+    public function mediaStatementsGrowWithTheGenerationsAndNotWithThePeople(bool $visitor, bool $hideSpouses): void
+    {
+        $tree = $this->importDescendants();
+
+        if ($visitor) {
+            Auth::logout();
+        }
+
+        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '');
+
+        // A warm-up request that is not measured.
+        $this->statements($tree, $hideSpouses);
+        $without = count($this->statements($tree, $hideSpouses));
+
+        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
+        $with = count($this->statements($tree, $hideSpouses));
+
+        // The budget grows with the chunks of each generation, partners included while they are shown.
+        $budget = 0;
+
+        for ($generation = 1; $generation <= self::DEPTH; ++$generation) {
+            $width = 2 ** ($generation - 1);
+
+            if (
+                !$hideSpouses
+                && ($generation < self::DEPTH)
+            ) {
+                $width *= 2;
+            }
+
+            $budget += 5 * intdiv($width + MediaPreloader::CHUNK_SIZE - 1, MediaPreloader::CHUNK_SIZE);
+        }
+
+        self::assertGreaterThan(0, $with - $without, 'The media of the chart are looked up.');
+        self::assertLessThanOrEqual($budget, $with - $without);
+    }
+
+    /**
+     * Asserts that the media and link statements bind at most one chunk of values plus one.
+     *
+     * @param bool $visitor Whether a visitor requests the chart and not the administrator
+     */
+    #[Test]
+    #[DataProvider('viewers')]
+    public function noMediaStatementBindsAWholeGeneration(bool $visitor): void
+    {
+        $tree = $this->importDescendants();
+
+        // A generation of the tree exceeds the chunk size.
+        $families = [];
+
+        for ($family = 2 ** (self::DEPTH - 2); $family < (2 ** (self::DEPTH - 1)); ++$family) {
+            $families[] = 'F' . $family;
+        }
+
+        $generationWidth = DB::table('link')
+            ->where('l_file', '=', $tree->id())
+            ->where('l_type', '=', 'FAMS')
+            ->whereIn('l_to', $families)
+            ->count();
+
+        self::assertGreaterThan(MediaPreloader::CHUNK_SIZE, $generationWidth);
+
+        if ($visitor) {
+            Auth::logout();
+        }
+
+        $widest = 0;
+
+        foreach ($this->statements($tree, false) as $statement) {
+            if (
+                str_contains($statement['query'], '"wt_media"')
+                || str_contains($statement['query'], '"wt_link"')
+            ) {
+                $widest = max($widest, count($statement['bindings']));
+            }
+        }
+
+        self::assertGreaterThan(0, $widest);
+        // One value more than the chunk size is allowed.
+        self::assertLessThanOrEqual(MediaPreloader::CHUNK_SIZE + 1, $widest);
+    }
+
+    /**
+     * Compares the complete statement sequences with and without highlight images for a tree
+     * without media lines.
+     *
+     * @param bool $visitor Whether a visitor requests the chart and not the administrator
+     */
+    #[Test]
+    #[DataProvider('viewers')]
+    public function peopleWithoutMediaLinesCostNoStatement(bool $visitor): void
+    {
+        $tree = $this->importDescendants(false, true);
+
+        if ($visitor) {
+            Auth::logout();
+        }
+
+        // A warm-up request that is not measured.
+        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '');
+        $this->statements($tree, false);
+
+        $without = $this->statements($tree, false);
+
+        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
+        $with = $this->statements($tree, false);
+
+        self::assertSame($without, $with);
+        self::assertSame([], $this->boundMediaXrefs($with));
+    }
+
+    /**
+     * Compares the images of the chart with those that the image processor gives without the preload.
+     *
+     * @param bool $visitor Whether a visitor requests the chart and not the administrator
+     */
+    #[Test]
+    #[DataProvider('viewers')]
+    public function theImagesOfTheChartMatchTheHighlightImageOfEveryPersonOfTheChart(bool $visitor): void
+    {
+        $tree = $this->importDescendants();
+
+        if ($visitor) {
+            Auth::logout();
+        }
+
+        $images = $this->imagesOfChart($tree, 'I1', 4);
+
+        // The people of four generations and their partners.
+        self::assertCount(15 + 15, $images);
+        self::assertSame($this->imagesOfFactories($tree, array_keys($images)), $images);
+
+        $thumbnails = array_filter($images, static fn (array $image): bool => str_contains($image['thumbnail'], 'media-thumbnail'));
+
+        self::assertNotSame([], $thumbnails, 'Some people show a thumbnail.');
+        self::assertLessThan(count($images), count($thumbnails), 'Some people show the silhouette.');
+    }
+
+    /**
+     * Compares the images of the chart with those that the image processor gives without the
+     * preload, and the thumbnail of each listed person with the expected value of the viewer.
+     *
+     * @param string              $viewer   The viewer, one of administrator, visitor and member
+     * @param array<string, bool> $expected Whether the viewer sees the thumbnail of the person
+     */
+    #[Test]
+    #[DataProvider('privacyViewers')]
+    public function mediaObjectsOfHiddenPeopleStayHidden(string $viewer, array $expected): void
+    {
+        $tree = $this->importPrivacyTree();
+
+        if ($viewer === 'visitor') {
+            Auth::logout();
+        }
+
+        if ($viewer === 'member') {
+            $member = (new UserService())->create('member', 'Member', 'member@example.test', 'secret');
+            $tree->setUserPreference($member, UserInterface::PREF_TREE_ROLE, UserInterface::ROLE_MEMBER);
+            Auth::login($member);
+        }
+
+        $images = $this->imagesOfChart($tree, 'I1', 2);
+
+        self::assertSame($this->imagesOfFactories($tree, array_keys($images)), $images);
+
+        $shown = [];
+
+        foreach ($images as $xref => $image) {
+            $shown[$xref] = str_contains($image['thumbnail'], 'media-thumbnail');
+        }
+
+        foreach ($expected as $xref => $visible) {
+            self::assertArrayHasKey($xref, $shown);
+            self::assertSame($visible, $shown[$xref], $viewer . ' and ' . $xref);
+        }
+    }
+
+    /**
+     * Asserts the exact media objects that a request of four generations binds, with and
+     * without the partners.
+     *
+     * @param bool $hideSpouses Whether the chart hides the partners
+     */
+    #[Test]
+    #[DataProvider('spouseModes')]
+    public function theMediaOfTheShownGenerationsAreLoadedAndNothingBeyond(bool $hideSpouses): void
+    {
+        $tree = $this->importDescendants();
+
+        $expected = [];
+
+        // The people 1 to 15 and, while the partners are shown, their partners.
+        for ($person = 1; $person <= 15; ++$person) {
+            $expected[] = 'M' . $person;
+
+            if (!$hideSpouses) {
+                $expected[] = 'M' . (self::PARTNER_OFFSET + $person);
+            }
+        }
+
+        sort($expected);
+
+        $statements = $this->statements($tree, $hideSpouses, 'I1', 4);
+
+        self::assertSame($expected, $this->boundMediaXrefs($statements));
+        $this->assertOnlyBatchedMediaLookups($statements);
+    }
+
+    /**
+     * Asserts the exact media objects that a request binds for a descendant line and that each
+     * media statement carries an in list.
+     *
+     * @param string       $line     The descendant line of the chart
+     * @param string       $root     The xref of the chart subject
+     * @param list<string> $expected The media objects that the request binds
+     */
+    #[Test]
+    #[DataProvider('descendantLines')]
+    public function theDescendantLineDecidesWhichChildrenAreLoaded(string $line, string $root, array $expected): void
+    {
+        $tree = $this->importLineage();
+
+        sort($expected);
+
+        $statements = $this->statements($tree, false, $root, 3, $line);
+
+        self::assertSame($expected, $this->boundMediaXrefs($statements));
+        $this->assertOnlyBatchedMediaLookups($statements);
+    }
+
+    /**
+     * Pairs the administrator and the visitor with the state of the hidden spouses.
+     *
+     * @return array<string, array{bool, bool}>
+     */
+    public static function viewersAndSpouses(): array
+    {
+        return [
+            'administrator, spouses shown'  => [false, false],
+            'administrator, spouses hidden' => [false, true],
+            'visitor, spouses shown'        => [true, false],
+            'visitor, spouses hidden'       => [true, true],
+        ];
+    }
+
+    /**
+     * Lists the states of the hidden spouses.
+     *
+     * @return array<string, array{bool}>
+     */
+    public static function spouseModes(): array
+    {
+        return [
+            'spouses shown'  => [false],
+            'spouses hidden' => [true],
+        ];
+    }
+
+    /**
+     * Lists the descendant lines with the media objects that a request binds.
+     *
+     * @return array<string, array{string, string, list<string>}>
+     */
+    public static function descendantLines(): array
+    {
+        return [
+            'all'      => ['all', 'I1', ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10', 'M13', 'M14']],
+            'paternal' => ['paternal', 'I1', ['M1', 'M2', 'M3', 'M5', 'M7']],
+            'maternal' => ['maternal', 'I4', ['M4', 'M8', 'M9', 'M10', 'M12', 'M13', 'M14']],
+        ];
+    }
+
+    /**
+     * Lists the administrator and the visitor.
+     *
+     * @return array<string, array{bool}>
+     */
+    public static function viewers(): array
+    {
+        return [
+            'administrator' => [false],
+            'visitor'       => [true],
+        ];
+    }
+
+    /**
+     * Lists the viewers with the expected thumbnail of the listed people of the privacy tree.
+     *
+     * @return array<string, array{string, array<string, bool>}>
+     */
+    public static function privacyViewers(): array
+    {
+        return [
+            'administrator' => ['administrator', ['I1' => true, 'I3' => true, 'I7' => true, 'I4' => true, 'I5' => true]],
+            'visitor'       => ['visitor', ['I1' => true, 'I3' => true, 'I7' => false, 'I4' => false, 'I5' => false]],
+            'member'        => ['member', ['I1' => true, 'I3' => true, 'I7' => false, 'I4' => true, 'I5' => false]],
+        ];
+    }
+
+    /**
+     * Imports the descendant tree with partners and media objects, and optionally with partners
+     * that have no dates.
+     *
+     * @param bool $withMedia                Whether the people have media lines
+     * @param bool $withPartnersWithoutDates Whether the partners of the first three families have no dates and a parent family
+     */
+    private function importDescendants(bool $withMedia = true, bool $withPartnersWithoutDates = false): Tree
+    {
+        $people   = (2 ** self::DEPTH) - 1;
+        $families = (2 ** (self::DEPTH - 1)) - 1;
+
+        $lines = ['0 HEAD', '1 CHAR UTF-8'];
+
+        for ($person = 1; $person <= $people; ++$person) {
+            $lines = [...$lines, ...$this->personLines('I' . $person, 'M', $person, $withMedia)];
+
+            if ($person >= 2) {
+                $lines[] = '1 FAMC @F' . intdiv($person, 2) . '@';
+            }
+
+            if ($person <= $families) {
+                $lines[] = '1 FAMS @F' . $person . '@';
+            }
+        }
+
+        for ($family = 1; $family <= $families; ++$family) {
+            $partner = self::PARTNER_OFFSET + $family;
+
+            if (
+                $withPartnersWithoutDates
+                && ($family <= 3)
+            ) {
+                $lines = [
+                    ...$lines,
+                    '0 @I' . $partner . '@ INDI',
+                    '1 NAME Undated' . $family . ' /Partner/',
+                    '1 SEX F',
+                    '1 FAMC @FP' . $family . '@',
+                    '1 FAMS @F' . $family . '@',
+                ];
+
+                continue;
+            }
+
+            $lines = [...$lines, ...$this->personLines('I' . $partner, 'F', $partner, $withMedia), '1 FAMS @F' . $family . '@'];
+        }
+
+        for ($family = 1; $family <= $families; ++$family) {
+            $lines[] = '0 @F' . $family . '@ FAM';
+            $lines[] = '1 HUSB @I' . $family . '@';
+            $lines[] = '1 WIFE @I' . (self::PARTNER_OFFSET + $family) . '@';
+            $lines[] = '1 CHIL @I' . (2 * $family) . '@';
+            $lines[] = '1 CHIL @I' . ((2 * $family) + 1) . '@';
+        }
+
+        if ($withPartnersWithoutDates) {
+            for ($family = 1; $family <= 3; ++$family) {
+                $father = self::PARTNER_FATHER_OFFSET + $family;
+                $lines  = [
+                    ...$lines,
+                    ...$this->personLines('I' . $father, 'M', $father, false),
+                    '0 @FP' . $family . '@ FAM',
+                    '1 HUSB @I' . $father . '@',
+                    '1 CHIL @I' . (self::PARTNER_OFFSET + $family) . '@',
+                ];
+            }
+        }
+
+        $numbers = [];
+
+        for ($person = 1; $person <= $people; ++$person) {
+            $numbers[] = $person;
+        }
+
+        for ($family = 1; $family <= $families; ++$family) {
+            $numbers[] = self::PARTNER_OFFSET + $family;
+        }
+
+        $lines = [...$lines, ...$this->mediaRecordLines($numbers)];
+
+        $this->createMediaFiles($numbers);
+
+        $lines[] = '0 TRLR';
+
+        $tree = RealTreeFixture::importGedcom(implode("\n", $lines), 'descendants');
+
+        $tree->setPreference('HIDE_LIVE_PEOPLE', '1');
+        $tree->setPreference('SHOW_LIVING_NAMES', (string) Auth::PRIV_PRIVATE);
+        $tree->setPreference('SHOW_DEAD_PEOPLE', (string) Auth::PRIV_PRIVATE);
+        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
+
+        return $tree;
+    }
+
+    /**
+     * Returns the record lines of a person with a birth and a death date.
+     *
+     * @param string $xref      The xref of the person
+     * @param string $sex       The sex of the person
+     * @param int    $number    The number of the person
+     * @param bool   $withMedia Whether the person has a media line
+     *
+     * @return list<string>
+     */
+    private function personLines(string $xref, string $sex, int $number, bool $withMedia): array
+    {
+        $lines = [
+            '0 @' . $xref . '@ INDI',
+            '1 NAME Given' . $number . ' /Family' . ($number % 7) . '/',
+            '1 SEX ' . $sex,
+            '1 BIRT',
+            '2 DATE ' . (1500 + ($number % 400)),
+            '1 DEAT',
+            '2 DATE ' . (1950 + ($number % 40)),
+        ];
+
+        if ($withMedia) {
+            $lines[] = '1 OBJE @M' . $number . '@';
+        }
+
+        return $lines;
+    }
+
+    /**
+     * Imports a couple with four children and media objects, one of which is linked by two
+     * people.
+     */
+    private function importPrivacyTree(): Tree
+    {
+        $lines = ['0 HEAD', '1 CHAR UTF-8'];
+
+        $people = [
+            'I1' => ['M', 'M1', 'FAMS @F1@'],
+            'I2' => ['F', '', 'FAMS @F1@'],
+            'I3' => ['M', 'M3', 'FAMC @F1@'],
+            'I4' => ['M', 'M5', 'FAMC @F1@'],
+            'I5' => ['M', 'M7', 'FAMC @F1@'],
+            'I6' => ['M', 'M9', ''],
+            'I7' => ['M', 'M9', 'FAMC @F1@'],
+        ];
+
+        foreach ($people as $xref => [$sex, $media, $family]) {
+            $withoutDeath = $xref === 'I4';
+
+            $lines[] = '0 @' . $xref . '@ INDI';
+            $lines[] = '1 NAME Given' . $xref . ' /Family/';
+            $lines[] = '1 SEX ' . $sex;
+            $lines[] = '1 BIRT';
+            $lines[] = '2 DATE ' . ($withoutDeath ? '1990' : '1850');
+
+            if (!$withoutDeath) {
+                $lines[] = '1 DEAT';
+                $lines[] = '2 DATE 1920';
+            }
+
+            if (
+                ($xref === 'I5')
+                || ($xref === 'I6')
+            ) {
+                $lines[] = '1 RESN confidential';
+            }
+
+            if ($media !== '') {
+                $lines[] = '1 OBJE @' . $media . '@';
+            }
+
+            if ($family !== '') {
+                $lines[] = '1 ' . $family;
+            }
+        }
+
+        $lines = [
+            ...$lines,
+            '0 @F1@ FAM',
+            '1 HUSB @I1@',
+            '1 WIFE @I2@',
+            '1 CHIL @I3@',
+            '1 CHIL @I4@',
+            '1 CHIL @I5@',
+            '1 CHIL @I7@',
+        ];
+
+        $numbers = [1, 3, 5, 7, 9];
+
+        $lines = [...$lines, ...$this->mediaRecordLines($numbers)];
+
+        $this->createMediaFiles($numbers);
+
+        $lines[] = '0 TRLR';
+
+        $tree = RealTreeFixture::importGedcom(implode("\n", $lines), 'privacy');
+
+        $tree->setPreference('HIDE_LIVE_PEOPLE', '1');
+        $tree->setPreference('SHOW_LIVING_NAMES', (string) Auth::PRIV_PRIVATE);
+        $tree->setPreference('SHOW_DEAD_PEOPLE', (string) Auth::PRIV_PRIVATE);
+        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
+
+        return $tree;
+    }
+
+    /**
+     * Asserts that the request has media statements and that each of them carries an in list.
+     *
+     * @param list<array{query: string, bindings: list<string>}> $statements The statements of a request
+     */
+    private function assertOnlyBatchedMediaLookups(array $statements): void
+    {
+        $inspected = 0;
+
+        foreach ($statements as $statement) {
+            if (str_contains($statement['query'], 'from "wt_media"')) {
+                self::assertStringContainsString('"m_id" in', $statement['query']);
+                ++$inspected;
+            }
+        }
+
+        self::assertGreaterThan(0, $inspected);
+    }
+
+    /**
+     * Returns the record lines of the media objects with the given numbers.
+     *
+     * @param list<int> $numbers The numbers of the media objects
+     *
+     * @return list<string>
+     */
+    private function mediaRecordLines(array $numbers): array
+    {
+        $lines = [];
+
+        foreach ($numbers as $number) {
+            $lines[] = '0 @M' . $number . '@ OBJE';
+            $lines[] = '1 FILE person' . $number . '.jpg';
+            $lines[] = '2 FORM jpg';
+        }
+
+        return $lines;
+    }
+
+    /**
+     * Returns the sorted xrefs that the media statements of a request bind.
+     *
+     * @param list<array{query: string, bindings: list<string>}> $statements The statements of a request
+     *
+     * @return list<string>
+     */
+    private function boundMediaXrefs(array $statements): array
+    {
+        $xrefs = [];
+
+        foreach ($statements as $statement) {
+            if (!str_contains($statement['query'], 'from "wt_media"')) {
+                continue;
+            }
+
+            foreach ($statement['bindings'] as $binding) {
+                if (preg_match('/^M\d+$/', $binding) === 1) {
+                    $xrefs[] = $binding;
+                }
+            }
+        }
+
+        $xrefs = array_values(array_unique($xrefs));
+
+        sort($xrefs);
+
+        return $xrefs;
+    }
+
+    /**
+     * Imports a tree in which both sexes occur among the children. I1 (M) and I2 (F) have the
+     * children I3 (M) and I4 (F). I3 and I7 (F) have the children I5 (M) and I6 (F). I8 (M) and
+     * I4 have the children I9 (M) and I10 (F). I9 and I13 (F) have the child I11 (F), I14 (M)
+     * and I10 have the child I12 (M). Each person has a media object M plus the number.
+     */
+    private function importLineage(): Tree
+    {
+        $people = [
+            1  => ['M', null, 1],
+            2  => ['F', null, 1],
+            3  => ['M', 1, 2],
+            4  => ['F', 1, 3],
+            5  => ['M', 2, null],
+            6  => ['F', 2, null],
+            7  => ['F', null, 2],
+            8  => ['M', null, 3],
+            9  => ['M', 3, 4],
+            10 => ['F', 3, 5],
+            11 => ['F', 4, null],
+            12 => ['M', 5, null],
+            13 => ['F', null, 4],
+            14 => ['M', null, 5],
+        ];
+
+        $lines = ['0 HEAD', '1 CHAR UTF-8'];
+
+        foreach ($people as $number => [$sex, $childOf, $spouseIn]) {
+            $lines = [...$lines, ...$this->personLines('I' . $number, $sex, $number, true)];
+
+            if ($childOf !== null) {
+                $lines[] = '1 FAMC @F' . $childOf . '@';
+            }
+
+            if ($spouseIn !== null) {
+                $lines[] = '1 FAMS @F' . $spouseIn . '@';
+            }
+        }
+
+        $families = [
+            1 => ['I1', 'I2', ['I3', 'I4']],
+            2 => ['I3', 'I7', ['I5', 'I6']],
+            3 => ['I8', 'I4', ['I9', 'I10']],
+            4 => ['I9', 'I13', ['I11']],
+            5 => ['I14', 'I10', ['I12']],
+        ];
+
+        foreach ($families as $number => [$husband, $wife, $children]) {
+            $lines[] = '0 @F' . $number . '@ FAM';
+            $lines[] = '1 HUSB @' . $husband . '@';
+            $lines[] = '1 WIFE @' . $wife . '@';
+
+            foreach ($children as $child) {
+                $lines[] = '1 CHIL @' . $child . '@';
+            }
+        }
+
+        $lines = [...$lines, ...$this->mediaRecordLines(array_keys($people))];
+
+        $lines[] = '0 TRLR';
+
+        $tree = RealTreeFixture::importGedcom(implode("\n", $lines), 'lineage');
+
+        $tree->setPreference('HIDE_LIVE_PEOPLE', '1');
+        $tree->setPreference('SHOW_DEAD_PEOPLE', (string) Auth::PRIV_PRIVATE);
+        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
+
+        return $tree;
+    }
+
+    /**
+     * Creates the image files of the odd numbers in the media folder of a temporary index
+     * directory.
+     *
+     * @param list<int> $numbers The numbers of the media objects
+     */
+    private function createMediaFiles(array $numbers): void
+    {
+        $this->indexDirectory = sys_get_temp_dir() . '/descendants-chart-' . uniqid('', true) . '/';
+
+        if (
+            !mkdir($this->indexDirectory . 'media', 0o777, true)
+            && !is_dir($this->indexDirectory . 'media')
+        ) {
+            self::fail('The media directory could not be created.');
+        }
+
+        foreach ($numbers as $number) {
+            if ($number % 2 === 1) {
+                file_put_contents($this->indexDirectory . 'media/person' . $number . '.jpg', 'image');
+            }
+        }
+
+        Site::setPreference('INDEX_DIRECTORY', $this->indexDirectory);
+    }
+
+    /**
+     * Removes the media files and the directories of the test.
+     */
+    private function removeMediaFiles(): void
+    {
+        if ($this->indexDirectory === '') {
+            return;
+        }
+
+        $files = glob($this->indexDirectory . 'media/*');
+
+        foreach (($files === false) ? [] : $files as $file) {
+            unlink($file);
+        }
+
+        rmdir($this->indexDirectory . 'media');
+        rmdir($this->indexDirectory);
+
+        $this->indexDirectory = '';
+    }
+
+    /**
+     * Returns the statements of one request on a cold record cache.
+     *
+     * @param Tree   $tree        The imported tree
+     * @param bool   $hideSpouses Whether the chart hides the partners
+     * @param string $xref        The xref of the chart subject
+     * @param int    $generations The number of generations of the chart
+     * @param string $line        The descendant line of the chart
+     *
+     * @return list<array{query: string, bindings: list<string>}>
+     */
+    private function statements(
+        Tree $tree,
+        bool $hideSpouses,
+        string $xref = 'I1',
+        int $generations = self::DEPTH,
+        string $line = 'all',
+    ): array {
+        Registry::cache(new CacheFactory());
+
+        $connection = DB::connection();
+        $connection->enableQueryLog();
+        $connection->flushQueryLog();
+
+        $this->structure($tree, $xref, $generations, $hideSpouses, $line);
+
+        $log = $connection->getQueryLog();
+        $connection->disableQueryLog();
+
+        $statements = [];
+
+        foreach ($log as $entry) {
+            $bindings = [];
+
+            foreach ($entry['bindings'] as $binding) {
+                $bindings[] = is_scalar($binding) ? (string) $binding : '';
+            }
+
+            $statements[] = [
+                'query'    => $entry['query'],
+                'bindings' => $bindings,
+            ];
+        }
+
+        return $statements;
+    }
+
+    /**
+     * Builds the tree structure of the chart for the current viewer.
+     *
+     * @param Tree   $tree        The imported tree
+     * @param string $xref        The xref of the chart subject
+     * @param int    $generations The number of generations of the chart
+     * @param bool   $hideSpouses Whether the chart hides the partners
+     * @param string $line        The descendant line of the chart
+     *
+     * @return array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>}
+     */
+    private function structure(Tree $tree, string $xref, int $generations, bool $hideSpouses, string $line = 'all'): array
+    {
+        $individual = Registry::individualFactory()->make($xref, $tree);
+        self::assertInstanceOf(Individual::class, $individual);
+
+        $configuration = new Configuration(
+            (new ServerRequest(RequestMethodInterface::METHOD_GET, '/'))->withQueryParams([
+                'generations'     => (string) $generations,
+                'showDetailPanel' => '0',
+                'hideSpouses'     => $hideSpouses ? '1' : '0',
+                'descendantLine'  => $line,
+            ]),
+            $this->module,
+        );
+
+        $structure = (new DataFacade())
+            ->setModule($this->module)
+            ->setConfiguration($configuration)
+            ->setRoute(Module::ROUTE_DEFAULT)
+            ->createTreeStructure($individual);
+
+        self::assertIsArray($structure);
+
+        return $structure;
+    }
+
+    /**
+     * Returns the images of the people of the chart, by xref, on a cold record cache.
+     *
+     * @param Tree   $tree        The imported tree
+     * @param string $xref        The xref of the chart subject
+     * @param int    $generations The number of generations of the chart
+     *
+     * @return array<string, array{thumbnail: string, silhouette: string}>
+     */
+    private function imagesOfChart(Tree $tree, string $xref, int $generations): array
+    {
+        Registry::cache(new CacheFactory());
+
+        $images = $this->collectImages($this->structure($tree, $xref, $generations, false));
+
+        ksort($images);
+
+        return $images;
+    }
+
+    /**
+     * Collects the images of the members of a couple and of the couples below it.
+     *
+     * @param array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>} $couple The couple structure
+     *
+     * @return array<string, array{thumbnail: string, silhouette: string}>
+     */
+    private function collectImages(array $couple): array
+    {
+        $images = [];
+
+        foreach ($couple['members'] as $member) {
+            $memberData = $member->jsonSerialize();
+
+            self::assertIsString($memberData['xref'] ?? null);
+            self::assertIsString($memberData['thumbnail'] ?? null);
+            self::assertIsString($memberData['silhouette'] ?? null);
+
+            $images[$memberData['xref']] = [
+                'thumbnail'  => $memberData['thumbnail'],
+                'silhouette' => $memberData['silhouette'],
+            ];
+        }
+
+        foreach ($couple['memberFamilies'] as $family) {
+            foreach ($family['children'] as $child) {
+                $images = [...$images, ...$this->collectImages($child->jsonSerialize())];
+            }
+        }
+
+        return $images;
+    }
+
+    /**
+     * Returns the images that the image processor yields for the given people, on a cold record
+     * cache.
+     *
+     * @param Tree         $tree  The imported tree
+     * @param list<string> $xrefs The xrefs of the people
+     *
+     * @return array<string, array{thumbnail: string, silhouette: string}>
+     */
+    private function imagesOfFactories(Tree $tree, array $xrefs): array
+    {
+        Registry::cache(new CacheFactory());
+
+        $images = [];
+
+        foreach ($xrefs as $xref) {
+            $individual = Registry::individualFactory()->make((string) $xref, $tree);
+            self::assertInstanceOf(Individual::class, $individual);
+
+            $processor = new ImageProcessor($this->module, $individual);
+
+            $images[(string) $xref] = [
+                'thumbnail'  => $processor->getHighlightImageUrl(),
+                'silhouette' => $processor->getSilhouetteUrl(),
+            ];
+        }
+
+        ksort($images);
+
+        return $images;
+    }
+}

@@ -33,6 +33,7 @@ use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
 use MagicSunday\Webtrees\ModuleBase\Processor\NameProcessor;
 use MagicSunday\Webtrees\ModuleBase\Support\CompactDateFormat;
 use MagicSunday\Webtrees\ModuleBase\Support\Locale\IsoCountryMap;
+use MagicSunday\Webtrees\ModuleBase\Support\MediaPreloader;
 use MagicSunday\Webtrees\ModuleBase\Support\TextDirection;
 
 /**
@@ -104,6 +105,8 @@ final class DataFacade
      */
     public function createTreeStructure(Individual $individual): ?array
     {
+        $this->preloadMedia($individual, new MediaPreloader());
+
         $rootCouple = $this->buildCoupleStructure($individual);
 
         if (!$rootCouple instanceof CoupleNode) {
@@ -115,6 +118,50 @@ final class DataFacade
         }
 
         return $rootCouple->jsonSerialize();
+    }
+
+    /**
+     * Loads the media objects of the people of each generation before the walk
+     * reads the highlight image of every person. The generations are found the
+     * way the walk finds them, so a generation holds its people, their partners
+     * unless the spouses are hidden, and the children that the descendant line
+     * follows.
+     *
+     * @param Individual     $individual     The chart subject (generation 1)
+     * @param MediaPreloader $mediaPreloader The preload of the media objects of this request
+     */
+    private function preloadMedia(Individual $individual, MediaPreloader $mediaPreloader): void
+    {
+        $hideSpouses    = $this->configuration->getHideSpouses();
+        $descendantLine = $this->configuration->getDescendantLine();
+        $people         = [$individual];
+
+        for ($generation = 1; $generation <= $this->configuration->getGenerations(); ++$generation) {
+            $generationPeople = $people;
+            $children         = [];
+
+            foreach ($people as $person) {
+                foreach ($person->spouseFamilies() as $family) {
+                    if (!$hideSpouses) {
+                        $spouse = $family->spouse($person);
+
+                        if ($spouse instanceof Individual) {
+                            $generationPeople[] = $spouse;
+                        }
+                    }
+
+                    foreach ($family->children() as $child) {
+                        if ($descendantLine->keepsLink($person->sex(), $child->sex())) {
+                            $children[] = $child;
+                        }
+                    }
+                }
+            }
+
+            $mediaPreloader->preload($individual->tree(), $generationPeople);
+
+            $people = $children;
+        }
     }
 
     /**

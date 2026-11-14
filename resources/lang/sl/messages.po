@@ -56,7 +56,7 @@ msgstr "Samo rojstno ime"
 msgid "Birth name with married name in brackets"
 msgstr "Rojstno ime s poročnim priimkom v oklepaju"
 
-#: src/Facade/DataFacade.php:328
+#: src/Facade/DataFacade.php:375
 #, php-format
 msgid "Born: %s"
 msgstr "Rojstvo: %s"
@@ -95,7 +95,7 @@ msgstr ""
 msgid "Ctrl + scroll"
 msgstr "Ctrl + drsenje"
 
-#: src/Facade/DataFacade.php:330
+#: src/Facade/DataFacade.php:377
 msgctxt "webtrees-descendants-chart"
 msgid "Deceased"
 msgstr "Pokojni/a"
@@ -121,7 +121,7 @@ msgstr ""
 msgid "Details panel"
 msgstr ""
 
-#: src/Facade/DataFacade.php:329
+#: src/Facade/DataFacade.php:376
 #, php-format
 msgid "Died: %s"
 msgstr "Smrt: %s"

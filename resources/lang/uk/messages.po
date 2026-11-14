@@ -54,7 +54,7 @@ msgstr "Лише ім'я при народженні"
 msgid "Birth name with married name in brackets"
 msgstr "Ім'я при народженні з прізвищем у шлюбі в дужках"
 
-#: src/Facade/DataFacade.php:328
+#: src/Facade/DataFacade.php:375
 #, php-format
 msgid "Born: %s"
 msgstr "Народження: %s"
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Ctrl + scroll"
 msgstr "Ctrl + прокрутка"
 
-#: src/Facade/DataFacade.php:330
+#: src/Facade/DataFacade.php:377
 msgctxt "webtrees-descendants-chart"
 msgid "Deceased"
 msgstr "Померлий"
@@ -119,7 +119,7 @@ msgstr ""
 msgid "Details panel"
 msgstr ""
 
-#: src/Facade/DataFacade.php:329
+#: src/Facade/DataFacade.php:376
 #, php-format
 msgid "Died: %s"
 msgstr "Смерть: %s"

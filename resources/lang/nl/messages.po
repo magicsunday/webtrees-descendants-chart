@@ -53,7 +53,7 @@ msgstr "Alleen geboortenaam"
 msgid "Birth name with married name in brackets"
 msgstr "Geboortenaam met huwelijksnaam tussen haakjes"
 
-#: src/Facade/DataFacade.php:328
+#: src/Facade/DataFacade.php:375
 #, php-format
 msgid "Born: %s"
 msgstr "Geboren: %s"
@@ -92,7 +92,7 @@ msgstr ""
 msgid "Ctrl + scroll"
 msgstr "Ctrl + scrollen"
 
-#: src/Facade/DataFacade.php:330
+#: src/Facade/DataFacade.php:377
 msgctxt "webtrees-descendants-chart"
 msgid "Deceased"
 msgstr "Overleden"
@@ -118,7 +118,7 @@ msgstr ""
 msgid "Details panel"
 msgstr ""
 
-#: src/Facade/DataFacade.php:329
+#: src/Facade/DataFacade.php:376
 #, php-format
 msgid "Died: %s"
 msgstr "Overleden: %s"
