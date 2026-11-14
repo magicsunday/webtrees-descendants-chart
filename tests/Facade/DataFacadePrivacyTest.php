@@ -53,6 +53,7 @@ use function uniqid;
 use function unlink;
 
 use const JSON_THROW_ON_ERROR;
+use const JSON_UNESCAPED_UNICODE;
 
 /**
  * Drives the real webtrees privacy engine through the data path of the chart. The tree is a real
@@ -99,6 +100,7 @@ final class DataFacadePrivacyTest extends TestCase
     private const array CONFIDENTIAL_NAME_TOKENS = [
         'Childly',
         'Confidentialchild',
+        'Конфиденциальный',
     ];
 
     /**
@@ -122,6 +124,7 @@ final class DataFacadePrivacyTest extends TestCase
     private const array LIVING_TOKENS = [
         'Livingson',
         'Livinghidden',
+        'Живой',
         'Hiddenlivingplace',
         '1931',
         'Livingpartner',
@@ -318,11 +321,64 @@ final class DataFacadePrivacyTest extends TestCase
             self::assertSame('', $data[$field] ?? null, $field . ' of the stub should be empty');
         }
 
-        $payload = json_encode($structure, JSON_THROW_ON_ERROR);
+        $payload = json_encode($structure, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
 
         foreach ([...self::CONFIDENTIAL_NAME_TOKENS, ...self::CONFIDENTIAL_TOKENS] as $token) {
             self::assertFalse($this->occursIn($payload, $token), 'The stub must not carry ' . $token);
         }
+    }
+
+    /**
+     * The tooltip may show a silhouette once the tree preference for silhouettes is on, and the
+     * silhouette URL is the only carrier of that image. A visitor gets none for a person that the
+     * privacy engine hides, whereas a person that the visitor may see gets one.
+     */
+    #[Test]
+    public function visitorGetsNoSilhouetteUrlForAPrivatePersonWhenSilhouettesAreOn(): void
+    {
+        $tree = $this->importTree();
+
+        $tree->setPreference('USE_SILHOUETTE', '1');
+
+        // The control runs as the administrator, who sees the private person with a silhouette.
+        $administrator = $this->structure($tree, 'I3')['members'][0] ?? null;
+
+        self::assertInstanceOf(NodeData::class, $administrator);
+        self::assertNotSame('', $administrator->jsonSerialize()['silhouette'] ?? '');
+
+        Registry::cache(new CacheFactory());
+        Auth::logout();
+
+        $private = $this->structure($tree, 'I3')['members'][0] ?? null;
+        $public  = $this->structure($tree, 'I1')['members'][0] ?? null;
+
+        self::assertInstanceOf(NodeData::class, $private);
+        self::assertInstanceOf(NodeData::class, $public);
+        self::assertSame('', $private->jsonSerialize()['silhouette'] ?? null);
+        self::assertNotSame('', $public->jsonSerialize()['silhouette'] ?? '');
+    }
+
+    /**
+     * The page title names the person only where the viewer may see the name, so a guessed xref
+     * of a private person leaves the name out of the title of a visitor.
+     */
+    #[Test]
+    public function pageTitleLeavesTheNameOfAPrivatePersonOutForAVisitor(): void
+    {
+        $tree = $this->importTree();
+
+        $private = Registry::individualFactory()->make('I3', $tree);
+        self::assertInstanceOf(Individual::class, $private);
+
+        self::assertStringContainsString('Confidentialchild', $this->module->pageTitle($private));
+
+        Registry::cache(new CacheFactory());
+        Auth::logout();
+
+        $private = Registry::individualFactory()->make('I3', $tree);
+        self::assertInstanceOf(Individual::class, $private);
+
+        self::assertSame('Descendants chart', $this->module->pageTitle($private));
     }
 
     /**
@@ -352,7 +408,7 @@ final class DataFacadePrivacyTest extends TestCase
      */
     private function payload(Tree $tree, string $xref): string
     {
-        return json_encode($this->structure($tree, $xref), JSON_THROW_ON_ERROR);
+        return json_encode($this->structure($tree, $xref), JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -420,6 +476,8 @@ final class DataFacadePrivacyTest extends TestCase
             '1 FAMS @F1@',
             '0 @I3@ INDI',
             '1 NAME Childly /Confidentialchild/',
+            '1 NAME Конфиденциальный /Конфиденциальный/',
+            '2 TYPE aka',
             '1 SEX M',
             '1 RESN confidential',
             '1 BIRT',
@@ -430,6 +488,8 @@ final class DataFacadePrivacyTest extends TestCase
             '1 FAMC @F1@',
             '0 @I4@ INDI',
             '1 NAME Livingson /Livinghidden/',
+            '1 NAME Живой /Живой/',
+            '2 TYPE aka',
             '1 SEX M',
             '1 BIRT',
             '2 DATE 1 JAN 1931',
