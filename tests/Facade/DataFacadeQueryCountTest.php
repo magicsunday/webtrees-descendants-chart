@@ -65,8 +65,8 @@ use function unlink;
  * Counts the database statements that one request of the chart sends for the media objects, over a
  * real imported tree, and compares the images of the chart with those that the core record
  * factories give without any preload. The tree is a complete descendant tree, so every person of
- * every generation has a partner and two children and the number of people doubles with each
- * generation. The media statements of a request have to grow with the number of generations and
+ * the generations above the last one has a partner and two children and the number of people
+ * doubles with each generation, while the people of the last generation have neither. The media statements of a request have to grow with the number of generations and
  * not with the number of people, so the tests compare the request with the same request that has
  * the highlight images switched off and derive the bounds from the shape of the tree.
  *
@@ -90,6 +90,11 @@ final class DataFacadeQueryCountTest extends TestCase
      * The first number of the xrefs of the partners, which lie above the xrefs of the descendants.
      */
     private const int PARTNER_OFFSET = 100000;
+
+    /**
+     * The first number of the xrefs of the living people, which lie above the xrefs of the partners.
+     */
+    private const int LIVING_OFFSET = 200000;
 
     /**
      * The module of the chart, which the facade reads its settings and its routes from.
@@ -138,7 +143,7 @@ final class DataFacadeQueryCountTest extends TestCase
      * The media lookup of a request grows with the number of generations and not with the number of
      * people, for the administrator and for a visitor, with and without the spouses. The extra
      * statements of the media are those that the same request sends beyond the request that has the
-     * highlight images switched off, so nothing but the media is counted.
+     * highlight images switched off, so the statements that the highlight images add are counted.
      *
      * @param bool $visitor     Whether a visitor requests the chart and not the administrator
      * @param bool $hideSpouses Whether the chart hides the partners
@@ -154,17 +159,28 @@ final class DataFacadeQueryCountTest extends TestCase
         }
 
         $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '');
+
+        // A first request fills the settings cache of the module, which the later ones read from.
+        $this->statements($tree, $hideSpouses);
         $without = count($this->statements($tree, $hideSpouses));
 
         $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
         $with = count($this->statements($tree, $hideSpouses));
 
         // Up to five statements for each chunk of a generation: the media objects, their pending
-        // changes, the links, the families and the individuals that the links point to.
+        // changes, the links, the families and the individuals that the links point to. A
+        // generation holds its people and, while the partners are shown, their partners, except
+        // the last generation, which has none.
         $budget = 0;
 
         for ($generation = 1; $generation <= self::DEPTH; ++$generation) {
-            $budget += 5 * intdiv((2 * (2 ** ($generation - 1))) + MediaPreloader::CHUNK_SIZE - 1, MediaPreloader::CHUNK_SIZE);
+            $width = 2 ** ($generation - 1);
+
+            if (!$hideSpouses && ($generation < self::DEPTH)) {
+                $width *= 2;
+            }
+
+            $budget += 5 * intdiv($width + MediaPreloader::CHUNK_SIZE - 1, MediaPreloader::CHUNK_SIZE);
         }
 
         self::assertGreaterThan(0, $with - $without, 'The media of the chart are looked up.');
@@ -183,8 +199,8 @@ final class DataFacadeQueryCountTest extends TestCase
     {
         $tree = $this->importDescendants();
 
-        // The last generation with its partners holds more people than one chunk, so a lookup that
-        // sends a whole generation in one statement would exceed the chunk size.
+        // Generation 8 with its partners, like generation 9, holds more people than one chunk, so a
+        // lookup that sends a whole generation in one statement would exceed the chunk size.
         $families = [];
 
         for ($family = 2 ** (self::DEPTH - 2); $family < (2 ** (self::DEPTH - 1)); ++$family) {
@@ -220,10 +236,12 @@ final class DataFacadeQueryCountTest extends TestCase
     }
 
     /**
-     * A tree without any media line adds no statement for the media, because a person without a
-     * media line is skipped before the preload asks whether the viewer may see the person. The check
-     * for a person reads its families, so a visitor of a tree that hides living people would pay for
-     * it otherwise.
+     * A tree without any media line adds no statement for the media, for the administrator and for a
+     * visitor. The tree has living people without a birth or death date and with a parent family,
+     * which a visitor may not see. The chart has asked whether the viewer may see a person before it
+     * hands the person to the preload, because the families and the partners drop the people that the
+     * viewer may not see, so the order of the media line check and the visibility check inside the
+     * preload cannot show here. The test of the media preload in the module base pins that order.
      *
      * @param bool $visitor Whether a visitor requests the chart and not the administrator
      */
@@ -231,16 +249,16 @@ final class DataFacadeQueryCountTest extends TestCase
     #[DataProvider('viewers')]
     public function peopleWithoutMediaLinesCostNoStatement(bool $visitor): void
     {
-        $tree = $this->importDescendants(false);
+        $tree = $this->importDescendants(false, true);
 
         if ($visitor) {
             Auth::logout();
         }
 
         // A first request fills the settings cache of the module, which the later ones read from.
+        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '');
         $this->statements($tree, false);
 
-        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '');
         $without = $this->statements($tree, false);
 
         $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
@@ -252,8 +270,9 @@ final class DataFacadeQueryCountTest extends TestCase
 
     /**
      * The images of the chart are those that the highlight image of the person yields without any
-     * preload, for the administrator and for a visitor. Half of the people have the file of their
-     * image on disk, so the chart shows a thumbnail for them and the silhouette for the others.
+     * preload, for the administrator and for a visitor. The people with an odd number have the file
+     * of their image on disk, so the chart shows a thumbnail for them and the silhouette for the
+     * others.
      *
      * @param bool $visitor Whether a visitor requests the chart and not the administrator
      */
@@ -345,13 +364,18 @@ final class DataFacadeQueryCountTest extends TestCase
 
         sort($expected);
 
-        self::assertSame($expected, $this->boundMediaXrefs($this->statements($tree, $hideSpouses, 'I1', 4)));
+        $statements = $this->statements($tree, $hideSpouses, 'I1', 4);
+
+        self::assertSame($expected, $this->boundMediaXrefs($statements));
+        $this->assertOnlyBatchedMediaLookups($statements);
     }
 
     /**
      * The descendant line decides which children the preload follows, as it does for the walk. The
      * paternal line follows a son of a father only, the maternal line follows every child of a mother,
-     * and the unrestricted line follows everybody.
+     * and the unrestricted line follows everybody of the shown generations. A child that the preload
+     * does not follow is looked up on its own by the walk, so every lookup of a media object has to
+     * be a batch.
      *
      * @param string       $line     The descendant line of the chart
      * @param string       $root     The xref of the chart subject
@@ -365,7 +389,10 @@ final class DataFacadeQueryCountTest extends TestCase
 
         sort($expected);
 
-        self::assertSame($expected, $this->boundMediaXrefs($this->statements($tree, false, $root, 3, $line)));
+        $statements = $this->statements($tree, false, $root, 3, $line);
+
+        self::assertSame($expected, $this->boundMediaXrefs($statements));
+        $this->assertOnlyBatchedMediaLookups($statements);
     }
 
     /**
@@ -442,15 +469,18 @@ final class DataFacadeQueryCountTest extends TestCase
     }
 
     /**
-     * Imports the complete descendant tree. The person n has the partner n+PARTNER_OFFSET and the
-     * children 2n and 2n+1, and every person and every partner has a media object of their own. The
-     * file of the image exists for the people with an odd number only. Everybody is dead and so
-     * public, but the tree hides living people, so the visibility of a media object depends on the
-     * records that it is linked to.
+     * Imports the complete descendant tree. A person n of the generations above the last one has the
+     * partner n+PARTNER_OFFSET and the children 2n and 2n+1. While $withMedia is on, every person
+     * and every partner has a media object of their own, and the file of the image exists for the
+     * people with an odd number only. The people of the tree are dead and so public, but the tree
+     * hides living people, so the visibility of a media object depends on the records that it is
+     * linked to. The living people that $withLiving adds have no dates, no media line and a parent
+     * family, and they are children of the first three families.
      *
-     * @param bool $withMedia Whether the people have media lines
+     * @param bool $withMedia  Whether the people have media lines
+     * @param bool $withLiving Whether living people without dates are children of the first families
      */
-    private function importDescendants(bool $withMedia = true): Tree
+    private function importDescendants(bool $withMedia = true, bool $withLiving = false): Tree
     {
         $people   = (2 ** self::DEPTH) - 1;
         $families = (2 ** (self::DEPTH - 1)) - 1;
@@ -480,6 +510,19 @@ final class DataFacadeQueryCountTest extends TestCase
             $lines[] = '1 WIFE @I' . (self::PARTNER_OFFSET + $family) . '@';
             $lines[] = '1 CHIL @I' . (2 * $family) . '@';
             $lines[] = '1 CHIL @I' . ((2 * $family) + 1) . '@';
+
+            if ($withLiving && ($family <= 3)) {
+                $lines[] = '1 CHIL @I' . (self::LIVING_OFFSET + $family) . '@';
+            }
+        }
+
+        if ($withLiving) {
+            for ($family = 1; $family <= 3; ++$family) {
+                $lines[] = '0 @I' . (self::LIVING_OFFSET + $family) . '@ INDI';
+                $lines[] = '1 NAME Living' . $family . ' /Person/';
+                $lines[] = '1 SEX M';
+                $lines[] = '1 FAMC @F' . $family . '@';
+            }
         }
 
         $numbers = [];
@@ -492,11 +535,7 @@ final class DataFacadeQueryCountTest extends TestCase
             $numbers[] = self::PARTNER_OFFSET + $family;
         }
 
-        foreach ($numbers as $number) {
-            $lines[] = '0 @M' . $number . '@ OBJE';
-            $lines[] = '1 FILE person' . $number . '.jpg';
-            $lines[] = '2 FORM jpg';
-        }
+        $lines = [...$lines, ...$this->mediaRecordLines($numbers)];
 
         $this->createMediaFiles($numbers);
 
@@ -604,11 +643,7 @@ final class DataFacadeQueryCountTest extends TestCase
 
         $numbers = [1, 3, 5, 7, 9];
 
-        foreach ($numbers as $number) {
-            $lines[] = '0 @M' . $number . '@ OBJE';
-            $lines[] = '1 FILE person' . $number . '.jpg';
-            $lines[] = '2 FORM jpg';
-        }
+        $lines = [...$lines, ...$this->mediaRecordLines($numbers)];
 
         $this->createMediaFiles($numbers);
 
@@ -622,6 +657,41 @@ final class DataFacadeQueryCountTest extends TestCase
         $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
 
         return $tree;
+    }
+
+    /**
+     * Asserts that no media object is read on its own, which is what the walk does for a person
+     * that the preload did not load.
+     *
+     * @param list<array{query: string, bindings: list<string>}> $statements The statements of a request
+     */
+    private function assertOnlyBatchedMediaLookups(array $statements): void
+    {
+        foreach ($statements as $statement) {
+            if (str_contains($statement['query'], 'from "wt_media"')) {
+                self::assertStringContainsString('"m_id" in', $statement['query']);
+            }
+        }
+    }
+
+    /**
+     * Returns the record lines of the media objects with the given numbers.
+     *
+     * @param list<int> $numbers The numbers of the media objects
+     *
+     * @return list<string>
+     */
+    private function mediaRecordLines(array $numbers): array
+    {
+        $lines = [];
+
+        foreach ($numbers as $number) {
+            $lines[] = '0 @M' . $number . '@ OBJE';
+            $lines[] = '1 FILE person' . $number . '.jpg';
+            $lines[] = '2 FORM jpg';
+        }
+
+        return $lines;
     }
 
     /**
@@ -713,11 +783,7 @@ final class DataFacadeQueryCountTest extends TestCase
             }
         }
 
-        foreach (array_keys($people) as $number) {
-            $lines[] = '0 @M' . $number . '@ OBJE';
-            $lines[] = '1 FILE person' . $number . '.jpg';
-            $lines[] = '2 FORM jpg';
-        }
+        $lines = [...$lines, ...$this->mediaRecordLines(array_keys($people))];
 
         $lines[] = '0 TRLR';
 
