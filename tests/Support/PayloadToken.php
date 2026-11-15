@@ -11,8 +11,6 @@ declare(strict_types=1);
 
 namespace MagicSunday\Webtrees\DescendantsChart\Test\Support;
 
-use PHPUnit\Framework\TestCase;
-
 use function ctype_digit;
 use function preg_match;
 use function preg_quote;
@@ -59,31 +57,5 @@ final class PayloadToken
         $text = preg_replace('/\\\\(?:\\\\|u[0-9a-fA-F]{4}|[bfnrt])/', ' ', $payload) ?? $payload;
 
         return preg_match('/(?<![0-9A-Za-z])' . preg_quote($token, '/') . '(?![0-9A-Za-z])/', $text) === 1;
-    }
-
-    /**
-     * Asserts that the payload holds the token.
-     *
-     * @param TestCase $test    The running test
-     * @param string   $token   The value to look for
-     * @param string   $payload The JSON text
-     * @param string   $message The failure message
-     */
-    public static function assertPresent(TestCase $test, string $token, string $payload, string $message): void
-    {
-        $test::assertTrue(self::occursIn($payload, $token), $message);
-    }
-
-    /**
-     * Asserts that the payload does not hold the token.
-     *
-     * @param TestCase $test    The running test
-     * @param string   $token   The value to look for
-     * @param string   $payload The JSON text
-     * @param string   $message The failure message
-     */
-    public static function assertAbsent(TestCase $test, string $token, string $payload, string $message): void
-    {
-        $test::assertFalse(self::occursIn($payload, $token), $message);
     }
 }
