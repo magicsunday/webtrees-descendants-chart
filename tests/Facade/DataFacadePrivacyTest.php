@@ -29,6 +29,7 @@ use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\DescendantsChart\Module;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\PayloadToken;
 use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
 use MagicSunday\Webtrees\ModuleBase\Testing\RealTreeFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -37,17 +38,12 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-use function ctype_digit;
 use function file_put_contents;
 use function implode;
 use function is_dir;
 use function json_encode;
 use function mkdir;
-use function preg_match;
-use function preg_quote;
-use function preg_replace;
 use function rmdir;
-use function str_contains;
 use function strlen;
 use function sys_get_temp_dir;
 use function uniqid;
@@ -245,7 +241,7 @@ final class DataFacadePrivacyTest extends TestCase
         $payload = $this->payload($tree, 'I1');
 
         foreach ([...self::CONFIDENTIAL_NAME_TOKENS, ...self::CONFIDENTIAL_TOKENS, ...self::LIVING_TOKENS, ...self::PUBLIC_TOKENS] as $token) {
-            self::assertTrue($this->occursIn($payload, $token), 'The administrator should see ' . $token);
+            self::assertTrue(PayloadToken::occursIn($payload, $token), 'The administrator should see ' . $token);
         }
     }
 
@@ -259,7 +255,7 @@ final class DataFacadePrivacyTest extends TestCase
         $tree = $this->importTree();
 
         // The control runs as the administrator and fills the record cache with the administrator view.
-        self::assertTrue($this->occursIn($this->payload($tree, 'I1'), 'Livingson'));
+        self::assertTrue(PayloadToken::occursIn($this->payload($tree, 'I1'), 'Livingson'));
 
         Registry::cache(new CacheFactory());
         Auth::logout();
@@ -267,11 +263,11 @@ final class DataFacadePrivacyTest extends TestCase
         $payload = $this->payload($tree, 'I1');
 
         foreach (self::PUBLIC_TOKENS as $token) {
-            self::assertTrue($this->occursIn($payload, $token), 'The visitor should see ' . $token);
+            self::assertTrue(PayloadToken::occursIn($payload, $token), 'The visitor should see ' . $token);
         }
 
         foreach ([...self::CONFIDENTIAL_NAME_TOKENS, ...self::CONFIDENTIAL_TOKENS, ...self::LIVING_TOKENS] as $token) {
-            self::assertFalse($this->occursIn($payload, $token), 'The visitor must not see ' . $token);
+            self::assertFalse(PayloadToken::occursIn($payload, $token), 'The visitor must not see ' . $token);
         }
     }
 
@@ -285,7 +281,7 @@ final class DataFacadePrivacyTest extends TestCase
     {
         $tree = $this->importTree();
 
-        self::assertTrue($this->occursIn($this->payload($tree, 'I1'), 'Confidentialchild'));
+        self::assertTrue(PayloadToken::occursIn($this->payload($tree, 'I1'), 'Confidentialchild'));
 
         $member = (new UserService())->create('member', 'Member', 'member@example.test', 'secret');
         $tree->setUserPreference($member, UserInterface::PREF_TREE_ROLE, UserInterface::ROLE_MEMBER);
@@ -296,11 +292,11 @@ final class DataFacadePrivacyTest extends TestCase
         $payload = $this->payload($tree, 'I1');
 
         foreach ([...self::PUBLIC_TOKENS, ...self::LIVING_TOKENS, ...self::CONFIDENTIAL_NAME_TOKENS] as $token) {
-            self::assertTrue($this->occursIn($payload, $token), 'The member should see ' . $token);
+            self::assertTrue(PayloadToken::occursIn($payload, $token), 'The member should see ' . $token);
         }
 
         foreach (self::CONFIDENTIAL_TOKENS as $token) {
-            self::assertFalse($this->occursIn($payload, $token), 'The member must not see ' . $token);
+            self::assertFalse(PayloadToken::occursIn($payload, $token), 'The member must not see ' . $token);
         }
     }
 
@@ -313,7 +309,7 @@ final class DataFacadePrivacyTest extends TestCase
     {
         $tree = $this->importTree();
 
-        self::assertTrue($this->occursIn($this->payload($tree, 'I3'), 'Confidentialchild'));
+        self::assertTrue(PayloadToken::occursIn($this->payload($tree, 'I3'), 'Confidentialchild'));
 
         Registry::cache(new CacheFactory());
         Auth::logout();
@@ -337,7 +333,7 @@ final class DataFacadePrivacyTest extends TestCase
         $payload = json_encode($structure, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
 
         foreach ([...self::CONFIDENTIAL_NAME_TOKENS, ...self::CONFIDENTIAL_TOKENS] as $token) {
-            self::assertFalse($this->occursIn($payload, $token), 'The stub must not carry ' . $token);
+            self::assertFalse(PayloadToken::occursIn($payload, $token), 'The stub must not carry ' . $token);
         }
     }
 
@@ -392,25 +388,6 @@ final class DataFacadePrivacyTest extends TestCase
         self::assertInstanceOf(Individual::class, $private);
 
         self::assertSame('Descendants chart', $this->module->pageTitle($private));
-    }
-
-    /**
-     * Returns whether the payload holds the token. A numeric token only counts as a whole number,
-     * because the payload also holds asset URLs with a numeric hash parameter that can contain the
-     * digits of a year inside a longer number, and a JSON unicode escape does not count as digits.
-     *
-     * @param string $payload The JSON text
-     * @param string $token   The value to look for
-     */
-    private function occursIn(string $payload, string $token): bool
-    {
-        if (!ctype_digit($token)) {
-            return str_contains($payload, $token);
-        }
-
-        $text = preg_replace('/\\\\u[0-9a-fA-F]{4}/', ' ', $payload) ?? $payload;
-
-        return preg_match('/(?<!\d)' . preg_quote($token, '/') . '(?!\d)/', $text) === 1;
     }
 
     /**
