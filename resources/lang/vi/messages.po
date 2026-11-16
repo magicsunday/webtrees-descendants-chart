@@ -41,7 +41,7 @@ msgstr "Tổng quan về con cháu của một cá nhân."
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Tự động (dựa trên truyền thống họ của cây phả hệ)"
 
-#: resources/views/modules/descendants-chart/form/behavior.phtml:23
+#: resources/views/modules/descendants-chart/form/behavior.phtml:24
 msgid "Behavior"
 msgstr "Hành vi"
 
@@ -74,11 +74,11 @@ msgstr "Nhấp vào một người"
 msgid "Click or Enter on a person"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/config.phtml:26
+#: resources/views/modules/descendants-chart/config.phtml:27
 msgid "Control panel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/config.phtml:85
+#: resources/views/modules/descendants-chart/config.phtml:86
 msgid ""
 "Controls which name part shrinks first when a box is too narrow for the full "
 "name. \"Automatic\" uses the tree's surname tradition (Icelandic abbreviates "
@@ -97,7 +97,7 @@ msgctxt "webtrees-descendants-chart"
 msgid "Deceased"
 msgstr "Người mất"
 
-#: resources/views/modules/descendants-chart/form/display.phtml:36
+#: resources/views/modules/descendants-chart/form/display.phtml:37
 msgid "Descendant line"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgstr "Biểu đồ con cháu"
 msgid "Descendants chart of %s"
 msgstr "Biểu đồ con cháu của %s"
 
-#: resources/views/modules/descendants-chart/form/details.phtml:23
+#: resources/views/modules/descendants-chart/form/details.phtml:24
 msgid "Details"
 msgstr ""
 
@@ -123,26 +123,26 @@ msgstr ""
 msgid "Died: %s"
 msgstr "Mất: %s"
 
-#: resources/views/modules/descendants-chart/form/display.phtml:23
+#: resources/views/modules/descendants-chart/form/display.phtml:24
 msgid "Display"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/details.phtml:34
+#: resources/views/modules/descendants-chart/form/details.phtml:35
 msgid ""
 "Displays a person's alternate name, if available. This simultaneously "
 "enlarges the individuals' respective boxes to create the necessary space for "
 "the display."
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/png-export-button.phtml:18
+#: resources/views/modules/components/buttonbar.phtml:30
 msgid "Export as PNG"
 msgstr "Xuất định dạng PNG"
 
-#: resources/views/modules/components/buttonbar/svg-export-button.phtml:18
+#: resources/views/modules/components/buttonbar.phtml:33
 msgid "Export as SVG"
 msgstr "Xuất định dạng SVG"
 
-#: resources/views/modules/descendants-chart/config.phtml:51
+#: resources/views/modules/descendants-chart/config.phtml:52
 msgctxt "webtrees-descendants-chart"
 msgid "General"
 msgstr ""
@@ -155,15 +155,15 @@ msgstr ""
 msgid "Hide more options"
 msgstr "Ẩn thêm tùy chọn"
 
-#: resources/views/modules/descendants-chart/config.phtml:65
+#: resources/views/modules/descendants-chart/config.phtml:66
 msgid "Hide the PNG export button"
 msgstr "Ẩn nút xuất PNG"
 
-#: resources/views/modules/descendants-chart/config.phtml:56
+#: resources/views/modules/descendants-chart/config.phtml:57
 msgid "Hide the SVG export button"
 msgstr "Ẩn nút xuất SVG"
 
-#: resources/views/modules/descendants-chart/form/display.phtml:28
+#: resources/views/modules/descendants-chart/form/display.phtml:29
 msgid "Hide the spouses associated with an individual"
 msgstr "Ẩn vợ/chồng liên kết với cá nhân"
 
@@ -171,7 +171,7 @@ msgstr "Ẩn vợ/chồng liên kết với cá nhân"
 msgid "Individual"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/details.phtml:46
+#: resources/views/modules/descendants-chart/form/details.phtml:47
 msgid ""
 "Inserts the GEDCOM NICK value in quotes between the given names and the "
 "surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees behavior "
@@ -185,7 +185,7 @@ msgstr ""
 msgid "Married name only"
 msgstr "Chỉ tên sau khi kết hôn"
 
-#: resources/views/modules/descendants-chart/config.phtml:91
+#: resources/views/modules/descendants-chart/config.phtml:92
 msgid "Married names"
 msgstr "Tên sau khi kết hôn"
 
@@ -193,7 +193,7 @@ msgstr "Tên sau khi kết hôn"
 msgid "Maternal line (mother to child)"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/config.phtml:26
+#: resources/views/modules/descendants-chart/config.phtml:27
 msgid "Modules"
 msgstr ""
 
@@ -209,7 +209,7 @@ msgstr "Di chuyển biểu đồ"
 msgid "Move the view with two fingers"
 msgstr "Di chuyển tầm nhìn bằng hai ngón tay"
 
-#: resources/views/modules/descendants-chart/config.phtml:74
+#: resources/views/modules/descendants-chart/config.phtml:75
 msgid "Name abbreviation when space is tight"
 msgstr "Viết tắt tên khi không đủ chỗ"
 
@@ -217,7 +217,7 @@ msgstr "Viết tắt tên khi không đủ chỗ"
 msgid "No details are available for this person."
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/behavior.phtml:28
+#: resources/views/modules/descendants-chart/form/behavior.phtml:29
 msgid "Open individual in new browser window/tab"
 msgstr "Mở cá nhân trong cửa sổ/tab trình duyệt mới"
 
@@ -225,7 +225,7 @@ msgstr "Mở cá nhân trong cửa sổ/tab trình duyệt mới"
 msgid "Open individual page"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/behavior.phtml:34
+#: resources/views/modules/descendants-chart/form/behavior.phtml:35
 msgid ""
 "Open the current individual's detail page in a new browser window/tab when "
 "it's left-clicked, otherwise the current window/tab is used."
@@ -244,7 +244,7 @@ msgstr ""
 msgid "Paternal line (father to son)"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/center-button.phtml:18
+#: resources/views/modules/components/buttonbar.phtml:25
 msgid "Re center"
 msgstr "Chỉnh biểu đồ về giữa màn hình"
 
@@ -252,7 +252,7 @@ msgstr "Chỉnh biểu đồ về giữa màn hình"
 msgid "Select a person in the chart to see the details here."
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/details.phtml:59
+#: resources/views/modules/descendants-chart/form/details.phtml:60
 msgid ""
 "Selecting a person shows the birth, the death with places and the facts that "
 "the tree names for the chart box (\"Other facts to show in charts\") in a "
@@ -260,7 +260,7 @@ msgid ""
 "of opening the chart for them, and the panel offers both actions."
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/details.phtml:28
+#: resources/views/modules/descendants-chart/form/details.phtml:29
 msgid "Show alternative name of individual"
 msgstr "Hiển thị tên thay thế của cá nhân"
 
@@ -270,7 +270,7 @@ msgid ""
 "generation"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/details.phtml:53
+#: resources/views/modules/descendants-chart/form/details.phtml:54
 msgid "Show details panel"
 msgstr ""
 
@@ -282,7 +282,7 @@ msgstr "Hiển thị trợ giúp"
 msgid "Show more options"
 msgstr "Hiển thị thêm tùy chọn"
 
-#: resources/views/modules/descendants-chart/form/details.phtml:40
+#: resources/views/modules/descendants-chart/form/details.phtml:41
 msgid "Show nicknames in display names"
 msgstr "Hiển thị biệt danh trong tên hiển thị"
 
@@ -298,7 +298,7 @@ msgstr "Chuyển giữa toàn màn hình và xem bình thường"
 msgid "Tab key"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/display.phtml:47
+#: resources/views/modules/descendants-chart/form/display.phtml:48
 msgid ""
 "The paternal line follows a father to his sons only, which is the line of "
 "inheritance of the Y chromosome. The maternal line follows a mother to all "
@@ -316,7 +316,7 @@ msgstr ""
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Sử dụng Ctrl + cuộn để phóng to chế độ xem"
 
-#: resources/views/modules/descendants-chart/config.phtml:102
+#: resources/views/modules/descendants-chart/config.phtml:103
 msgid ""
 "Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
 "shown — replacing the birth name, appended in brackets after the birth name, "
@@ -332,7 +332,7 @@ msgstr ""
 msgid "Zoom in/out"
 msgstr "Phóng to/Thu nhỏ"
 
-#: resources/views/modules/descendants-chart/config.phtml:117
+#: resources/views/modules/descendants-chart/config.phtml:118
 msgid "cancel"
 msgstr ""
 
@@ -355,7 +355,7 @@ msgctxt "webtrees-descendants-chart"
 msgid "right"
 msgstr "Từ phải sang trái"
 
-#: resources/views/modules/descendants-chart/config.phtml:112
+#: resources/views/modules/descendants-chart/config.phtml:113
 msgid "save"
 msgstr ""
 

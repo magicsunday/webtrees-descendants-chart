@@ -42,7 +42,7 @@ msgstr "Диаграмма потомков в виде дерева."
 msgid "Automatic (based on tree's surname tradition)"
 msgstr "Автоматически (по традиции фамилий дерева)"
 
-#: resources/views/modules/descendants-chart/form/behavior.phtml:23
+#: resources/views/modules/descendants-chart/form/behavior.phtml:24
 msgid "Behavior"
 msgstr "Поведение"
 
@@ -75,11 +75,11 @@ msgstr "Нажмите на персону"
 msgid "Click or Enter on a person"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/config.phtml:26
+#: resources/views/modules/descendants-chart/config.phtml:27
 msgid "Control panel"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/config.phtml:85
+#: resources/views/modules/descendants-chart/config.phtml:86
 msgid ""
 "Controls which name part shrinks first when a box is too narrow for the full "
 "name. \"Automatic\" uses the tree's surname tradition (Icelandic abbreviates "
@@ -98,7 +98,7 @@ msgctxt "webtrees-descendants-chart"
 msgid "Deceased"
 msgstr "Умерший"
 
-#: resources/views/modules/descendants-chart/form/display.phtml:36
+#: resources/views/modules/descendants-chart/form/display.phtml:37
 msgid "Descendant line"
 msgstr ""
 
@@ -111,7 +111,7 @@ msgstr "Потомки (новое)"
 msgid "Descendants chart of %s"
 msgstr "Диаграмма потомков у %s"
 
-#: resources/views/modules/descendants-chart/form/details.phtml:23
+#: resources/views/modules/descendants-chart/form/details.phtml:24
 msgid "Details"
 msgstr ""
 
@@ -124,26 +124,26 @@ msgstr ""
 msgid "Died: %s"
 msgstr "Смерть: %s"
 
-#: resources/views/modules/descendants-chart/form/display.phtml:23
+#: resources/views/modules/descendants-chart/form/display.phtml:24
 msgid "Display"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/details.phtml:34
+#: resources/views/modules/descendants-chart/form/details.phtml:35
 msgid ""
 "Displays a person's alternate name, if available. This simultaneously "
 "enlarges the individuals' respective boxes to create the necessary space for "
 "the display."
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/png-export-button.phtml:18
+#: resources/views/modules/components/buttonbar.phtml:30
 msgid "Export as PNG"
 msgstr "Экспорт в PNG"
 
-#: resources/views/modules/components/buttonbar/svg-export-button.phtml:18
+#: resources/views/modules/components/buttonbar.phtml:33
 msgid "Export as SVG"
 msgstr "Экспорт в SVG"
 
-#: resources/views/modules/descendants-chart/config.phtml:51
+#: resources/views/modules/descendants-chart/config.phtml:52
 msgctxt "webtrees-descendants-chart"
 msgid "General"
 msgstr ""
@@ -156,15 +156,15 @@ msgstr ""
 msgid "Hide more options"
 msgstr "Скрыть параметры"
 
-#: resources/views/modules/descendants-chart/config.phtml:65
+#: resources/views/modules/descendants-chart/config.phtml:66
 msgid "Hide the PNG export button"
 msgstr "Скрыть кнопку экспорта в PNG"
 
-#: resources/views/modules/descendants-chart/config.phtml:56
+#: resources/views/modules/descendants-chart/config.phtml:57
 msgid "Hide the SVG export button"
 msgstr "Скрыть кнопку экспорта в SVG"
 
-#: resources/views/modules/descendants-chart/form/display.phtml:28
+#: resources/views/modules/descendants-chart/form/display.phtml:29
 msgid "Hide the spouses associated with an individual"
 msgstr "Скрыть супругов персоны"
 
@@ -172,7 +172,7 @@ msgstr "Скрыть супругов персоны"
 msgid "Individual"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/details.phtml:46
+#: resources/views/modules/descendants-chart/form/details.phtml:47
 msgid ""
 "Inserts the GEDCOM NICK value in quotes between the given names and the "
 "surname (e.g. Martin \"Chalky\" White). Mirrors the legacy webtrees behavior "
@@ -186,7 +186,7 @@ msgstr ""
 msgid "Married name only"
 msgstr "Только фамилия в браке"
 
-#: resources/views/modules/descendants-chart/config.phtml:91
+#: resources/views/modules/descendants-chart/config.phtml:92
 msgid "Married names"
 msgstr "Фамилии в браке"
 
@@ -194,7 +194,7 @@ msgstr "Фамилии в браке"
 msgid "Maternal line (mother to child)"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/config.phtml:26
+#: resources/views/modules/descendants-chart/config.phtml:27
 msgid "Modules"
 msgstr ""
 
@@ -210,7 +210,7 @@ msgstr "Переместить диаграмму"
 msgid "Move the view with two fingers"
 msgstr "Измените вид двумя пальцами"
 
-#: resources/views/modules/descendants-chart/config.phtml:74
+#: resources/views/modules/descendants-chart/config.phtml:75
 msgid "Name abbreviation when space is tight"
 msgstr "Сокращение имени при недостатке места"
 
@@ -218,7 +218,7 @@ msgstr "Сокращение имени при недостатке места"
 msgid "No details are available for this person."
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/behavior.phtml:28
+#: resources/views/modules/descendants-chart/form/behavior.phtml:29
 msgid "Open individual in new browser window/tab"
 msgstr "Открывать персону в новом окне/вкладке браузера"
 
@@ -226,7 +226,7 @@ msgstr "Открывать персону в новом окне/вкладке 
 msgid "Open individual page"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/behavior.phtml:34
+#: resources/views/modules/descendants-chart/form/behavior.phtml:35
 msgid ""
 "Open the current individual's detail page in a new browser window/tab when "
 "it's left-clicked, otherwise the current window/tab is used."
@@ -245,7 +245,7 @@ msgstr ""
 msgid "Paternal line (father to son)"
 msgstr ""
 
-#: resources/views/modules/components/buttonbar/center-button.phtml:18
+#: resources/views/modules/components/buttonbar.phtml:25
 msgid "Re center"
 msgstr "Центрировать"
 
@@ -253,7 +253,7 @@ msgstr "Центрировать"
 msgid "Select a person in the chart to see the details here."
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/details.phtml:59
+#: resources/views/modules/descendants-chart/form/details.phtml:60
 msgid ""
 "Selecting a person shows the birth, the death with places and the facts that "
 "the tree names for the chart box (\"Other facts to show in charts\") in a "
@@ -261,7 +261,7 @@ msgid ""
 "of opening the chart for them, and the panel offers both actions."
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/details.phtml:28
+#: resources/views/modules/descendants-chart/form/details.phtml:29
 msgid "Show alternative name of individual"
 msgstr "Показывать альтернативное имя персоны"
 
@@ -271,7 +271,7 @@ msgid ""
 "generation"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/details.phtml:53
+#: resources/views/modules/descendants-chart/form/details.phtml:54
 msgid "Show details panel"
 msgstr ""
 
@@ -283,7 +283,7 @@ msgstr "Показать справку"
 msgid "Show more options"
 msgstr "Показать больше параметров"
 
-#: resources/views/modules/descendants-chart/form/details.phtml:40
+#: resources/views/modules/descendants-chart/form/details.phtml:41
 msgid "Show nicknames in display names"
 msgstr "Показывать прозвища в отображаемых именах"
 
@@ -299,7 +299,7 @@ msgstr "Переключение между полноэкранным и обы
 msgid "Tab key"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/form/display.phtml:47
+#: resources/views/modules/descendants-chart/form/display.phtml:48
 msgid ""
 "The paternal line follows a father to his sons only, which is the line of "
 "inheritance of the Y chromosome. The maternal line follows a mother to all "
@@ -317,7 +317,7 @@ msgstr ""
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Используйте Ctrl + scroll, чтобы  увеличить"
 
-#: resources/views/modules/descendants-chart/config.phtml:102
+#: resources/views/modules/descendants-chart/config.phtml:103
 msgid ""
 "Whether the married name (from a \"MARRIED\" or \"_MARNM\" name entry) is "
 "shown — replacing the birth name, appended in brackets after the birth name, "
@@ -333,7 +333,7 @@ msgstr ""
 msgid "Zoom in/out"
 msgstr "Увеличить/Уменьшить"
 
-#: resources/views/modules/descendants-chart/config.phtml:117
+#: resources/views/modules/descendants-chart/config.phtml:118
 msgid "cancel"
 msgstr ""
 
@@ -356,7 +356,7 @@ msgctxt "webtrees-descendants-chart"
 msgid "right"
 msgstr ""
 
-#: resources/views/modules/descendants-chart/config.phtml:112
+#: resources/views/modules/descendants-chart/config.phtml:113
 msgid "save"
 msgstr ""
 
