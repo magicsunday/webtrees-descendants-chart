@@ -5,7 +5,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/magicsunday/webtrees-descendants-"
 "chart/issues\n"
 "POT-Creation-Date: 1970-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-10-29 06:23+0100\n"
+"PO-Revision-Date: 2026-11-04 06:33+0100\n"
 "Last-Translator: TheDutchJewel <thedutchjewel@gmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -33,7 +33,7 @@ msgstr "Achternamen eerst afkorten"
 msgid "All descendants"
 msgstr "Alle afstammelingen"
 
-#: src/Module.php:133
+#: src/Module.php:134
 msgid "An overview of an individual’s descendants."
 msgstr "Een overzicht van de afstammelingen van een persoon."
 
@@ -53,7 +53,7 @@ msgstr "Alleen geboortenaam"
 msgid "Birth name with married name in brackets"
 msgstr "Geboortenaam met huwelijksnaam tussen haakjes"
 
-#: src/Facade/DataFacade.php:375
+#: src/Facade/DataFacade.php:328
 #, php-format
 msgid "Born: %s"
 msgstr "Geboren: %s"
@@ -72,7 +72,7 @@ msgstr "Klik op een persoon"
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:24
 msgid "Click or Enter on a person"
-msgstr ""
+msgstr "Klik of druk op Enter op een persoon"
 
 #: resources/views/modules/descendants-chart/config.phtml:26
 msgid "Control panel"
@@ -92,7 +92,7 @@ msgstr ""
 msgid "Ctrl + scroll"
 msgstr "Ctrl + scrollen"
 
-#: src/Facade/DataFacade.php:377
+#: src/Facade/DataFacade.php:330
 msgctxt "webtrees-descendants-chart"
 msgid "Deceased"
 msgstr "Overleden"
@@ -101,11 +101,11 @@ msgstr "Overleden"
 msgid "Descendant line"
 msgstr "Afstammelingenlijn"
 
-#: src/Module.php:122 src/Module.php:234
+#: src/Module.php:123 src/Module.php:236
 msgid "Descendants chart"
 msgstr "Afstammelingendiagram"
 
-#: src/Module.php:231 src/Module/ChartTrait.php:43
+#: src/Module.php:233 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Afstammelingen van %s"
@@ -116,9 +116,9 @@ msgstr ""
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Details panel"
-msgstr ""
+msgstr "Detailspaneel"
 
-#: src/Facade/DataFacade.php:376
+#: src/Facade/DataFacade.php:329
 #, php-format
 msgid "Died: %s"
 msgstr "Overleden: %s"
@@ -203,13 +203,13 @@ msgstr ""
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:23
 msgid "Move between the persons"
-msgstr ""
+msgstr "Tussen de personen wisselen"
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:27
 msgid "Move the chart"
 msgstr "Diagram verplaatsen"
 
-#: src/Module.php:253
+#: src/Module.php:255
 msgid "Move the view with two fingers"
 msgstr "Verplaats de weergave met twee vingers"
 
@@ -240,7 +240,7 @@ msgstr ""
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:25
 msgid "Open the individual page or center the chart on the person"
-msgstr ""
+msgstr "Open de persoonspagina of centreer het diagram op de persoon"
 
 #: resources/views/modules/descendants-chart/form/orientation.phtml:23
 msgctxt "webtrees-descendants-chart"
@@ -281,6 +281,8 @@ msgid ""
 "Show chart for that person, or open the page of a person of the first "
 "generation"
 msgstr ""
+"Toon diagram voor die persoon of open de pagina van een persoon uit de "
+"eerste generatie"
 
 #: resources/views/modules/descendants-chart/form/details.phtml:53
 msgid "Show details panel"
@@ -300,7 +302,7 @@ msgstr "Toon bijnamen in weergavenamen"
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:24
 msgid "Show the details of the person in the panel"
-msgstr ""
+msgstr "Toon de details van de persoon in het paneel"
 
 #: resources/views/modules/components/buttonbar/fullscreen-button.phtml:18
 msgid "Switch between full screen mode and normal view"
@@ -308,7 +310,7 @@ msgstr "Schakelen tussen volledig scherm en normale weergave"
 
 #: resources/views/modules/components/buttonbar/help-button.phtml:23
 msgid "Tab key"
-msgstr ""
+msgstr "Tab-toets"
 
 #: resources/views/modules/descendants-chart/form/display.phtml:47
 msgid ""
@@ -330,7 +332,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:252
+#: src/Module.php:254
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Gebruik Ctrl + scroll om in te zoomen op de weergave"
 
