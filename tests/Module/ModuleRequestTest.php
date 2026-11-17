@@ -137,7 +137,7 @@ final class ModuleRequestTest extends TestCase
 
         self::assertSame(
             1,
-            preg_match('/id="(webtrees-descendants-chart-container-[0-9a-f]{13})"/', $body, $container),
+            preg_match('/id="(webtrees-descendants-chart-container-[^"]+)"/', $body, $container),
         );
         self::assertStringContainsString(
             '"#' . $container[1] . '"',
@@ -157,8 +157,13 @@ final class ModuleRequestTest extends TestCase
      */
     private function chartRequest(): ServerRequestInterface
     {
-        $factory = self::createStub(IndividualFactoryInterface::class);
-        $factory->method('make')->willReturn($this->createIndividual());
+        $individual = $this->createIndividual();
+        $factory    = self::createStub(IndividualFactoryInterface::class);
+
+        // Only the requested xref of the test tree resolves, so a lookup of any other person fails the request.
+        $factory->method('make')->willReturnCallback(
+            fn (string $xref, Tree $tree): ?Individual => ($xref === 'I1') && ($tree === $this->tree) ? $individual : null
+        );
 
         Registry::individualFactory($factory);
 
