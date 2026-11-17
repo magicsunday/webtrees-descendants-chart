@@ -190,7 +190,10 @@ final class DataFacadePrivacyTest extends TestCase
         // referenced when its file is there.
         $this->indexDirectory = sys_get_temp_dir() . '/descendants-chart-privacy-' . uniqid('', true) . '/';
 
-        if (!mkdir($this->indexDirectory . 'media', 0o777, true) && !is_dir($this->indexDirectory . 'media')) {
+        if (
+            !mkdir($this->indexDirectory . 'media', 0o777, true)
+            && !is_dir($this->indexDirectory . 'media')
+        ) {
             throw new RuntimeException('The media directory could not be created.');
         }
 

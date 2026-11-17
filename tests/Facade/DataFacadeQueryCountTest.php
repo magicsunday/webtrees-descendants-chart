@@ -1011,7 +1011,10 @@ final class DataFacadeQueryCountTest extends TestCase
     /**
      * Collects the images of the members of a couple and of the couples below it.
      *
-     * @param array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>} $couple The couple structure
+     * @param array{
+     *     members: NodeData[],
+     *     memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>
+     * } $couple The couple structure
      *
      * @return array<string, array{thumbnail: string, silhouette: string}>
      */
