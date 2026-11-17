@@ -428,7 +428,10 @@ final class DataFacadeQueryCountTest extends TestCase
     }
 
     /**
-     * Lists the viewers with the expected thumbnail of the listed people of the privacy tree.
+     * Lists the viewers with the expected thumbnail of the people of the chart of the privacy tree. The
+     * chart shows I1, the father, and his children. I3 is a dead son, I4 a living son, I5 a dead son
+     * with a restriction notice and I7 a dead son who shares a media object with the person I6, who
+     * has a restriction notice.
      *
      * @return array<string, array{string, array<string, bool>}>
      */
