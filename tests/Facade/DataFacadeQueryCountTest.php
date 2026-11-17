@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace MagicSunday\Webtrees\DescendantsChart\Test\Facade;
 
-use Fig\Http\Message\RequestMethodInterface;
 use Fisharebest\Webtrees\Auth;
 use Fisharebest\Webtrees\Contracts\UserInterface;
 use Fisharebest\Webtrees\DB;
@@ -23,12 +22,14 @@ use Fisharebest\Webtrees\Services\UserService;
 use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Site;
 use Fisharebest\Webtrees\Tree;
-use GuzzleHttp\Psr7\ServerRequest;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\DescendantsChart\Module;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\MediaDirectory;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\RealTreeChart;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\RealTreeImporter;
 use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
 use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
 use MagicSunday\Webtrees\ModuleBase\Support\MediaPreloader;
@@ -44,22 +45,13 @@ use function array_keys;
 use function array_unique;
 use function array_values;
 use function count;
-use function file_put_contents;
-use function glob;
-use function implode;
 use function intdiv;
-use function is_dir;
 use function is_scalar;
 use function ksort;
 use function max;
-use function mkdir;
 use function preg_match;
-use function rmdir;
 use function sort;
 use function str_contains;
-use function sys_get_temp_dir;
-use function uniqid;
-use function unlink;
 
 /**
  * Counts the media statements of one chart request over an imported descendant tree and
@@ -77,29 +69,19 @@ use function unlink;
 final class DataFacadeQueryCountTest extends TestCase
 {
     /**
-     * The number of generations of the imported descendant tree.
+     * The chart of the module on the real schema.
      */
-    private const int DEPTH = 9;
+    private RealTreeChart $chart;
 
     /**
-     * The number added to the number of a family to get the number of its partner.
+     * The media directory of the imported trees.
      */
-    private const int PARTNER_OFFSET = 100000;
+    private MediaDirectory $mediaDirectory;
 
     /**
-     * The number added to the number of a family to get the number of the father of its partner.
+     * The importer of the trees that the tests run on.
      */
-    private const int PARTNER_FATHER_OFFSET = 200000;
-
-    /**
-     * The module of the chart.
-     */
-    private Module $module;
-
-    /**
-     * The index directory of the media files, or an empty string while there is none.
-     */
-    private string $indexDirectory = '';
+    private RealTreeImporter $importer;
 
     /**
      * Boots webtrees and registers the module of the chart with its route.
@@ -108,13 +90,9 @@ final class DataFacadeQueryCountTest extends TestCase
     {
         parent::setUp();
 
-        RealTreeFixture::boot();
-
-        DB::table('module')->insert(['module_name' => 'webtrees-descendants-chart']);
-
-        $this->module = new Module(self::createStub(ChartService::class), new DataFacade());
-        $this->module->setName('webtrees-descendants-chart');
-        $this->module->boot();
+        $this->chart          = RealTreeChart::boot(self::createStub(ChartService::class));
+        $this->mediaDirectory = new MediaDirectory();
+        $this->importer       = new RealTreeImporter($this->mediaDirectory);
     }
 
     /**
@@ -127,15 +105,16 @@ final class DataFacadeQueryCountTest extends TestCase
         Site::$preferences = [];
         Registry::cache(new CacheFactory());
 
-        $this->removeMediaFiles();
+        $this->mediaDirectory->remove();
         RealTreeFixture::restoreMinimalDatabase();
 
         parent::tearDown();
     }
 
     /**
-     * Compares the statements of a request with and without highlight images against a bound
-     * that follows the number of generations.
+     * Pins the statements that the highlight images add to one request. The administrator looks up
+     * the media objects and their pending changes for each chunk of a generation. A visitor reads
+     * the links of the media objects and the records that the links point to as well.
      *
      * @param bool $visitor     Whether a visitor requests the chart and not the administrator
      * @param bool $hideSpouses Whether the chart hides the partners
@@ -144,39 +123,37 @@ final class DataFacadeQueryCountTest extends TestCase
     #[DataProvider('viewersAndSpouses')]
     public function mediaStatementsGrowWithTheGenerationsAndNotWithThePeople(bool $visitor, bool $hideSpouses): void
     {
-        $tree = $this->importDescendants();
+        $tree = $this->importer->descendants();
 
         if ($visitor) {
             Auth::logout();
         }
 
-        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '');
+        // The first request of a run sends a few statements that later requests do not, so one request
+        // goes unmeasured to keep the counts comparable.
+        $this->mediaStatements($tree, RealTreeImporter::DEPTH, $hideSpouses);
 
-        // A warm-up request that is not measured.
-        $this->statements($tree, $hideSpouses);
-        $without = count($this->statements($tree, $hideSpouses));
+        $extra = $this->mediaStatements($tree, RealTreeImporter::DEPTH, $hideSpouses);
+        $fewer = $this->mediaStatements($tree, RealTreeImporter::DEPTH - 1, $hideSpouses);
 
-        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
-        $with = count($this->statements($tree, $hideSpouses));
+        // The administrator pays for the media objects and their pending changes, a visitor sees no
+        // pending changes but pays for the media objects, their links and the people and families
+        // that the links point to.
+        $statementsPerChunk = $visitor ? 4 : 2;
 
-        // The budget grows with the chunks of each generation, partners included while they are shown.
-        $budget = 0;
+        self::assertSame($statementsPerChunk * $this->chunks(RealTreeImporter::DEPTH, $hideSpouses), $extra['total']);
+        self::assertSame($statementsPerChunk * $this->chunks(RealTreeImporter::DEPTH - 1, $hideSpouses), $fewer['total']);
 
-        for ($generation = 1; $generation <= self::DEPTH; ++$generation) {
-            $width = 2 ** ($generation - 1);
+        // One more generation adds the statements of its own chunks and nothing else.
+        self::assertSame(
+            $statementsPerChunk * $this->chunksOfGeneration(RealTreeImporter::DEPTH, $hideSpouses),
+            $extra['total'] - $fewer['total'],
+        );
 
-            if (
-                !$hideSpouses
-                && ($generation < self::DEPTH)
-            ) {
-                $width *= 2;
-            }
-
-            $budget += 5 * intdiv($width + MediaPreloader::CHUNK_SIZE - 1, MediaPreloader::CHUNK_SIZE);
-        }
-
-        self::assertGreaterThan(0, $with - $without, 'The media of the chart are looked up.');
-        self::assertLessThanOrEqual($budget, $with - $without);
+        // The pending changes are looked up for the administrator only.
+        self::assertSame($visitor ? 0 : $this->chunks(RealTreeImporter::DEPTH, $hideSpouses), $extra['changes']);
+        self::assertSame($visitor ? 0 : $this->chunks(RealTreeImporter::DEPTH - 1, $hideSpouses), $fewer['changes']);
+        self::assertLessThan(2 ** RealTreeImporter::DEPTH, $extra['total']);
     }
 
     /**
@@ -188,12 +165,12 @@ final class DataFacadeQueryCountTest extends TestCase
     #[DataProvider('viewers')]
     public function noMediaStatementBindsAWholeGeneration(bool $visitor): void
     {
-        $tree = $this->importDescendants();
+        $tree = $this->importer->descendants();
 
         // A generation of the tree exceeds the chunk size.
         $families = [];
 
-        for ($family = 2 ** (self::DEPTH - 2); $family < (2 ** (self::DEPTH - 1)); ++$family) {
+        for ($family = 2 ** (RealTreeImporter::DEPTH - 2); $family < (2 ** (RealTreeImporter::DEPTH - 1)); ++$family) {
             $families[] = 'F' . $family;
         }
 
@@ -235,7 +212,7 @@ final class DataFacadeQueryCountTest extends TestCase
     #[DataProvider('viewers')]
     public function peopleWithoutMediaLinesCostNoStatement(bool $visitor): void
     {
-        $tree = $this->importDescendants(false, true);
+        $tree = $this->importer->descendants(false, true);
 
         if ($visitor) {
             Auth::logout();
@@ -263,7 +240,7 @@ final class DataFacadeQueryCountTest extends TestCase
     #[DataProvider('viewers')]
     public function theImagesOfTheChartMatchTheHighlightImageOfEveryPersonOfTheChart(bool $visitor): void
     {
-        $tree = $this->importDescendants();
+        $tree = $this->importer->descendants();
 
         if ($visitor) {
             Auth::logout();
@@ -292,7 +269,7 @@ final class DataFacadeQueryCountTest extends TestCase
     #[DataProvider('privacyViewers')]
     public function mediaObjectsOfHiddenPeopleStayHidden(string $viewer, array $expected): void
     {
-        $tree = $this->importPrivacyTree();
+        $tree = $this->importer->privacy();
 
         if ($viewer === 'visitor') {
             Auth::logout();
@@ -330,7 +307,7 @@ final class DataFacadeQueryCountTest extends TestCase
     #[DataProvider('spouseModes')]
     public function theMediaOfTheShownGenerationsAreLoadedAndNothingBeyond(bool $hideSpouses): void
     {
-        $tree = $this->importDescendants();
+        $tree = $this->importer->descendants();
 
         $expected = [];
 
@@ -339,7 +316,7 @@ final class DataFacadeQueryCountTest extends TestCase
             $expected[] = 'M' . $person;
 
             if (!$hideSpouses) {
-                $expected[] = 'M' . (self::PARTNER_OFFSET + $person);
+                $expected[] = 'M' . (RealTreeImporter::PARTNER_OFFSET + $person);
             }
         }
 
@@ -363,7 +340,7 @@ final class DataFacadeQueryCountTest extends TestCase
     #[DataProvider('descendantLines')]
     public function theDescendantLineDecidesWhichChildrenAreLoaded(string $line, string $root, array $expected): void
     {
-        $tree = $this->importLineage();
+        $tree = $this->importer->lineage();
 
         sort($expected);
 
@@ -429,7 +406,10 @@ final class DataFacadeQueryCountTest extends TestCase
     }
 
     /**
-     * Lists the viewers with the expected thumbnail of the listed people of the privacy tree.
+     * Lists the viewers with the expected thumbnail of the people of the chart of the privacy tree. The
+     * chart shows I1, the father, and his children. I3 is a dead son, I4 a living son, I5 a dead son
+     * with a restriction notice and I7 a dead son who shares a media object with the person I6, who
+     * has a restriction notice.
      *
      * @return array<string, array{string, array<string, bool>}>
      */
@@ -440,207 +420,6 @@ final class DataFacadeQueryCountTest extends TestCase
             'visitor'       => ['visitor', ['I1' => true, 'I3' => true, 'I7' => false, 'I4' => false, 'I5' => false]],
             'member'        => ['member', ['I1' => true, 'I3' => true, 'I7' => false, 'I4' => true, 'I5' => false]],
         ];
-    }
-
-    /**
-     * Imports the descendant tree with partners and media objects, and optionally with partners
-     * that have no dates.
-     *
-     * @param bool $withMedia                Whether the people have media lines
-     * @param bool $withPartnersWithoutDates Whether the partners of the first three families have no dates and a parent family
-     */
-    private function importDescendants(bool $withMedia = true, bool $withPartnersWithoutDates = false): Tree
-    {
-        $people   = (2 ** self::DEPTH) - 1;
-        $families = (2 ** (self::DEPTH - 1)) - 1;
-
-        $lines = ['0 HEAD', '1 CHAR UTF-8'];
-
-        for ($person = 1; $person <= $people; ++$person) {
-            $lines = [...$lines, ...$this->personLines('I' . $person, 'M', $person, $withMedia)];
-
-            if ($person >= 2) {
-                $lines[] = '1 FAMC @F' . intdiv($person, 2) . '@';
-            }
-
-            if ($person <= $families) {
-                $lines[] = '1 FAMS @F' . $person . '@';
-            }
-        }
-
-        for ($family = 1; $family <= $families; ++$family) {
-            $partner = self::PARTNER_OFFSET + $family;
-
-            if (
-                $withPartnersWithoutDates
-                && ($family <= 3)
-            ) {
-                $lines = [
-                    ...$lines,
-                    '0 @I' . $partner . '@ INDI',
-                    '1 NAME Undated' . $family . ' /Partner/',
-                    '1 SEX F',
-                    '1 FAMC @FP' . $family . '@',
-                    '1 FAMS @F' . $family . '@',
-                ];
-
-                continue;
-            }
-
-            $lines = [...$lines, ...$this->personLines('I' . $partner, 'F', $partner, $withMedia), '1 FAMS @F' . $family . '@'];
-        }
-
-        for ($family = 1; $family <= $families; ++$family) {
-            $lines[] = '0 @F' . $family . '@ FAM';
-            $lines[] = '1 HUSB @I' . $family . '@';
-            $lines[] = '1 WIFE @I' . (self::PARTNER_OFFSET + $family) . '@';
-            $lines[] = '1 CHIL @I' . (2 * $family) . '@';
-            $lines[] = '1 CHIL @I' . ((2 * $family) + 1) . '@';
-        }
-
-        if ($withPartnersWithoutDates) {
-            for ($family = 1; $family <= 3; ++$family) {
-                $father = self::PARTNER_FATHER_OFFSET + $family;
-                $lines  = [
-                    ...$lines,
-                    ...$this->personLines('I' . $father, 'M', $father, false),
-                    '0 @FP' . $family . '@ FAM',
-                    '1 HUSB @I' . $father . '@',
-                    '1 CHIL @I' . (self::PARTNER_OFFSET + $family) . '@',
-                ];
-            }
-        }
-
-        $numbers = [];
-
-        for ($person = 1; $person <= $people; ++$person) {
-            $numbers[] = $person;
-        }
-
-        for ($family = 1; $family <= $families; ++$family) {
-            $numbers[] = self::PARTNER_OFFSET + $family;
-        }
-
-        $lines = [...$lines, ...$this->mediaRecordLines($numbers)];
-
-        $this->createMediaFiles($numbers);
-
-        $lines[] = '0 TRLR';
-
-        $tree = RealTreeFixture::importGedcom(implode("\n", $lines), 'descendants');
-
-        $tree->setPreference('HIDE_LIVE_PEOPLE', '1');
-        $tree->setPreference('SHOW_LIVING_NAMES', (string) Auth::PRIV_PRIVATE);
-        $tree->setPreference('SHOW_DEAD_PEOPLE', (string) Auth::PRIV_PRIVATE);
-        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
-
-        return $tree;
-    }
-
-    /**
-     * Returns the record lines of a person with a birth and a death date.
-     *
-     * @param string $xref      The xref of the person
-     * @param string $sex       The sex of the person
-     * @param int    $number    The number of the person
-     * @param bool   $withMedia Whether the person has a media line
-     *
-     * @return list<string>
-     */
-    private function personLines(string $xref, string $sex, int $number, bool $withMedia): array
-    {
-        $lines = [
-            '0 @' . $xref . '@ INDI',
-            '1 NAME Given' . $number . ' /Family' . ($number % 7) . '/',
-            '1 SEX ' . $sex,
-            '1 BIRT',
-            '2 DATE ' . (1500 + ($number % 400)),
-            '1 DEAT',
-            '2 DATE ' . (1950 + ($number % 40)),
-        ];
-
-        if ($withMedia) {
-            $lines[] = '1 OBJE @M' . $number . '@';
-        }
-
-        return $lines;
-    }
-
-    /**
-     * Imports a couple with four children and media objects, one of which is linked by two
-     * people.
-     */
-    private function importPrivacyTree(): Tree
-    {
-        $lines = ['0 HEAD', '1 CHAR UTF-8'];
-
-        $people = [
-            'I1' => ['M', 'M1', 'FAMS @F1@'],
-            'I2' => ['F', '', 'FAMS @F1@'],
-            'I3' => ['M', 'M3', 'FAMC @F1@'],
-            'I4' => ['M', 'M5', 'FAMC @F1@'],
-            'I5' => ['M', 'M7', 'FAMC @F1@'],
-            'I6' => ['M', 'M9', ''],
-            'I7' => ['M', 'M9', 'FAMC @F1@'],
-        ];
-
-        foreach ($people as $xref => [$sex, $media, $family]) {
-            $withoutDeath = $xref === 'I4';
-
-            $lines[] = '0 @' . $xref . '@ INDI';
-            $lines[] = '1 NAME Given' . $xref . ' /Family/';
-            $lines[] = '1 SEX ' . $sex;
-            $lines[] = '1 BIRT';
-            $lines[] = '2 DATE ' . ($withoutDeath ? '1990' : '1850');
-
-            if (!$withoutDeath) {
-                $lines[] = '1 DEAT';
-                $lines[] = '2 DATE 1920';
-            }
-
-            if (
-                ($xref === 'I5')
-                || ($xref === 'I6')
-            ) {
-                $lines[] = '1 RESN confidential';
-            }
-
-            if ($media !== '') {
-                $lines[] = '1 OBJE @' . $media . '@';
-            }
-
-            if ($family !== '') {
-                $lines[] = '1 ' . $family;
-            }
-        }
-
-        $lines = [
-            ...$lines,
-            '0 @F1@ FAM',
-            '1 HUSB @I1@',
-            '1 WIFE @I2@',
-            '1 CHIL @I3@',
-            '1 CHIL @I4@',
-            '1 CHIL @I5@',
-            '1 CHIL @I7@',
-        ];
-
-        $numbers = [1, 3, 5, 7, 9];
-
-        $lines = [...$lines, ...$this->mediaRecordLines($numbers)];
-
-        $this->createMediaFiles($numbers);
-
-        $lines[] = '0 TRLR';
-
-        $tree = RealTreeFixture::importGedcom(implode("\n", $lines), 'privacy');
-
-        $tree->setPreference('HIDE_LIVE_PEOPLE', '1');
-        $tree->setPreference('SHOW_LIVING_NAMES', (string) Auth::PRIV_PRIVATE);
-        $tree->setPreference('SHOW_DEAD_PEOPLE', (string) Auth::PRIV_PRIVATE);
-        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
-
-        return $tree;
     }
 
     /**
@@ -660,26 +439,6 @@ final class DataFacadeQueryCountTest extends TestCase
         }
 
         self::assertGreaterThan(0, $inspected);
-    }
-
-    /**
-     * Returns the record lines of the media objects with the given numbers.
-     *
-     * @param list<int> $numbers The numbers of the media objects
-     *
-     * @return list<string>
-     */
-    private function mediaRecordLines(array $numbers): array
-    {
-        $lines = [];
-
-        foreach ($numbers as $number) {
-            $lines[] = '0 @M' . $number . '@ OBJE';
-            $lines[] = '1 FILE person' . $number . '.jpg';
-            $lines[] = '2 FORM jpg';
-        }
-
-        return $lines;
     }
 
     /**
@@ -713,123 +472,6 @@ final class DataFacadeQueryCountTest extends TestCase
     }
 
     /**
-     * Imports a tree in which both sexes occur among the children. I1 (M) and I2 (F) have the
-     * children I3 (M) and I4 (F). I3 and I7 (F) have the children I5 (M) and I6 (F). I8 (M) and
-     * I4 have the children I9 (M) and I10 (F). I9 and I13 (F) have the child I11 (F), I14 (M)
-     * and I10 have the child I12 (M). Each person has a media object M plus the number.
-     */
-    private function importLineage(): Tree
-    {
-        $people = [
-            1  => ['M', null, 1],
-            2  => ['F', null, 1],
-            3  => ['M', 1, 2],
-            4  => ['F', 1, 3],
-            5  => ['M', 2, null],
-            6  => ['F', 2, null],
-            7  => ['F', null, 2],
-            8  => ['M', null, 3],
-            9  => ['M', 3, 4],
-            10 => ['F', 3, 5],
-            11 => ['F', 4, null],
-            12 => ['M', 5, null],
-            13 => ['F', null, 4],
-            14 => ['M', null, 5],
-        ];
-
-        $lines = ['0 HEAD', '1 CHAR UTF-8'];
-
-        foreach ($people as $number => [$sex, $childOf, $spouseIn]) {
-            $lines = [...$lines, ...$this->personLines('I' . $number, $sex, $number, true)];
-
-            if ($childOf !== null) {
-                $lines[] = '1 FAMC @F' . $childOf . '@';
-            }
-
-            if ($spouseIn !== null) {
-                $lines[] = '1 FAMS @F' . $spouseIn . '@';
-            }
-        }
-
-        $families = [
-            1 => ['I1', 'I2', ['I3', 'I4']],
-            2 => ['I3', 'I7', ['I5', 'I6']],
-            3 => ['I8', 'I4', ['I9', 'I10']],
-            4 => ['I9', 'I13', ['I11']],
-            5 => ['I14', 'I10', ['I12']],
-        ];
-
-        foreach ($families as $number => [$husband, $wife, $children]) {
-            $lines[] = '0 @F' . $number . '@ FAM';
-            $lines[] = '1 HUSB @' . $husband . '@';
-            $lines[] = '1 WIFE @' . $wife . '@';
-
-            foreach ($children as $child) {
-                $lines[] = '1 CHIL @' . $child . '@';
-            }
-        }
-
-        $lines = [...$lines, ...$this->mediaRecordLines(array_keys($people))];
-
-        $lines[] = '0 TRLR';
-
-        $tree = RealTreeFixture::importGedcom(implode("\n", $lines), 'lineage');
-
-        $tree->setPreference('HIDE_LIVE_PEOPLE', '1');
-        $tree->setPreference('SHOW_DEAD_PEOPLE', (string) Auth::PRIV_PRIVATE);
-        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
-
-        return $tree;
-    }
-
-    /**
-     * Creates the image files of the odd numbers in the media folder of a temporary index
-     * directory.
-     *
-     * @param list<int> $numbers The numbers of the media objects
-     */
-    private function createMediaFiles(array $numbers): void
-    {
-        $this->indexDirectory = sys_get_temp_dir() . '/descendants-chart-' . uniqid('', true) . '/';
-
-        if (
-            !mkdir($this->indexDirectory . 'media', 0o777, true)
-            && !is_dir($this->indexDirectory . 'media')
-        ) {
-            self::fail('The media directory could not be created.');
-        }
-
-        foreach ($numbers as $number) {
-            if ($number % 2 === 1) {
-                file_put_contents($this->indexDirectory . 'media/person' . $number . '.jpg', 'image');
-            }
-        }
-
-        Site::setPreference('INDEX_DIRECTORY', $this->indexDirectory);
-    }
-
-    /**
-     * Removes the media files and the directories of the test.
-     */
-    private function removeMediaFiles(): void
-    {
-        if ($this->indexDirectory === '') {
-            return;
-        }
-
-        $files = glob($this->indexDirectory . 'media/*');
-
-        foreach (($files === false) ? [] : $files as $file) {
-            unlink($file);
-        }
-
-        rmdir($this->indexDirectory . 'media');
-        rmdir($this->indexDirectory);
-
-        $this->indexDirectory = '';
-    }
-
-    /**
      * Returns the statements of one request on a cold record cache.
      *
      * @param Tree   $tree        The imported tree
@@ -844,7 +486,7 @@ final class DataFacadeQueryCountTest extends TestCase
         Tree $tree,
         bool $hideSpouses,
         string $xref = 'I1',
-        int $generations = self::DEPTH,
+        int $generations = RealTreeImporter::DEPTH,
         string $line = 'all',
     ): array {
         Registry::cache(new CacheFactory());
@@ -853,7 +495,7 @@ final class DataFacadeQueryCountTest extends TestCase
         $connection->enableQueryLog();
         $connection->flushQueryLog();
 
-        $this->structure($tree, $xref, $generations, $hideSpouses, $line);
+        $this->chart->structure($tree, $xref, $generations, $hideSpouses, $line);
 
         $log = $connection->getQueryLog();
         $connection->disableQueryLog();
@@ -877,40 +519,79 @@ final class DataFacadeQueryCountTest extends TestCase
     }
 
     /**
-     * Builds the tree structure of the chart for the current viewer.
+     * Returns the statements that the highlight images add to the request of the given depth, which are
+     * the statements beyond the same request with the highlight images switched off, and how many of
+     * them look up pending changes.
      *
-     * @param Tree   $tree        The imported tree
-     * @param string $xref        The xref of the chart subject
-     * @param int    $generations The number of generations of the chart
-     * @param bool   $hideSpouses Whether the chart hides the partners
-     * @param string $line        The descendant line of the chart
+     * @param Tree $tree        The imported tree
+     * @param int  $generations The number of generations of the chart
+     * @param bool $hideSpouses Whether the chart hides the partners
      *
-     * @return array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>}
+     * @return array{total: int, changes: int}
      */
-    private function structure(Tree $tree, string $xref, int $generations, bool $hideSpouses, string $line = 'all'): array
+    private function mediaStatements(Tree $tree, int $generations, bool $hideSpouses): array
     {
-        $individual = Registry::individualFactory()->make($xref, $tree);
-        self::assertInstanceOf(Individual::class, $individual);
+        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '');
+        $without = $this->statements($tree, $hideSpouses, 'I1', $generations);
 
-        $configuration = new Configuration(
-            (new ServerRequest(RequestMethodInterface::METHOD_GET, '/'))->withQueryParams([
-                'generations'     => (string) $generations,
-                'showDetailPanel' => '0',
-                'hideSpouses'     => $hideSpouses ? '1' : '0',
-                'descendantLine'  => $line,
-            ]),
-            $this->module,
-        );
+        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
+        $with = $this->statements($tree, $hideSpouses, 'I1', $generations);
 
-        $structure = (new DataFacade())
-            ->setModule($this->module)
-            ->setConfiguration($configuration)
-            ->setRoute(Module::ROUTE_DEFAULT)
-            ->createTreeStructure($individual);
+        return [
+            'total'   => count($with) - count($without),
+            'changes' => $this->changeStatements($with) - $this->changeStatements($without),
+        ];
+    }
 
-        self::assertIsArray($structure);
+    /**
+     * Counts the statements that read the pending changes.
+     *
+     * @param list<array{query: string, bindings: list<string>}> $statements The statements of a request
+     */
+    private function changeStatements(array $statements): int
+    {
+        return count(array_filter(
+            $statements,
+            static fn (array $statement): bool => str_contains($statement['query'], '"wt_change"'),
+        ));
+    }
 
-        return $structure;
+    /**
+     * Returns the number of chunks that the generations up to the given one are looked up in.
+     *
+     * @param int  $generations The number of generations of the chart
+     * @param bool $hideSpouses Whether the chart hides the partners
+     */
+    private function chunks(int $generations, bool $hideSpouses): int
+    {
+        $chunks = 0;
+
+        for ($generation = 1; $generation <= $generations; ++$generation) {
+            $chunks += $this->chunksOfGeneration($generation, $hideSpouses);
+        }
+
+        return $chunks;
+    }
+
+    /**
+     * Returns the number of chunks that one generation of the imported tree is looked up in. The people
+     * of a generation have partners in the tree while a later generation exists.
+     *
+     * @param int  $generation  The generation to count
+     * @param bool $hideSpouses Whether the chart hides the partners
+     */
+    private function chunksOfGeneration(int $generation, bool $hideSpouses): int
+    {
+        $width = 1 << ($generation - 1);
+
+        if (
+            !$hideSpouses
+            && ($generation < RealTreeImporter::DEPTH)
+        ) {
+            $width *= 2;
+        }
+
+        return intdiv($width + MediaPreloader::CHUNK_SIZE - 1, MediaPreloader::CHUNK_SIZE);
     }
 
     /**
@@ -926,7 +607,7 @@ final class DataFacadeQueryCountTest extends TestCase
     {
         Registry::cache(new CacheFactory());
 
-        $images = $this->collectImages($this->structure($tree, $xref, $generations, false));
+        $images = $this->collectImages($this->chart->structure($tree, $xref, $generations, false));
 
         ksort($images);
 
@@ -936,7 +617,10 @@ final class DataFacadeQueryCountTest extends TestCase
     /**
      * Collects the images of the members of a couple and of the couples below it.
      *
-     * @param array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>} $couple The couple structure
+     * @param array{
+     *     members: NodeData[],
+     *     memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>
+     * } $couple The couple structure
      *
      * @return array<string, array{thumbnail: string, silhouette: string}>
      */
@@ -985,7 +669,7 @@ final class DataFacadeQueryCountTest extends TestCase
             $individual = Registry::individualFactory()->make((string) $xref, $tree);
             self::assertInstanceOf(Individual::class, $individual);
 
-            $processor = new ImageProcessor($this->module, $individual);
+            $processor = new ImageProcessor($this->chart->module(), $individual);
 
             $images[(string) $xref] = [
                 'thumbnail'  => $processor->getHighlightImageUrl(),
