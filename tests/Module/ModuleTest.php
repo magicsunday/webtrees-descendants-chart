@@ -28,6 +28,7 @@ use MagicSunday\Webtrees\DescendantsChart\Support\ContextText;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\ModuleSettingsFixtureTrait;
 use MagicSunday\Webtrees\ModuleBase\Testing\EnglishLocaleFixture;
 use MagicSunday\Webtrees\ModuleBase\Testing\RoutingFixture;
+use MagicSunday\Webtrees\ModuleBase\View\SharedViews;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
@@ -314,6 +315,7 @@ final class ModuleTest extends TestCase
         $module = $this->createModuleWithPreferences(['default_nameAbbreviation' => 'SURNAME']);
 
         View::registerNamespace($module->name(), dirname(__DIR__, 2) . '/resources/views/');
+        SharedViews::register();
 
         $html = View::make(
             $module->name() . '::modules/descendants-chart/config',
