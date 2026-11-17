@@ -134,8 +134,9 @@ final class DataFacadeQueryCountTest extends TestCase
     }
 
     /**
-     * Compares the statements of a request with and without highlight images against a bound
-     * that follows the number of generations.
+     * Pins the statements that the highlight images add to one request. The administrator looks up
+     * the media objects and their pending changes for each chunk of a generation. A visitor reads
+     * the links of the media objects and the records that the links point to as well.
      *
      * @param bool $visitor     Whether a visitor requests the chart and not the administrator
      * @param bool $hideSpouses Whether the chart hides the partners
@@ -150,33 +151,31 @@ final class DataFacadeQueryCountTest extends TestCase
             Auth::logout();
         }
 
-        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '');
+        // The first request of a run sends a few statements that later requests do not, so one request
+        // goes unmeasured to keep the counts comparable.
+        $this->mediaStatements($tree, self::DEPTH, $hideSpouses);
 
-        // A warm-up request that is not measured.
-        $this->statements($tree, $hideSpouses);
-        $without = count($this->statements($tree, $hideSpouses));
+        $extra = $this->mediaStatements($tree, self::DEPTH, $hideSpouses);
+        $fewer = $this->mediaStatements($tree, self::DEPTH - 1, $hideSpouses);
 
-        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
-        $with = count($this->statements($tree, $hideSpouses));
+        // The administrator pays for the media objects and their pending changes, a visitor sees no
+        // pending changes but pays for the media objects, their links and the people and families
+        // that the links point to.
+        $statementsPerChunk = $visitor ? 4 : 2;
 
-        // The budget grows with the chunks of each generation, partners included while they are shown.
-        $budget = 0;
+        self::assertSame($statementsPerChunk * $this->chunks(self::DEPTH, $hideSpouses), $extra['total']);
+        self::assertSame($statementsPerChunk * $this->chunks(self::DEPTH - 1, $hideSpouses), $fewer['total']);
 
-        for ($generation = 1; $generation <= self::DEPTH; ++$generation) {
-            $width = 2 ** ($generation - 1);
+        // One more generation adds the statements of its own chunks and nothing else.
+        self::assertSame(
+            $statementsPerChunk * $this->chunksOfGeneration(self::DEPTH, $hideSpouses),
+            $extra['total'] - $fewer['total'],
+        );
 
-            if (
-                !$hideSpouses
-                && ($generation < self::DEPTH)
-            ) {
-                $width *= 2;
-            }
-
-            $budget += 5 * intdiv($width + MediaPreloader::CHUNK_SIZE - 1, MediaPreloader::CHUNK_SIZE);
-        }
-
-        self::assertGreaterThan(0, $with - $without, 'The media of the chart are looked up.');
-        self::assertLessThanOrEqual($budget, $with - $without);
+        // The pending changes are looked up for the administrator only.
+        self::assertSame($visitor ? 0 : $this->chunks(self::DEPTH, $hideSpouses), $extra['changes']);
+        self::assertSame($visitor ? 0 : $this->chunks(self::DEPTH - 1, $hideSpouses), $fewer['changes']);
+        self::assertLessThan(2 ** self::DEPTH, $extra['total']);
     }
 
     /**
@@ -874,6 +873,82 @@ final class DataFacadeQueryCountTest extends TestCase
         }
 
         return $statements;
+    }
+
+    /**
+     * Returns the statements that the highlight images add to the request of the given depth, which are
+     * the statements beyond the same request with the highlight images switched off, and how many of
+     * them look up pending changes.
+     *
+     * @param Tree $tree        The imported tree
+     * @param int  $generations The number of generations of the chart
+     * @param bool $hideSpouses Whether the chart hides the partners
+     *
+     * @return array{total: int, changes: int}
+     */
+    private function mediaStatements(Tree $tree, int $generations, bool $hideSpouses): array
+    {
+        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '');
+        $without = $this->statements($tree, $hideSpouses, 'I1', $generations);
+
+        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
+        $with = $this->statements($tree, $hideSpouses, 'I1', $generations);
+
+        return [
+            'total'   => count($with) - count($without),
+            'changes' => $this->changeStatements($with) - $this->changeStatements($without),
+        ];
+    }
+
+    /**
+     * Counts the statements that read the pending changes.
+     *
+     * @param list<array{query: string, bindings: list<string>}> $statements The statements of a request
+     */
+    private function changeStatements(array $statements): int
+    {
+        return count(array_filter(
+            $statements,
+            static fn (array $statement): bool => str_contains($statement['query'], '"wt_change"'),
+        ));
+    }
+
+    /**
+     * Returns the number of chunks that the generations up to the given one are looked up in.
+     *
+     * @param int  $generations The number of generations of the chart
+     * @param bool $hideSpouses Whether the chart hides the partners
+     */
+    private function chunks(int $generations, bool $hideSpouses): int
+    {
+        $chunks = 0;
+
+        for ($generation = 1; $generation <= $generations; ++$generation) {
+            $chunks += $this->chunksOfGeneration($generation, $hideSpouses);
+        }
+
+        return $chunks;
+    }
+
+    /**
+     * Returns the number of chunks that one generation of the imported tree is looked up in. The people
+     * of a generation have partners in the tree while a later generation exists.
+     *
+     * @param int  $generation  The generation to count
+     * @param bool $hideSpouses Whether the chart hides the partners
+     */
+    private function chunksOfGeneration(int $generation, bool $hideSpouses): int
+    {
+        $width = 1 << ($generation - 1);
+
+        if (
+            !$hideSpouses
+            && ($generation < self::DEPTH)
+        ) {
+            $width *= 2;
+        }
+
+        return intdiv($width + MediaPreloader::CHUNK_SIZE - 1, MediaPreloader::CHUNK_SIZE);
     }
 
     /**
