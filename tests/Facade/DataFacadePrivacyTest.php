@@ -11,10 +11,8 @@ declare(strict_types=1);
 
 namespace MagicSunday\Webtrees\DescendantsChart\Test\Facade;
 
-use Fig\Http\Message\RequestMethodInterface;
 use Fisharebest\Webtrees\Auth;
 use Fisharebest\Webtrees\Contracts\UserInterface;
-use Fisharebest\Webtrees\DB;
 use Fisharebest\Webtrees\Factories\CacheFactory;
 use Fisharebest\Webtrees\Individual;
 use Fisharebest\Webtrees\Registry;
@@ -23,12 +21,13 @@ use Fisharebest\Webtrees\Services\UserService;
 use Fisharebest\Webtrees\Session;
 use Fisharebest\Webtrees\Site;
 use Fisharebest\Webtrees\Tree;
-use GuzzleHttp\Psr7\ServerRequest;
 use MagicSunday\Webtrees\DescendantsChart\Configuration;
 use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\DescendantsChart\Module;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\MediaDirectory;
+use MagicSunday\Webtrees\DescendantsChart\Test\Support\RealTreeChart;
 use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
 use MagicSunday\Webtrees\ModuleBase\Testing\PayloadToken;
 use MagicSunday\Webtrees\ModuleBase\Testing\RealTreeFixture;
@@ -36,18 +35,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 
-use function file_put_contents;
 use function implode;
-use function is_dir;
 use function json_encode;
-use function mkdir;
-use function rmdir;
-use function strlen;
-use function sys_get_temp_dir;
-use function uniqid;
-use function unlink;
 
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_UNICODE;
@@ -166,15 +156,14 @@ final class DataFacadePrivacyTest extends TestCase
     ];
 
     /**
-     * The module of the chart.
+     * The chart of the module on the real schema.
      */
-    private Module $module;
+    private RealTreeChart $chart;
 
     /**
-     * The index directory of the media file, which the test creates and removes, or an empty
-     * string while there is none.
+     * The media directory of the test, which holds the image of the living person.
      */
-    private string $indexDirectory = '';
+    private MediaDirectory $mediaDirectory;
 
     /**
      * Boots webtrees, builds a fresh schema in memory and logs in an administrator, the way the
@@ -184,30 +173,13 @@ final class DataFacadePrivacyTest extends TestCase
     {
         parent::setUp();
 
-        RealTreeFixture::boot();
+        $this->chart = RealTreeChart::boot(self::createStub(ChartService::class));
 
         // The media file of the living person has to exist, because the image of a person is only
         // referenced when its file is there.
-        $this->indexDirectory = sys_get_temp_dir() . '/descendants-chart-privacy-' . uniqid('', true) . '/';
-
-        if (
-            !mkdir($this->indexDirectory . 'media', 0o777, true)
-            && !is_dir($this->indexDirectory . 'media')
-        ) {
-            throw new RuntimeException('The media directory could not be created.');
-        }
-
-        if (file_put_contents($this->indexDirectory . 'media/hiddenlivingphoto.jpg', 'image') !== strlen('image')) {
-            throw new RuntimeException('The media file could not be written.');
-        }
-
-        Site::setPreference('INDEX_DIRECTORY', $this->indexDirectory);
-
-        DB::table('module')->insert(['module_name' => 'webtrees-descendants-chart']);
-
-        $this->module = new Module(self::createStub(ChartService::class), new DataFacade());
-        $this->module->setName('webtrees-descendants-chart');
-        $this->module->boot();
+        $this->mediaDirectory = new MediaDirectory();
+        $this->mediaDirectory->create('descendants-chart-privacy-');
+        $this->mediaDirectory->writeFile('hiddenlivingphoto.jpg');
     }
 
     /**
@@ -220,13 +192,7 @@ final class DataFacadePrivacyTest extends TestCase
         Site::$preferences = [];
         Registry::cache(new CacheFactory());
 
-        if ($this->indexDirectory !== '') {
-            unlink($this->indexDirectory . 'media/hiddenlivingphoto.jpg');
-
-            rmdir($this->indexDirectory . 'media');
-            rmdir($this->indexDirectory);
-        }
-
+        $this->mediaDirectory->remove();
         RealTreeFixture::restoreMinimalDatabase();
 
         parent::tearDown();
@@ -317,7 +283,7 @@ final class DataFacadePrivacyTest extends TestCase
         Registry::cache(new CacheFactory());
         Auth::logout();
 
-        $structure = $this->structure($tree, 'I3');
+        $structure = $this->chartStructure($tree, 'I3');
         $member    = $structure['members'][0] ?? null;
 
         self::assertInstanceOf(NodeData::class, $member);
@@ -353,7 +319,7 @@ final class DataFacadePrivacyTest extends TestCase
         $tree->setPreference('USE_SILHOUETTE', '1');
 
         // The control runs as the administrator, who sees the private person with a silhouette.
-        $administrator = $this->structure($tree, 'I3')['members'][0] ?? null;
+        $administrator = $this->chartStructure($tree, 'I3')['members'][0] ?? null;
 
         self::assertInstanceOf(NodeData::class, $administrator);
         self::assertNotSame('', $administrator->jsonSerialize()['silhouette'] ?? '');
@@ -361,8 +327,8 @@ final class DataFacadePrivacyTest extends TestCase
         Registry::cache(new CacheFactory());
         Auth::logout();
 
-        $private = $this->structure($tree, 'I3')['members'][0] ?? null;
-        $public  = $this->structure($tree, 'I1')['members'][0] ?? null;
+        $private = $this->chartStructure($tree, 'I3')['members'][0] ?? null;
+        $public  = $this->chartStructure($tree, 'I1')['members'][0] ?? null;
 
         self::assertInstanceOf(NodeData::class, $private);
         self::assertInstanceOf(NodeData::class, $public);
@@ -382,7 +348,7 @@ final class DataFacadePrivacyTest extends TestCase
         $private = Registry::individualFactory()->make('I3', $tree);
         self::assertInstanceOf(Individual::class, $private);
 
-        self::assertStringContainsString('Confidentialchild', $this->module->pageTitle($private));
+        self::assertStringContainsString('Confidentialchild', $this->chart->module()->pageTitle($private));
 
         Registry::cache(new CacheFactory());
         Auth::logout();
@@ -390,7 +356,7 @@ final class DataFacadePrivacyTest extends TestCase
         $private = Registry::individualFactory()->make('I3', $tree);
         self::assertInstanceOf(Individual::class, $private);
 
-        self::assertSame('Descendants chart', $this->module->pageTitle($private));
+        self::assertSame('Descendants chart', $this->chart->module()->pageTitle($private));
     }
 
     /**
@@ -401,7 +367,7 @@ final class DataFacadePrivacyTest extends TestCase
      */
     private function payload(Tree $tree, string $xref): string
     {
-        return json_encode($this->structure($tree, $xref), JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
+        return json_encode($this->chartStructure($tree, $xref), JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -413,29 +379,9 @@ final class DataFacadePrivacyTest extends TestCase
      *
      * @return array{members: NodeData[], memberFamilies: array<int, array{family: int, spouseIndex: int|null, children: CoupleNode[]}>}
      */
-    private function structure(Tree $tree, string $xref): array
+    private function chartStructure(Tree $tree, string $xref): array
     {
-        $individual = Registry::individualFactory()->make($xref, $tree);
-        self::assertInstanceOf(Individual::class, $individual);
-
-        $configuration = new Configuration(
-            (new ServerRequest(RequestMethodInterface::METHOD_GET, '/'))->withQueryParams([
-                'generations'     => '4',
-                'showDetailPanel' => '1',
-                'hideSpouses'     => '0',
-            ]),
-            $this->module,
-        );
-
-        $structure = (new DataFacade())
-            ->setModule($this->module)
-            ->setConfiguration($configuration)
-            ->setRoute(Module::ROUTE_DEFAULT)
-            ->createTreeStructure($individual);
-
-        self::assertIsArray($structure);
-
-        return $structure;
+        return $this->chart->structure($tree, $xref, 4, false, 'all', true);
     }
 
     /**
