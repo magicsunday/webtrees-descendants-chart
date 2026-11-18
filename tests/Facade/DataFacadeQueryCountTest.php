@@ -42,6 +42,7 @@ use PHPUnit\Framework\TestCase;
 
 use function array_filter;
 use function array_keys;
+use function array_replace;
 use function array_unique;
 use function array_values;
 use function count;
@@ -641,13 +642,15 @@ final class DataFacadeQueryCountTest extends TestCase
             ];
         }
 
+        $chunks = [$images];
+
         foreach ($couple['memberFamilies'] as $family) {
             foreach ($family['children'] as $child) {
-                $images = [...$images, ...$this->collectImages($child->jsonSerialize())];
+                $chunks[] = $this->collectImages($child->jsonSerialize());
             }
         }
 
-        return $images;
+        return array_replace(...$chunks);
     }
 
     /**

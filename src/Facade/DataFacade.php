@@ -225,7 +225,10 @@ final class DataFacade
      */
     private function buildCoupleStructure(?Individual $individual, int $generation = 1): ?CoupleNode
     {
-        if ((!$individual instanceof Individual) || ($generation > $this->configuration->getGenerations())) {
+        if (
+            (!$individual instanceof Individual)
+            || ($generation > $this->configuration->getGenerations())
+        ) {
             return null;
         }
 
@@ -333,7 +336,10 @@ final class DataFacade
 
         $marriedSegment = end($nameSegments);
 
-        if (($marriedSegment instanceof NameSegment) && ($marriedSegment->kind === NameSegmentKind::Married)) {
+        if (
+            ($marriedSegment instanceof NameSegment)
+            && ($marriedSegment->kind === NameSegmentKind::Married)
+        ) {
             $fullNN .= ' ' . $marriedSegment->label;
         }
 
