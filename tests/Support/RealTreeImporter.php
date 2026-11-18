@@ -16,6 +16,7 @@ use Fisharebest\Webtrees\Tree;
 use MagicSunday\Webtrees\ModuleBase\Testing\RealTreeFixture;
 
 use function array_keys;
+use function array_push;
 use function implode;
 use function intdiv;
 
@@ -67,7 +68,7 @@ final readonly class RealTreeImporter
         $lines = ['0 HEAD', '1 CHAR UTF-8'];
 
         for ($person = 1; $person <= $people; ++$person) {
-            $lines = [...$lines, ...$this->personLines('I' . $person, 'M', $person, $withMedia)];
+            array_push($lines, ...$this->personLines('I' . $person, 'M', $person, $withMedia));
 
             if ($person >= 2) {
                 $lines[] = '1 FAMC @F' . intdiv($person, 2) . '@';
@@ -85,19 +86,18 @@ final readonly class RealTreeImporter
                 $withPartnersWithoutDates
                 && ($family <= 3)
             ) {
-                $lines = [
-                    ...$lines,
-                    '0 @I' . $partner . '@ INDI',
-                    '1 NAME Undated' . $family . ' /Partner/',
-                    '1 SEX F',
-                    '1 FAMC @FP' . $family . '@',
-                    '1 FAMS @F' . $family . '@',
-                ];
+                $lines[] = '0 @I' . $partner . '@ INDI';
+                $lines[] = '1 NAME Undated' . $family . ' /Partner/';
+                $lines[] = '1 SEX F';
+                $lines[] = '1 FAMC @FP' . $family . '@';
+                $lines[] = '1 FAMS @F' . $family . '@';
 
                 continue;
             }
 
-            $lines = [...$lines, ...$this->personLines('I' . $partner, 'F', $partner, $withMedia), '1 FAMS @F' . $family . '@'];
+            array_push($lines, ...$this->personLines('I' . $partner, 'F', $partner, $withMedia));
+
+            $lines[] = '1 FAMS @F' . $family . '@';
         }
 
         for ($family = 1; $family <= $families; ++$family) {
@@ -111,13 +111,11 @@ final readonly class RealTreeImporter
         if ($withPartnersWithoutDates) {
             for ($family = 1; $family <= 3; ++$family) {
                 $father = self::PARTNER_FATHER_OFFSET + $family;
-                $lines  = [
-                    ...$lines,
-                    ...$this->personLines('I' . $father, 'M', $father, false),
-                    '0 @FP' . $family . '@ FAM',
-                    '1 HUSB @I' . $father . '@',
-                    '1 CHIL @I' . (self::PARTNER_OFFSET + $family) . '@',
-                ];
+
+                array_push($lines, ...$this->personLines('I' . $father, 'M', $father, false));
+                $lines[] = '0 @FP' . $family . '@ FAM';
+                $lines[] = '1 HUSB @I' . $father . '@';
+                $lines[] = '1 CHIL @I' . (self::PARTNER_OFFSET + $family) . '@';
             }
         }
 
@@ -252,7 +250,7 @@ final readonly class RealTreeImporter
         $lines = ['0 HEAD', '1 CHAR UTF-8'];
 
         foreach ($people as $number => [$sex, $childOf, $spouseIn]) {
-            $lines = [...$lines, ...$this->personLines('I' . $number, $sex, $number, true)];
+            array_push($lines, ...$this->personLines('I' . $number, $sex, $number, true));
 
             if ($childOf !== null) {
                 $lines[] = '1 FAMC @F' . $childOf . '@';
