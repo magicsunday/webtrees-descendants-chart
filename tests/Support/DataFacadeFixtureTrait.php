@@ -121,7 +121,10 @@ trait DataFacadeFixtureTrait
                 $first = $filter[0] ?? '';
                 $tag   = is_string($first) ? $first : '';
 
-                if (($factsByTag === null) || ($tag === 'NAME')) {
+                if (
+                    ($factsByTag === null)
+                    || ($tag === 'NAME')
+                ) {
                     return new Collection([$nameFact]);
                 }
 
