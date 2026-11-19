@@ -27,13 +27,14 @@ use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\DescendantsChart\Module;
-use MagicSunday\Webtrees\DescendantsChart\Test\Support\MediaDirectory;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\RealTreeChart;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\RealTreeImporter;
 use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
 use MagicSunday\Webtrees\ModuleBase\Processor\ImageProcessor;
 use MagicSunday\Webtrees\ModuleBase\Support\MediaPreloader;
+use MagicSunday\Webtrees\ModuleBase\Testing\MediaDirectory;
 use MagicSunday\Webtrees\ModuleBase\Testing\RealTreeFixture;
+use MagicSunday\Webtrees\ModuleBase\Testing\StatementLog;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -47,7 +48,6 @@ use function array_unique;
 use function array_values;
 use function count;
 use function intdiv;
-use function is_scalar;
 use function ksort;
 use function max;
 use function preg_match;
@@ -492,31 +492,9 @@ final class DataFacadeQueryCountTest extends TestCase
     ): array {
         Registry::cache(new CacheFactory());
 
-        $connection = DB::connection();
-        $connection->enableQueryLog();
-        $connection->flushQueryLog();
-
-        $this->chart->structure($tree, $xref, $generations, $hideSpouses, $line);
-
-        $log = $connection->getQueryLog();
-        $connection->disableQueryLog();
-
-        $statements = [];
-
-        foreach ($log as $entry) {
-            $bindings = [];
-
-            foreach ($entry['bindings'] as $binding) {
-                $bindings[] = is_scalar($binding) ? (string) $binding : '';
-            }
-
-            $statements[] = [
-                'query'    => $entry['query'],
-                'bindings' => $bindings,
-            ];
-        }
-
-        return $statements;
+        return StatementLog::capture(function () use ($tree, $xref, $generations, $hideSpouses, $line): void {
+            $this->chart->structure($tree, $xref, $generations, $hideSpouses, $line);
+        });
     }
 
     /**

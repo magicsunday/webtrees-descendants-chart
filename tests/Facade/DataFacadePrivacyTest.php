@@ -26,9 +26,9 @@ use MagicSunday\Webtrees\DescendantsChart\Enum\DescendantLine;
 use MagicSunday\Webtrees\DescendantsChart\Facade\DataFacade;
 use MagicSunday\Webtrees\DescendantsChart\Model\CoupleNode;
 use MagicSunday\Webtrees\DescendantsChart\Module;
-use MagicSunday\Webtrees\DescendantsChart\Test\Support\MediaDirectory;
 use MagicSunday\Webtrees\DescendantsChart\Test\Support\RealTreeChart;
 use MagicSunday\Webtrees\ModuleBase\Model\NodeData;
+use MagicSunday\Webtrees\ModuleBase\Testing\MediaDirectory;
 use MagicSunday\Webtrees\ModuleBase\Testing\PayloadToken;
 use MagicSunday\Webtrees\ModuleBase\Testing\RealTreeFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -494,14 +494,16 @@ final class DataFacadePrivacyTest extends TestCase
             '0 TRLR',
         ]);
 
-        $tree = RealTreeFixture::importGedcom($gedcom, 'privacy');
-
-        $tree->setPreference('HIDE_LIVE_PEOPLE', '1');
-        $tree->setPreference('SHOW_PRIVATE_RELATIONSHIPS', '1');
-        $tree->setPreference('SHOW_LIVING_NAMES', (string) Auth::PRIV_USER);
-        $tree->setPreference('SHOW_DEAD_PEOPLE', (string) Auth::PRIV_PRIVATE);
-        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
-
-        return $tree;
+        return RealTreeFixture::importGedcom(
+            $gedcom,
+            'privacy',
+            [
+                'HIDE_LIVE_PEOPLE'           => '1',
+                'SHOW_PRIVATE_RELATIONSHIPS' => '1',
+                'SHOW_LIVING_NAMES'          => (string) Auth::PRIV_USER,
+                'SHOW_DEAD_PEOPLE'           => (string) Auth::PRIV_PRIVATE,
+                'SHOW_HIGHLIGHT_IMAGES'      => '1',
+            ],
+        );
     }
 }

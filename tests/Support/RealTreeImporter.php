@@ -13,6 +13,7 @@ namespace MagicSunday\Webtrees\DescendantsChart\Test\Support;
 
 use Fisharebest\Webtrees\Auth;
 use Fisharebest\Webtrees\Tree;
+use MagicSunday\Webtrees\ModuleBase\Testing\MediaDirectory;
 use MagicSunday\Webtrees\ModuleBase\Testing\RealTreeFixture;
 
 use function array_keys;
@@ -135,14 +136,16 @@ final readonly class RealTreeImporter
 
         $lines[] = '0 TRLR';
 
-        $tree = RealTreeFixture::importGedcom(implode("\n", $lines), 'descendants');
-
-        $tree->setPreference('HIDE_LIVE_PEOPLE', '1');
-        $tree->setPreference('SHOW_LIVING_NAMES', (string) Auth::PRIV_PRIVATE);
-        $tree->setPreference('SHOW_DEAD_PEOPLE', (string) Auth::PRIV_PRIVATE);
-        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
-
-        return $tree;
+        return RealTreeFixture::importGedcom(
+            implode("\n", $lines),
+            'descendants',
+            [
+                'HIDE_LIVE_PEOPLE'      => '1',
+                'SHOW_LIVING_NAMES'     => (string) Auth::PRIV_PRIVATE,
+                'SHOW_DEAD_PEOPLE'      => (string) Auth::PRIV_PRIVATE,
+                'SHOW_HIGHLIGHT_IMAGES' => '1',
+            ],
+        );
     }
 
     /**
@@ -212,14 +215,16 @@ final readonly class RealTreeImporter
 
         $lines[] = '0 TRLR';
 
-        $tree = RealTreeFixture::importGedcom(implode("\n", $lines), 'privacy');
-
-        $tree->setPreference('HIDE_LIVE_PEOPLE', '1');
-        $tree->setPreference('SHOW_LIVING_NAMES', (string) Auth::PRIV_PRIVATE);
-        $tree->setPreference('SHOW_DEAD_PEOPLE', (string) Auth::PRIV_PRIVATE);
-        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
-
-        return $tree;
+        return RealTreeFixture::importGedcom(
+            implode("\n", $lines),
+            'privacy',
+            [
+                'HIDE_LIVE_PEOPLE'      => '1',
+                'SHOW_LIVING_NAMES'     => (string) Auth::PRIV_PRIVATE,
+                'SHOW_DEAD_PEOPLE'      => (string) Auth::PRIV_PRIVATE,
+                'SHOW_HIGHLIGHT_IMAGES' => '1',
+            ],
+        );
     }
 
     /**
@@ -283,13 +288,15 @@ final readonly class RealTreeImporter
 
         $lines[] = '0 TRLR';
 
-        $tree = RealTreeFixture::importGedcom(implode("\n", $lines), 'lineage');
-
-        $tree->setPreference('HIDE_LIVE_PEOPLE', '1');
-        $tree->setPreference('SHOW_DEAD_PEOPLE', (string) Auth::PRIV_PRIVATE);
-        $tree->setPreference('SHOW_HIGHLIGHT_IMAGES', '1');
-
-        return $tree;
+        return RealTreeFixture::importGedcom(
+            implode("\n", $lines),
+            'lineage',
+            [
+                'HIDE_LIVE_PEOPLE'      => '1',
+                'SHOW_DEAD_PEOPLE'      => (string) Auth::PRIV_PRIVATE,
+                'SHOW_HIGHLIGHT_IMAGES' => '1',
+            ],
+        );
     }
 
     /**
