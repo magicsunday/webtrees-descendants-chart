@@ -209,7 +209,14 @@ final class DataFacadePrivacyTest extends TestCase
 
         $payload = $this->payload($tree, 'I1');
 
-        foreach ([...self::CONFIDENTIAL_NAME_TOKENS, ...self::CONFIDENTIAL_TOKENS, ...self::LIVING_TOKENS, ...self::PUBLIC_TOKENS] as $token) {
+        $tokens = [
+            ...self::CONFIDENTIAL_NAME_TOKENS,
+            ...self::CONFIDENTIAL_TOKENS,
+            ...self::LIVING_TOKENS,
+            ...self::PUBLIC_TOKENS,
+        ];
+
+        foreach ($tokens as $token) {
             self::assertTrue(PayloadToken::occursIn($payload, $token), 'The administrator should see ' . $token);
         }
     }
