@@ -59,7 +59,8 @@ final readonly class RealTreeImporter
      * that have no dates.
      *
      * @param bool $withMedia                Whether the people have media lines
-     * @param bool $withPartnersWithoutDates Whether the partners of the first three families have no dates and a parent family
+     * @param bool $withPartnersWithoutDates Whether the partners of the first three families have no dates and
+     *                                       a parent family
      */
     public function descendants(bool $withMedia = true, bool $withPartnersWithoutDates = false): Tree
     {

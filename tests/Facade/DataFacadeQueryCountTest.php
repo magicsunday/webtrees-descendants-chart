@@ -142,8 +142,14 @@ final class DataFacadeQueryCountTest extends TestCase
         // that the links point to.
         $statementsPerChunk = $visitor ? 4 : 2;
 
-        self::assertSame($statementsPerChunk * $this->chunks(RealTreeImporter::DEPTH, $hideSpouses), $extra['total']);
-        self::assertSame($statementsPerChunk * $this->chunks(RealTreeImporter::DEPTH - 1, $hideSpouses), $fewer['total']);
+        self::assertSame(
+            $statementsPerChunk * $this->chunks(RealTreeImporter::DEPTH, $hideSpouses),
+            $extra['total'],
+        );
+        self::assertSame(
+            $statementsPerChunk * $this->chunks(RealTreeImporter::DEPTH - 1, $hideSpouses),
+            $fewer['total'],
+        );
 
         // One more generation adds the statements of its own chunks and nothing else.
         self::assertSame(
@@ -253,7 +259,10 @@ final class DataFacadeQueryCountTest extends TestCase
         self::assertCount(15 + 15, $images);
         self::assertSame($this->imagesOfFactories($tree, array_keys($images)), $images);
 
-        $thumbnails = array_filter($images, static fn (array $image): bool => str_contains($image['thumbnail'], 'media-thumbnail'));
+        $thumbnails = array_filter(
+            $images,
+            static fn (array $image): bool => str_contains($image['thumbnail'], 'media-thumbnail'),
+        );
 
         self::assertNotSame([], $thumbnails, 'Some people show a thumbnail.');
         self::assertLessThan(count($images), count($thumbnails), 'Some people show the silhouette.');
@@ -417,9 +426,12 @@ final class DataFacadeQueryCountTest extends TestCase
     public static function privacyViewers(): array
     {
         return [
-            'administrator' => ['administrator', ['I1' => true, 'I3' => true, 'I7' => true, 'I4' => true, 'I5' => true]],
-            'visitor'       => ['visitor', ['I1' => true, 'I3' => true, 'I7' => false, 'I4' => false, 'I5' => false]],
-            'member'        => ['member', ['I1' => true, 'I3' => true, 'I7' => false, 'I4' => true, 'I5' => false]],
+            'administrator' => [
+                'administrator',
+                ['I1' => true, 'I3' => true, 'I7' => true, 'I4' => true, 'I5' => true],
+            ],
+            'visitor' => ['visitor', ['I1' => true, 'I3' => true, 'I7' => false, 'I4' => false, 'I5' => false]],
+            'member'  => ['member', ['I1' => true, 'I3' => true, 'I7' => false, 'I4' => true, 'I5' => false]],
         ];
     }
 
