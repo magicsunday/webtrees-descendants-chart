@@ -33,7 +33,7 @@ msgstr "Abreviar primero los apellidos"
 msgid "All descendants"
 msgstr ""
 
-#: src/Module.php:133
+#: src/Module.php:139
 msgid "An overview of an individual’s descendants."
 msgstr "Vista individual de descendientes."
 
@@ -53,7 +53,7 @@ msgstr "Solo nombre de nacimiento"
 msgid "Birth name with married name in brackets"
 msgstr "Nombre de nacimiento con nombre de casada entre paréntesis"
 
-#: src/Facade/DataFacade.php:375
+#: src/Facade/DataFacade.php:381
 #, php-format
 msgid "Born: %s"
 msgstr "Nació: %s"
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Ctrl + scroll"
 msgstr ""
 
-#: src/Facade/DataFacade.php:377
+#: src/Facade/DataFacade.php:383
 msgctxt "webtrees-descendants-chart"
 msgid "Deceased"
 msgstr "Fallecido"
@@ -102,11 +102,11 @@ msgstr "Fallecido"
 msgid "Descendant line"
 msgstr ""
 
-#: src/Module.php:122 src/Module.php:234
+#: src/Module.php:128 src/Module.php:240
 msgid "Descendants chart"
 msgstr "Árbol de descendientes"
 
-#: src/Module.php:231 src/Module/ChartTrait.php:43
+#: src/Module.php:237 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Árbol de descendientes de %s"
@@ -119,7 +119,7 @@ msgstr ""
 msgid "Details panel"
 msgstr ""
 
-#: src/Facade/DataFacade.php:376
+#: src/Facade/DataFacade.php:382
 #, php-format
 msgid "Died: %s"
 msgstr "Murió: %s"
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Move the chart"
 msgstr "Mover el diagrama"
 
-#: src/Module.php:253
+#: src/Module.php:259
 msgid "Move the view with two fingers"
 msgstr "Mueve la vista con dos dedos"
 
@@ -314,7 +314,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:252
+#: src/Module.php:258
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Use Ctrl + scroll para acercar la vista"
 

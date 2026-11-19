@@ -34,7 +34,7 @@ msgstr "Спершу скорочувати прізвища"
 msgid "All descendants"
 msgstr ""
 
-#: src/Module.php:133
+#: src/Module.php:139
 msgid "An overview of an individual’s descendants."
 msgstr "Огляд нащадків персони у вигляді дерева."
 
@@ -54,7 +54,7 @@ msgstr "Лише ім'я при народженні"
 msgid "Birth name with married name in brackets"
 msgstr "Ім'я при народженні з прізвищем у шлюбі в дужках"
 
-#: src/Facade/DataFacade.php:375
+#: src/Facade/DataFacade.php:381
 #, php-format
 msgid "Born: %s"
 msgstr "Народження: %s"
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Ctrl + scroll"
 msgstr "Ctrl + прокрутка"
 
-#: src/Facade/DataFacade.php:377
+#: src/Facade/DataFacade.php:383
 msgctxt "webtrees-descendants-chart"
 msgid "Deceased"
 msgstr "Померлий"
@@ -102,11 +102,11 @@ msgstr "Померлий"
 msgid "Descendant line"
 msgstr ""
 
-#: src/Module.php:122 src/Module.php:234
+#: src/Module.php:128 src/Module.php:240
 msgid "Descendants chart"
 msgstr "Нащадки"
 
-#: src/Module.php:231 src/Module/ChartTrait.php:43
+#: src/Module.php:237 src/Module/ChartTrait.php:43
 #, php-format
 msgid "Descendants chart of %s"
 msgstr "Нащадки для %s"
@@ -119,7 +119,7 @@ msgstr ""
 msgid "Details panel"
 msgstr ""
 
-#: src/Facade/DataFacade.php:376
+#: src/Facade/DataFacade.php:382
 #, php-format
 msgid "Died: %s"
 msgstr "Смерть: %s"
@@ -206,7 +206,7 @@ msgstr ""
 msgid "Move the chart"
 msgstr "Перемістити діаграму"
 
-#: src/Module.php:253
+#: src/Module.php:259
 msgid "Move the view with two fingers"
 msgstr "Переміщуйте зображення двома пальцями"
 
@@ -313,7 +313,7 @@ msgstr ""
 msgid "The preferences for the module “%s” have been updated."
 msgstr ""
 
-#: src/Module.php:252
+#: src/Module.php:258
 msgid "Use Ctrl + scroll to zoom in the view"
 msgstr "Використовуйте Ctrl + коліщатко миші до збільшення зображення"
 

@@ -55,9 +55,15 @@ final class Module extends DescendancyChartModule implements ModuleAssetUrlInter
 
     private const string GITHUB_REPO = 'magicsunday/webtrees-descendants-chart';
 
+    /**
+     * The name of the module author.
+     */
     public const string CUSTOM_AUTHOR = 'Rico Sonntag';
 
-    public const string CUSTOM_VERSION = '2.8.0';
+    /**
+     * The version of the module. It names the bundle file of the chart script.
+     */
+    public const string CUSTOM_VERSION = '2.8.1-dev';
 
     /**
      * Webtrees renders this URL as the "For more information, see …" link
